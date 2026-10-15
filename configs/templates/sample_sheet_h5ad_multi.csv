@@ -1,0 +1,3 @@
+file_name,sample_id,condition,timepoint,batch,donor,format
+sample_0h.h5ad,sample_0h,control,0h,batch1,NA,h5ad
+sample_24h.h5ad,sample_24h,control,24h,batch1,NA,h5ad

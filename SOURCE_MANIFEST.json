@@ -1,0 +1,3263 @@
+{
+  "snapshot_date": "2026-10-15",
+  "scope": "platform source only; no datasets or databases",
+  "source_identity": "stoich_platform_postgres_open_search_v6_2_perf_fix/proj",
+  "manifest_excludes_itself": true,
+  "files": [
+    {
+      "path": ".env.example",
+      "origin": "export metadata",
+      "sha256": "e25f6fa394fd30ac8cf2baba9b2812f617b3e5d0894c1fca528c5ff329ce7dab",
+      "size_bytes": 392,
+      "change": "added repository configuration/documentation"
+    },
+    {
+      "path": ".env.postgres.example",
+      "origin": "proj/.env.postgres.example",
+      "sha256": "9f5e8baa256901cd7ea51beaf3178b78ad1967b196904ee02dffb984aca37b6a",
+      "size_bytes": 268,
+      "change": "credential sanitization/configuration template"
+    },
+    {
+      "path": ".gitattributes",
+      "origin": "export metadata",
+      "sha256": "1d1291a896ab0a21869621ad68e2345ceca4997c6beb013d2ed773b4eeaea28a",
+      "size_bytes": 63,
+      "change": "added repository configuration/documentation"
+    },
+    {
+      "path": ".gitignore",
+      "origin": "export metadata",
+      "sha256": "4ae04504822aec6dc44165d6e8c8bc8fc0de59fc6dcad491ec783783257b24e6",
+      "size_bytes": 619,
+      "change": "added repository configuration/documentation"
+    },
+    {
+      "path": "README.md",
+      "origin": "export metadata",
+      "sha256": "117afd86431f40e3a697a0ff037299dee36116d8b9a2542c3b6bbbe89b5d2319",
+      "size_bytes": 4280,
+      "change": "added repository configuration/documentation"
+    },
+    {
+      "path": "backend/.env.example",
+      "origin": "proj/backend/.env.example",
+      "sha256": "299adb04950fc2eef9b56e1fe16b7d940d0f657d3636185d57aca5ef5d33750b",
+      "size_bytes": 38,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/__init__.py",
+      "origin": "proj/backend/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/__init__.py",
+      "origin": "proj/backend/analysis_engine/__init__.py",
+      "sha256": "5b8dcbdcbaeb4340879b005581db5e866707bc637bd4f36f445eeee67d79d313",
+      "size_bytes": 194,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/common.py",
+      "origin": "proj/backend/analysis_engine/common.py",
+      "sha256": "c9e76799f14b9547cfe53759d614e4b0b169a42c4f7598323c6f00d087c3ce35",
+      "size_bytes": 1535,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/downstream/__init__.py",
+      "origin": "proj/backend/analysis_engine/downstream/__init__.py",
+      "sha256": "0b2015df0a25185dae01b5aaae378ec533325cab64bdf0f5c5ea120853a524ca",
+      "size_bytes": 76,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/downstream/domain_annotation.py",
+      "origin": "proj/backend/analysis_engine/downstream/domain_annotation.py",
+      "sha256": "3f4d1db0efcac62b0b47e72e6d48be648d9eda57a4fe0085d6b8151f12318ab2",
+      "size_bytes": 2168,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/downstream/enrichment.py",
+      "origin": "proj/backend/analysis_engine/downstream/enrichment.py",
+      "sha256": "39351feea341a8f8d8af68f72d08e4b09c7ec75e4c4328c3aadb6cd2d66df462",
+      "size_bytes": 24599,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/downstream/network_modules.py",
+      "origin": "proj/backend/analysis_engine/downstream/network_modules.py",
+      "sha256": "e0a3d80f774d803d35a8a504cd9ca48e0e7cf962a72b016b6a99be6ebc50af4f",
+      "size_bytes": 1377,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/hvg_optional.py",
+      "origin": "proj/backend/analysis_engine/hvg_optional.py",
+      "sha256": "3def98ebb818739979e20e78351538d1592f1a2bf89704e545870d474155d3a4",
+      "size_bytes": 1488,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/__init__.py",
+      "origin": "proj/backend/analysis_engine/phase1/__init__.py",
+      "sha256": "3b5e289825626101ab740a490e0d0e8c171afc7af1feef98628acc204c60f882",
+      "size_bytes": 54,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/backends/__init__.py",
+      "origin": "proj/backend/analysis_engine/phase1/backends/__init__.py",
+      "sha256": "fcf7445c199533eee62adf4674ba92c1622827469e15c70928b7aae66a6c087e",
+      "size_bytes": 37,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/backends/internal_hvg.py",
+      "origin": "proj/backend/analysis_engine/phase1/backends/internal_hvg.py",
+      "sha256": "74bfe99ed5f6502156ab51f5d67a2ebd65131ef842906428f108bd894b273c2e",
+      "size_bytes": 1450,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/backends/scanpy_hvg.py",
+      "origin": "proj/backend/analysis_engine/phase1/backends/scanpy_hvg.py",
+      "sha256": "c8e3fac6f2c7a7842ecbbd0bc23aadb183e51c8602ea4cec24ff91e5e2db8090",
+      "size_bytes": 3530,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/backends/seurat_hvg_bridge.py",
+      "origin": "proj/backend/analysis_engine/phase1/backends/seurat_hvg_bridge.py",
+      "sha256": "a330ba73740f58cb8d1cede4ba0d19e25220e0a07e3535bc88da80938d373614",
+      "size_bytes": 952,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/condition_hvg.py",
+      "origin": "proj/backend/analysis_engine/phase1/condition_hvg.py",
+      "sha256": "e14270d1ff1a1697badbfc30d9749d3e4cc17693cd21599e8ca76fce3dea23f8",
+      "size_bytes": 4270,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/consensus.py",
+      "origin": "proj/backend/analysis_engine/phase1/consensus.py",
+      "sha256": "3cf14245ce81c19eef3857028e407464a5fd73dd7755354ffd509c4fb14c61f9",
+      "size_bytes": 3776,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/dispatcher.py",
+      "origin": "proj/backend/analysis_engine/phase1/dispatcher.py",
+      "sha256": "275c040811a221a2fc054a90905454a72bbcf6a3726c503d210b25f89af37485",
+      "size_bytes": 3313,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/global_hvg.py",
+      "origin": "proj/backend/analysis_engine/phase1/global_hvg.py",
+      "sha256": "028023b0ce5c88b898cb4a25761948213a53cf81c40a522372a72ec01ee2ba60",
+      "size_bytes": 964,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/group_hvg.py",
+      "origin": "proj/backend/analysis_engine/phase1/group_hvg.py",
+      "sha256": "4044a83d48f0097056df06feea55a7a8172e706af5eb1e71c5148bcd02680df1",
+      "size_bytes": 2262,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/hvg_core.py",
+      "origin": "proj/backend/analysis_engine/phase1/hvg_core.py",
+      "sha256": "e63d60fdc3058a23512addf3e758f15bba8a42b517f71287c3b8621420c3c6ae",
+      "size_bytes": 10733,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/runner_core.py",
+      "origin": "proj/backend/analysis_engine/phase1/runner_core.py",
+      "sha256": "9798055170fbb08330e24d19f828587ee63ea85c173bc964e9422052f338fe19",
+      "size_bytes": 8366,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/sample_consensus_hvg.py",
+      "origin": "proj/backend/analysis_engine/phase1/sample_consensus_hvg.py",
+      "sha256": "e7f4900d2ec0a1c7b5d54e8285832189bce5ee80c9ce9d9171e393d2816c77f9",
+      "size_bytes": 3734,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/timecourse_hvg.py",
+      "origin": "proj/backend/analysis_engine/phase1/timecourse_hvg.py",
+      "sha256": "de30fd7253abd67418b8ae08f0e305aec090e97ae0af8c0fcb3cf0041cd49ea3",
+      "size_bytes": 5535,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/trajectory_hvg.py",
+      "origin": "proj/backend/analysis_engine/phase1/trajectory_hvg.py",
+      "sha256": "819c2f691c1419e1f5c843d5d9261726d9f7fdaee4ce4c9c8ad9858ab9d764bf",
+      "size_bytes": 2917,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase1/utils.py",
+      "origin": "proj/backend/analysis_engine/phase1/utils.py",
+      "sha256": "52f409f4b2ff5c7fda35d066303ca3cf91e13bfa84e5ed1e8103047f46841dbd",
+      "size_bytes": 3456,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/__init__.py",
+      "origin": "proj/backend/analysis_engine/phase2/__init__.py",
+      "sha256": "29735195f2bdd10129542edd4c12fb9f07888008b30b47a6262c31caac3f5534",
+      "size_bytes": 52,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/associations.py",
+      "origin": "proj/backend/analysis_engine/phase2/associations.py",
+      "sha256": "22625a2713736d7b96adfc5230bd3701c04fb94ce28635262211a9ae474473a1",
+      "size_bytes": 4866,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/bootstrap_stability.py",
+      "origin": "proj/backend/analysis_engine/phase2/bootstrap_stability.py",
+      "sha256": "1dbd4846800d9b2db3c55e40777af01f070f45df9c8dce53c1c8caf845463200",
+      "size_bytes": 2758,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/classify.py",
+      "origin": "proj/backend/analysis_engine/phase2/classify.py",
+      "sha256": "153f16306af21bee5afb63b96efd87f780717a7824c87321ffe9bb4153f4aa54",
+      "size_bytes": 2852,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/comparison_adjustment.py",
+      "origin": "proj/backend/analysis_engine/phase2/comparison_adjustment.py",
+      "sha256": "114870ee4e769e4ddf824db0e7a640c52befa674375314e9d6faa767bd6a4a4d",
+      "size_bytes": 16842,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/comparison_qc.py",
+      "origin": "proj/backend/analysis_engine/phase2/comparison_qc.py",
+      "sha256": "5271834bae26f55a035d4840e651b7efdf6bd1807d91ce832ba519f43cc4f29b",
+      "size_bytes": 12656,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/comparison_schema.py",
+      "origin": "proj/backend/analysis_engine/phase2/comparison_schema.py",
+      "sha256": "76115f56ae0197c464c18d76d94f8bef72ba3289b9344d8cf5d1518075fa1792",
+      "size_bytes": 3375,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/comparison_selector.py",
+      "origin": "proj/backend/analysis_engine/phase2/comparison_selector.py",
+      "sha256": "f42d192f3a42be1984cb9a12ed23a34ed691465844ea1f1286fd4c6345a25cc7",
+      "size_bytes": 13557,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/comparison_stats.py",
+      "origin": "proj/backend/analysis_engine/phase2/comparison_stats.py",
+      "sha256": "b92067b65487144357180ed32a2c5c52b912b9fcde6f2315f671f0534bbf6812",
+      "size_bytes": 14695,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/downstream.py",
+      "origin": "proj/backend/analysis_engine/phase2/downstream.py",
+      "sha256": "fee37efe56e7afc178245de4ccc46836cbd3621eeb611e20ff822a19ce78c237",
+      "size_bytes": 2940,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/group_comparison.py",
+      "origin": "proj/backend/analysis_engine/phase2/group_comparison.py",
+      "sha256": "78be0469849d5044a76c71e2f795c954a933f3f55cecf0f0547dce96ffb0b97c",
+      "size_bytes": 42348,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/io.py",
+      "origin": "proj/backend/analysis_engine/phase2/io.py",
+      "sha256": "0bd8401cdcd5719facbd4eb42cb499c349a9c0eb4bfdccfad5234242ce3255ac",
+      "size_bytes": 660,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/model_comparison.py",
+      "origin": "proj/backend/analysis_engine/phase2/model_comparison.py",
+      "sha256": "553510a51180010f6ab142933949d2716c62e825a87004b41063a16f86ff4916",
+      "size_bytes": 12033,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/model_prep.py",
+      "origin": "proj/backend/analysis_engine/phase2/model_prep.py",
+      "sha256": "842b4ae361007de27c658e44e7f01c440a9ea137464bbf01e4b43db07ff7985d",
+      "size_bytes": 2328,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/permutation_tests.py",
+      "origin": "proj/backend/analysis_engine/phase2/permutation_tests.py",
+      "sha256": "49439ea6349f62bcafc51e5fc47d48d5876ee8be2e21af7b7a1ca2091c8a8264",
+      "size_bytes": 3755,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/runner_core.py",
+      "origin": "proj/backend/analysis_engine/phase2/runner_core.py",
+      "sha256": "47ebbeaafe8464005dcaf17a0aa6af6d7d151bd7430e8491e4bf69c90d72b327",
+      "size_bytes": 26837,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/schemas.py",
+      "origin": "proj/backend/analysis_engine/phase2/schemas.py",
+      "sha256": "9cf77ac7edca679c9128516da672b85080d8c10685e096532e0e95f7736413b1",
+      "size_bytes": 1456,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/stoich_model.py",
+      "origin": "proj/backend/analysis_engine/phase2/stoich_model.py",
+      "sha256": "07f46c1e9dbf33b5e66c24559226bc25c4fb19ad5d4fc342aa2c23f1b8bdf831",
+      "size_bytes": 22301,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/summarize.py",
+      "origin": "proj/backend/analysis_engine/phase2/summarize.py",
+      "sha256": "f7cc50171c49df772f97a707f4966cc4dcd5fa4b12802493b29c4c7d1472517a",
+      "size_bytes": 7798,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/tests/__init__.py",
+      "origin": "proj/backend/analysis_engine/phase2/tests/__init__.py",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_bytes": 1,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/tests/test_group_comparison.py",
+      "origin": "proj/backend/analysis_engine/phase2/tests/test_group_comparison.py",
+      "sha256": "5d3dda2bd851b002c1b678e10708bed88b391730f960616b655adadf910d8b56",
+      "size_bytes": 21038,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/phase2/validate.py",
+      "origin": "proj/backend/analysis_engine/phase2/validate.py",
+      "sha256": "abe0b0079c149ddd36b49f888f3e0258a88945bd29b8a8e6ff30ad466d0d9f6c",
+      "size_bytes": 1837,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/analysis_engine/visualization.py",
+      "origin": "proj/backend/analysis_engine/visualization.py",
+      "sha256": "1e7d86a970cf565ba7c6d18314dfa5ede97933f561c96309c2e6dc94af001958",
+      "size_bytes": 23422,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/__init__.py",
+      "origin": "proj/backend/apps/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/__init__.py",
+      "origin": "proj/backend/apps/common/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/filesystem.py",
+      "origin": "proj/backend/apps/common/filesystem.py",
+      "sha256": "bd75f14d668e0fce36594e4685ee950ded730e62612e78e9ced946b45f431c90",
+      "size_bytes": 276,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/json_safe.py",
+      "origin": "proj/backend/apps/common/json_safe.py",
+      "sha256": "129046468223be81c5749fb2afe1c154f926c695eb5be1f8914a762ec93e57f1",
+      "size_bytes": 1542,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/reproducibility.py",
+      "origin": "proj/backend/apps/common/reproducibility.py",
+      "sha256": "a6e15200e19bb93f50fca59be7ada85334151d52bcbdda7944e8b19a5eea3db5",
+      "size_bytes": 2759,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/responses.py",
+      "origin": "proj/backend/apps/common/responses.py",
+      "sha256": "1d9f75642cd347e3d1b206457e05c857c79c60f63237782a38f8b03c28dd12d9",
+      "size_bytes": 557,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/upload_security.py",
+      "origin": "proj/backend/apps/common/upload_security.py",
+      "sha256": "a1bd129651ac2d9745448543214496c2bf27e8be3f0807317d56ce55a4ea42cf",
+      "size_bytes": 3940,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/core/__init__.py",
+      "origin": "proj/backend/apps/core/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/core/apps.py",
+      "origin": "proj/backend/apps/core/apps.py",
+      "sha256": "231063a12b7920924cd4660fab4c530fe2428d3cbdc05b5afc25069be5d642fd",
+      "size_bytes": 117,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/core/urls.py",
+      "origin": "proj/backend/apps/core/urls.py",
+      "sha256": "1cacc6423a765d1f4dca0f4b6a0c5e5681da1a26d9c5532b0e5a7d1de98bdab2",
+      "size_bytes": 98,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/core/views.py",
+      "origin": "proj/backend/apps/core/views.py",
+      "sha256": "ee6e2b3f153a54e384f66aff2a5a79b4be8d196153d8bdee3ba4e2c991937d24",
+      "size_bytes": 377,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/files/__init__.py",
+      "origin": "proj/backend/apps/files/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/files/apps.py",
+      "origin": "proj/backend/apps/files/apps.py",
+      "sha256": "5aad29c4320340f10e0dc31d1bedba39f1875ff0acbdb38fae0971a88c4f8c29",
+      "size_bytes": 120,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/files/urls.py",
+      "origin": "proj/backend/apps/files/urls.py",
+      "sha256": "3cfff0106fefa27e8353b894227ec965efe99c7b5fe30b5d66fad5f54c4ef922",
+      "size_bytes": 96,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/files/views.py",
+      "origin": "proj/backend/apps/files/views.py",
+      "sha256": "2fb8e448122cc35a9120ce9eba6a915a512d49bb71d83ec51d4864959cace983",
+      "size_bytes": 494,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/__init__.py",
+      "origin": "proj/backend/apps/hvg/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/apps.py",
+      "origin": "proj/backend/apps/hvg/apps.py",
+      "sha256": "6bc66bac68f4ae477a7e88fdea8bca5724586f6bfc705db594a0f95170ae18ea",
+      "size_bytes": 114,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/feature_context.py",
+      "origin": "proj/backend/apps/hvg/feature_context.py",
+      "sha256": "8957d4c0c908862b5e7616a68ec285e4471afe3f4cabf4a979dd3b989141808b",
+      "size_bytes": 48113,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/feature_mapping.py",
+      "origin": "proj/backend/apps/hvg/feature_mapping.py",
+      "sha256": "e012dfe3dcf465118d244a3047339547a01766c5d2c7e949c6ac8d80090b66f7",
+      "size_bytes": 19761,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/management/__init__.py",
+      "origin": "proj/backend/apps/hvg/management/__init__.py",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_bytes": 1,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/management/commands/__init__.py",
+      "origin": "proj/backend/apps/hvg/management/commands/__init__.py",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_bytes": 1,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/management/commands/backfill_hvg_nonhvg_comparison.py",
+      "origin": "proj/backend/apps/hvg/management/commands/backfill_hvg_nonhvg_comparison.py",
+      "sha256": "f70b6cb52f07722010b634e68d073be39d986ad6bfb51f79dbe4335a0382b6ef",
+      "size_bytes": 14006,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/services.py",
+      "origin": "proj/backend/apps/hvg/services.py",
+      "sha256": "3b17ec0aa9baff2bc3e3748e793b6b8a8141363645e97214c9f519a472834365",
+      "size_bytes": 23375,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/urls.py",
+      "origin": "proj/backend/apps/hvg/urls.py",
+      "sha256": "c1c2196fc615a99351f56f17c285d6a2be424f517ac158c0b473778b2e804096",
+      "size_bytes": 1065,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/views.py",
+      "origin": "proj/backend/apps/hvg/views.py",
+      "sha256": "4f249ab16bee70dc8063ea8667deb3bee9ff1acf282963453551031516c22041",
+      "size_bytes": 5391,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/__init__.py",
+      "origin": "proj/backend/apps/jobs/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/admin.py",
+      "origin": "proj/backend/apps/jobs/admin.py",
+      "sha256": "31cd0ec0f15d4c0d79f5890f644039b72aaf463a39a8a5bb60e2b2742efa196b",
+      "size_bytes": 136,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/apps.py",
+      "origin": "proj/backend/apps/jobs/apps.py",
+      "sha256": "f4686a0b7520e9c9878d78352919f3daef82dd7636a95469e372277ffad01301",
+      "size_bytes": 117,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/autoconfig.py",
+      "origin": "proj/backend/apps/jobs/autoconfig.py",
+      "sha256": "391fe7e16c0e73f65da0d68fb7cba80ae59aa4e16e3710e5dc53abe64a929406",
+      "size_bytes": 17517,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/contracts.py",
+      "origin": "proj/backend/apps/jobs/contracts.py",
+      "sha256": "fc92267ee2ddcee24ebc313e7fd43ec4d260153a276580608f8393dd464ca67e",
+      "size_bytes": 9492,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/management/__init__.py",
+      "origin": "proj/backend/apps/jobs/management/__init__.py",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_bytes": 1,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/management/commands/__init__.py",
+      "origin": "proj/backend/apps/jobs/management/commands/__init__.py",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_bytes": 1,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/management/commands/cleanup_user_workspaces.py",
+      "origin": "proj/backend/apps/jobs/management/commands/cleanup_user_workspaces.py",
+      "sha256": "e6d3ecf6d806e6d51b552387fb07c461322ab25197f925052647dd55de615cf4",
+      "size_bytes": 635,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/migrations/0001_initial.py",
+      "origin": "proj/backend/apps/jobs/migrations/0001_initial.py",
+      "sha256": "c2670e30f72c7c1d7e6afa150c3f5762a70894bd41b4a8617a00cf934b1d2f8f",
+      "size_bytes": 2472,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/migrations/0002_stage5_task_security_reproducibility.py",
+      "origin": "proj/backend/apps/jobs/migrations/0002_stage5_task_security_reproducibility.py",
+      "sha256": "e453d3ba49c148cb94eb90e4d0a9f101ceed77c527113f1d9403d09ed3ea7ae1",
+      "size_bytes": 1460,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/migrations/__init__.py",
+      "origin": "proj/backend/apps/jobs/migrations/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/models.py",
+      "origin": "proj/backend/apps/jobs/models.py",
+      "sha256": "ad35aba8ca8aa69a88408fd109687f7b6cca9ac4ae4f9b5a70f52f085a109148",
+      "size_bytes": 2201,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/serializers.py",
+      "origin": "proj/backend/apps/jobs/serializers.py",
+      "sha256": "c20dde2acdc039ec94a81c8a1bb788bb0260570ad1c6891013debb2a571026ad",
+      "size_bytes": 763,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/services.py",
+      "origin": "proj/backend/apps/jobs/services.py",
+      "sha256": "4b5f971b7829f0f5c5ea711dba0ced6e5262af09aec40781396c433624ff4445",
+      "size_bytes": 16305,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/stoich_registry_resolver.py",
+      "origin": "proj/backend/apps/jobs/stoich_registry_resolver.py",
+      "sha256": "cf938dac7c8fcf9f98b3d3feab18040db35b28dc140addefa391abc92c9c7e79",
+      "size_bytes": 10769,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/tests/__init__.py",
+      "origin": "proj/backend/apps/jobs/tests/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/tests/test_autoconfig_h5ad_semantics.py",
+      "origin": "proj/backend/apps/jobs/tests/test_autoconfig_h5ad_semantics.py",
+      "sha256": "3d731529a6d6a2931c33465fbee77e3cf445e83dd1ed4ac0e5af6de30ac44ea4",
+      "size_bytes": 1044,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/urls.py",
+      "origin": "proj/backend/apps/jobs/urls.py",
+      "sha256": "cbc0cb8358bca821e004816e73bb97d707a0831682bd18e7ae34aa3598022f01",
+      "size_bytes": 877,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/jobs/views.py",
+      "origin": "proj/backend/apps/jobs/views.py",
+      "sha256": "639aeebd7ad283e1e7367d9a53bded0396d62caea7180244e9693f0052a976fa",
+      "size_bytes": 7085,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/registry/__init__.py",
+      "origin": "proj/backend/apps/registry/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/registry/apps.py",
+      "origin": "proj/backend/apps/registry/apps.py",
+      "sha256": "867dd6f1c0704f07adce0868e48a949da013b96ca2b663b61d105945f8cce8e9",
+      "size_bytes": 129,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/registry/services.py",
+      "origin": "proj/backend/apps/registry/services.py",
+      "sha256": "4bdb0384dd2ed8b7ef10397f8c479b9c003418d2da4737b52fb1c23ed847fdeb",
+      "size_bytes": 4205,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/registry/urls.py",
+      "origin": "proj/backend/apps/registry/urls.py",
+      "sha256": "19a6c554c3aaad8c610780c1bb2e40c613c50bbb479099fae984ee2746cd7ee4",
+      "size_bytes": 361,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/registry/views.py",
+      "origin": "proj/backend/apps/registry/views.py",
+      "sha256": "8fa73edca8488c37c041d5e8bb036bad778bb782657a25a6fb4418eebba9e93e",
+      "size_bytes": 1497,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/__init__.py",
+      "origin": "proj/backend/apps/sequence_analysis/__init__.py",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_bytes": 1,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/apps.py",
+      "origin": "proj/backend/apps/sequence_analysis/apps.py",
+      "sha256": "72ad8f21cbeb5b6db2a98534e47cf122a1b96131bcf3913303759a78f41ed27a",
+      "size_bytes": 179,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/contracts.py",
+      "origin": "proj/backend/apps/sequence_analysis/contracts.py",
+      "sha256": "b2019e05336577e7ce9088f38e0d79119a0c7542a14d4bbd72f02f00a32506ca",
+      "size_bytes": 18002,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/engine.py",
+      "origin": "proj/backend/apps/sequence_analysis/engine.py",
+      "sha256": "be293b12548f0fed7fe2f40eb51a3e8a13d8e228247da67cc00abe3cffc3fa29",
+      "size_bytes": 31354,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/feature_panel_registry.py",
+      "origin": "proj/backend/apps/sequence_analysis/feature_panel_registry.py",
+      "sha256": "d53baf98a4df3cff06e654ec2c5278a4695d4e38117e230c262a3c3e9d7c4b3f",
+      "size_bytes": 13717,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/feature_panels.py",
+      "origin": "proj/backend/apps/sequence_analysis/feature_panels.py",
+      "sha256": "423f330e4e4c693183c70551600532d9ebb6c69fed809e2c623aacc9bc6d49ae",
+      "size_bytes": 12410,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/real_engine.py",
+      "origin": "proj/backend/apps/sequence_analysis/real_engine.py",
+      "sha256": "6ca31dcddc68c51cdb25e7b3f7b71da244b8ce0c3fa5f2ddc7f32aace5a75758",
+      "size_bytes": 103399,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/services.py",
+      "origin": "proj/backend/apps/sequence_analysis/services.py",
+      "sha256": "7280db0c3bc2f3dba02eac6c2546a79dce06343154e50eb1a893cd75874b7032",
+      "size_bytes": 29882,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/test_model8_elemental.py",
+      "origin": "proj/backend/apps/sequence_analysis/test_model8_elemental.py",
+      "sha256": "24da580de61dda0e5385df6ca4e38a6ba38a8ae34c6c358ca3ea84d205a7a264",
+      "size_bytes": 3987,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/urls.py",
+      "origin": "proj/backend/apps/sequence_analysis/urls.py",
+      "sha256": "f4b02b2d00af60eefc71bae93b3c75c7f34e5811fd7dc7d68adc7a5991b794ef",
+      "size_bytes": 2217,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/views.py",
+      "origin": "proj/backend/apps/sequence_analysis/views.py",
+      "sha256": "29c170f845336127fa72386f994bf9d6c2d58e28394671e5092f235611ba765b",
+      "size_bytes": 14535,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/__init__.py",
+      "origin": "proj/backend/apps/stoichdb/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/apps.py",
+      "origin": "proj/backend/apps/stoichdb/apps.py",
+      "sha256": "14a8ac1cc2b55b0a7e2f0fed9b8818d8d1999ea63a8a827129e446070311fbdd",
+      "size_bytes": 161,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/case_studies.py",
+      "origin": "proj/backend/apps/stoichdb/case_studies.py",
+      "sha256": "fc4ea0cf53ace5817214f4d90896c473fc0da28dede9f02806d38c824557ba32",
+      "size_bytes": 85164,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/complete_core/__init__.py",
+      "origin": "proj/backend/apps/stoichdb/complete_core/__init__.py",
+      "sha256": "b7aa7e782d12dd6994e9cceeae82e0159fb2641cfe7c5981a2f4ff324ffe4da3",
+      "size_bytes": 136,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/complete_core/aggregates.py",
+      "origin": "proj/backend/apps/stoichdb/complete_core/aggregates.py",
+      "sha256": "bfbdfcf0fcde40f7ae657fc3f0eb0ac8debbe378b167a210901e2f1a1a2ab995",
+      "size_bytes": 13799,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/complete_core/artifacts.py",
+      "origin": "proj/backend/apps/stoichdb/complete_core/artifacts.py",
+      "sha256": "5ea3991f1f7463badd4737c99030d05dd3fbfb91a55c7c1dbb858d897199e7a3",
+      "size_bytes": 569,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/complete_core/contracts.py",
+      "origin": "proj/backend/apps/stoichdb/complete_core/contracts.py",
+      "sha256": "5bbc2362931fb50323b0b9f51f893fc218d1f3e604e7fd72fc9c1936da5104d4",
+      "size_bytes": 7625,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/complete_core/cross_omics.py",
+      "origin": "proj/backend/apps/stoichdb/complete_core/cross_omics.py",
+      "sha256": "4cf6c75780d67ed9f12045ed4b7c00a2a54579b1a207d290351eab31c85b25b3",
+      "size_bytes": 25870,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/complete_core/datasource.py",
+      "origin": "proj/backend/apps/stoichdb/complete_core/datasource.py",
+      "sha256": "e2bfb425325f35288aab69fadf5f93edeff75e626a944c36c44b54295ebb0037",
+      "size_bytes": 7001,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/complete_core/ordination.py",
+      "origin": "proj/backend/apps/stoichdb/complete_core/ordination.py",
+      "sha256": "bf0ffdc0950d6e9ba52b335eb14f590f6875683043f92b02da8a75ad3e5449ee",
+      "size_bytes": 95,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/entity_report.py",
+      "origin": "proj/backend/apps/stoichdb/entity_report.py",
+      "sha256": "3663cf14c2528dfe06ce4ab258863f58ab43628a26693b3aa255d3c65f283d5b",
+      "size_bytes": 53097,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/__init__.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/__init__.py",
+      "sha256": "d79f9ca7b368d48f200b667c21776a238d0ea05ad9b5e0659be9bba44c5e1db0",
+      "size_bytes": 82,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/alignment.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/alignment.py",
+      "sha256": "fad48331ae6f5c6102679c762a35ab18d0fe51a52f8ec65d5a7c3eef6843d680",
+      "size_bytes": 1044,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/api.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/api.py",
+      "sha256": "25955871089c5a2c35b528926d4e57a4823c0db1763c080fdf0bda58ad509f41",
+      "size_bytes": 5016,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/builder.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/builder.py",
+      "sha256": "6f45dd41fc9f472f090a12274a02d867e0668d116075d395044147e942e77f1c",
+      "size_bytes": 2053,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/export.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/export.py",
+      "sha256": "f286296dca629e29def99acf741fc87ce761e86cae2de775ab9f7da974a67b48",
+      "size_bytes": 10498,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/field_resolution.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/field_resolution.py",
+      "sha256": "4f3f9c9162617c61481b905f889198cc8acd3fcdfba3feace0f09aeb4c80d688",
+      "size_bytes": 4899,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/homepage_cache.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/homepage_cache.py",
+      "sha256": "bf9bea4c769e2d017f9a6aec57f6e457530caa4fa4d1751a1101201680e8d2e2",
+      "size_bytes": 7054,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/profiling.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/profiling.py",
+      "sha256": "91f82b6e9d83e5f5404229b421024532c3ae38cbf63da0950cd27dd9ae8b22a9",
+      "size_bytes": 7856,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/qc.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/qc.py",
+      "sha256": "394204e08831858abc8a9761e64cd57ca9e9a082a46fd6475261f7905d412b5d",
+      "size_bytes": 7983,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/registry.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/registry.py",
+      "sha256": "369e89622337f2c5cb87c113b2b2f10a4affb1f61a7849bcb51a91677b2a775e",
+      "size_bytes": 13907,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/schemas.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/schemas.py",
+      "sha256": "79644e02698f524f8cdb1d531ebf9ca61d37c4e92ad154f97a790805826786e7",
+      "size_bytes": 1911,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/feature_hub/sources.py",
+      "origin": "proj/backend/apps/stoichdb/feature_hub/sources.py",
+      "sha256": "87acaac3d5d542a84d9ef86f18cbdbe3b93f31a206f0a1542841d2ca1988440b",
+      "size_bytes": 9673,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/function_annotations.py",
+      "origin": "proj/backend/apps/stoichdb/function_annotations.py",
+      "sha256": "c10a8c4afe6939bac87f48856d5a853a7449fee9d9f64495041e4a4e5f5ac54d",
+      "size_bytes": 41142,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/id_mapping.py",
+      "origin": "proj/backend/apps/stoichdb/id_mapping.py",
+      "sha256": "fc2edac1cc3003027c011d635f349bd2575b9ae79e97149bc3295205f03985aa",
+      "size_bytes": 45560,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/__init__.py",
+      "origin": "proj/backend/apps/stoichdb/management/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/__init__.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/audit_species_explorer_modules.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/audit_species_explorer_modules.py",
+      "sha256": "3a40e73352ea51baf973f9ca60bf91c6be604b1f66c55e4d35d405e4e8a27fb5",
+      "size_bytes": 6527,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/backfill_species_genome_size.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/backfill_species_genome_size.py",
+      "sha256": "2ccf57372ed5163ffb84a01695f4c6158cb7d3502d2e023394e54593a209e34b",
+      "size_bytes": 9145,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/backfill_storage_objects.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/backfill_storage_objects.py",
+      "sha256": "62437573c9ab6e7e445868fc94888ee25f687ab2d446955283c3a90ff000f9a6",
+      "size_bytes": 22438,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/build_complete_core_omics_analysis.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/build_complete_core_omics_analysis.py",
+      "sha256": "a2837539c35f115b8331b459c5f4f7ca25ebe940e810a34c8ce5e6458dd053ae",
+      "size_bytes": 3709,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/build_feature_hub_registry.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/build_feature_hub_registry.py",
+      "sha256": "720e22b98614a58d62142ae83e5ba1794eb408788bcecb31798f48a806f4ad39",
+      "size_bytes": 484,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/build_feature_schema_registry.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/build_feature_schema_registry.py",
+      "sha256": "c2cf21907347377052ecf67b83c78cb1e4009f33decb4330339610b73ae14e38",
+      "size_bytes": 9244,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/build_on_demand_full_omics_analysis.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/build_on_demand_full_omics_analysis.py",
+      "sha256": "87307b397dc01b6930f5acd9918127fdf77418f799b50857f399d339e7aad366",
+      "size_bytes": 4744,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/build_phylogeny_artifacts.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/build_phylogeny_artifacts.py",
+      "sha256": "4b412d56090d70c503ee0e7c031c9cf62067d3dcbd508cbed74d0ee0f7266430",
+      "size_bytes": 1179,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/convert_feature_tables.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/convert_feature_tables.py",
+      "sha256": "07d2636684f358ae0a54f7fbcd9b6ebcb32d359065db2ca7448c59d878db5588",
+      "size_bytes": 11917,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/evaluate_model_release_gate.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/evaluate_model_release_gate.py",
+      "sha256": "e0aaefe39d5e8f496042556856f01f007bd21d3b3f504dd12ac2b04316f68845",
+      "size_bytes": 11906,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/import_function_annotations.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/import_function_annotations.py",
+      "sha256": "dad70b872a9b1210c3d0db620d103b54feb38e180eff71165a86bea665f08f01",
+      "size_bytes": 13922,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/import_function_annotations_streaming.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/import_function_annotations_streaming.py",
+      "sha256": "0a12900afeefef11fe824cfe112e1ff2ce20a6188053a45475dcd80449fd310d",
+      "size_bytes": 15997,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/import_model_organism_id_mapping.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/import_model_organism_id_mapping.py",
+      "sha256": "ea8c50969dedf69e858a999d3c35b838e8ff9a695fe32cc5894a3b73b11688b2",
+      "size_bytes": 5505,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/import_phylogeny_release.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/import_phylogeny_release.py",
+      "sha256": "f672005324c776acb6e9b5f595e4131d6310d86cd8170666719c392154e79bcd",
+      "size_bytes": 5745,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/import_stoichdb_pipeline.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/import_stoichdb_pipeline.py",
+      "sha256": "41a27ceba4beb1fac37900f0b94bbf490daeb3510f01158d8715e51bf139ffca",
+      "size_bytes": 50538,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/materialize_species_explorer_complete_core.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/materialize_species_explorer_complete_core.py",
+      "sha256": "316af907e526bb41d49fb6442a661f3bd1b7f166d64f230e0c6696417bdbca0a",
+      "size_bytes": 3373,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/model_release_inventory.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/model_release_inventory.py",
+      "sha256": "678e2e011f72227a119fed37f0da6d63e468e1b9299b3fae01b7d4e429a7a4f8",
+      "size_bytes": 18623,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/precompute_feature_profiles.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/precompute_feature_profiles.py",
+      "sha256": "d32916e052cf8ddd7be6cfc2a5457dfbc1de0754ddf54f27d24d0979fdf4ec04",
+      "size_bytes": 6236,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/precompute_registry_cache.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/precompute_registry_cache.py",
+      "sha256": "447eab372dc37b17483a1ad82487513512f88aa974c2da3ea62aa32b329b99b5",
+      "size_bytes": 9284,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/precompute_species_atlas_metrics.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/precompute_species_atlas_metrics.py",
+      "sha256": "4052bbe0bdee748c3f3dde53187ac476b7cbf75d25cfc006ee375f460b2296a4",
+      "size_bytes": 16334,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/prepare_model_annotation_bundle.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/prepare_model_annotation_bundle.py",
+      "sha256": "ad42d7cdfbfa33d35d041f0393e9acd611b8f7f1e5701e2ef11a2834daaf7d6d",
+      "size_bytes": 10646,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/rebuild_entity_evidence.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/rebuild_entity_evidence.py",
+      "sha256": "ae63ad078e3192c575d88fdc1298c514657a13a019b490ba5d56a4fe9489e69a",
+      "size_bytes": 2319,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/rebuild_entity_index.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/rebuild_entity_index.py",
+      "sha256": "968b01c6c8d04e673df8e2e0432a1ff20de11aa21a39a89bac455758ab6c3266",
+      "size_bytes": 1701,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/rebuild_entity_stats.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/rebuild_entity_stats.py",
+      "sha256": "c2927808ec6ebf617b1d786f5ff841da21a58f1e5393db2c87e00d62f59a3187",
+      "size_bytes": 2417,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/rebuild_model_organism_payloads.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/rebuild_model_organism_payloads.py",
+      "sha256": "545f355da68c455f5c35dba937060ae512fd8795f0c9f8ab06fac2a28df53270",
+      "size_bytes": 40323,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/register_missing_model_organisms.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/register_missing_model_organisms.py",
+      "sha256": "b97827f21fcd1bbb731eb0ab8307d2ea211c711948851eb06e887fc57acc6a84",
+      "size_bytes": 8684,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/register_stoichdb_release.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/register_stoichdb_release.py",
+      "sha256": "135d5dd44d793bf91d9bd55850cba351df7c49944176ec9143a5e03889293fab",
+      "size_bytes": 2687,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/run_case1_phylogeny.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/run_case1_phylogeny.py",
+      "sha256": "8703e8522b2ce40d4af31e45a35645cac8941b2f81eb2f37da7d781d11a16073",
+      "size_bytes": 684,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/run_phylogenetic_signal.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/run_phylogenetic_signal.py",
+      "sha256": "80f7e47dbcf68c59f68a467a23b60738a7075f1bc43c7c188bb593d0853ac15c",
+      "size_bytes": 923,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/sync_real_stoichdb.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/sync_real_stoichdb.py",
+      "sha256": "13d0635c3c06d663b1887b6c349b8f2636524e444160d7e9ba15335ff72f5d50",
+      "size_bytes": 2940,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/validate_entity_links.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/validate_entity_links.py",
+      "sha256": "115b092db8d28b16138ea777eac31fe4c1e52e4980e3b7264ec5e08ec064923b",
+      "size_bytes": 2355,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/validate_feature_hub.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/validate_feature_hub.py",
+      "sha256": "92e1dc470ce174c1dced3bc085412e8bbe2a4a5752f5364a55ce56180b02d8fa",
+      "size_bytes": 1287,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/validate_phylogeny_release.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/validate_phylogeny_release.py",
+      "sha256": "733ebf2b7ca7449626b0c9b0ea919a57238b479b843210475d69bd5a89903505",
+      "size_bytes": 2674,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/verify_storage_objects.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/verify_storage_objects.py",
+      "sha256": "5809981010e42a34ce57ec1502439470d30e98fc3e99cf9e90960b38f16246e2",
+      "size_bytes": 9114,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/migrations/0001_initial.py",
+      "origin": "proj/backend/apps/stoichdb/migrations/0001_initial.py",
+      "sha256": "93044387f396c71637968fae7c3e9f025e85c52d3a5191a60fc76fc3fe5a3a68",
+      "size_bytes": 14432,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/migrations/0002_datarelease.py",
+      "origin": "proj/backend/apps/stoichdb/migrations/0002_datarelease.py",
+      "sha256": "7cacff180d84a80a47e542502eff4ea43dc724142ccd98a1b39e430a14c6d8a2",
+      "size_bytes": 2117,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/migrations/0003_postgres_search_indexes.py",
+      "origin": "proj/backend/apps/stoichdb/migrations/0003_postgres_search_indexes.py",
+      "sha256": "8e7c01e0f9a4a364dc8615262ae8f77ada9def3b217a5b9868e259e30b64f1f0",
+      "size_bytes": 1401,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/migrations/0004_function_annotations.py",
+      "origin": "proj/backend/apps/stoichdb/migrations/0004_function_annotations.py",
+      "sha256": "450cd5dfe53495ac756ccf02674f763b2611b05fcd4e022e6f6a6e6663bb837f",
+      "size_bytes": 18719,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/migrations/0005_phylogeny_foundation.py",
+      "origin": "proj/backend/apps/stoichdb/migrations/0005_phylogeny_foundation.py",
+      "sha256": "a4c1cd65110e42e64c4ef60b82c1d56a1135d144a3f274421c9297ad6b667448",
+      "size_bytes": 5455,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/migrations/0006_phylogeny_p2_analysis.py",
+      "origin": "proj/backend/apps/stoichdb/migrations/0006_phylogeny_p2_analysis.py",
+      "sha256": "e478f00411df84954d9cf8fcdf6b5046df104f905a5799a5a687777f0c8061fd",
+      "size_bytes": 3329,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/migrations/0007_fileqcresult_provenancerun_releasedataset_and_more.py",
+      "origin": "proj/backend/apps/stoichdb/migrations/0007_fileqcresult_provenancerun_releasedataset_and_more.py",
+      "sha256": "0d85dbdd8d77d68e33f083bec170216837fbcfabb1d1fce30a2b20cc3fa0f87d",
+      "size_bytes": 22882,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/migrations/__init__.py",
+      "origin": "proj/backend/apps/stoichdb/migrations/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/model_release_pipeline_utils.py",
+      "origin": "proj/backend/apps/stoichdb/model_release_pipeline_utils.py",
+      "sha256": "2a8fad896c9b5c92d1f71644adf0246671068a913e496cf617afacf74fcdeabb",
+      "size_bytes": 6156,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/model_release_runtime.py",
+      "origin": "proj/backend/apps/stoichdb/model_release_runtime.py",
+      "sha256": "6307c04183de0795218ce5ce2b7f9013ff487cca69b398d1b4e8eeee636d4f23",
+      "size_bytes": 16077,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/models.py",
+      "origin": "proj/backend/apps/stoichdb/models.py",
+      "sha256": "cc5fb04d7598bfa4b31b2f58320a8fa38657456b7561d00ad5bf4c1bfb877582",
+      "size_bytes": 39128,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/phylogeny.py",
+      "origin": "proj/backend/apps/stoichdb/phylogeny.py",
+      "sha256": "8914c0ae609a6dd5f0f1b0ddc9ca6a86ca58b8b5f647494a02aa68aa2af1aa55",
+      "size_bytes": 21011,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/phylogeny_analysis.py",
+      "origin": "proj/backend/apps/stoichdb/phylogeny_analysis.py",
+      "sha256": "91bb975114ea33ab2d8c49da626ef20912cf050deb30ddc85183d411c6b182af",
+      "size_bytes": 7600,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/resources/feature_dictionary.json",
+      "origin": "proj/backend/apps/stoichdb/resources/feature_dictionary.json",
+      "sha256": "cf304ab98524ee740c0e90db185574300cc0b861fe1ca4286bc8e5869ab20561",
+      "size_bytes": 5709,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/schemas/analysis.schema.json",
+      "origin": "proj/backend/apps/stoichdb/schemas/analysis.schema.json",
+      "sha256": "e82e7114f25ad58466b15f0bc9ad2f8963010a0e717f6c9988b1b83907a11205",
+      "size_bytes": 403,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/schemas/cross_omics.schema.json",
+      "origin": "proj/backend/apps/stoichdb/schemas/cross_omics.schema.json",
+      "sha256": "7e75c9c168627379c22f87e6cd88b7f0ac12a51a9f4d389dc025e899d1e8552c",
+      "size_bytes": 435,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/schemas/rows.schema.json",
+      "origin": "proj/backend/apps/stoichdb/schemas/rows.schema.json",
+      "sha256": "7e2dafd5b63cd7afc0dca6d1f5110d121a031bcbadfa7947f13fd791ed82fe7c",
+      "size_bytes": 364,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/schemas/summary.schema.json",
+      "origin": "proj/backend/apps/stoichdb/schemas/summary.schema.json",
+      "sha256": "87fd22dd3c98e661a154d3f6b5b5303c37cc817a6ecd0b8e3f968840dbb8af7d",
+      "size_bytes": 480,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/services.py",
+      "origin": "proj/backend/apps/stoichdb/services.py",
+      "sha256": "89cb95a68a8a8ee6e3e264aac108fa6ab5d426f434cc135900ebccbbe6b737ff",
+      "size_bytes": 761000,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/storage_objects.py",
+      "origin": "proj/backend/apps/stoichdb/storage_objects.py",
+      "sha256": "eedcb6bec1336c429ff9007ff07e6d7dbf0201e63ff0fcb3b7e0796c317bc742",
+      "size_bytes": 2007,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/tests/test_feature_hub_export.py",
+      "origin": "proj/backend/apps/stoichdb/tests/test_feature_hub_export.py",
+      "sha256": "19570aa8126e6cebd82dbba8c372d4cd8f67d7a16701bc9b77aa1155f3b4cef0",
+      "size_bytes": 4591,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/tests/test_species_atlas.py",
+      "origin": "proj/backend/apps/stoichdb/tests/test_species_atlas.py",
+      "sha256": "55d2e9899bcff0dab22811257549d74dc8a0da054049280490a1083fbb43532a",
+      "size_bytes": 4333,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/urls.py",
+      "origin": "proj/backend/apps/stoichdb/urls.py",
+      "sha256": "feb475ed58fea33917522172125478f082b1803ece01d111867259654be12f76",
+      "size_bytes": 8040,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/views.py",
+      "origin": "proj/backend/apps/stoichdb/views.py",
+      "sha256": "97534a90fb7f617b996fdbd740ead1fcc1981b8ad8bb2a00ff6827866b300921",
+      "size_bytes": 27130,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/views_entity.py",
+      "origin": "proj/backend/apps/stoichdb/views_entity.py",
+      "sha256": "d82ddfa87ce633fda488b554d648ff32af35794d583dac88d0189802597647a2",
+      "size_bytes": 3094,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/config/__init__.py",
+      "origin": "proj/backend/config/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/config/asgi.py",
+      "origin": "proj/backend/config/asgi.py",
+      "sha256": "f3813b5323c716c2d34a23db35c2b049cae6681e7ec9048320d902b32ee55946",
+      "size_bytes": 172,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/config/settings.py",
+      "origin": "proj/backend/config/settings.py",
+      "sha256": "c5c1ca315fc810c5c045bed5caf50a60178126f370184d2861bf7b4196df23a9",
+      "size_bytes": 5377,
+      "change": "credential sanitization/configuration template"
+    },
+    {
+      "path": "backend/config/urls.py",
+      "origin": "proj/backend/config/urls.py",
+      "sha256": "b43d3c0b027308ed215450695355855888be86a2cd8a4137453f8b038d602224",
+      "size_bytes": 754,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/config/wsgi.py",
+      "origin": "proj/backend/config/wsgi.py",
+      "sha256": "3a47b5ae81842fcba47e6a840c966be9ca398751457e0c7e7d3f4402457e4b5d",
+      "size_bytes": 172,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/__init__.py",
+      "origin": "proj/backend/input_adapter/__init__.py",
+      "sha256": "9382f9375f911a15b78b27c826cc7b97fbc2fcabe38d3c87c637ddf10cc31ff6",
+      "size_bytes": 111,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/detect.py",
+      "origin": "proj/backend/input_adapter/detect.py",
+      "sha256": "9533701f465dfe0f9224bfa149dc04227de21f8d249e35377090eabba6f6912c",
+      "size_bytes": 2833,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/format_detector.py",
+      "origin": "proj/backend/input_adapter/format_detector.py",
+      "sha256": "90e1cbdd2a53016c4b44dacd0bb0e284f21c4ee2f45d8bf22bfc27125d071f7a",
+      "size_bytes": 4655,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/matrix_semantics_detector.py",
+      "origin": "proj/backend/input_adapter/matrix_semantics_detector.py",
+      "sha256": "b767c88886b61cb537add02f53e561878582b8b60767318cdc48109dadc1034b",
+      "size_bytes": 2506,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/merge.py",
+      "origin": "proj/backend/input_adapter/merge.py",
+      "sha256": "6945e3af76f4237cae88d5a42486b1ed792cc88559b8d904cdbcc8373411c7eb",
+      "size_bytes": 14839,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/normalize.py",
+      "origin": "proj/backend/input_adapter/normalize.py",
+      "sha256": "91f09c4eae110726da99f5cbff83dcb2c2490d6f76bbccf91bd41fe45dc40df5",
+      "size_bytes": 2213,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/orientation_detector.py",
+      "origin": "proj/backend/input_adapter/orientation_detector.py",
+      "sha256": "9c4ab9a4f3e1e07a2dff3f856e8488341a0c7b0112fb16ddfde58f0439e3d04b",
+      "size_bytes": 1955,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/readers/__init__.py",
+      "origin": "proj/backend/input_adapter/readers/__init__.py",
+      "sha256": "fdb06fdf2d1e70df3ad31d445409e17a864b948b28859cf0841df2bc6b65a7e4",
+      "size_bytes": 279,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/readers/h5ad_reader.py",
+      "origin": "proj/backend/input_adapter/readers/h5ad_reader.py",
+      "sha256": "afae2e90d6280a3af79ea0b2ed6a64942fc41245780ff7bdcb898f8ba53cbf7c",
+      "size_bytes": 4491,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/readers/matrix_csv_reader.py",
+      "origin": "proj/backend/input_adapter/readers/matrix_csv_reader.py",
+      "sha256": "6adecc7bf725d7a4ba45624819308a8a696ee4b93d7b355809c3e6b14763dead",
+      "size_bytes": 2398,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/readers/metadata_reader.py",
+      "origin": "proj/backend/input_adapter/readers/metadata_reader.py",
+      "sha256": "acb2478ffc4949bd9f63d5e4e9385c3238695f6624627ae0a70dfa386b46b9fe",
+      "size_bytes": 342,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/readers/sample_sheet_reader.py",
+      "origin": "proj/backend/input_adapter/readers/sample_sheet_reader.py",
+      "sha256": "5b2a40d84576749cc6371efd42056ea137d2e49b6c811958f8a2743add781d77",
+      "size_bytes": 719,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/readers/stoich_reader.py",
+      "origin": "proj/backend/input_adapter/readers/stoich_reader.py",
+      "sha256": "767530a850af12a5cae05cc243289f834681db9b4d98d5a6e539d74c33c67a38",
+      "size_bytes": 541,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/readers/tenx_reader.py",
+      "origin": "proj/backend/input_adapter/readers/tenx_reader.py",
+      "sha256": "85736734dd5436eea8df09a1a0c8d9904ad7881ff0e9d24e7b99b46deca16095",
+      "size_bytes": 2082,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/report.py",
+      "origin": "proj/backend/input_adapter/report.py",
+      "sha256": "db916156378ecda35f262429a207096c9301f633adbce9ab757c82ecbd6f6ebd",
+      "size_bytes": 84,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/schemas.py",
+      "origin": "proj/backend/input_adapter/schemas.py",
+      "sha256": "125303fc525a8335aaa23c3fb546c62e3eaa993a35f1ac78e836ed6aec2e93bc",
+      "size_bytes": 558,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/tests/__init__.py",
+      "origin": "proj/backend/input_adapter/tests/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/input_adapter/tests/test_merge_metadata.py",
+      "origin": "proj/backend/input_adapter/tests/test_merge_metadata.py",
+      "sha256": "2ddb5df3c1149d3830ecd24db2d98519b9b312a8620a5d68a84e1e7b1d940fdf",
+      "size_bytes": 1636,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/mode_resolver/__init__.py",
+      "origin": "proj/backend/mode_resolver/__init__.py",
+      "sha256": "6133263aab6a179c8787ee158dc8e1bb3350da3f48938e435cb1c24ea51acba8",
+      "size_bytes": 75,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/mode_resolver/capability_matrix.py",
+      "origin": "proj/backend/mode_resolver/capability_matrix.py",
+      "sha256": "fce84b24bc14bc40dea78a0d3c4e9b0f3e5318e0ef1258b2a715231e2578cfa7",
+      "size_bytes": 3852,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/mode_resolver/presets.py",
+      "origin": "proj/backend/mode_resolver/presets.py",
+      "sha256": "b693f2d6ce46f335c13c342e395d5a33644b2726a334f72913ee880a28231088",
+      "size_bytes": 2313,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/mode_resolver/resolver.py",
+      "origin": "proj/backend/mode_resolver/resolver.py",
+      "sha256": "8964d178078da06ce4428468426eb227da6f50ff64bc645aa9295ffb46362e4b",
+      "size_bytes": 3221,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/mode_resolver/rules.py",
+      "origin": "proj/backend/mode_resolver/rules.py",
+      "sha256": "5927d20e633f37c65c9e81800a4d9ed445527253b7f938e79361d584388c197e",
+      "size_bytes": 6086,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/mode_resolver/runner_core.py",
+      "origin": "proj/backend/mode_resolver/runner_core.py",
+      "sha256": "594d789160e0a251a070f4d2661ce97f10ac3803a69ea95f32fbb21473d2e310",
+      "size_bytes": 3278,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/mode_resolver/schemas.py",
+      "origin": "proj/backend/mode_resolver/schemas.py",
+      "sha256": "e64e5b2d897231571c7a6e5994ffe3068a4af8e486b5c9adff829fdceab7f43a",
+      "size_bytes": 359,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/mode_resolver/utils.py",
+      "origin": "proj/backend/mode_resolver/utils.py",
+      "sha256": "f0a4b33f7ac6ab35b3e38d0d1e81351765f0d6861b39d19b8b60654656410dea",
+      "size_bytes": 474,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/portal/__init__.py",
+      "origin": "proj/backend/portal/__init__.py",
+      "sha256": "e84e1ece43091a285511892b967f0411abb94c1cac365520e04ce347050778df",
+      "size_bytes": 321,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/portal/cache.py",
+      "origin": "proj/backend/portal/cache.py",
+      "sha256": "9dcd03b1a93813a332f57678051a24da2aaee2f1e839d924fd3b71ff298a7bd1",
+      "size_bytes": 4206,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/portal/compare.py",
+      "origin": "proj/backend/portal/compare.py",
+      "sha256": "6141a23932a65ccd7f0fafd407316adfc2557f579e964a5e70587b96ca98ce5e",
+      "size_bytes": 2745,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/portal/config_builder.py",
+      "origin": "proj/backend/portal/config_builder.py",
+      "sha256": "0624fd7b82cfa71aa21daa0f4a528f81c717a04b142e673394c7ddd4d573c80f",
+      "size_bytes": 7236,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/portal/jobs.py",
+      "origin": "proj/backend/portal/jobs.py",
+      "sha256": "4f555b68d6a3569a36e4891dea77fb7bd11bb4981df651781cf8cb70028821de",
+      "size_bytes": 3377,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/portal/library.py",
+      "origin": "proj/backend/portal/library.py",
+      "sha256": "0e9d6816c9ae402b618d0658ad3d280bff7edec6459f993ac98b8bda7f0b39dd",
+      "size_bytes": 2363,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/portal/pipeline_runner.py",
+      "origin": "proj/backend/portal/pipeline_runner.py",
+      "sha256": "6dc51ce6d2b7617cbd761cf40a3a24ced62121f77419b466fffb10ae8949edb3",
+      "size_bytes": 6087,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/portal/registry.py",
+      "origin": "proj/backend/portal/registry.py",
+      "sha256": "d3d70939e06adbced8382fcd8234bc10cb836a553ae08296f07c0a1b1e4b3c4f",
+      "size_bytes": 2308,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/portal/results.py",
+      "origin": "proj/backend/portal/results.py",
+      "sha256": "dd55ed67d1168c7ba05c0b876bb26eed86f552bc6c09f3e8fc7c1474bd68afa7",
+      "size_bytes": 5152,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/portal/sample_sheets.py",
+      "origin": "proj/backend/portal/sample_sheets.py",
+      "sha256": "181114a58531ae2885f5d2e55e2418d22c4691d247489f590432b4cb4a2cb249",
+      "size_bytes": 1125,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/__init__.py",
+      "origin": "proj/backend/validation/__init__.py",
+      "sha256": "8ab0ef9b3524ac3201b96a64d3a9d4ae0f735389f884afe445d447cd2dcf0af3",
+      "size_bytes": 94,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/duplicate_check.py",
+      "origin": "proj/backend/validation/duplicate_check.py",
+      "sha256": "54c545983b9494315bfab7d8e10c960dce39ac01dcaa4bf562068a9caa3073a2",
+      "size_bytes": 763,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/gene_id_check.py",
+      "origin": "proj/backend/validation/gene_id_check.py",
+      "sha256": "87c42fde78049ea4ed85eed135c3ec5e470bd139f7b734340e56a7d47b06fbb0",
+      "size_bytes": 2543,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/id_mapping.py",
+      "origin": "proj/backend/validation/id_mapping.py",
+      "sha256": "738bc024ec56010de377f3c2773b0d27660c71059ee2fa12d57d7cc58fedaaa5",
+      "size_bytes": 4623,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/loader.py",
+      "origin": "proj/backend/validation/loader.py",
+      "sha256": "29f3a41e4e98a470045ae34540ba9509570cede9e41a6a04baacb80f817575d5",
+      "size_bytes": 2102,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/matrix_check.py",
+      "origin": "proj/backend/validation/matrix_check.py",
+      "sha256": "fb3ec0e17951c88a358ebba8a819a516e354ebb92a37c93814fff7f23bdeab64",
+      "size_bytes": 1578,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/metadata_automap.py",
+      "origin": "proj/backend/validation/metadata_automap.py",
+      "sha256": "bb5475122a7f1c05dbb620f04a57f6c29f35e1d19b705b7a42037d51f94c4ec4",
+      "size_bytes": 3626,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/metadata_check.py",
+      "origin": "proj/backend/validation/metadata_check.py",
+      "sha256": "1e4450b1d438fa1a76cf059450c4dbbda66dfcccf08c1aaa4723727a6aa77c9f",
+      "size_bytes": 1655,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/runner_core.py",
+      "origin": "proj/backend/validation/runner_core.py",
+      "sha256": "e92aa832b3f12309f2102bca66696d10cdb7e3bbc3eafa1db968a14e9f932a5f",
+      "size_bytes": 3890,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/schemas.py",
+      "origin": "proj/backend/validation/schemas.py",
+      "sha256": "b02e6fbd24fa7fdeb36504d4fc6d455fed42ca108fabd33d2c20b5ebb4498084",
+      "size_bytes": 1208,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/semantics_check.py",
+      "origin": "proj/backend/validation/semantics_check.py",
+      "sha256": "62d5c7d276ff96ba1b11a1a7fdcf7302a1b3de8edcfec22b8c9579f90962193e",
+      "size_bytes": 1804,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/stoich_check.py",
+      "origin": "proj/backend/validation/stoich_check.py",
+      "sha256": "ffdda75643cc732bcb3d5622b2a736488a0e3f2d97ea4211f0f22e71427f3be8",
+      "size_bytes": 1241,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/stoich_readiness.py",
+      "origin": "proj/backend/validation/stoich_readiness.py",
+      "sha256": "272f7b4c0a607d128b671a8eba7d434f227abf8d5d5c580bfef8365d0acc0b07",
+      "size_bytes": 2794,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/summary.py",
+      "origin": "proj/backend/validation/summary.py",
+      "sha256": "211e5411e4b47ba621eef3ea6305910544f1febee3d3ddb99095fca2146916ef",
+      "size_bytes": 3828,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/validation/utils.py",
+      "origin": "proj/backend/validation/utils.py",
+      "sha256": "80b14c9a062e6a964ea8737ba9f7ae6295c410ddb07cdfed3f3f28f9799d08ec",
+      "size_bytes": 2041,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/workspace/__init__.py",
+      "origin": "proj/backend/workspace/__init__.py",
+      "sha256": "fdbd3468d145f0b13343920453200861b96f9f7f16ffa395f48c027acc4f4324",
+      "size_bytes": 39,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/workspace/manager.py",
+      "origin": "proj/backend/workspace/manager.py",
+      "sha256": "1350a0d742831169d9e57a1bb4c2b5e4333a47a6cbda0b0700eb1608bba929b0",
+      "size_bytes": 1056,
+      "change": "unchanged"
+    },
+    {
+      "path": "configs/templates/sample_sheet_h5ad_multi.csv",
+      "origin": "proj/configs/templates/sample_sheet_h5ad_multi.csv",
+      "sha256": "ce7d8d125cf774f7cfed0bed36172131e7721240015d7e7e64396372225d4047",
+      "size_bytes": 164,
+      "change": "unchanged"
+    },
+    {
+      "path": "configs/templates/sample_sheet_tenx_multi.csv",
+      "origin": "proj/configs/templates/sample_sheet_tenx_multi.csv",
+      "sha256": "c3d384db6d5e8b32feade268ebc930e3b3fb1624f9f5849f6057a13fa263ed56",
+      "size_bytes": 266,
+      "change": "unchanged"
+    },
+    {
+      "path": "docker-compose.postgres.docker.yml",
+      "origin": "proj/docker-compose.postgres.docker.yml",
+      "sha256": "324a2f7c914c6ed707d3b69d7773c4613fb92fc412372b300db455d8cb395133",
+      "size_bytes": 670,
+      "change": "credential sanitization/configuration template"
+    },
+    {
+      "path": "docker-compose.postgres.gdrive.yml",
+      "origin": "proj/docker-compose.postgres.gdrive.yml",
+      "sha256": "de15c62ec5bceeb471894d499c99a87face10b2ba0800bda6e993394cc226015",
+      "size_bytes": 429,
+      "change": "credential sanitization/configuration template"
+    },
+    {
+      "path": "docker-compose.postgres.yml",
+      "origin": "proj/docker-compose.postgres.yml",
+      "sha256": "cb5b7ff3c5190e6d07c0c8e4ab16d0e3c8e2285732d7b7d08a4fdcc197da4cd5",
+      "size_bytes": 388,
+      "change": "credential sanitization/configuration template"
+    },
+    {
+      "path": "docs/FEATURE_TABLE_CASE_PIPELINE.md",
+      "origin": "proj/docs/FEATURE_TABLE_CASE_PIPELINE.md",
+      "sha256": "4ba46f24f5d449b8132f163e36e38da0c350399568ab50a7b0824cd439749985",
+      "size_bytes": 5315,
+      "change": "unchanged"
+    },
+    {
+      "path": "docs/HVG_NONHVG_COMPARISON_V1.md",
+      "origin": "proj/docs/HVG_NONHVG_COMPARISON_V1.md",
+      "sha256": "202b75806fecc0e41ea4183eda33625f4fe9085ab1054858293114185a256a43",
+      "size_bytes": 1994,
+      "change": "unchanged"
+    },
+    {
+      "path": "docs/POSTGRESQL_IMPORT_AND_SEARCH.md",
+      "origin": "proj/docs/POSTGRESQL_IMPORT_AND_SEARCH.md",
+      "sha256": "a64239fb1b56d4232042c4f837cac63693eb913566307efa2320ebb94a1ef6a4",
+      "size_bytes": 2258,
+      "change": "unchanged"
+    },
+    {
+      "path": "docs/REAL_DATA_INTEGRATION.md",
+      "origin": "proj/docs/REAL_DATA_INTEGRATION.md",
+      "sha256": "1e03df05b3efdbe566b453c097d0f202f4185b5adcbc3a4de4d9ca7671e046d9",
+      "size_bytes": 6868,
+      "change": "unchanged"
+    },
+    {
+      "path": "docs/visualization_data_contract.md",
+      "origin": "proj/docs/visualization_data_contract.md",
+      "sha256": "e9541ca3de921295a7c3d74d373b6dfe053ee9483c52d641ad507df82363d55f",
+      "size_bytes": 1071,
+      "change": "unchanged"
+    },
+    {
+      "path": "environment-hvg.yml",
+      "origin": "proj/environment-hvg.yml",
+      "sha256": "e398f74d34f6d01e3c5447be99637bd5b79ee923a1d023a3441a6aec19e76ed1",
+      "size_bytes": 547,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/.env.example",
+      "origin": "proj/frontend/.env.example",
+      "sha256": "bbb4d86bf4439eed7e16f8cfdc15b5ae61a52c0fc63315fc8e3e592c8b2b7b7b",
+      "size_bytes": 19,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/index.html",
+      "origin": "proj/frontend/index.html",
+      "sha256": "5836a0b11969334f6e3c47fa58ce9207413e337c0e7d35a27bb350cf7063ff3b",
+      "size_bytes": 307,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "origin": "proj/frontend/package-lock.json",
+      "sha256": "467af27dd1db9f3da583f89896ded2d0cea0c4808233d088b19f5b9378f8456e",
+      "size_bytes": 56310,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/package.json",
+      "origin": "proj/frontend/package.json",
+      "sha256": "a083b1d9d38806f568a6aafedf7194b8522c2cf0d684780ac84f2a5f079221e4",
+      "size_bytes": 521,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/App.vue",
+      "origin": "proj/frontend/src/App.vue",
+      "sha256": "dcd2d46a98432e82ec4329bad146acb2935a8d120ee7a1301bb86ab35aa57b06",
+      "size_bytes": 15298,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/api/client.js",
+      "origin": "proj/frontend/src/api/client.js",
+      "sha256": "a277991599cdb19cd0a579e5886fb5e6fb28162122fb43d95040635ad75df389",
+      "size_bytes": 841,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/api/hvg.js",
+      "origin": "proj/frontend/src/api/hvg.js",
+      "sha256": "cfc7fb3c46feaa7342497f102d8857a7d2094a5ee5c9ea409be3a25c5c99e79f",
+      "size_bytes": 1318,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/api/jobs.js",
+      "origin": "proj/frontend/src/api/jobs.js",
+      "sha256": "bd60f13199bc1ed1c614274aa2b41069f7d5f51d162e582b0823d7037e3a8359",
+      "size_bytes": 1864,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/api/registry.js",
+      "origin": "proj/frontend/src/api/registry.js",
+      "sha256": "cd9b868bd6f50261909a7eb9a886af24d1042fb645c9ea6e915c89c72c91745d",
+      "size_bytes": 383,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/api/sequenceAnalysis.js",
+      "origin": "proj/frontend/src/api/sequenceAnalysis.js",
+      "sha256": "d7129ec756cb4e17eee912490c9ed9291c72e6fafa31fd4cd12470b96e794e82",
+      "size_bytes": 5079,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/api/stoichdb.js",
+      "origin": "proj/frontend/src/api/stoichdb.js",
+      "sha256": "294c1600a8c825fef4972f4c7abc44cf23a3a44dd8ebf85b8a25a78ce4df8349",
+      "size_bytes": 16014,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/cards-atlas.svg",
+      "origin": "proj/frontend/src/assets/cards-atlas.svg",
+      "sha256": "49484d1a00cee163b464e0984083b7da8dc05e5662e162f4bbb4adbe1a5d1e2e",
+      "size_bytes": 1513,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/hero-network.svg",
+      "origin": "proj/frontend/src/assets/hero-network.svg",
+      "sha256": "126abd045ecc4421343037638679197db41c6a5ec35544b520c6f166878b954b",
+      "size_bytes": 3052,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/analysis-compare.svg",
+      "origin": "proj/frontend/src/assets/home/analysis-compare.svg",
+      "sha256": "625795d082650fcb866d14bda1906537240591eeded3b1a54feab5325e09ad75",
+      "size_bytes": 664,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/analysis-hvg.svg",
+      "origin": "proj/frontend/src/assets/home/analysis-hvg.svg",
+      "sha256": "02c9094ff43089c77824e5b1679b8506c1cc8e364fdec6fd9657419a6feaff30",
+      "size_bytes": 547,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/analysis-sequence.svg",
+      "origin": "proj/frontend/src/assets/home/analysis-sequence.svg",
+      "sha256": "5cdf0da254036c50cea1800f22a3fa69c68dcce738506884838c020fc0c66a81",
+      "size_bytes": 662,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/hero-dna-protein.svg",
+      "origin": "proj/frontend/src/assets/home/hero-dna-protein.svg",
+      "sha256": "a91b8d7e9b63e6541b561102e8b62afe84db8a10184fe4d754f5a28d1fa9b80e",
+      "size_bytes": 1236,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/hero-globe-network.svg",
+      "origin": "proj/frontend/src/assets/home/hero-globe-network.svg",
+      "sha256": "b230f2fd44699331c1ad6bc5393a63f35ff50a6cc2aeab447b475acf61d09951",
+      "size_bytes": 1261,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/hero-world-dots.svg",
+      "origin": "proj/frontend/src/assets/home/hero-world-dots.svg",
+      "sha256": "fd1dde48b6f96717a37aabf7941c15d2933fe237f7d8d683ec4276742768dcf9",
+      "size_bytes": 933,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/kpi-cases.svg",
+      "origin": "proj/frontend/src/assets/home/kpi-cases.svg",
+      "sha256": "5e1331ff75e594f46edab4ce5d45c7d82a9284e23d51cd94a97c744513f5d182",
+      "size_bytes": 295,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/kpi-core.svg",
+      "origin": "proj/frontend/src/assets/home/kpi-core.svg",
+      "sha256": "964d416903ddb7378cec1f935ec3988df0bf799fdfe487a6c6d934b29950faef",
+      "size_bytes": 244,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/kpi-entities.svg",
+      "origin": "proj/frontend/src/assets/home/kpi-entities.svg",
+      "sha256": "f6e9b8466657d004f7886bb575057eadeb50888d3f58c7641fd397999ce8cd24",
+      "size_bytes": 279,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/kpi-full.svg",
+      "origin": "proj/frontend/src/assets/home/kpi-full.svg",
+      "sha256": "7249c08c2ffacbbb88d8a352380c2e6109f6a6501392f031e6beb5f487c63651",
+      "size_bytes": 218,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/kpi-omics.svg",
+      "origin": "proj/frontend/src/assets/home/kpi-omics.svg",
+      "sha256": "0261741ad04d0da0cc889e6a03d972f5455424e94e9d35056b81a484e7f3aa07",
+      "size_bytes": 209,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/kpi-species.svg",
+      "origin": "proj/frontend/src/assets/home/kpi-species.svg",
+      "sha256": "e5a83937dbe02fc80fe1d3e141979a09b14e39f3350bb2060def96a309c5ecf9",
+      "size_bytes": 202,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/module-compare.svg",
+      "origin": "proj/frontend/src/assets/home/module-compare.svg",
+      "sha256": "e479ec769efc98376f3db460379135a9093de48ecae406deea6bd4a6f7933a33",
+      "size_bytes": 244,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/module-database.svg",
+      "origin": "proj/frontend/src/assets/home/module-database.svg",
+      "sha256": "df237e286b6b655642ec34513ccc64e84f208c3ce89261a03a11c476b3a06916",
+      "size_bytes": 454,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/module-entity.svg",
+      "origin": "proj/frontend/src/assets/home/module-entity.svg",
+      "sha256": "2e07089d79cac174705851d770448e0a50731637e4e4c5faa9ed08a99fa3c621",
+      "size_bytes": 468,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/module-feature-hub.svg",
+      "origin": "proj/frontend/src/assets/home/module-feature-hub.svg",
+      "sha256": "38e8ec1fdf46333ecfe2acc6f41fb44e66d3a58b048860ddfc9b3065511c3b00",
+      "size_bytes": 406,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/module-release.svg",
+      "origin": "proj/frontend/src/assets/home/module-release.svg",
+      "sha256": "3f6bd7c95313c0de779699b2e9f9a64a43e4107e740ede4cedafb9fe081843e2",
+      "size_bytes": 416,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/module-workflows.svg",
+      "origin": "proj/frontend/src/assets/home/module-workflows.svg",
+      "sha256": "5078ae2139a2aa532a609613c7d9b5df12a52b0f9eba8e7bf48765973739a522",
+      "size_bytes": 482,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/species-arabidopsis.svg",
+      "origin": "proj/frontend/src/assets/home/species-arabidopsis.svg",
+      "sha256": "c821c8a12b064018f708e3b53ba8e1e8b146f340afd610dd7fd1ed5021928b99",
+      "size_bytes": 467,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/species-bsubtilis.svg",
+      "origin": "proj/frontend/src/assets/home/species-bsubtilis.svg",
+      "sha256": "2a0c4dc060c16e435ef31a5a0268538edfd3c131dafc136a84b44fa173b9d0d8",
+      "size_bytes": 260,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/species-ecoli.svg",
+      "origin": "proj/frontend/src/assets/home/species-ecoli.svg",
+      "sha256": "3c9400d0d71b4e41153646d20c73f94e29c1d0ac838be51ac9e94c6ce8b36605",
+      "size_bytes": 291,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/species-fly.svg",
+      "origin": "proj/frontend/src/assets/home/species-fly.svg",
+      "sha256": "95f077ff973d8969c70da538092af0c98dd0e7ba237ff68b3b1a644b3a1a5866",
+      "size_bytes": 409,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/species-mouse.svg",
+      "origin": "proj/frontend/src/assets/home/species-mouse.svg",
+      "sha256": "23f450714d8668cf364f94d9dd2dfd465899b1a39d6274a63fd9b16e14bb7998",
+      "size_bytes": 412,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/species-rice.svg",
+      "origin": "proj/frontend/src/assets/home/species-rice.svg",
+      "sha256": "c7f5704ddd6e2ce932c20dcda98518bcfa2c24b8c696688bebdc25b27c0fd661",
+      "size_bytes": 470,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/species-yeast.svg",
+      "origin": "proj/frontend/src/assets/home/species-yeast.svg",
+      "sha256": "d5316dedc8adf8a1f87834fb2c32a26ce451ce73557dc3729ec4c61238e532f5",
+      "size_bytes": 263,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/species-zebrafish.svg",
+      "origin": "proj/frontend/src/assets/home/species-zebrafish.svg",
+      "sha256": "7c13f76b720c195479efc57df291a1fa1f78b897b0905947a8df79b33f23e3f3",
+      "size_bytes": 301,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/stoichioomics-logo.svg",
+      "origin": "proj/frontend/src/assets/home/stoichioomics-logo.svg",
+      "sha256": "d079041dd9e217b362d4d31f242e7e3683e9b3cfd0c483a42cdaf4ca6d505315",
+      "size_bytes": 556,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/value-analysis.svg",
+      "origin": "proj/frontend/src/assets/home/value-analysis.svg",
+      "sha256": "c6baa6a4638a90d14bf392b529fbdcd48ca5ed768db5e4ec41f72aaf71d10bf2",
+      "size_bytes": 277,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/value-builder.svg",
+      "origin": "proj/frontend/src/assets/home/value-builder.svg",
+      "sha256": "6b8601ddfafe8421c80faa7bbe618154d09bffd23a1920cc7b1029b098612a2d",
+      "size_bytes": 335,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/value-extraction.svg",
+      "origin": "proj/frontend/src/assets/home/value-extraction.svg",
+      "sha256": "74dab6684ed3a136c3adc57c4e7e998efbf702ce1680da9176d3c393f99ff451",
+      "size_bytes": 244,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/value-feature-space.svg",
+      "origin": "proj/frontend/src/assets/home/value-feature-space.svg",
+      "sha256": "38ef168694390863e93815d3f9629734b43196c0fecb913fedb683f56603ec99",
+      "size_bytes": 307,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/home/value-sequence.svg",
+      "origin": "proj/frontend/src/assets/home/value-sequence.svg",
+      "sha256": "249ef5492f4af65565770bd4d28b650911b80bfab61d85cb1524c5c0221e8cad",
+      "size_bytes": 220,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/assets/search-wave.svg",
+      "origin": "proj/frontend/src/assets/search-wave.svg",
+      "sha256": "10184c35b6d8d072e1a520fa77befc75a09b92fd9019d1618deebfa0cb2f94b2",
+      "size_bytes": 1362,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/ActiveReleaseBanner.vue",
+      "origin": "proj/frontend/src/components/ActiveReleaseBanner.vue",
+      "sha256": "0376e17b43ac8b8c635ac27ba9a067faeb62b21e09e89cda9a7182c4e8322143",
+      "size_bytes": 2684,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/BatchEntityWorkbench.vue",
+      "origin": "proj/frontend/src/components/BatchEntityWorkbench.vue",
+      "sha256": "16ac0afd707802cc8218ddc4d8d965a5283fef3a23f3d27158d08487774c8de5",
+      "size_bytes": 3846,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/CandidateLinkedTable.vue",
+      "origin": "proj/frontend/src/components/CandidateLinkedTable.vue",
+      "sha256": "cf56f3f14f1925f3dd34bcd25b6755bafc65f6e54704e97526aecfe1f16040f5",
+      "size_bytes": 2434,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/EChart.vue",
+      "origin": "proj/frontend/src/components/EChart.vue",
+      "sha256": "ee80d7fa57dd9d33ddb194b78895c805fbbcce110ac6b3caf29d46778e351987",
+      "size_bytes": 17118,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/EmptyState.vue",
+      "origin": "proj/frontend/src/components/EmptyState.vue",
+      "sha256": "35192bad42136bfb3ddf8af93dfbde715e2cc9bcf79288fd0c3b370f65257069",
+      "size_bytes": 464,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/EntityDrawer.vue",
+      "origin": "proj/frontend/src/components/EntityDrawer.vue",
+      "sha256": "f49f21f5e839d461530da73ecd1672763a5b33e61a47aa86a0bbe730744b71dc",
+      "size_bytes": 1669,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/EntityEvidenceBadges.vue",
+      "origin": "proj/frontend/src/components/EntityEvidenceBadges.vue",
+      "sha256": "ca7142f7889679b359a7fa26a8758fc24b83fd4d86634388a9fe52551da95f4e",
+      "size_bytes": 877,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/EntityEvidenceTable.vue",
+      "origin": "proj/frontend/src/components/EntityEvidenceTable.vue",
+      "sha256": "510b761baf6fc7f3b612209ef8997955745d0e405b0983c8235db7ded6cfc555",
+      "size_bytes": 1523,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/EntityMatchTable.vue",
+      "origin": "proj/frontend/src/components/EntityMatchTable.vue",
+      "sha256": "43640fd2a295edcac8b3d4e4f3b6ca88b0ad562d8e0e27bb36bab204189d5a43",
+      "size_bytes": 3412,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/EntityReportHeader.vue",
+      "origin": "proj/frontend/src/components/EntityReportHeader.vue",
+      "sha256": "d7387989a2d4ae3f673a3489c1cd4c0031ce3ed0162587479be5b809df07ddaf",
+      "size_bytes": 1400,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/EntitySearchBar.vue",
+      "origin": "proj/frontend/src/components/EntitySearchBar.vue",
+      "sha256": "e1ce48c6657e8135d3646d977e22f25d8f3bb3bc3cb0805bd5f2f92bdea9ca40",
+      "size_bytes": 4920,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/FeatureContextStrip.vue",
+      "origin": "proj/frontend/src/components/FeatureContextStrip.vue",
+      "sha256": "81f80578aa7ab3b150ace3f9c6582253672e2a8a27825b0b50d9cd6a37244fbb",
+      "size_bytes": 2565,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/HvgGroupComparisonPanel.vue",
+      "origin": "proj/frontend/src/components/HvgGroupComparisonPanel.vue",
+      "sha256": "05bb06989cfb9ba3c81b9c93ab371b7034598e59d49947ceb5c7f87a45e9ab9d",
+      "size_bytes": 35309,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/KeyFeatureMap.vue",
+      "origin": "proj/frontend/src/components/KeyFeatureMap.vue",
+      "sha256": "8a40bd3fb9d6622c03c658dfb0fe002d9e64b051454a86a5abf4b8bcfe9bc8c8",
+      "size_bytes": 2173,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/MethodBadge.vue",
+      "origin": "proj/frontend/src/components/MethodBadge.vue",
+      "sha256": "e4c3433b91fb59bb9a89fb240e90783af0e1bb233a542b84a7f7f56716e9890a",
+      "size_bytes": 1670,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/ModuleState.vue",
+      "origin": "proj/frontend/src/components/ModuleState.vue",
+      "sha256": "57673c3aadb2e02be3438fc1984c7ac7256581140501533d95fc065b4ed2717d",
+      "size_bytes": 1871,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/OmicsChainPanel.vue",
+      "origin": "proj/frontend/src/components/OmicsChainPanel.vue",
+      "sha256": "20aa840898ce944cf40e3fd3b0dd09c19f0e50dfb762d0824a5ce1166a07b631",
+      "size_bytes": 1998,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/PhylogenyInsightPanel.vue",
+      "origin": "proj/frontend/src/components/PhylogenyInsightPanel.vue",
+      "sha256": "48c896615684d13835435de12f728e873beec9cd537e3753aed411b805b7f8ec",
+      "size_bytes": 11796,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/ScatterInsightCard.vue",
+      "origin": "proj/frontend/src/components/ScatterInsightCard.vue",
+      "sha256": "d7160e10a6f44fd9044ae0108cc25f2ff30581eb67972e0e43408a6199b89fd2",
+      "size_bytes": 1504,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/SpeciesAtlasOverview.vue",
+      "origin": "proj/frontend/src/components/SpeciesAtlasOverview.vue",
+      "sha256": "f9f19bf4a478ae421160d6102b6a686624b886be50a3cb9cf816eaf2944d16f4",
+      "size_bytes": 16101,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/featurehub/ExportManifest.vue",
+      "origin": "proj/frontend/src/components/featurehub/ExportManifest.vue",
+      "sha256": "5fb0952771a842f8e19e285ea75a5066d34565aa458f346844aeed6804dd51ea",
+      "size_bytes": 1197,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/featurehub/FeatureTree.vue",
+      "origin": "proj/frontend/src/components/featurehub/FeatureTree.vue",
+      "sha256": "ac16863591f5a415f58c263c23a145b3c5334b3d546211982d1f732e6f436cf1",
+      "size_bytes": 3820,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/featurehub/FieldBadge.vue",
+      "origin": "proj/frontend/src/components/featurehub/FieldBadge.vue",
+      "sha256": "1e10afca7120ee40e7ae6e0e3c37cf30e4fe51133395a1e4e024cd0d4d6108b4",
+      "size_bytes": 512,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/featurehub/QcSummary.vue",
+      "origin": "proj/frontend/src/components/featurehub/QcSummary.vue",
+      "sha256": "6a8a681ba78ff33011c67465fee53eab43eec70214f9a278dd48b0fd06d54d04",
+      "size_bytes": 1390,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/featurehub/SpeciesSelector.vue",
+      "origin": "proj/frontend/src/components/featurehub/SpeciesSelector.vue",
+      "sha256": "22cf1d155504fa05ac3cce5af5f9f93ba51caa8721c10e9d91bff53e1d303d1e",
+      "size_bytes": 1631,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/home/HomeFeatureHubSpotlight.vue",
+      "origin": "proj/frontend/src/components/home/HomeFeatureHubSpotlight.vue",
+      "sha256": "7fcb5e8af4569d206597a44a39d574e2055fe1531d6181df9e7917d97e8d2253",
+      "size_bytes": 14519,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/home/HomeFeaturedAnalyses.vue",
+      "origin": "proj/frontend/src/components/home/HomeFeaturedAnalyses.vue",
+      "sha256": "80d9d60b3f6dbb649a3ddb53452aedfe1c551696b4afd769bd914347b05bc0a0",
+      "size_bytes": 1553,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/home/HomeFooter.vue",
+      "origin": "proj/frontend/src/components/home/HomeFooter.vue",
+      "sha256": "26ad0d6526c2f9d766e8dd8936308386ca2717850f9dda6bec8894dcf836543a",
+      "size_bytes": 1880,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/home/HomeGlanceSection.vue",
+      "origin": "proj/frontend/src/components/home/HomeGlanceSection.vue",
+      "sha256": "9c3475b396447f2f5965de1cb7328336331b2481bd75316394023c1f9ecc5d13",
+      "size_bytes": 2409,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/home/HomeHeaderSearch.vue",
+      "origin": "proj/frontend/src/components/home/HomeHeaderSearch.vue",
+      "sha256": "f8e51ed44b6546e2416c8bb585882f9da2220fc1887c027ec2f43ee2dad6266f",
+      "size_bytes": 3122,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/home/HomeHero.vue",
+      "origin": "proj/frontend/src/components/home/HomeHero.vue",
+      "sha256": "a5c35ac65c8a381bb61d889f50ebf30d9ac083448136708d7a9c31762f4ecbb0",
+      "size_bytes": 1213,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/home/HomeKpiStrip.vue",
+      "origin": "proj/frontend/src/components/home/HomeKpiStrip.vue",
+      "sha256": "9d178f7c5cbef4ef3a3d8b1db6e5a23af62a2442d2058d978a9ae79aafab1c08",
+      "size_bytes": 1786,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/home/HomeModuleGrid.vue",
+      "origin": "proj/frontend/src/components/home/HomeModuleGrid.vue",
+      "sha256": "d565b42ea3e51f2745a7cd32b06afe72afacbdb9c168ace0582aabf4e8a52a77",
+      "size_bytes": 1840,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/home/HomeSpeciesStrip.vue",
+      "origin": "proj/frontend/src/components/home/HomeSpeciesStrip.vue",
+      "sha256": "9263c8260a64c1034965ad05ff7efd3faa3ee1389e9fa7e62866edb1ed843a64",
+      "size_bytes": 2087,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/home/HomeValueChain.vue",
+      "origin": "proj/frontend/src/components/home/HomeValueChain.vue",
+      "sha256": "7837df65796f76bc3dcb7145b26d451e49164f8b98982212310c0627751e05c0",
+      "size_bytes": 1479,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/result/CaveatBox.vue",
+      "origin": "proj/frontend/src/components/result/CaveatBox.vue",
+      "sha256": "d0e5669a950cd1ac6c435c7a47c076f85e51c393ab4deb40aa047f883117b4d5",
+      "size_bytes": 572,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/result/ChartDownloadLinks.vue",
+      "origin": "proj/frontend/src/components/result/ChartDownloadLinks.vue",
+      "sha256": "f3f2abd960bc93b17c2a03e0df014176bae63a3f84fa93de509e4942fba10ea8",
+      "size_bytes": 1107,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/result/EmptyState.vue",
+      "origin": "proj/frontend/src/components/result/EmptyState.vue",
+      "sha256": "1d36b92d2f4897f6c10d534eb97a74cd7440a8e1fe2d079874ddc28e529b34ec",
+      "size_bytes": 650,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/result/MethodNote.vue",
+      "origin": "proj/frontend/src/components/result/MethodNote.vue",
+      "sha256": "48513b61a2fabc6901082cec8c2d05bbfc4a450b8a8ba748f2ecda602bbd6193",
+      "size_bytes": 1199,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/result/ResultBlock.vue",
+      "origin": "proj/frontend/src/components/result/ResultBlock.vue",
+      "sha256": "7969930125fe82bcbacb8177c5b1c56da15439eb2666f1efc763466aeb6d7c1b",
+      "size_bytes": 1948,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/constants/platformTerminology.js",
+      "origin": "proj/frontend/src/constants/platformTerminology.js",
+      "sha256": "354b0677d43e350d413ad137af0b2e0ec0ddd5ee24e5a737da84fe914294fdf6",
+      "size_bytes": 1722,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/main.js",
+      "origin": "proj/frontend/src/main.js",
+      "sha256": "1ddd5a73983a80c9d82d0f982450b9e8468e1c7fe612fe7d68834d857204250d",
+      "size_bytes": 209,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/router/index.js",
+      "origin": "proj/frontend/src/router/index.js",
+      "sha256": "14e869998ec3c8f7a1c2afbcb69a8cef0d371f5f49f77358981bae40c9139cf0",
+      "size_bytes": 11954,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/styles.css",
+      "origin": "proj/frontend/src/styles.css",
+      "sha256": "510da5eae1f9383480e97d8832d8de07e4d07a0bc37ec662ddb7fc8369c10cea",
+      "size_bytes": 65003,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/utils/charts.js",
+      "origin": "proj/frontend/src/utils/charts.js",
+      "sha256": "7bc240325d82ea0e794d587b289d3b70b149dac199b9a7b1aa64da6164e34a32",
+      "size_bytes": 62960,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/utils/homeCharts.js",
+      "origin": "proj/frontend/src/utils/homeCharts.js",
+      "sha256": "fd591a8c1a91b44b3e2a89043933189522073ad6fa76e32c47d1607d62dd16ff",
+      "size_bytes": 5537,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/AnalysisHubView.vue",
+      "origin": "proj/frontend/src/views/AnalysisHubView.vue",
+      "sha256": "164a236d6828870b1207befe8a672fd4b3e5cd1d413c5c1af4819e748e618c41",
+      "size_bytes": 17549,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/CaseStudiesView.vue",
+      "origin": "proj/frontend/src/views/CaseStudiesView.vue",
+      "sha256": "5be86c92b57e14afe7b3e9817fb4244fed92c3ac7efaa9aa48f97123cf8a7ffd",
+      "size_bytes": 101503,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/CompareView.vue",
+      "origin": "proj/frontend/src/views/CompareView.vue",
+      "sha256": "87055e5d0127df4279427c8b54bc973da885bbf897f5bebe391ee2dc97b74087",
+      "size_bytes": 32817,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/ContactView.vue",
+      "origin": "proj/frontend/src/views/ContactView.vue",
+      "sha256": "33ebc69a51188b01163686604b67010e0fc31ba5c408bd1ec811cacc995a034d",
+      "size_bytes": 1175,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/CoverageAuditView.vue",
+      "origin": "proj/frontend/src/views/CoverageAuditView.vue",
+      "sha256": "e91cda0248d2225e2a73d0efa1b27eb5c01e9ddce2c63b0177cf3286689d42d6",
+      "size_bytes": 15854,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/CreateJobView.vue",
+      "origin": "proj/frontend/src/views/CreateJobView.vue",
+      "sha256": "81fbbc84febf3808f35d4e98cc91fc1d997aa33cd1b01c30b00f3bab277bd706",
+      "size_bytes": 6216,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/DatabaseResultsHubView.vue",
+      "origin": "proj/frontend/src/views/DatabaseResultsHubView.vue",
+      "sha256": "888b5e04814f5a902e6ff329a672e69a3ac8cf7a83fcb3a256bb932f771fda67",
+      "size_bytes": 3051,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/DatabaseView.vue",
+      "origin": "proj/frontend/src/views/DatabaseView.vue",
+      "sha256": "9f0858ad61257510ce12e9529b82373e241a7acfa7dfa31cb7dc32757920184a",
+      "size_bytes": 14474,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/DocsView.vue",
+      "origin": "proj/frontend/src/views/DocsView.vue",
+      "sha256": "64956ce363024f3ba8b53b420ec278f95a075904056ed035fb51a21f92c35c99",
+      "size_bytes": 16907,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/DownloadsView.vue",
+      "origin": "proj/frontend/src/views/DownloadsView.vue",
+      "sha256": "60152bde9c7f2799f14d47c085f7cf874685b24fdc9ca7e746bb3169a8259ae7",
+      "size_bytes": 12231,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/EntityExplorerView.vue",
+      "origin": "proj/frontend/src/views/EntityExplorerView.vue",
+      "sha256": "b9fcfd91f7b6ff3d75e944acfe558e811f847441a52747c83037cabc073b9dac",
+      "size_bytes": 7208,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/EntityReportView.vue",
+      "origin": "proj/frontend/src/views/EntityReportView.vue",
+      "sha256": "05e6405916f00a4107cc5439876b83c30c081815ddb438a2754cdee2c8ae0c9f",
+      "size_bytes": 21906,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/FeatureBrowseView.vue",
+      "origin": "proj/frontend/src/views/FeatureBrowseView.vue",
+      "sha256": "e74625065190cedbb05abe360961037d3cb6a50c317812e555110022a72f703e",
+      "size_bytes": 6354,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/FeatureCatalogView.vue",
+      "origin": "proj/frontend/src/views/FeatureCatalogView.vue",
+      "sha256": "36841d5e2e052fbcd32ceb80a37378e455de97c5ba9839935ec778e675360645",
+      "size_bytes": 4568,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/FeatureDatasetBuilderView.vue",
+      "origin": "proj/frontend/src/views/FeatureDatasetBuilderView.vue",
+      "sha256": "26319fdacdc68a112410a1a040e82763e866dfea25c7b9e725faa80011220310",
+      "size_bytes": 3784,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/FeatureExportsView.vue",
+      "origin": "proj/frontend/src/views/FeatureExportsView.vue",
+      "sha256": "a25791a43c088f79284957d8888a6cabe7f0a4cada0d4068b7823fe8904caaba",
+      "size_bytes": 1175,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/FeatureHubView.vue",
+      "origin": "proj/frontend/src/views/FeatureHubView.vue",
+      "sha256": "4a5361a917dd428ec2d677d61d8c6b4d8162c1a83ae2f52156e782d2676cb971",
+      "size_bytes": 4212,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/FeatureQcView.vue",
+      "origin": "proj/frontend/src/views/FeatureQcView.vue",
+      "sha256": "0103341ecb95870406bfe60d393410089fd0a6e448c5e1a253d9d2cf5b242810",
+      "size_bytes": 3324,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/GuideView.vue",
+      "origin": "proj/frontend/src/views/GuideView.vue",
+      "sha256": "790aaf5710e99c9ac04cbff637b58adf8c195c876a3ba29f2a207c7175ad8852",
+      "size_bytes": 3570,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/HomeView.vue",
+      "origin": "proj/frontend/src/views/HomeView.vue",
+      "sha256": "c38b724993bbc39ac366c0445ddef2e36f5e099cdb99c9e4edd454e35f451233",
+      "size_bytes": 9073,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/HvgCaseView.vue",
+      "origin": "proj/frontend/src/views/HvgCaseView.vue",
+      "sha256": "7448107a68dfc307e99a640718275d7cbcb2fa2357ca525da3323d8d10ba0b7a",
+      "size_bytes": 69093,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/HvgCompareView.vue",
+      "origin": "proj/frontend/src/views/HvgCompareView.vue",
+      "sha256": "937918c8bd8e227ed5c8474ae3b1109a51d5c252f1e5c60ba5ae6d705c168563",
+      "size_bytes": 1275,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/JobDetailView.vue",
+      "origin": "proj/frontend/src/views/JobDetailView.vue",
+      "sha256": "4616d977b5d5b17b3b015ffa1289a0459e39a74bef445236d24be40247860ff6",
+      "size_bytes": 10939,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/JobsView.vue",
+      "origin": "proj/frontend/src/views/JobsView.vue",
+      "sha256": "6c63dba047266abcb46bb77cbc9902087296258ccb908335ffe3e43d005e2da9",
+      "size_bytes": 1478,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/LandingView.vue",
+      "origin": "proj/frontend/src/views/LandingView.vue",
+      "sha256": "6663a32dc809d0892041693da02008ba9a10329efc23c32f6e46623dc3a30479",
+      "size_bytes": 2214,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/MoreHubView.vue",
+      "origin": "proj/frontend/src/views/MoreHubView.vue",
+      "sha256": "0164e707685aa9f12051e5dbc203487aac9d30b721223be68e4a2d509c847b02",
+      "size_bytes": 2531,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/QualityView.vue",
+      "origin": "proj/frontend/src/views/QualityView.vue",
+      "sha256": "5b787ca8082ead3b0d8cbf167b76217698a771834d070fc317e3b7e71e22c35f",
+      "size_bytes": 18170,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/RegistryView.vue",
+      "origin": "proj/frontend/src/views/RegistryView.vue",
+      "sha256": "e2ebf317b6f49d63704d7484213132962bc7f580a6358a6c7ca086010ce1ceda",
+      "size_bytes": 10832,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/ReleaseView.vue",
+      "origin": "proj/frontend/src/views/ReleaseView.vue",
+      "sha256": "252ccf265b87394ea993a21b816dc77ad95cab8625edba4ee7a9d8af6f1d8a73",
+      "size_bytes": 9229,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/SequenceAnalysisCreateView.vue",
+      "origin": "proj/frontend/src/views/SequenceAnalysisCreateView.vue",
+      "sha256": "bc6af0e592910febdbce8aa38b4001367d655bfe7b3b5243c410a2ea32d7707c",
+      "size_bytes": 20323,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/SequenceAnalysisResultView.vue",
+      "origin": "proj/frontend/src/views/SequenceAnalysisResultView.vue",
+      "sha256": "df6afbcdb1a19de2c6f83369d9be910a008dfecaacb9994994daceae54d1647a",
+      "size_bytes": 134273,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/SpeciesView.vue",
+      "origin": "proj/frontend/src/views/SpeciesView.vue",
+      "sha256": "5d78caffaa4b0b5988e5910d7a2babb6955898dc882b8e76255298df738ef2e1",
+      "size_bytes": 268230,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/UserWorkflowsHubView.vue",
+      "origin": "proj/frontend/src/views/UserWorkflowsHubView.vue",
+      "sha256": "28dacf267a4261c286fae705ca4507cff0f01d7f75bb2888d96da6422db15e33",
+      "size_bytes": 2843,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/views/VisualizationHubView.vue",
+      "origin": "proj/frontend/src/views/VisualizationHubView.vue",
+      "sha256": "0e5dac9cf3c7f2b10c1eae5d89a1a4f1042610574f5ce0f7ab45c5c03cd97272",
+      "size_bytes": 18343,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/vite.config.js",
+      "origin": "proj/frontend/vite.config.js",
+      "sha256": "b368f59457b11f16ac9c6083968f459030c5cd185152e2aa144c3631693652ef",
+      "size_bytes": 536,
+      "change": "unchanged"
+    },
+    {
+      "path": "manage.py",
+      "origin": "proj/manage.py",
+      "sha256": "cc5de6bf9aaac96f72f02a11ba6e7f4b1f9a684fe1e4bbcff9e18730328394e1",
+      "size_bytes": 281,
+      "change": "unchanged"
+    },
+    {
+      "path": "requirements-hvg.txt",
+      "origin": "proj/requirements-hvg.txt",
+      "sha256": "4cc77cb978166b3edfdcc70a209dee53dc1ead4b3d32fb79606f97e65615e19e",
+      "size_bytes": 283,
+      "change": "unchanged"
+    },
+    {
+      "path": "requirements.txt",
+      "origin": "proj/requirements.txt",
+      "sha256": "263003da7bbd99d990a8a03a482f6d9c977cea8f3fb4b3f48d146a79d75ba04f",
+      "size_bytes": 273,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/__init__.py",
+      "origin": "proj/scripts/__init__.py",
+      "sha256": "b0366aa95d9018a739ce323ef9acc96d165ba874b7047427f25b2c5cdb7336f1",
+      "size_bytes": 75,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/add_vertebrates_final_offsets.py",
+      "origin": "proj/scripts/add_vertebrates_final_offsets.py",
+      "sha256": "361573112890e6f1b37190d5a52852d23f2a81196f69d10f2746652c996d8f71",
+      "size_bytes": 4337,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/analyze_final_whitelist_id_mapping_gaps.py",
+      "origin": "proj/scripts/analyze_final_whitelist_id_mapping_gaps.py",
+      "sha256": "b66b4f51a8432a3a4471c689372af81b0ade80778552ce590053c5b3ff76383d",
+      "size_bytes": 23468,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/audit_model_release_state.py",
+      "origin": "proj/scripts/audit_model_release_state.py",
+      "sha256": "29e912e15dc2f711731ec1e08e1db2e98006914532a8961241283f6b01a2504f",
+      "size_bytes": 2927,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_bacteria_external_long_duckdb.py",
+      "origin": "proj/scripts/build_bacteria_external_long_duckdb.py",
+      "sha256": "ea712c5e8987e8ce32d7b2ed025a14ec6d66a3057ccf2bb2c5ebd47606702919",
+      "size_bytes": 16541,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_bacteria_final_registry.py",
+      "origin": "proj/scripts/build_bacteria_final_registry.py",
+      "sha256": "34cdcdc88c150980c2cfcf141abd870261f8c3e177aa3e157610f6b8b2252709",
+      "size_bytes": 34461,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_case_cache.py",
+      "origin": "proj/scripts/build_case_cache.py",
+      "sha256": "5eb091e7a05a7f35e659fa510bed8f93f7e3934d143c7b6964d1e09d10592b2e",
+      "size_bytes": 532,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_feature_table_case_pipeline.py",
+      "origin": "proj/scripts/build_feature_table_case_pipeline.py",
+      "sha256": "78eaae139bcaaf7615559c9611248cba0fe2cb347ee7487e217d08dad284168a",
+      "size_bytes": 84974,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_final_whitelist_id_mapping_offsets.py",
+      "origin": "proj/scripts/build_final_whitelist_id_mapping_offsets.py",
+      "sha256": "bfcb099c581013629e9d1e1a83418b89e243b50739ae87aacb63242db2e6b933",
+      "size_bytes": 3808,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_final_whitelist_id_mappings.py",
+      "origin": "proj/scripts/build_final_whitelist_id_mappings.py",
+      "sha256": "ce200b194480ddd070c964cc3a251d2e5aeb84514bebe1a6894e8b92485d0be4",
+      "size_bytes": 29774,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_fungi_final_registry.py",
+      "origin": "proj/scripts/build_fungi_final_registry.py",
+      "sha256": "40c6780e9e969abb5de77434c7e0cc7e96fec9b21fa705695ce13d6ea8e31bf5",
+      "size_bytes": 34435,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_id_mapping_layer.py",
+      "origin": "proj/scripts/build_id_mapping_layer.py",
+      "sha256": "3e51ada7be694fe43fd1777adf8a28a13e3a82c6328cb3bc694b814fbc5d917d",
+      "size_bytes": 30472,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_metazoa_final_registry.py",
+      "origin": "proj/scripts/build_metazoa_final_registry.py",
+      "sha256": "b9b2edbd1e60f692ae68efd26f2fbc1892170fca20449768c31bbdc53bce7769",
+      "size_bytes": 20626,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_model8_case1_atlas.py",
+      "origin": "proj/scripts/build_model8_case1_atlas.py",
+      "sha256": "3bdb898fef31b9c33756859be240cb8bdd39a7313bed78bad4a7e7a881bec521",
+      "size_bytes": 32405,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_model8_case2_coupling.py",
+      "origin": "proj/scripts/build_model8_case2_coupling.py",
+      "sha256": "cc0cc7b12ae8e7b4a3ad5c2894a6cd3cd136ed3ed92e5d05785656ab7db28546",
+      "size_bytes": 35707,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_model8_case3_evidence.py",
+      "origin": "proj/scripts/build_model8_case3_evidence.py",
+      "sha256": "86c2ae94493b47f206c6e6b3af63145260243938fda9df49185ac0eac56554dc",
+      "size_bytes": 51856,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_model8_case4_upload_gold.py",
+      "origin": "proj/scripts/build_model8_case4_upload_gold.py",
+      "sha256": "8184b3678b33da741d6cd709f6a9d5b7ce3d2c2fd7fa824ef1c859dcea261e26",
+      "size_bytes": 39425,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_model8_case5_hvg_stoich.py",
+      "origin": "proj/scripts/build_model8_case5_hvg_stoich.py",
+      "sha256": "8c90246310bd739dde113ee750527d3123dbf3a8c6b4a9b52042e1e73e9f967f",
+      "size_bytes": 67498,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_model8_full_omics_sequence_workflow_jobs.py",
+      "origin": "proj/scripts/build_model8_full_omics_sequence_workflow_jobs.py",
+      "sha256": "acb18a2ca336736f8712ab15fc958b8a920632824e607b1eab22872e9da721cf",
+      "size_bytes": 25103,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_model8_platform_release.py",
+      "origin": "proj/scripts/build_model8_platform_release.py",
+      "sha256": "8fb239d909cad2cc362c1f48d231aec079d9d771b221bbdc6a61dfa4a2079686",
+      "size_bytes": 16732,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_model8_sequence_upload_workflow_examples.py",
+      "origin": "proj/scripts/build_model8_sequence_upload_workflow_examples.py",
+      "sha256": "72647e348de04b683407257a3178f076dec1cf58bbf97d3a383849c2c37fe036",
+      "size_bytes": 11207,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_plants_final_registry.py",
+      "origin": "proj/scripts/build_plants_final_registry.py",
+      "sha256": "6826d2babe7475860c4f865893c7ed1f087e8758fbd9b512f7123b225ca9c9b9",
+      "size_bytes": 20617,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_protist_external_id_mapping.py",
+      "origin": "proj/scripts/build_protist_external_id_mapping.py",
+      "sha256": "b50d0f3ea6e21858749217f6e2a9e4e4e15677f5298a0cd0c970dfef402589b5",
+      "size_bytes": 27836,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_protist_iqtree_supermatrix_from_orthofinder.py",
+      "origin": "proj/scripts/build_protist_iqtree_supermatrix_from_orthofinder.py",
+      "sha256": "8eebcfc2c2962a7dcfaf78b53bece0c33c5fb18b7fb1d5172dfdca034f7d197c",
+      "size_bytes": 12442,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_protist_omics_id_mapping.py",
+      "origin": "proj/scripts/build_protist_omics_id_mapping.py",
+      "sha256": "6641810833c9cd0968bc226a201c138d88ee97d5a99071d46174d1e53c868935",
+      "size_bytes": 18862,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_protist_phylogeny_p0_p1.py",
+      "origin": "proj/scripts/build_protist_phylogeny_p0_p1.py",
+      "sha256": "f6ebadf0526ea2f25dd15ad49cd8d757600ef9a40eb305d0360804d6742dff61",
+      "size_bytes": 23655,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_protist_phylogeny_p2.py",
+      "origin": "proj/scripts/build_protist_phylogeny_p2.py",
+      "sha256": "fff39c5854ecea31373ca1135cfd6eed17cb3d656c173f2150b0934f91fbbead",
+      "size_bytes": 13766,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_stoichdb_from_real.py",
+      "origin": "proj/scripts/build_stoichdb_from_real.py",
+      "sha256": "b6dabf70907ee802281ab0fbb2b7e76271aa789d69ee10554f3a61a862bcf6ba",
+      "size_bytes": 46043,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_vertebrates_final_registry.py",
+      "origin": "proj/scripts/build_vertebrates_final_registry.py",
+      "sha256": "cf707c588ff8c82944f49d36314283491608c98c9829217107e800c902f649ad",
+      "size_bytes": 20662,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_vertebrates_final_whitelist_id_mappings.py",
+      "origin": "proj/scripts/build_vertebrates_final_whitelist_id_mappings.py",
+      "sha256": "9c7385865b7a4bef0f9d925d205052fa0059b1d4e815de00c037687cd92d922b",
+      "size_bytes": 21702,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/build_vertebrates_online_external_from_local.py",
+      "origin": "proj/scripts/build_vertebrates_online_external_from_local.py",
+      "sha256": "76c5aeda82b7176e4412f8076073fc17836b1614337485c42fd0618088dc38c3",
+      "size_bytes": 12137,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/db_migrate_to_named_volume.ps1",
+      "origin": "proj/scripts/db_migrate_to_named_volume.ps1",
+      "sha256": "57a4f7f23992e1ce00db905c7db0d72bc5d4435f50ab55969eb02d60e14d00b3",
+      "size_bytes": 12621,
+      "change": "credential sanitization/configuration template"
+    },
+    {
+      "path": "scripts/enhance_standard_external_id_overlay.py",
+      "origin": "proj/scripts/enhance_standard_external_id_overlay.py",
+      "sha256": "842d9a7f68f07bea4adf12c036eaa81c79a3c772ec58da97e7682cb74af4133c",
+      "size_bytes": 33150,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/enrich_final_whitelist_external_ids_online.py",
+      "origin": "proj/scripts/enrich_final_whitelist_external_ids_online.py",
+      "sha256": "5ae163156d945535b7e9d808dae34b589eda463846a5452ce968a5905989f893",
+      "size_bytes": 28728,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/enrich_protist_uniprot_ncbi_online.py",
+      "origin": "proj/scripts/enrich_protist_uniprot_ncbi_online.py",
+      "sha256": "0ee8c8bc39ca2308ef2896a69da7a156f156185d669eefc28a070802cbdeec35",
+      "size_bytes": 8426,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/import_stoichdb_artifacts_only.py",
+      "origin": "proj/scripts/import_stoichdb_artifacts_only.py",
+      "sha256": "461a72b0b6e593a90012963f940a8fcbf212fcdc85df41363215bc2f79904263",
+      "size_bytes": 3239,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/init_workspace.py",
+      "origin": "proj/scripts/init_workspace.py",
+      "sha256": "0f757a6cdace99d94b93bd2b7af12396ddcac8d795e5ceb663531e0b8665e75c",
+      "size_bytes": 783,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/migrate_backend.sh",
+      "origin": "proj/scripts/migrate_backend.sh",
+      "sha256": "416b4b6d74697141cae018a5df57262f4ed03d38c0614770138bd9b4d5d2f30f",
+      "size_bytes": 152,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/model8_a0_a3_implement.py",
+      "origin": "proj/scripts/model8_a0_a3_implement.py",
+      "sha256": "1e05ba26647f1add1bea62ae49414c67436fa100ae1f3241de523c3d8843e333",
+      "size_bytes": 46765,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/model8_elemental_contract.py",
+      "origin": "proj/scripts/model8_elemental_contract.py",
+      "sha256": "bee243d01b60ea238d64f0b33a2c91c9736607168e2979f47c9628012d8a8596",
+      "size_bytes": 7212,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/prepare_protist_analysis_grade_tree_inputs.py",
+      "origin": "proj/scripts/prepare_protist_analysis_grade_tree_inputs.py",
+      "sha256": "42fd50da9c149703e65d4ad1606ad5a9fe2cca3fd299617c66d2bb40a5d3f6fe",
+      "size_bytes": 12583,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/prepare_protist_phylogeny_subset30.py",
+      "origin": "proj/scripts/prepare_protist_phylogeny_subset30.py",
+      "sha256": "383a85f7bd0e3b3a67744c8bbea0105c0e1c5d2b26c6a92601c2dad4db5c2ab1",
+      "size_bytes": 7297,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/refresh_case_registry.py",
+      "origin": "proj/scripts/refresh_case_registry.py",
+      "sha256": "dd1537ebd02296d4d01a06160fc9a62032c3851a85fd391591242ac28a049d64",
+      "size_bytes": 405,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/register_existing_case.py",
+      "origin": "proj/scripts/register_existing_case.py",
+      "sha256": "669389f0a1e95b30a5adbcc95acf83f50621389484f78580076d5daa14aab09f",
+      "size_bytes": 778,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/register_protist_analysis_grade_tree.py",
+      "origin": "proj/scripts/register_protist_analysis_grade_tree.py",
+      "sha256": "863c66f410adf9465ae329e57939077c5399ffbebae3514e019fd7de4dd5210d",
+      "size_bytes": 11314,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/run_full_analysis_pipeline.py",
+      "origin": "proj/scripts/run_full_analysis_pipeline.py",
+      "sha256": "10b5351c1ef2ad297d1f7288d36a829c9401a7a4c23e1d0166c912b3a96bb409",
+      "size_bytes": 2812,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/run_input_adapter.py",
+      "origin": "proj/scripts/run_input_adapter.py",
+      "sha256": "91e87cb78788a144ab7fe9ad7c3bf72df05610e93f968fd8bd7a74a3629bd4e2",
+      "size_bytes": 1503,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/run_mode_resolver.py",
+      "origin": "proj/scripts/run_mode_resolver.py",
+      "sha256": "5d41c54f6832f489a4aafff7603f68e0426bb9688ee0f104d2ce5380d7953903",
+      "size_bytes": 865,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/run_phase1_analysis.py",
+      "origin": "proj/scripts/run_phase1_analysis.py",
+      "sha256": "44d789bbe36547f0c163600ee7c2c0a9da74c0df5055a63fd3417f35e71147c0",
+      "size_bytes": 711,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/run_phase2_stoich.py",
+      "origin": "proj/scripts/run_phase2_stoich.py",
+      "sha256": "54d34c028a685cd4ad62fa1c58e3b5f5181d2fd2599334167d6d0d77815b389c",
+      "size_bytes": 710,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/run_preanalysis_pipeline.py",
+      "origin": "proj/scripts/run_preanalysis_pipeline.py",
+      "sha256": "46bf1049614e751da57a4b5a5eff3eea28a569778d0b441f911e63f7eeef9a28",
+      "size_bytes": 1981,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/run_protist_analysis_grade_phylogeny_docker.ps1",
+      "origin": "proj/scripts/run_protist_analysis_grade_phylogeny_docker.ps1",
+      "sha256": "cdc2f0a6b9ec57b07ffa06c71118dddf589978b0b81f185390773c83d569aba7",
+      "size_bytes": 2039,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/run_validation.py",
+      "origin": "proj/scripts/run_validation.py",
+      "sha256": "41a4f7bfa2a91f33a27de5d26f98c01b8192c0ac19c33d17939c1f495d8340a4",
+      "size_bytes": 841,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/start_backend.sh",
+      "origin": "proj/scripts/start_backend.sh",
+      "sha256": "a12a86d56aff89dc218238d2c3a1ece85a1b46b3ae5a83aa246279cb3cbb15cf",
+      "size_bytes": 343,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/start_backend_dev.sh",
+      "origin": "proj/scripts/start_backend_dev.sh",
+      "sha256": "d2e32ab0d0ee9b600a294cb760939966fe954ebb122edfb25792eb5429c2cf24",
+      "size_bytes": 188,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/start_frontend.sh",
+      "origin": "proj/scripts/start_frontend.sh",
+      "sha256": "d87d5e088dc8642f7c0515805751eb5e6966a80ddaee469462b10b2f01ce53b7",
+      "size_bytes": 287,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/start_frontend_dev.sh",
+      "origin": "proj/scripts/start_frontend_dev.sh",
+      "sha256": "ea099e5601fef58a7ebfd7897b0004f14f74ac6602feaa0bc5a4b6b7a769746b",
+      "size_bytes": 220,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/summarize_standard_external_id_overlay.py",
+      "origin": "proj/scripts/summarize_standard_external_id_overlay.py",
+      "sha256": "7762dc49bd98a3a458aaaa145cb814b855802452d459270118f0875072ec39b3",
+      "size_bytes": 5665,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/validate_model8_elemental_semantics.py",
+      "origin": "proj/scripts/validate_model8_elemental_semantics.py",
+      "sha256": "5cc35ef709ac3cc7e5c2b5a5c3b4781c1b9efb8215b5045cdff527e1ba09efaf",
+      "size_bytes": 5730,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/validate_visualization_payloads.py",
+      "origin": "proj/scripts/validate_visualization_payloads.py",
+      "sha256": "ca0e2a85c00dbc83e73587bb27584475b07dfe59303ec8eb76c3e7bd99df47bb",
+      "size_bytes": 11886,
+      "change": "unchanged"
+    },
+    {
+      "path": "shared/docs/MODEL8_PLATFORM_RELEASE.md",
+      "origin": "proj/shared/docs/MODEL8_PLATFORM_RELEASE.md",
+      "sha256": "3ac0eab7d03f4e5fbdd7652bcbabd149561c7a91d6f5f1fa44fb17f9b56ce2d7",
+      "size_bytes": 3598,
+      "change": "unchanged"
+    },
+    {
+      "path": "shared/schemas/stoich_feature_display_schema.json",
+      "origin": "proj/shared/schemas/stoich_feature_display_schema.json",
+      "sha256": "81c5362f8aff49482801c00f25b795a21431a6f906e210e43ec301e68b97b1b5",
+      "size_bytes": 31321,
+      "change": "unchanged"
+    },
+    {
+      "path": "shared/schemas/stoich_ml_feature_registry_v1.json",
+      "origin": "proj/shared/schemas/stoich_ml_feature_registry_v1.json",
+      "sha256": "b65aecf8b40f8e0a482b7fcb5c91e0b80a7862d6cbddbefd78b6a4ce52965679",
+      "size_bytes": 1033357,
+      "change": "unchanged"
+    },
+    {
+      "path": "tools/feature_extractors/genome_stoich_feature_extractor_v3_3_2.py",
+      "origin": "feature_extractors/genome_stoich_feature_extractor_v3_3_2.py",
+      "sha256": "27a62303a809bfc0789ed56184aa8103d1addf21651f3b8c1e02e2acd59109e7",
+      "size_bytes": 69688,
+      "change": "unchanged"
+    },
+    {
+      "path": "tools/feature_extractors/proteome_stoich_feature_extractor_v4_fast.py",
+      "origin": "feature_extractors/proteome_stoich_feature_extractor_v4_fast.py",
+      "sha256": "c6c5c13825573140a09c9e57aa768e64b1abcd51dff02559b19f80022353b140",
+      "size_bytes": 32168,
+      "change": "unchanged"
+    },
+    {
+      "path": "tools/feature_extractors/transcriptome_stoich_feature_extractor_v5_2.py",
+      "origin": "feature_extractors/transcriptome_stoich_feature_extractor_v5_2.py",
+      "sha256": "0ddf8cd3cc49b32f9d2fbef81def42989a08c370e3747aaf4d38875dbec2eef9",
+      "size_bytes": 52201,
+      "change": "unchanged"
+    },
+    {
+      "path": "tools/phylo-tools.Dockerfile",
+      "origin": "proj/tools/phylo-tools.Dockerfile",
+      "sha256": "99246b6691b553da2fce347e294806a2e2aeb133a6c5798cd050c1075c928181",
+      "size_bytes": 491,
+      "change": "unchanged"
+    }
+  ]
+}

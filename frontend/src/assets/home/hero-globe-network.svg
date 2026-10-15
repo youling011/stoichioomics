@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 430">
+  <defs><radialGradient id="bg" cx="45%" cy="45%"><stop stop-color="#FFFFFF" stop-opacity=".7"/><stop offset="1" stop-color="#1769E0" stop-opacity=".08"/></radialGradient></defs>
+  <circle cx="215" cy="215" r="188" fill="url(#bg)" stroke="#CFE3FA" stroke-width="2"/>
+  <g fill="none" stroke="#1769E0" stroke-opacity=".18">
+    <ellipse cx="215" cy="215" rx="188" ry="56"/><ellipse cx="215" cy="215" rx="130" ry="188"/><ellipse cx="215" cy="215" rx="188" ry="130"/><path d="M62 132c92 42 203 44 306 0M62 298c92-42 203-44 306 0"/>
+  </g>
+  <g stroke="#1769E0" stroke-opacity=".35" fill="none">
+    <path d="M92 170l82-58 86 44 84-34M118 264l96-54 82 70 70-86M174 112l40 98 46-54 36 124M92 170l26 94 96-54"/>
+  </g>
+  <g fill="#1769E0">
+    <circle cx="92" cy="170" r="5"/><circle cx="174" cy="112" r="5"/><circle cx="260" cy="156" r="5"/><circle cx="344" cy="122" r="5"/><circle cx="118" cy="264" r="5"/><circle cx="214" cy="210" r="7"/><circle cx="296" cy="280" r="5"/><circle cx="366" cy="194" r="5"/>
+  </g>
+  <g fill="#0B2A5B" opacity=".12" font-family="monospace" font-size="22"><text x="126" y="206">A T G C</text><text x="238" y="238">K E L</text><text x="180" y="306">M R N</text></g>
+</svg>

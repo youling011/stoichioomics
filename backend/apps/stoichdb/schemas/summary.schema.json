@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StoichDB omics summary payload",
+  "type": "object",
+  "required": ["feature_cards", "top_entities"],
+  "properties": {
+    "feature_cards": { "type": "object" },
+    "top_entities": { "type": "object", "required": ["top", "bottom"] },
+    "field_meta": { "type": "array" },
+    "correlation_matrix": { "type": "object" },
+    "method_metadata": { "type": "object" }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StoichDB rows payload",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "anyOf": [
+      { "required": ["entity_id"] },
+      { "required": ["gene_id"] },
+      { "required": ["transcript_id"] },
+      { "required": ["protein_id"] }
+    ],
+    "additionalProperties": true
+  }
+}

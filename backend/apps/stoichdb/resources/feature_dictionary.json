@@ -1,0 +1,114 @@
+{
+  "schema_version": "feature_dictionary_v1",
+  "source": "backend/apps/stoichdb/resources/feature_dictionary.json",
+  "description": "Canonical data dictionary overlay for Stoichioomics feature display metadata. Field rows are merged with shared/schemas/stoich_feature_display_schema.json so existing display contracts remain compatible.",
+  "normalization_policy": "Raw feature values remain primary unless a field-level display_transform is declared in the display schema.",
+  "missing_policy": "Missing values mean the field is absent, null, non-finite, or unavailable for the selected omics branch. Coverage is estimated from sampled registered EntityRecord numeric_summary/payload_json values.",
+  "formula_status_values": ["defined", "family_default", "pending"],
+  "family_defaults": {
+    "gc_composition": {
+      "formula": "GC-related percentage, fraction, or delta computed from nucleotide composition fields registered for the omics branch.",
+      "formula_status": "family_default"
+    },
+    "element_density": {
+      "formula": "Element count normalized by sequence length, base count, nucleotide count, or amino-acid count according to the field unit.",
+      "formula_status": "family_default"
+    },
+    "resource_ratio": {
+      "formula": "Ratio between registered elemental or molecular resource descriptors.",
+      "formula_status": "family_default"
+    },
+    "length_structure": {
+      "formula": "Length or structural descriptor imported from the source feature table or derived from sequence coordinates.",
+      "formula_status": "family_default"
+    },
+    "sequence_complexity": {
+      "formula": "Entropy, motif, or compositional complexity descriptor computed from sequence symbol frequencies.",
+      "formula_status": "family_default"
+    },
+    "coding_proxy": {
+      "formula": "Transcript coding or ORF proxy derived from transcript sequence and coding-region annotations when available.",
+      "formula_status": "family_default"
+    },
+    "protein_property": {
+      "formula": "Protein physicochemical descriptor computed from amino-acid sequence composition.",
+      "formula_status": "family_default"
+    },
+    "strategy_score": {
+      "formula": "Exploratory score derived from registered stoichiometric features and module-specific ranking logic.",
+      "formula_status": "family_default"
+    },
+    "other": {
+      "formula": "Formula is not yet formally registered for this field; use field unit, source table, and module notes for interpretation.",
+      "formula_status": "pending"
+    }
+  },
+  "field_overrides": {
+    "genome.exon_gc_percent": {
+      "formula": "100 * (G + C) / (A + C + G + T) over exon-like coding bases.",
+      "formula_status": "defined",
+      "normalization": "percent",
+      "missing_rule": "Missing when exon sequence or coding-region base composition is unavailable."
+    },
+    "genome.promoter_gc_percent": {
+      "formula": "100 * (G + C) / (A + C + G + T) over promoter-window bases.",
+      "formula_status": "defined",
+      "normalization": "percent",
+      "missing_rule": "Missing when promoter window or promoter base composition is unavailable."
+    },
+    "genome.gc_delta_promoter_minus_exon": {
+      "formula": "promoter_gc_percent - exon_gc_percent.",
+      "formula_status": "defined",
+      "normalization": "percentage points",
+      "missing_rule": "Missing when either promoter_gc_percent or exon_gc_percent is unavailable."
+    },
+    "transcriptome.gc_content": {
+      "formula": "(G + C) / (A + C + G + U/T) over transcript sequence.",
+      "formula_status": "defined",
+      "normalization": "fraction",
+      "missing_rule": "Missing when transcript sequence composition is unavailable."
+    },
+    "transcriptome.gc_percent_display": {
+      "formula": "100 * gc_content when gc_content is stored as a fraction; otherwise registered display percentage.",
+      "formula_status": "defined",
+      "normalization": "percent",
+      "missing_rule": "Missing when transcript GC content is unavailable."
+    },
+    "transcriptome.nt_entropy": {
+      "formula": "Shannon entropy over transcript nucleotide frequencies.",
+      "formula_status": "defined",
+      "normalization": "bits",
+      "missing_rule": "Missing when transcript nucleotide counts are unavailable."
+    },
+    "proteome.length_aa": {
+      "formula": "Number of amino-acid residues in the protein sequence.",
+      "formula_status": "defined",
+      "normalization": "amino acids",
+      "missing_rule": "Missing when protein sequence length is unavailable."
+    },
+    "proteome.N_atoms_per_aa": {
+      "formula": "Total nitrogen atoms in the protein sequence divided by length_aa.",
+      "formula_status": "defined",
+      "normalization": "atoms/amino acid",
+      "missing_rule": "Missing when amino-acid composition or length_aa is unavailable."
+    },
+    "proteome.S_atoms_per_aa": {
+      "formula": "Total sulfur atoms in the protein sequence divided by length_aa.",
+      "formula_status": "defined",
+      "normalization": "atoms/amino acid",
+      "missing_rule": "Missing when cysteine/methionine composition or length_aa is unavailable."
+    },
+    "proteome.pI": {
+      "formula": "Predicted isoelectric point from registered protein-sequence physicochemical computation.",
+      "formula_status": "defined",
+      "normalization": "pH",
+      "missing_rule": "Missing when protein sequence is unavailable or pI was not computed."
+    },
+    "proteome.gravy": {
+      "formula": "Grand average of hydropathy computed from amino-acid hydropathy values.",
+      "formula_status": "defined",
+      "normalization": "index",
+      "missing_rule": "Missing when protein sequence is unavailable."
+    }
+  }
+}

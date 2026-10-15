@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StoichDB cross-omics payload",
+  "type": "object",
+  "required": [],
+  "properties": {
+    "method_metadata": { "type": "object" },
+    "match_summary": { "type": "object" },
+    "gene_transcript_protein": { "type": "array" },
+    "correlation_matrix": { "type": "object" },
+    "top_transformations": { "type": "array" }
+  },
+  "additionalProperties": true
+}

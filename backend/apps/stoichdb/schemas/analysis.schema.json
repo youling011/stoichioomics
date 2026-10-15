@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StoichDB omics analysis payload",
+  "type": "object",
+  "required": [],
+  "properties": {
+    "method_metadata": { "type": "object" },
+    "modules": { "type": "array" },
+    "strategy": { "type": "object" },
+    "outliers": { "type": "array" },
+    "feature_rankings": { "type": "array" }
+  },
+  "additionalProperties": true
+}

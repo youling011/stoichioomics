@@ -1,0 +1,28 @@
+﻿services:
+  postgres:
+    image: postgres:16
+    container_name: stoichioomics-postgres-named
+    environment:
+      POSTGRES_DB: stoichioomics
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your local .env}
+    command:
+      - postgres
+      - -c
+      - shared_buffers=1GB
+      - -c
+      - effective_cache_size=5GB
+      - -c
+      - work_mem=8MB
+      - -c
+      - maintenance_work_mem=256MB
+      - -c
+      - autovacuum_work_mem=256MB
+    ports:
+      - '5432:5432'
+    volumes:
+      - stoichioomics_pg16_named_data:/var/lib/postgresql/data
+
+volumes:
+  stoichioomics_pg16_named_data:
+    external: true

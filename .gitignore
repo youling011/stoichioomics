@@ -1,0 +1,56 @@
+# Private configuration (safe templates remain tracked)
+.env
+.env.*
+!.env.example
+!.env.postgres.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Dependencies, builds, caches
+.venv/
+venv/
+node_modules/
+dist/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.vite/
+*.egg-info/
+
+# Data, database storage, user output
+/data/
+/runtime/
+/workspace/
+/uploads/
+/postgres_data/
+/staticfiles/
+/backups/
+*.sqlite3
+*.sqlite3-*
+*.dump
+*.backup
+*.bak
+*.bak_*
+*.log
+*.zip
+*.tar
+*.gz
+*.h5ad
+*.h5
+*.parquet
+
+# Reports and local editor files
+*.docx
+*.doc
+*.pptx
+*.xlsx
+~$*
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+/codex_hvg_publication_backup_*/
