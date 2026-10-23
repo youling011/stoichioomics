@@ -5,6 +5,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from backend.apps.common.histogram import finite_histogram
 
 from .feature_panel_registry import get_core_fields, get_core_panel_registry
 
@@ -133,7 +134,7 @@ def _histogram(values: pd.Series, bins: int = 18) -> dict[str, Any]:
     if valid.nunique() == 1:
         value = float(valid.iloc[0])
         return {"bins": [value], "counts": [int(len(valid))]}
-    counts, edges = np.histogram(valid.to_numpy(), bins=bins)
+    counts, edges = finite_histogram(valid.to_numpy(), bins=bins)
     centers = ((edges[:-1] + edges[1:]) / 2).tolist()
     return {"bins": [float(item) for item in centers], "counts": [int(item) for item in counts.tolist()]}
 

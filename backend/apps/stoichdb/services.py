@@ -8261,7 +8261,8 @@ def downloads_manifest(species_id: str = '', omics: str = '', dataset_limit: Any
     }
 
 
-def artifact_registry(species_id: str = '', omics: str = '', artifact_type: str = '') -> dict[str, Any]:
+def artifact_registry(species_id: str = '', omics: str = '', artifact_type: str = '', limit: int = 4000) -> dict[str, Any]:
+    limit = max(1, min(int(limit), 4000))
     if not db_mode():
         return {'items': [], 'artifact_types': [], 'filters': {'species_id': species_id, 'omics': omics, 'artifact_type': artifact_type}}
     release = current_release()
@@ -8294,7 +8295,7 @@ def artifact_registry(species_id: str = '', omics: str = '', artifact_type: str 
     return {
         'filters': {'species_id': species_id, 'omics': omics, 'artifact_type': artifact_type},
         'artifact_types': artifact_types,
-        'items': [_artifact_payload(record, check_exists=False, release_id=release_id, include_payload_metadata=False) for record in qs[:4000]],
+        'items': [_artifact_payload(record, check_exists=False, release_id=release_id, include_payload_metadata=False) for record in qs[:limit]],
     }
 
 

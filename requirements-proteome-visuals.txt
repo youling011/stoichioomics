@@ -1,2 +1,2 @@
-# Optional acceleration. Existing Django/NumPy/SciPy/Vue versions remain unchanged.
-orjson==3.13.0
+# Compatibility entry point only; all versions are owned by requirements.txt.
+-r requirements.txt

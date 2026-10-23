@@ -1,6 +1,6 @@
 {
-  "snapshot_date": "2026-10-23",
-  "previous_commit": "5ff65dceeab765fc23441a574a2f7c22ccc8d9d6",
+  "snapshot_date": "2026-10-24",
+  "previous_commit": "c02fb77c281ed97d3aefd4595870b47abee9e5d9",
   "scope": "platform source only; no datasets or databases",
   "source_identity": "stoich_platform_postgres_open_search_v6_2_perf_fix/proj",
   "manifest_excludes_itself": true,
@@ -29,15 +29,15 @@
     {
       "path": ".gitignore",
       "origin": "export metadata",
-      "sha256": "0ed3bfd49202ea7963a6ad06c3b2544dd2f5e640a64c161cddd67b0fd7e672e1",
-      "size_bytes": 729,
+      "sha256": "7ab52e93cfd9e96ae83dc0216a99def9ab3dfa7ac99bc0a24130590813c1c28f",
+      "size_bytes": 934,
       "change": "repository configuration/documentation"
     },
     {
       "path": "README.md",
       "origin": "export metadata",
-      "sha256": "66809de3b3076ea4105794bcc75bc651e76a21c0b84f72d605b2ba86321446e5",
-      "size_bytes": 5891,
+      "sha256": "a787c6a022352a8e6875730db2e0f08acf06bf73ac1d2c4e5c2b96058e53239b",
+      "size_bytes": 7613,
       "change": "repository configuration/documentation"
     },
     {
@@ -113,8 +113,8 @@
     {
       "path": "backend/analysis_engine/hvg_research/artifacts.py",
       "origin": "proj/backend/analysis_engine/hvg_research/artifacts.py",
-      "sha256": "2842031764f59d381a03ea0796edce711db2127a3e9cd2afc53ed9a77db50583",
-      "size_bytes": 2063,
+      "sha256": "ab124ecf9dda161b783a93be2c31c5488ddd6e1462699f4fcb526c4b62dbd5b1",
+      "size_bytes": 2161,
       "change": "unchanged"
     },
     {
@@ -636,10 +636,24 @@
       "change": "unchanged"
     },
     {
+      "path": "backend/apps/common/atomic_json.py",
+      "origin": "proj/backend/apps/common/atomic_json.py",
+      "sha256": "1b6543d52da544f87d65da388affb1c071139bebb0a28e0250399cd6c219c87b",
+      "size_bytes": 1500,
+      "change": "unchanged"
+    },
+    {
       "path": "backend/apps/common/filesystem.py",
       "origin": "proj/backend/apps/common/filesystem.py",
       "sha256": "bd75f14d668e0fce36594e4685ee950ded730e62612e78e9ced946b45f431c90",
       "size_bytes": 276,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/histogram.py",
+      "origin": "proj/backend/apps/common/histogram.py",
+      "sha256": "7d932dfaa076d5ffb4a8d1d47d221923fabd8e729fd96738457cc2db7e7ad174",
+      "size_bytes": 502,
       "change": "unchanged"
     },
     {
@@ -685,6 +699,20 @@
       "change": "unchanged"
     },
     {
+      "path": "backend/apps/core/deployment.py",
+      "origin": "proj/backend/apps/core/deployment.py",
+      "sha256": "d03c1173acc62dfb593e7cddaeb592de8f61640e602bf1c88cd40eae12afa9c3",
+      "size_bytes": 1175,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/core/test_deployment.py",
+      "origin": "proj/backend/apps/core/test_deployment.py",
+      "sha256": "b57398fb628cd7b6c100ae2cbc1a3107e2efaf003499a5fdb6e4f7814f72d156",
+      "size_bytes": 6998,
+      "change": "unchanged"
+    },
+    {
       "path": "backend/apps/core/urls.py",
       "origin": "proj/backend/apps/core/urls.py",
       "sha256": "1cacc6423a765d1f4dca0f4b6a0c5e5681da1a26d9c5532b0e5a7d1de98bdab2",
@@ -694,8 +722,8 @@
     {
       "path": "backend/apps/core/views.py",
       "origin": "proj/backend/apps/core/views.py",
-      "sha256": "ee6e2b3f153a54e384f66aff2a5a79b4be8d196153d8bdee3ba4e2c991937d24",
-      "size_bytes": 377,
+      "sha256": "dd66488d3ca5c9b79314bd4039b80f68e4438f66ae1025bfe11afdc58373414a",
+      "size_bytes": 508,
       "change": "unchanged"
     },
     {
@@ -1100,22 +1128,29 @@
     {
       "path": "backend/apps/sequence_analysis/feature_panels.py",
       "origin": "proj/backend/apps/sequence_analysis/feature_panels.py",
-      "sha256": "423f330e4e4c693183c70551600532d9ebb6c69fed809e2c623aacc9bc6d49ae",
-      "size_bytes": 12410,
+      "sha256": "cfc3d8849592747343ed70a197f292d450497f1d0e547760326d6581fc645fa0",
+      "size_bytes": 12473,
       "change": "unchanged"
     },
     {
       "path": "backend/apps/sequence_analysis/real_engine.py",
       "origin": "proj/backend/apps/sequence_analysis/real_engine.py",
-      "sha256": "6ca31dcddc68c51cdb25e7b3f7b71da244b8ce0c3fa5f2ddc7f32aace5a75758",
-      "size_bytes": 103399,
+      "sha256": "8c181cd48296425d1c0300e6ef07841459cf913bcc7d630e581439d59dcf3d1e",
+      "size_bytes": 103462,
       "change": "unchanged"
     },
     {
       "path": "backend/apps/sequence_analysis/services.py",
       "origin": "proj/backend/apps/sequence_analysis/services.py",
-      "sha256": "7280db0c3bc2f3dba02eac6c2546a79dce06343154e50eb1a893cd75874b7032",
-      "size_bytes": 29882,
+      "sha256": "da996a47cf23e0329d9affb2bf44c0ba2393f87f64e3b0a4602bf20a983764c1",
+      "size_bytes": 30203,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/test_deployment_lifecycle.py",
+      "origin": "proj/backend/apps/sequence_analysis/test_deployment_lifecycle.py",
+      "sha256": "0e07b6be6146531295c83dca288a2605da6dcf4be7886b12688bc7e186ee901d",
+      "size_bytes": 5444,
       "change": "unchanged"
     },
     {
@@ -1324,8 +1359,8 @@
     {
       "path": "backend/apps/stoichdb/feature_hub/export.py",
       "origin": "proj/backend/apps/stoichdb/feature_hub/export.py",
-      "sha256": "f286296dca629e29def99acf741fc87ce761e86cae2de775ab9f7da974a67b48",
-      "size_bytes": 10498,
+      "sha256": "2419ad39c517472b36218de51f309c3a5d3dc9a10109ecf78440f351cc5b9e82",
+      "size_bytes": 10490,
       "change": "unchanged"
     },
     {
@@ -2297,8 +2332,8 @@
     {
       "path": "backend/apps/stoichdb/services.py",
       "origin": "proj/backend/apps/stoichdb/services.py",
-      "sha256": "55cbd080ab792fc8c7f4ae582c9dc770cb556a4127a185bae8ab60213956f644",
-      "size_bytes": 761266,
+      "sha256": "64d80d7716f2447637a473afb26bd2639d0c92402f57b1ea7fbae963001850b6",
+      "size_bytes": 747036,
       "change": "unchanged"
     },
     {
@@ -2309,10 +2344,24 @@
       "change": "unchanged"
     },
     {
+      "path": "backend/apps/stoichdb/tests/__init__.py",
+      "origin": "proj/backend/apps/stoichdb/tests/__init__.py",
+      "sha256": "f3ee891ab983c9c96bc383965c9adeaf07d1edaa59894719a3a0efe88f785ac9",
+      "size_bytes": 54,
+      "change": "unchanged"
+    },
+    {
       "path": "backend/apps/stoichdb/tests/fixtures/proteome_viz_core12.csv",
       "origin": "proj/backend/apps/stoichdb/tests/fixtures/proteome_viz_core12.csv",
       "sha256": "ae33a061b6c411199e04f3ab2a84c0bffd08b656114544b56c70ce1660e73ff1",
       "size_bytes": 12236,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/tests/test_artifact_registry_api.py",
+      "origin": "proj/backend/apps/stoichdb/tests/test_artifact_registry_api.py",
+      "sha256": "2e9326d6c4678da17e933e2a8dff8758999e7650d6d75bbbf9da22f85456e14d",
+      "size_bytes": 1679,
       "change": "unchanged"
     },
     {
@@ -2472,8 +2521,8 @@
     {
       "path": "backend/config/settings.py",
       "origin": "proj/backend/config/settings.py",
-      "sha256": "32ee39ee4404b7e6bfd2bea018b5b4ca6ccb7721d9ffe3c7c09482f231847e82",
-      "size_bytes": 7325,
+      "sha256": "5cccef9c42e08c35d0c80af1cf29c98fc51e5ec3a5a6c49340e92319c02f102c",
+      "size_bytes": 7552,
       "change": "credential sanitization/configuration template"
     },
     {
@@ -2502,6 +2551,13 @@
       "origin": "proj/backend/config/settings_integration_viz_test.py",
       "sha256": "ea41393fdee30e507ca02095be394cf2097f946e1c6baf2f550bdce42601cc42",
       "size_bytes": 477,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/config/settings_production.py",
+      "origin": "proj/backend/config/settings_production.py",
+      "sha256": "4837366b61d60e620a83025a343af663359302438d69794090a195edeadb0134",
+      "size_bytes": 4754,
       "change": "unchanged"
     },
     {
@@ -2537,6 +2593,13 @@
       "origin": "proj/backend/config/urls.py",
       "sha256": "b43d3c0b027308ed215450695355855888be86a2cd8a4137453f8b038d602224",
       "size_bytes": 754,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/config/urls_production.py",
+      "origin": "proj/backend/config/urls_production.py",
+      "sha256": "af809efd505f65955ad79ce335834d5cea38c21e8e88b656e24148f0529a6d49",
+      "size_bytes": 294,
       "change": "unchanged"
     },
     {
@@ -2960,6 +3023,125 @@
       "change": "unchanged"
     },
     {
+      "path": "deploy/README.md",
+      "origin": "proj/deploy/README.md",
+      "sha256": "fe8dbec9fc349eec8e44ffbb29deb2085500310581185e8e0340044732914e38",
+      "size_bytes": 12800,
+      "change": "archive documentation note"
+    },
+    {
+      "path": "deploy/__init__.py",
+      "origin": "proj/deploy/__init__.py",
+      "sha256": "9894a4472ebb6dc8540035d8cf51a87c3bc9dd769c3bed35686448bbc4b8efea",
+      "size_bytes": 79,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/config.example.json",
+      "origin": "proj/deploy/config.example.json",
+      "sha256": "93aba5243180f4eb5032792f15cc288297a2bef8740b017425ac9643b1ec7a63",
+      "size_bytes": 644,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/preflight.py",
+      "origin": "proj/deploy/preflight.py",
+      "sha256": "3cba43c7e47e1914ad1a0514a5284e177164d6f2cc57c87e692372b456719a83",
+      "size_bytes": 4481,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/production.env.example",
+      "origin": "proj/deploy/production.env.example",
+      "sha256": "b09fef002e1fbbc6279e7a3b92706e0117d215953c13606502a33cd17583f8be",
+      "size_bytes": 1304,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/render.py",
+      "origin": "proj/deploy/render.py",
+      "sha256": "46cdda32d977ad599d5234691821fa8ae82b6c6219e44bc3d940632daccf414f",
+      "size_bytes": 5130,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/requirements-production.txt",
+      "origin": "proj/deploy/requirements-production.txt",
+      "sha256": "212d5d507ce4a37c65a965a52a8a052a6a7c2885a767a169415e99dfbdfb2aad",
+      "size_bytes": 141,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/run_regression.py",
+      "origin": "proj/deploy/run_regression.py",
+      "sha256": "b5057340d640017f8447078089733bad66da6696bf0c690e3e7e107844250e28",
+      "size_bytes": 2908,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/templates/nginx-site.conf.in",
+      "origin": "proj/deploy/templates/nginx-site.conf.in",
+      "sha256": "b79e60254cefb026f74d62b74f99f2289e7d13113c1492ea7e1a15504aeb63cf",
+      "size_bytes": 1528,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/templates/nginx.conf.in",
+      "origin": "proj/deploy/templates/nginx.conf.in",
+      "sha256": "dbad9a9f76e30806c7341890fb667a956137dcafaa7697e6662d52550424aa0f",
+      "size_bytes": 429,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/templates/stoichioomics.service.in",
+      "origin": "proj/deploy/templates/stoichioomics.service.in",
+      "sha256": "5c22c354a76c51a4e7b956a043c4c67b84346acf166420cb8619de1f53f20d0d",
+      "size_bytes": 721,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/templates/uwsgi.ini.in",
+      "origin": "proj/deploy/templates/uwsgi.ini.in",
+      "sha256": "71d28c2ade85bc4484ae08ef5e5faee024f88f9e12edfddebf913860b6e40655",
+      "size_bytes": 709,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/validation/README.md",
+      "origin": "proj/deploy/validation/README.md",
+      "sha256": "84116d7d87dd33e1dc1ca91d1bd763d3f1084821fee001b8d9ca2ce28cd93b55",
+      "size_bytes": 1025,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/validation/__init__.py",
+      "origin": "proj/deploy/validation/__init__.py",
+      "sha256": "a59225917a259186683260a045909ba3f0e7a7d461778c14e6d4f3cca48174d6",
+      "size_bytes": 68,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/validation/fixture.py",
+      "origin": "proj/deploy/validation/fixture.py",
+      "sha256": "212913f996a89f6c7ec756c963aa21b0f870d26d6c9a842b5af5828f072b9786",
+      "size_bytes": 2699,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/validation/smoke.py",
+      "origin": "proj/deploy/validation/smoke.py",
+      "sha256": "7435d2acaee85b043460afae2a0c311469c06a8210ad50eb4cd44d8eb1e2ad7d",
+      "size_bytes": 8506,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/validation_settings.py",
+      "origin": "proj/deploy/validation_settings.py",
+      "sha256": "24ca51b526ba717a5d274993fd6bbc996e1fc0f8406ec89379965e78339d3e80",
+      "size_bytes": 1991,
+      "change": "unchanged"
+    },
+    {
       "path": "docker-compose.postgres.docker.yml",
       "origin": "proj/docker-compose.postgres.docker.yml",
       "sha256": "324a2f7c914c6ed707d3b69d7773c4613fb92fc412372b300db455d8cb395133",
@@ -2997,8 +3179,8 @@
     {
       "path": "docs/HVG_RESEARCH_WORKFLOW_V1.md",
       "origin": "proj/docs/HVG_RESEARCH_WORKFLOW_V1.md",
-      "sha256": "fee886f6572034dee0673294b1505066792c408d35ce9803fa3db72d6427871c",
-      "size_bytes": 9996,
+      "sha256": "632f5e6d275892763c697a8d3eeca88db2f151fcab6bde0b7513837b33b708bd",
+      "size_bytes": 9946,
       "change": "unchanged"
     },
     {
@@ -3046,8 +3228,8 @@
     {
       "path": "environment-hvg.yml",
       "origin": "proj/environment-hvg.yml",
-      "sha256": "e398f74d34f6d01e3c5447be99637bd5b79ee923a1d023a3441a6aec19e76ed1",
-      "size_bytes": 547,
+      "sha256": "bc18380fd3e123ab3f67e1d1abfabaaf5210b64c6fc2f14ae99d304c80ecef56",
+      "size_bytes": 118,
       "change": "unchanged"
     },
     {
@@ -4418,29 +4600,29 @@
     {
       "path": "requirements-hvg-research-lock.txt",
       "origin": "proj/requirements-hvg-research-lock.txt",
-      "sha256": "1620f7aa968b3eb17a673aa2337acb6c2b5c32fd4f60f9120c1c37e93972f3e6",
-      "size_bytes": 207,
+      "sha256": "c4ba4d8b7ee887dc6303f6c42ceb8774bbeb88b293996eb055ec7933a7972a3b",
+      "size_bytes": 98,
       "change": "unchanged"
     },
     {
       "path": "requirements-hvg.txt",
       "origin": "proj/requirements-hvg.txt",
-      "sha256": "4cc77cb978166b3edfdcc70a209dee53dc1ead4b3d32fb79606f97e65615e19e",
-      "size_bytes": 283,
+      "sha256": "c4ba4d8b7ee887dc6303f6c42ceb8774bbeb88b293996eb055ec7933a7972a3b",
+      "size_bytes": 98,
       "change": "unchanged"
     },
     {
       "path": "requirements-proteome-visuals.txt",
       "origin": "proj/requirements-proteome-visuals.txt",
-      "sha256": "b1c07bd61147d667b27be143c2dcf3a929589b5f636ddb3ed2cf73c382a69985",
-      "size_bytes": 99,
+      "sha256": "c4ba4d8b7ee887dc6303f6c42ceb8774bbeb88b293996eb055ec7933a7972a3b",
+      "size_bytes": 98,
       "change": "unchanged"
     },
     {
       "path": "requirements.txt",
       "origin": "proj/requirements.txt",
-      "sha256": "559c8c921db18b678b71fcf73925bdce8deded0361c3977e4d690621d55feb40",
-      "size_bytes": 288,
+      "sha256": "e6947aa38582c17291b50499e7fbb3092192b9a7830ab388ed3e6178fcec7146",
+      "size_bytes": 1730,
       "change": "unchanged"
     },
     {
@@ -4882,6 +5064,13 @@
       "origin": "proj/scripts/validate_visualization_payloads.py",
       "sha256": "ca0e2a85c00dbc83e73587bb27584475b07dfe59303ec8eb76c3e7bd99df47bb",
       "size_bytes": 11886,
+      "change": "unchanged"
+    },
+    {
+      "path": "scripts/verify_dependencies.py",
+      "origin": "proj/scripts/verify_dependencies.py",
+      "sha256": "a59b7ea0cd96fefc776c43c9f6be8b4f603968f87f2541b4c61261b3c4205553",
+      "size_bytes": 2012,
       "change": "unchanged"
     },
     {

@@ -26,8 +26,8 @@ extractors, data-ingestion utilities, and platform release builders.
 
 Use Python 3.11 and Node.js with npm. Copy `.env.example` to `.env` in the project
 root, set your own PostgreSQL connection values and Django secret, and install
-the dependencies declared in `requirements.txt`. Optional HVG dependencies are
-declared in `requirements-hvg.txt` and `environment-hvg.yml`.
+the dependencies declared in the unified `requirements.txt`. The legacy HVG
+entry points and `environment-hvg.yml` refer to that same manifest.
 
 Run commands from the repository root. The root environment template sets
 `STOICH_FEATURE_EXTRACTOR_ROOT=tools/feature_extractors` so the unchanged backend
@@ -100,10 +100,11 @@ platform's non-secret feature switch. Existing source and algorithms are not
 refactored by this export. Local paths in documented case configurations remain
 as authored and refer to datasets that are not included.
 
-Dependency declarations are archived as authored: `requirements.txt` requests
-Django >=5.1,<6.1, whereas `requirements-hvg-research-lock.txt` pins Django 4.2.29.
-These files cannot be installed together unchanged. This source archive does not
-resolve that pre-existing environment/version conflict or promise a clean install.
+The previous dependency conflict was resolved in the 2026-10-24 snapshot.
+`requirements.txt` is now the single authoritative exact-pin manifest, including
+Django 5.2.18. The three legacy requirement entry points include that same file.
+`scripts/verify_dependencies.py` checks the installed interpreter against it;
+`deploy/requirements-production.txt` additionally pins uWSGI on Linux.
 
 The existing frontend scientific tests refer to two real-data `.json.gz` fixtures
 under `frontend/tests/{proteome,integration}/fixtures/`. Those computed data
@@ -112,3 +113,30 @@ separately supplied local fixtures. The 12-row backend CSV and short test-select
 lists are retained as small regression-test inputs. Browser tests also require a
 separately configured backend and the relevant data; generated reports and browser
 artifacts are excluded.
+
+## Dependency and deployment snapshot — 2026-10-24
+
+This optimization commit archives the authored dependency unification and
+deployment adaptation. It includes the opt-in production settings/URL overlay,
+readiness endpoint, explicit environment-file loading, Nginx/uWSGI/systemd
+templates, configuration renderer, read-only preflight tool, isolated validation
+helpers, and their regression tests. Lifecycle, atomic JSON/cache, portable path
+checks and adjacent-float histogram fixes are copied from the active source.
+
+See [`deploy/README.md`](deploy/README.md). The templates require target-specific
+Linux paths, a domain, certificates and a private environment file outside the
+repository. `deploy/production.env.example` contains placeholders only. The
+renderer writes configuration files; this archive operation does not install,
+start or restart services, provision certificates, or migrate any database.
+
+`DJANGO_SETTINGS_MODULE=backend.config.settings_production` explicitly selects
+the production overlay. `DJANGO_ENV_FILE` selects a private environment file;
+production defaults prevent accidental loading of the development `.env`.
+Set `STOICH_FEATURE_EXTRACTOR_ROOT` to the absolute installed location of this
+repository's `tools/feature_extractors` directory when using production settings.
+
+Deployment evidence/logs, local environment manifests, upgrade audit reports,
+private configurations, generated service files, database contents and real
+data fixtures are excluded. The included validation helper code is synthetic
+test infrastructure. No Linux service deployment or full production-data
+reproduction is implied by this source archive.

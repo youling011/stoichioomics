@@ -18,6 +18,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 from django.conf import settings
+from backend.apps.common.histogram import finite_histogram
 from scipy import stats
 from sklearn.decomposition import PCA
 from sklearn.ensemble import RandomForestClassifier
@@ -569,7 +570,7 @@ def _histogram(values: list[float], bins: int = 32) -> dict[str, Any]:
     clean = [float(v) for v in values if v is not None and math.isfinite(float(v))]
     if not clean:
         return {'centers': [], 'counts': [], 'n': 0}
-    counts, edges = np.histogram(clean, bins=min(bins, max(8, len(set(clean)))))
+    counts, edges = finite_histogram(clean, bins=min(bins, max(8, len(set(clean)))))
     centers = ((edges[:-1] + edges[1:]) / 2).tolist()
     return {'centers': [float(v) for v in centers], 'counts': [int(v) for v in counts], 'n': int(len(clean))}
 

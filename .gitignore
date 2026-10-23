@@ -60,3 +60,11 @@ Thumbs.db
 .cache/
 frontend/test-results/
 frontend/playwright-report/
+
+# Target-specific deployment configuration and local evidence
+/deploy/evidence/
+/deploy/VALIDATION_REPORT.md
+/deploy/VALIDATION_MANIFEST.json
+/deploy/generated/
+/deploy/config.json
+/deploy/production.env

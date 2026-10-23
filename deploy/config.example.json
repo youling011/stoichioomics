@@ -1,0 +1,19 @@
+{
+  "project_root": "__REQUIRED_LINUX_PROJ_PATH__",
+  "venv_root": "__REQUIRED_LINUX_VENV_PATH__",
+  "frontend_root": "__REQUIRED_FRONTEND_DIST_PATH__",
+  "static_root": "__REQUIRED_COLLECTSTATIC_PATH__",
+  "domain": "__REQUIRED_DOMAIN__",
+  "certificate": "__REQUIRED_FULLCHAIN_PEM__",
+  "certificate_key": "__REQUIRED_PRIVKEY_PEM__",
+  "environment_file": "__REQUIRED_PRIVATE_ENV_FILE__",
+  "service_user": "stoichioomics",
+  "service_group": "www-data",
+  "nginx_user": "www-data",
+  "nginx_group": "www-data",
+  "processes": 2,
+  "threads": 2,
+  "upload_body_limit_mib": 512,
+  "read_timeout_seconds": 300,
+  "stop_timeout_seconds": 3600
+}

@@ -73,7 +73,7 @@ BH在所有预声明context和相应完整家族收集后统一计算，BY单列
 & 'D:\python\node.js\node.exe' node_modules/vite/bin/vite.js build
 ```
 
-Vite构建须在frontend工作目录调用 `node node_modules/vite/bin/vite.js build`。准确已执行命令另见最终验收记录。测试设置强制独立PostgreSQL测试库，不能替换为生产settings运行建库测试。关键依赖锁在 `requirements-hvg-research-lock.txt`。本次不新增业务表迁移。
+Vite构建须在frontend工作目录调用 `node node_modules/vite/bin/vite.js build`。准确已执行命令另见最终验收记录。测试设置强制独立PostgreSQL测试库，不能替换为生产settings运行建库测试。全部 Python 依赖统一锁定在 `requirements.txt`；旧 HVG 锁文件仅转发到该清单。本次不新增业务表迁移。
 
 ## 运行、恢复、保留和回退
 

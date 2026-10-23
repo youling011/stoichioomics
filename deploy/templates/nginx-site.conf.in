@@ -1,0 +1,47 @@
+@HTTP_REDIRECT@
+server {
+    listen @LISTEN@;
+    server_name @DOMAIN@;
+    @TLS@
+    server_tokens off;
+    root "@FRONTEND_ROOT@";
+    index index.html;
+    client_max_body_size @UPLOAD_BODY_LIMIT_MIB@m;
+    client_body_timeout 120s;
+    access_log /var/log/nginx/stoichioomics-access.log;
+    error_log /var/log/nginx/stoichioomics-error.log warn;
+
+    location ~ ^/(api|admin)(/|$) {
+        include /etc/nginx/uwsgi_params;
+        uwsgi_param HTTP_HOST $host;
+        uwsgi_param HTTP_X_FORWARDED_PROTO $scheme;
+        # Overwrite any client-supplied forwarding values at this single trusted edge.
+        uwsgi_param HTTP_X_FORWARDED_FOR $remote_addr;
+        uwsgi_pass unix:/run/stoichioomics/uwsgi.sock;
+        uwsgi_connect_timeout 5s;
+        uwsgi_read_timeout @READ_TIMEOUT_SECONDS@s;
+        uwsgi_send_timeout @READ_TIMEOUT_SECONDS@s;
+        uwsgi_request_buffering on;
+        uwsgi_next_upstream off;
+        uwsgi_intercept_errors off;
+    }
+    location /static/ {
+        alias "@STATIC_ROOT@/";
+        expires 1h;
+    }
+    # Private uploads and analysis outputs use the existing API download routes.
+    location = /media { return 404; }
+    location /media/ { return 404; }
+    location ~ (^|/)\. { return 404; }
+    location /assets/ {
+        try_files $uri =404;
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+    location = /index.html {
+        add_header Cache-Control "no-cache" always;
+    }
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}

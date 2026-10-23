@@ -1,0 +1,23 @@
+[uwsgi]
+strict = true
+chdir = @PROJECT_ROOT@
+home = @VENV_ROOT@
+module = backend.config.wsgi:application
+env = DJANGO_SETTINGS_MODULE=backend.config.settings_production
+env = DJANGO_ENV_FILE=
+master = true
+processes = @PROCESSES@
+threads = @THREADS@
+enable-threads = true
+lazy-apps = true
+single-interpreter = true
+need-app = true
+socket = /run/stoichioomics/uwsgi.sock
+chmod-socket = 660
+vacuum = true
+die-on-term = true
+close-on-exec = true
+worker-reload-mercy = @STOP_TIMEOUT_SECONDS@
+# No harakiri, max-requests, reload-on-rss, or development autoreload:
+# current background threads must not be silently killed by request recycling.
+# This does not make in-process tasks durable across crashes/restarts.

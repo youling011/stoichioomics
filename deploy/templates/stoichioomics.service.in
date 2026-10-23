@@ -1,0 +1,29 @@
+[Unit]
+Description=Stoichioomics Django via uWSGI
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=@SERVICE_USER@
+Group=@SERVICE_GROUP@
+WorkingDirectory=@PROJECT_ROOT@
+EnvironmentFile=@ENVIRONMENT_FILE@
+Environment=DJANGO_SETTINGS_MODULE=backend.config.settings_production
+Environment=DJANGO_ENV_FILE=
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=@VENV_ROOT@/bin/uwsgi --ini @OUTPUT_ROOT@/uwsgi.ini
+RuntimeDirectory=stoichioomics
+RuntimeDirectoryMode=0750
+UMask=0027
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=@STOP_TIMEOUT_SECONDS@
+KillSignal=SIGTERM
+KillMode=control-group
+NoNewPrivileges=true
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

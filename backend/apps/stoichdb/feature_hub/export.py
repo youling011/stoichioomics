@@ -11,6 +11,7 @@ from typing import Any
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from django.conf import settings
+from backend.apps.common.atomic_json import atomic_write_json, read_json
 
 from .builder import split_x_metadata
 from .qc import qc_report
@@ -34,7 +35,7 @@ def _status_path(export_id: str) -> Path:
 
 
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    atomic_write_json(path, payload)
 
 
 def _set_status(export_id: str, payload: dict[str, Any]) -> None:
@@ -216,7 +217,7 @@ def export_status(export_id: str) -> dict[str, Any]:
     path = _status_path(export_id)
     if not path.exists():
         return {"export_id": export_id, "status": "missing"}
-    return json.loads(path.read_text(encoding="utf-8"))
+    return read_json(path)
 
 
 def export_download_path(export_id: str) -> Path:

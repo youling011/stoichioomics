@@ -1,0 +1,12 @@
+# Standalone validation config. Production may include nginx-site.conf in its vendor nginx.conf.
+user @NGINX_USER@ @NGINX_GROUP@;
+worker_processes 1;
+pid /tmp/stoichioomics-nginx.pid;
+error_log /var/log/nginx/stoichioomics-main-error.log warn;
+events { worker_connections 1024; }
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    sendfile on;
+    include "@OUTPUT_ROOT@/nginx-site.conf";
+}

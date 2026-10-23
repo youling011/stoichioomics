@@ -16,6 +16,7 @@ from django.conf import settings
 from django.core.files.uploadedfile import UploadedFile
 
 from backend.apps.common.reproducibility import utc_now_iso, write_reproducibility_manifest
+from backend.apps.common.atomic_json import atomic_write_json, read_json, json_file_signature
 from backend.apps.common.upload_security import (
     SEQUENCE_ANNOTATION_EXTENSIONS,
     SEQUENCE_FASTA_EXTENSIONS,
@@ -210,16 +211,22 @@ def _save_upload(upload: UploadedFile, target_dir: Path, workspace_root: Path, *
 
 
 @lru_cache(maxsize=256)
+def _read_json_cached(path: Path, signature: tuple[int, int, int]) -> dict[str, Any]:
+    return read_json(path)
+
+
 def _read_json(path: Path) -> dict[str, Any]:
-    if not path.exists():
+    try:
+        signature = json_file_signature(path)
+        # A worker-local cache must notice another worker's published job state.
+        return _read_json_cached(path, signature)
+    except FileNotFoundError:
         return {}
-    return json.loads(path.read_text(encoding='utf-8'))
 
 
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
-    _read_json.cache_clear()
+    atomic_write_json(path, payload)
+    _read_json_cached.cache_clear()
     _read_table_df.cache_clear()
     field_summary.cache_clear()
     scatter_payload.cache_clear()
@@ -241,10 +248,10 @@ def cleanup_expired_jobs() -> int:
             continue
         for meta_path in root.glob('seq_*/job.json'):
             try:
-                raw_input_dir = meta_path.parent / 'inputs'
-                if raw_input_dir.exists():
-                    shutil.rmtree(raw_input_dir, ignore_errors=True)
                 meta = _read_json(meta_path)
+                raw_input_dir = meta_path.parent / 'inputs'
+                if meta.get('status') in {'SUCCEEDED', 'FAILED', 'BLOCKED', 'CANCELLED'} and raw_input_dir.exists():
+                    shutil.rmtree(raw_input_dir, ignore_errors=True)
                 expires_raw = meta.get('expires_at')
                 if not expires_raw:
                     continue

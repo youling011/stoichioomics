@@ -1,4 +1,4 @@
-from pathlib import Path
+from pathlib import Path,PureWindowsPath
 import os,json,hashlib,uuid,math,time
 import numpy as np
 import pandas as pd
@@ -34,8 +34,8 @@ def digest(path):
 def content_hash(v):return hashlib.sha256(json.dumps(clean(v),ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 def member_hash(ids):return content_hash(sorted(set(map(str,ids))))
 def safe_path(root,relative):
- root=Path(root).resolve();p=Path(relative)
- if p.is_absolute() or '..' in p.parts:raise ValueError('Invalid relative artifact path')
+ root=Path(root).resolve();windows=PureWindowsPath(str(relative));p=Path(str(relative).replace(chr(92),'/'))
+ if windows.drive or p.is_absolute() or '..' in p.parts:raise ValueError('Invalid relative artifact path')
  resolved=(root/p).resolve()
  if not resolved.is_relative_to(root):raise ValueError('Artifact escapes run directory')
  return Path(chr(92)*2+chr(63)+chr(92)+str(resolved)) if os.name=='nt' and not str(resolved).startswith(chr(92)*2+chr(63)+chr(92)) else resolved
