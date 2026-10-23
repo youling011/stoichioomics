@@ -435,7 +435,9 @@ def run_phase2_stoich_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
     comparison_config = dict(config)
     comparison_result: Dict[str, Any]
     comparison_disabled = config.get('enable_hvg_nonhvg_comparison') is False
-    if comparison_disabled:
+    if config.get('research_comparison_summary') is not None:
+        comparison_result = {'summary': config['research_comparison_summary'], 'status': 'completed', 'research_reference': config.get('research_comparison_reference')}
+    elif comparison_disabled:
         comparison_result = write_unavailable_comparison(
             output_dir,
             reason='HVG/non-HVG comparison was disabled by configuration.',

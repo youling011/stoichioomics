@@ -281,6 +281,11 @@ def _stored_hash(source: Any) -> str:
 
 def _load_registry(config: dict[str, Any] | None = None) -> tuple[dict[str, Any], str, Path]:
     config = config or {}
+    snapshot = config.get("registry_snapshot_path")
+    if snapshot:
+        path = Path(snapshot).resolve()
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        return payload, _sha256(path), path
     injected = config.get("_registry_payload")
     if isinstance(injected, dict) and injected.get("fields"):
         encoded = json.dumps(injected, ensure_ascii=False, sort_keys=True).encode("utf-8")

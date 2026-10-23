@@ -8,11 +8,13 @@ from .library import load_registry
 def _detect_case(base: Path, label: str, source: str, tags: list[str] | None = None) -> Dict[str, Any] | None:
     phase1 = base / 'analysis_phase1' / 'hvg_baseline.csv'
     phase2 = base / 'analysis_phase2' / 'hvg_summary.json'
-    if not phase1.exists() and not phase2.exists():
+    research = base / 'hvg_functional_comparison' / 'active_run.json'
+    if not phase1.exists() and not phase2.exists() and not research.exists():
         return None
     cache_path = base / 'case_cache.json'
     return {
         'case_id': base.name,
+        'has_hvg_research': research.exists(),
         'label': label,
         'source': source,
         'base_dir': str(base.resolve()),

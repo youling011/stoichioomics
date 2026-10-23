@@ -271,3 +271,24 @@ def run_hvg_baseline(
         "standard_reference": standard_reference,
     }
     return df, summary
+
+
+def run_configured_hvg(dataset, config):
+    """Use official standard labels in unified workflows; preserve legacy callers."""
+    if config.get('primary_backend') != 'scanpy':
+        return run_hvg_baseline(dataset, method=config.get('hvg_method', 'dispersion'),
+            n_top_genes=config.get('n_top_genes', 2000), n_bins=config.get('n_bins', 20),
+            loess_span=float(config.get('loess_span', .3)))
+    from backend.analysis_engine.hvg_research.primary_hvg import official_hvg
+    key = (tuple(dataset.cell_ids), tuple(dataset.gene_ids))
+    cache = config.get('_standard_hvg_cache')
+    if cache is not None and key in cache:
+        labels, meta = cache[key]
+    else:
+        labels, _, _, meta = official_hvg(dataset, config)
+        if cache is not None: cache[key] = (labels, meta)
+    labels = labels.copy()
+    labels['dispersion'] = labels['raw_dispersion']
+    labels['n_cells_detected'] = (labels['pct_cells_detected'] * meta['cells_after']).round().astype(int)
+    return labels, {'n_cells':meta['cells_after'], 'n_genes':len(labels),
+        'n_hvgs':int(labels.is_hvg.sum()), 'method_metadata':meta}

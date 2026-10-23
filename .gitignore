@@ -54,3 +54,9 @@ Thumbs.db
 .idea/
 .vscode/
 /codex_hvg_publication_backup_*/
+
+# Optimization-development and test output
+/work/
+.cache/
+frontend/test-results/
+frontend/playwright-report/

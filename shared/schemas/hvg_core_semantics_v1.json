@@ -1,0 +1,2487 @@
+{
+  "schema_version": "hvg_core_semantics_v1",
+  "registry_sha256": "b65aecf8b40f8e0a482b7fcb5c91e0b80a7862d6cbddbefd78b6a4ce52965679",
+  "extractor_sources": {
+    "genome_stoich_feature_extractor_v3_3_2.py": "27a62303a809bfc0789ed56184aa8103d1addf21651f3b8c1e02e2acd59109e7",
+    "proteome_stoich_feature_extractor_v4_fast.py": "c6c5c13825573140a09c9e57aa768e64b1abcd51dff02559b19f80022353b140",
+    "transcriptome_stoich_feature_extractor_v5_2.py": "0ddf8cd3cc49b32f9d2fbef81def42989a08c370e3747aaf4d38875dbec2eef9"
+  },
+  "interpretation_limitations": [
+    "Registry formulas remain partly inferred; source-contract review is not sequence-level recalculation",
+    "Cross-omics isoform equivalence is not assumed"
+  ],
+  "features": {
+    "genome::species_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "genome::gene_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "genome::source_gene_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "genome::gene_name": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "metadata_text",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "metadata_text"
+    },
+    "genome::locus_tag": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "metadata_text",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "metadata_text"
+    },
+    "genome::biotype": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "categorical_code",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "categorical_code"
+    },
+    "genome::seqid": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "coordinate",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "coordinate"
+    },
+    "genome::start_1": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "coordinate",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "coordinate"
+    },
+    "genome::end_1": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "coordinate",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "coordinate"
+    },
+    "genome::strand": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "categorical_code",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "categorical_code"
+    },
+    "genome::is_coding": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "binary",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "binary"
+    },
+    "genome::transcript_count": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::chosen_transcript_source_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "genome::chosen_transcript_reason": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "metadata_text",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "metadata_text"
+    },
+    "genome::exon_seq_strategy": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "categorical_code",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "categorical_code"
+    },
+    "genome::transl_table_used": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "categorical_code",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "categorical_code"
+    },
+    "genome::upstream_intergenic_bp": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "bp",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::downstream_intergenic_bp": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "bp",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::locus_length_bp": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "bp",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::locus_length_acgt_bp": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "bp",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::locus_n_percent": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_gc_percent": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::exon_length_bp": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "bp",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::exon_length_acgt_bp": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "bp",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::exon_n_percent": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::exon_gc_percent": {
+      "reviewed": true,
+      "review_status": "defined_registry_formula",
+      "research_value_type": "continuous",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::exon_shannon_entropy_acgt": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::exon_atoms_C_per_base": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::exon_atoms_H_per_base": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::exon_atoms_O_per_base": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::exon_atoms_N_per_base": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "atoms/base",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::exon_atoms_P_per_base": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::exon_ratio_C_N": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::exon_ratio_C_P": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::exon_ratio_N_P": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::promoter_length_bp": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "bp",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::promoter_length_acgt_bp": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "bp",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::promoter_n_percent": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::promoter_gc_percent": {
+      "reviewed": true,
+      "review_status": "defined_registry_formula",
+      "research_value_type": "continuous",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::promoter_shannon_entropy_acgt": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::promoter_atoms_C_per_base": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::promoter_atoms_H_per_base": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::promoter_atoms_O_per_base": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::promoter_atoms_N_per_base": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "atoms/base",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::promoter_atoms_P_per_base": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::promoter_ratio_C_N": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::promoter_ratio_C_P": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::promoter_ratio_N_P": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_AA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_AC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_AG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_AT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_CA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_CC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_CG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_CT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_GA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_GC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_GG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_GT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_TA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_TC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_TG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_TT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::locus_dinuc_total_valid": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "binary",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "binary"
+    },
+    "genome::coding_valid": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "binary",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "binary"
+    },
+    "genome::cds_length_bp": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "bp",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::cds_gc_percent": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::gc1_percent": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::gc2_percent": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::gc3_percent": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::codon_total_valid": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "binary",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "binary"
+    },
+    "genome::codon_entropy_bits": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::aa_total_20": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::aa_entropy_bits": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "genome::aa_stop_count": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "genome::codon_AAA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_AAC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_AAG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_AAT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_ACA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_ACC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_ACG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_ACT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_AGA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_AGC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_AGG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_AGT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_ATA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_ATC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_ATG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_ATT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CAA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CAC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CAG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CAT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CCA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CCC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CCG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CCT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CGA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CGC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CGG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CGT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CTA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CTC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CTG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_CTT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GAA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GAC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GAG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GAT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GCA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GCC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GCG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GCT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GGA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GGC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GGG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GGT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GTA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GTC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GTG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_GTT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TAA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TAC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TAG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TAT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TCA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TCC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TCG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TCT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TGA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TGC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TGG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TGT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TTA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TTC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TTG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::codon_TTT_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_A_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_C_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_D_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_E_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_F_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_G_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_H_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_I_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_K_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_L_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_M_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_N_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_P_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_Q_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_R_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_S_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_T_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_V_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_W_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "genome::aa_Y_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::species_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "proteome::protein_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "proteome::gene_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "proteome::gene_symbol": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "metadata_text",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "metadata_text"
+    },
+    "proteome::transcript_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "proteome::source_db": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "categorical_code",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "categorical_code"
+    },
+    "proteome::source_protein_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "proteome::ensembl_gene_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "proteome::ensembl_transcript_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "proteome::ensembl_protein_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "proteome::description": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "metadata_text",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "metadata_text"
+    },
+    "proteome::length_aa": {
+      "reviewed": true,
+      "review_status": "defined_registry_formula",
+      "research_value_type": "count",
+      "unit": "aa",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "proteome::mw_da": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "Da",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::pI": {
+      "reviewed": true,
+      "review_status": "defined_registry_formula",
+      "research_value_type": "continuous",
+      "unit": "pI",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::net_charge_pH7": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::gravy": {
+      "reviewed": true,
+      "review_status": "defined_registry_formula",
+      "research_value_type": "continuous",
+      "unit": "GRAVY",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::aromaticity": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::instability_index": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "index",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::aliphatic_index": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::aa_entropy_bits": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::aa_hydrophobic_frac": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::aa_polar_frac": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::aa_pos_frac": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::aa_neg_frac": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::aa_aromatic_frac": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::cys_count": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "proteome::met_count": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "proteome::sulfur_aa_frac": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::C_atoms": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::H_atoms": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::N_atoms": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "proteome::O_atoms": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::S_atoms": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::Se_atoms": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::C_atoms_per_aa": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "aa",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "proteome::N_atoms_per_aa": {
+      "reviewed": true,
+      "review_status": "defined_registry_formula",
+      "research_value_type": "density",
+      "unit": "atoms/aa",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "proteome::S_atoms_per_aa": {
+      "reviewed": true,
+      "review_status": "defined_registry_formula",
+      "research_value_type": "density",
+      "unit": "atoms/aa",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "proteome::avg_oxidation_state_C": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::C_N_ratio": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::N_S_ratio": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "proteome::O_C_ratio": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::H_C_ratio": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "proteome::AA_A_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_C_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_D_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_E_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_F_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_G_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_H_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_I_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_K_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_L_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_M_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_N_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_P_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_Q_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_R_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_S_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_T_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_V_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_W_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_Y_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "proteome::AA_other_pct": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "%",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::species_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "transcriptome::omics": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "metadata_text",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "metadata_text"
+    },
+    "transcriptome::element_rule": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "metadata_text",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "metadata_text"
+    },
+    "transcriptome::transcript_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "transcriptome::gene_id": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "identifier",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "identifier"
+    },
+    "transcriptome::gene_symbol": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "metadata_text",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "metadata_text"
+    },
+    "transcriptome::gene_biotype": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "categorical_code",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "categorical_code"
+    },
+    "transcriptome::transcript_biotype": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "categorical_code",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "categorical_code"
+    },
+    "transcriptome::assembly": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "coordinate",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "coordinate"
+    },
+    "transcriptome::seq_region": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "coordinate",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "coordinate"
+    },
+    "transcriptome::start": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "coordinate",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "coordinate"
+    },
+    "transcriptome::end": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "coordinate",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "coordinate"
+    },
+    "transcriptome::strand": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "categorical_code",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "categorical_code"
+    },
+    "transcriptome::length_nt_total": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "transcriptome::length_nt_acgu": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "transcriptome::n_N": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "transcriptome::frac_A": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::frac_C": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::frac_G": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::frac_U": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::gc_content": {
+      "reviewed": true,
+      "review_status": "defined_registry_formula",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::at_skew": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::gc_skew": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::purine_frac": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::nt_entropy": {
+      "reviewed": true,
+      "review_status": "defined_registry_formula",
+      "research_value_type": "continuous",
+      "unit": "bits",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::C_atoms": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::N_atoms": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "transcriptome::P_atoms": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::C_N_ratio": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::C_P_ratio": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::N_P_ratio": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "ratio",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "transcriptome::atoms_per_nt_C": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "atoms/unit",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::atoms_per_nt_N": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "atoms/nt",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "transcriptome::atoms_per_nt_P": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "atoms/nt",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::mw_rna_nmp_per_nt_Da": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "density",
+      "unit": "Da",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::dinuc_AA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_AC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_AG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_AU_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_CA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_CC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_CG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_CU_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_GA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_GC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_GG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_GU_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_UA_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_UC_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_UG_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_UU_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::dinuc_valid_pairs": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::clean_rna_len": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "transcriptome::avg_spacing_A": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::avg_spacing_U": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::max_run_A": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::max_run_any": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::orf_len_nt": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "nt",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "transcriptome::orf_len_aa": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "aa",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "transcriptome::orf_has_stop": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::protein_mw_Da": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "Da",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::protein_isoelectric_point": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::protein_gravy": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::protein_instability_index": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    },
+    "transcriptome::aa_len": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "count",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "count"
+    },
+    "transcriptome::aa_A_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_C_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_D_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_E_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_F_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_G_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_H_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_I_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_K_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_L_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_M_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_N_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_P_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_Q_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_R_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_S_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_T_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_V_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_W_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::aa_Y_freq": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "composition",
+      "unit": "fraction",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "composition"
+    },
+    "transcriptome::codon_valid_codons": {
+      "reviewed": true,
+      "review_status": "source_contract_reviewed_definition_inferred",
+      "research_value_type": "continuous",
+      "unit": "",
+      "definition_basis": "fixed extractor source/schema contract and existing registry formula; ratio/density overrides count heuristic",
+      "original_semantic_type": "continuous"
+    }
+  }
+}

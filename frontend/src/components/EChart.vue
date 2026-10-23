@@ -23,8 +23,8 @@
       <div v-if="showExports" class="chart-export-row">
         <button class="chart-export-btn" type="button" @click="download('png')">PNG 4x</button>
         <button class="chart-export-btn" type="button" @click="download('svg')">SVG</button>
-        <button v-if="downloadableRows.length" class="chart-export-btn" type="button" @click="downloadData('csv')">CSV</button>
-        <button v-if="downloadableRows.length" class="chart-export-btn" type="button" @click="downloadData('tsv')">TSV</button>
+        <button v-if="showDataExports && downloadableRows.length" class="chart-export-btn" type="button" @click="downloadData('csv')">CSV</button>
+        <button v-if="showDataExports && downloadableRows.length" class="chart-export-btn" type="button" @click="downloadData('tsv')">TSV</button>
       </div>
       <div ref="el" class="chart-host"></div>
       <div v-if="resolvedCaption || metaLine" class="chart-caption">
@@ -59,6 +59,7 @@ const props = defineProps({
   exportName: { type: String, default: '' },
   dataRows: { type: Array, default: () => [] },
   showExports: { type: Boolean, default: true },
+  showDataExports: { type: Boolean, default: true },
 })
 const emit = defineEmits(['chart-click'])
 const el = ref(null)
@@ -299,6 +300,14 @@ function normalizeSeries(series) {
 }
 
 function normalizeOption(option = {}) {
+  // Scientific topic charts provide explicit axes/labels; preserve legacy defaults elsewhere.
+  if (option.__scientificLayout) {
+    const scientificAxis = (axis, orientation) => {
+      const one = item => ({ ...item, nameLocation: item?.nameLocation || 'middle', nameGap: item?.nameGap ?? (orientation === 'x' ? 38 : 48), axisLabel: { hideOverlap: true, ...item?.axisLabel } })
+      return Array.isArray(axis) ? axis.map(one) : axis ? one(axis) : axis
+    }
+    return { ...option, xAxis: scientificAxis(option.xAxis, 'x'), yAxis: scientificAxis(option.yAxis, 'y') }
+  }
   const hasTitle = Boolean(option?.title)
   return {
     ...option,

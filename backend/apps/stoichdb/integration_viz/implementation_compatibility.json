@@ -1,0 +1,5 @@
+{
+  "current": "f4cfe81bf601d3a971891638c76431adcbb4c2969b301632ec10293ab3ac4488",
+  "accepted_prior": "d56f83a6272ee23b4271f30c6200db712ad0758f48d6bd6c4a46ec7025440925",
+  "scope": "Correlation result ordering key only: coerce an all-None rho sort key to NaN. No rho, pair_n, masks, rows, source fields, scores, or numerical algorithms change. Only previously audited immutable publications with exactly this prior fingerprint may be reused. All other future fingerprints invalidate normally."
+}

@@ -20,6 +20,7 @@ def _read_csv(path: Path, nrows: int | None = None):
 def load_case_outputs(base_dir: str | Path) -> Dict[str, Any]:
     base = Path(base_dir)
     return {
+        'hvg_research_pointer': _read_json(base / 'hvg_functional_comparison' / 'active_run.json'),
         'phase1_baseline': _read_csv(base / 'analysis_phase1' / 'hvg_baseline.csv'),
         'phase1_summary': _read_json(base / 'analysis_phase1' / 'phase1_mode_summary.json'),
         'phase1_method_benchmark': _read_csv(base / 'analysis_phase1' / 'hvg_method_benchmark.csv'),

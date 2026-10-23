@@ -1,0 +1,457 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "enabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "schema_version": {
+      "type": "string",
+      "default": "hvg_research_v1"
+    },
+    "objective": {
+      "type": "string",
+      "default": "stoich_functional_characterization"
+    },
+    "context_policy": {
+      "type": "string",
+      "default": "global_and_declared_subsets"
+    },
+    "contexts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "context_id",
+          "field",
+          "values"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "context_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "field": {
+            "type": "string",
+            "minLength": 1
+          },
+          "values": {
+            "type": "array",
+            "minItems": 1
+          }
+        }
+      },
+      "default": []
+    },
+    "core": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "omics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": "genome"
+          },
+          "default": [
+            "genome",
+            "transcriptome",
+            "proteome"
+          ]
+        },
+        "coverage_policy": {
+          "type": "string",
+          "default": "audit_all_legal_core"
+        },
+        "semantic_overlay": {
+          "type": "string",
+          "default": "shared/schemas/hvg_core_semantics_v1.json"
+        },
+        "min_group_n": {
+          "type": "integer",
+          "default": 20
+        },
+        "main_max_missing_rate": {
+          "type": "number",
+          "default": 0.2
+        },
+        "exploratory_max_missing_rate": {
+          "type": "number",
+          "default": 0.5
+        },
+        "conditional_policy": {
+          "type": "string",
+          "default": "reviewed_per_feature"
+        }
+      },
+      "default": {
+        "omics": [
+          "genome",
+          "transcriptome",
+          "proteome"
+        ],
+        "coverage_policy": "audit_all_legal_core",
+        "semantic_overlay": "shared/schemas/hvg_core_semantics_v1.json",
+        "min_group_n": 20,
+        "main_max_missing_rate": 0.2,
+        "exploratory_max_missing_rate": 0.5,
+        "conditional_policy": "reviewed_per_feature"
+      }
+    },
+    "preprocessing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "canonical_units": {
+          "type": "boolean",
+          "default": true
+        },
+        "continuous_scaler": {
+          "type": "string",
+          "default": "robust"
+        },
+        "composition_joint_transform": {
+          "type": "string",
+          "default": "ilr"
+        },
+        "composition_single_transform": {
+          "type": "string",
+          "default": "clr"
+        }
+      },
+      "default": {
+        "canonical_units": true,
+        "continuous_scaler": "robust",
+        "composition_joint_transform": "ilr",
+        "composition_single_transform": "clr"
+      }
+    },
+    "feature_tests": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "alpha": {
+          "type": "number",
+          "default": 0.05
+        },
+        "minimum_abs_cliffs_delta": {
+          "type": "number",
+          "default": 0.147
+        },
+        "ci_repeats": {
+          "type": "integer",
+          "default": 500
+        },
+        "adjustment": {
+          "type": "string",
+          "default": "expression_detection_length"
+        },
+        "matching_enabled": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "default": {
+        "alpha": 0.05,
+        "minimum_abs_cliffs_delta": 0.147,
+        "ci_repeats": 500,
+        "adjustment": "expression_detection_length",
+        "matching_enabled": true
+      }
+    },
+    "gene_sets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reference": {
+          "type": "string",
+          "default": "nonhvg_feature_applicable"
+        },
+        "low_quantile": {
+          "type": "number",
+          "default": 0.2
+        },
+        "high_quantile": {
+          "type": "number",
+          "default": 0.8
+        },
+        "compute_both_directions": {
+          "type": "boolean",
+          "default": true
+        },
+        "min_annotated_query": {
+          "type": "integer",
+          "default": 20
+        }
+      },
+      "default": {
+        "reference": "nonhvg_feature_applicable",
+        "low_quantile": 0.2,
+        "high_quantile": 0.8,
+        "compute_both_directions": true,
+        "min_annotated_query": 20
+      }
+    },
+    "enrichment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": "GO_BP"
+          },
+          "default": [
+            "GO_BP",
+            "GO_MF",
+            "GO_CC",
+            "KEGG_pathway",
+            "KEGG_module"
+          ]
+        },
+        "min_term_size": {
+          "type": "integer",
+          "default": 10
+        },
+        "max_term_size": {
+          "type": "integer",
+          "default": 500
+        },
+        "annotation_release_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "fdr_scope": {
+          "type": "string",
+          "default": "all_declared_contexts_features_directions_terms"
+        }
+      },
+      "default": {
+        "sources": [
+          "GO_BP",
+          "GO_MF",
+          "GO_CC",
+          "KEGG_pathway",
+          "KEGG_module"
+        ],
+        "min_term_size": 10,
+        "max_term_size": 500,
+        "annotation_release_id": null,
+        "fdr_scope": "all_declared_contexts_features_directions_terms"
+      }
+    },
+    "pathway": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rank_relationship_enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "gsea_enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "gsea_permutations": {
+          "type": "integer",
+          "default": 1000
+        },
+        "within_pathway_enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "interaction_enabled": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "default": {
+        "rank_relationship_enabled": true,
+        "gsea_enabled": true,
+        "gsea_permutations": 1000,
+        "within_pathway_enabled": true,
+        "interaction_enabled": true
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "seed": {
+          "type": "integer",
+          "default": 42
+        },
+        "by_sensitivity": {
+          "type": "boolean",
+          "default": true
+        },
+        "biological_replication": {
+          "type": "string",
+          "default": "when_available"
+        },
+        "donor_key": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "cell_resamples": {
+          "type": "integer",
+          "default": 10
+        },
+        "cell_fraction": {
+          "type": "number",
+          "default": 0.8
+        },
+        "top_n_factors": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "default": 0.5
+          },
+          "default": [
+            0.5,
+            1.5
+          ]
+        }
+      },
+      "default": {
+        "seed": 42,
+        "by_sensitivity": true,
+        "biological_replication": "when_available",
+        "donor_key": null,
+        "cell_resamples": 10,
+        "cell_fraction": 0.8,
+        "top_n_factors": [
+          0.5,
+          1.5
+        ]
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "worker_count": {
+          "type": "integer",
+          "default": 1
+        },
+        "stage_resume": {
+          "type": "boolean",
+          "default": true
+        },
+        "atomic_outputs": {
+          "type": "boolean",
+          "default": true
+        },
+        "resume_run_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "retain_days": {
+          "type": "integer",
+          "default": 30
+        }
+      },
+      "default": {
+        "worker_count": 1,
+        "stage_resume": true,
+        "atomic_outputs": true,
+        "resume_run_id": null,
+        "retain_days": 30
+      }
+    }
+  },
+  "default": {
+    "enabled": false,
+    "schema_version": "hvg_research_v1",
+    "objective": "stoich_functional_characterization",
+    "context_policy": "global_and_declared_subsets",
+    "contexts": [],
+    "core": {
+      "omics": [
+        "genome",
+        "transcriptome",
+        "proteome"
+      ],
+      "coverage_policy": "audit_all_legal_core",
+      "semantic_overlay": "shared/schemas/hvg_core_semantics_v1.json",
+      "min_group_n": 20,
+      "main_max_missing_rate": 0.2,
+      "exploratory_max_missing_rate": 0.5,
+      "conditional_policy": "reviewed_per_feature"
+    },
+    "preprocessing": {
+      "canonical_units": true,
+      "continuous_scaler": "robust",
+      "composition_joint_transform": "ilr",
+      "composition_single_transform": "clr"
+    },
+    "feature_tests": {
+      "alpha": 0.05,
+      "minimum_abs_cliffs_delta": 0.147,
+      "ci_repeats": 500,
+      "adjustment": "expression_detection_length",
+      "matching_enabled": true
+    },
+    "gene_sets": {
+      "reference": "nonhvg_feature_applicable",
+      "low_quantile": 0.2,
+      "high_quantile": 0.8,
+      "compute_both_directions": true,
+      "min_annotated_query": 20
+    },
+    "enrichment": {
+      "sources": [
+        "GO_BP",
+        "GO_MF",
+        "GO_CC",
+        "KEGG_pathway",
+        "KEGG_module"
+      ],
+      "min_term_size": 10,
+      "max_term_size": 500,
+      "annotation_release_id": null,
+      "fdr_scope": "all_declared_contexts_features_directions_terms"
+    },
+    "pathway": {
+      "rank_relationship_enabled": true,
+      "gsea_enabled": true,
+      "gsea_permutations": 1000,
+      "within_pathway_enabled": true,
+      "interaction_enabled": true
+    },
+    "validation": {
+      "seed": 42,
+      "by_sensitivity": true,
+      "biological_replication": "when_available",
+      "donor_key": null,
+      "cell_resamples": 10,
+      "cell_fraction": 0.8,
+      "top_n_factors": [
+        0.5,
+        1.5
+      ]
+    },
+    "execution": {
+      "worker_count": 1,
+      "stage_resume": true,
+      "atomic_outputs": true,
+      "resume_run_id": null,
+      "retain_days": 30
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hvg_research_config_v1",
+  "title": "hvg_research section; deep merge with versioned defaults"
+}

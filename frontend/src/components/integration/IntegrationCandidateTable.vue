@@ -1,0 +1,1 @@
+<template><IntegrationResultTable :context="context" :species-id="speciesId" candidate title="X8 · Complete candidate workbench" @entity="$emit('entity',$event)" /></template><script setup>import IntegrationResultTable from './IntegrationResultTable.vue';defineProps({context:Object,speciesId:String});defineEmits(['entity'])</script>

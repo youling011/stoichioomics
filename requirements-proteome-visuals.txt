@@ -1,0 +1,2 @@
+# Optional acceleration. Existing Django/NumPy/SciPy/Vue versions remain unchanged.
+orjson==3.13.0

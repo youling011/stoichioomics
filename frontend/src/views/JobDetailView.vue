@@ -21,6 +21,7 @@
           <tr><td>Workflow module</td><td>{{ job.metadata_json?.workflow_module || job.module_name }}</td></tr>
           <tr><td>Run objective</td><td>{{ job.metadata_json?.run_objective || '-' }}</td></tr>
           <tr><td>Research question</td><td>{{ job.metadata_json?.research_question || '-' }}</td></tr>
+          <tr><td>Research retention</td><td>{{ job.metadata_json?.archived ? 'Archived; excluded from automatic cleanup' : (job.metadata_json?.retain_until ? new Date(job.metadata_json.retain_until).toLocaleString() : 'Platform default retention; completed research runs follow research retention settings') }}</td></tr>
           <tr><td>Dataset context</td><td>{{ job.metadata_json?.dataset_context || '-' }}</td></tr>
           <tr><td>Species / omics</td><td>{{ job.metadata_json?.species_id || '-' }} / {{ job.metadata_json?.omics_type || 'transcriptome' }}</td></tr>
           <tr><td>Sequence feature job</td><td>{{ job.metadata_json?.sequence_feature_job_id || '-' }}</td></tr>
@@ -35,6 +36,12 @@
       </p>
     </div>
 
+    <div class="card">
+      <strong>Unified HVG, context and stoichiometric research workflow</strong>
+      <p class="muted">Each full task runs standard HVG, all applicable metadata modes, original comparisons and extended research. Predictive modeling is excluded. Explicit research settings remain available in advanced JSON.</p>
+      <div class="row"><button class="btn secondary" @click="resumeResearch" :disabled="!['FAILED','CANCELLED'].includes(job.status)">Resume last research run</button><button class="btn secondary" @click="retainResearch">Retain research for 30 days</button></div>
+    </div>
+    <div v-if="researchEnabled || job.metadata_json?.hvg_research" class="card"><h3>HVG results</h3><p class="muted">View standard HVG results, Core differences, functional associations and candidate evidence in the ten result sections. Completed outputs and stage status are available while a run is in progress.</p><router-link class="btn" :to="`/hvg/${job.job_id}`">Open HVG results</router-link></div>
     <div class="grid grid-2">
       <div class="card">
         <h3>1. Upload files</h3>
@@ -63,7 +70,7 @@
               <tr><td>Stoich source</td><td>{{ autoConfig.recommended_run_plan?.stoich_registry_resolution?.status || '-' }} / {{ autoConfig.recommended_run_plan?.stoich_registry_resolution?.source || '-' }}</td></tr>
               <tr><td>Stoich file</td><td>{{ autoConfig.recommended_run_plan?.stoich_registry_resolution?.file || autoConfig.recommended_run_plan?.stoich_features?.source_file || '-' }}</td></tr>
               <tr><td>Phase 1</td><td>{{ autoConfig.recommended_run_plan?.phase1?.will_run }} / {{ autoConfig.recommended_run_plan?.phase1?.primary_mode }}</td></tr>
-              <tr><td>Phase 2</td><td>{{ autoConfig.recommended_run_plan?.phase2?.will_run }} / {{ autoConfig.recommended_run_plan?.phase2?.model_type || '-' }}</td></tr>
+              <tr><td>Predictive model</td><td>Removed from this workflow</td></tr>
               <tr><td>Ready</td><td>{{ autoConfig.ready_to_run }}</td></tr>
             </tbody>
           </table>
@@ -138,6 +145,8 @@
 </template>
 <script setup>
 import { computed, ref, onMounted } from 'vue'
+
+import {researchControl} from '../api/hvgResearch'
 import { getJob, uploadJobFiles, configureJob, autoconfigureJob, preflightJob, runJob, cancelJob, getJobLogs, getJobReproducibility } from '../api/jobs'
 const props = defineProps({ jobId: String })
 const job = ref(null)
@@ -146,6 +155,7 @@ const preflightResult = ref(null)
 const autoConfig = ref(null)
 const logs = ref(null)
 const repro = ref(null)
+const researchEnabled=ref(true)
 const profile = ref('standard_guided')
 const pipelineType = ref('full')
 const inputMode = ref('h5ad')
@@ -161,21 +171,24 @@ const analysisJson = ref(JSON.stringify({
   },
   phase2_stoich: {
     feature_set: 'core',
-    model_type: 'elasticnet',
+    model_enabled: false,
     hvg_target_type: 'score',
     permutation_repeats: 8,
     bootstrap_repeats: 40
   }
 }, null, 2))
 const canCancel = computed(() => job.value && !['SUCCEEDED', 'FAILED', 'CANCELLED'].includes(job.value.status))
-const load = async () => { job.value = await getJob(props.jobId) }
+const load = async () => { job.value = await getJob(props.jobId); if(job.value.metadata_json?.run_objective==='stoich_functional_characterization') researchEnabled.value=true }
+const selectedOverrides=()=>{const v=JSON.parse(analysisJson.value);if(researchEnabled.value){v.hvg_research={...v.hvg_research,enabled:true};v.phase1_analysis={...v.phase1_analysis,primary_backend:'scanpy'};v.phase2_stoich={...v.phase2_stoich,model_enabled:false};if(job.value.metadata_json?.species_id)v.phase2_stoich={...v.phase2_stoich,species_id:job.value.metadata_json.species_id}}return v}
+const resumeResearch=async()=>{const m=await import('../api/hvgResearch');const r=await m.researchGet(props.jobId,'runs');const last=r.rows?.find(x=>x.research_status!=='complete');if(last)await researchControl(props.jobId,'resume',{analysis_run_id:last.analysis_run_id});await load()}
+const retainResearch=async()=>{await researchControl(props.jobId,'retention',{retain_days:30});await load()}
 const handleFiles = (e) => { files.value = Array.from(e.target.files || []) }
 const upload = async () => { await uploadJobFiles(props.jobId, files.value); files.value = []; await load() }
 const autoconfigure = async () => {
   autoConfig.value = await autoconfigureJob(props.jobId, {
     profile: profile.value,
     pipeline_type: pipelineType.value,
-    user_overrides: {}
+    user_overrides: selectedOverrides()
   })
   await load()
 }
@@ -186,7 +199,7 @@ const configure = async () => {
     expression_cfg: JSON.parse(expressionJson.value),
     metadata_file: metadataFile.value || null,
     stoich_cfg: JSON.parse(stoichJson.value),
-    analysis_overrides: JSON.parse(analysisJson.value),
+    analysis_overrides: selectedOverrides(),
   })
   await load()
 }

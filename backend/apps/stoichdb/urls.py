@@ -1,8 +1,16 @@
 from django.urls import path
 from . import views
+from .integration_viz import api as integration_viz_api
 from . import views_entity
+from .proteome_viz import api as proteome_viz_api
+from .sequence_viz import api as sequence_viz_api
+from .compare_core import api as compare_core_api
 
 urlpatterns = [
+    *integration_viz_api.urlpatterns,
+    *proteome_viz_api.urlpatterns,
+    *sequence_viz_api.urlpatterns,
+    *compare_core_api.urlpatterns,
     path('entities/search/', views_entity.entity_search_view),
     path('entities/batch-report/', views_entity.entity_batch_report_view),
     path('home/', views.home_view),

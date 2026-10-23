@@ -30,7 +30,7 @@ defineEmits(['close'])
 const reportRoute = computed(() => {
   if (!props.entity) return ''
   const speciesId = props.entity.species_id || props.speciesId
-  const entityKey = props.entity.gene_id || props.entity.entity_id || props.entity.protein_id || props.entity.transcript_id
+  const entityKey = props.entity.report_entity_key || props.entity.gene_id || props.entity.entity_id || props.entity.protein_id || props.entity.transcript_id
   if (!speciesId || !entityKey) return ''
   return `/species/${encodeURIComponent(speciesId)}/entity/${encodeURIComponent(entityKey)}`
 })

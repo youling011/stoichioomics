@@ -17,6 +17,9 @@ from backend.analysis_engine.phase1.utils import write_json
 
 
 def run_phase1_analysis_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
+    if config.get('primary_backend') == 'scanpy':
+        from backend.analysis_engine.hvg_research.primary_adapter import run_primary_pipeline
+        return run_primary_pipeline(config)
     output_dir = Path(config['output_dir'])
     output_dir.mkdir(parents=True, exist_ok=True)
     mode, (baseline_df, mode_summary, aux_outputs) = run_phase1_dispatch(config)

@@ -64,7 +64,9 @@ def build_input_qc(job: AnalysisJob, preflight: dict[str, Any] | None = None, au
         'module': 'Expression/HVG Stoich Extension',
         'analysis_allowed': not blocking and bool(job.config_path),
         'phase1_allowed': expression.get('status') == 'ready' or bool(job.config_path),
-        'phase2_allowed': bool(stoich.get('phase2_ready') or recommended.get('phase2', {}).get('will_run')),
+        'phase2_allowed': False,
+        'model_policy': 'removed',
+        'comparison_allowed': bool(recommended.get('comparison', {}).get('will_run')),
         'uploaded_file_count': len(uploaded),
         'uploaded_inputs': uploaded,
         'auto_detect_summary': {
@@ -94,12 +96,12 @@ def build_analysis_design(job: AnalysisJob, cfg: dict[str, Any] | None = None, a
         'phase2_stoich': phase2,
         'statistical_plan': {
             'phase1': 'HVG detection and metadata-stratified summaries when metadata are available.',
-            'phase2': 'Stoichiometric association model with strict gene ID mapping when feature tables are supplied.',
-            'validation': 'Use permutation, bootstrap, CV folds, skipped-output logs, and id_mapping_summary.json to determine evidence strength.',
+            'phase2': 'Non-predictive Core feature comparisons and functional associations; the historical predictive model branch is removed.',
+            'validation': 'Use feature confidence intervals, matching, technical resampling, sensitivity analyses and metadata-mode status. Predictive CV and residual classification are excluded.',
         },
         'evidence_policy': {
             'phase1_only': 'Supports descriptive expression-variability results.',
-            'phase2_ready': 'Supports stoichiometric association claims only when mapping rate, target column, HVG flag, model validation and residual diagnostics are present.',
+            'phase2_ready': 'Predictive modeling is removed. Feature associations require applicable Core fields, sufficient group sizes, recorded correction families and explicit annotation backgrounds.',
             'registry_promotion': 'Promoted cases must carry manifests, reproducibility metadata, run logs, and download manifest.',
         },
     }
@@ -113,7 +115,9 @@ def build_result_interpretation(job: AnalysisJob, input_qc: dict[str, Any], anal
         'research_question': analysis_design.get('research_question'),
         'interpretation_scope': {
             'phase1_hvg_descriptive': job.status == AnalysisJob.Status.SUCCEEDED and bool(input_qc.get('phase1_allowed')),
-            'phase2_stoich_association': job.status == AnalysisJob.Status.SUCCEEDED and bool(input_qc.get('phase2_allowed')),
+            'phase2_stoich_association': False,
+            'nonmodel_feature_association': job.status == AnalysisJob.Status.SUCCEEDED and bool(input_qc.get('comparison_allowed')),
+            'model_policy': 'removed',
             'registry_ready': job.status == AnalysisJob.Status.SUCCEEDED and not input_qc.get('blocking_errors'),
         },
         'recommended_read_order': [

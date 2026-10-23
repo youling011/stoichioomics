@@ -4,7 +4,10 @@ from .views import (
     hvg_genes, hvg_gene_detail, hvg_download, hvg_group_comparison_summary,
     hvg_group_comparison_features, hvg_group_comparison_feature_detail,
 )
+from .research_views import research_endpoint
 urlpatterns = [
+    path('<str:identifier>/research/<str:endpoint>/', research_endpoint),
+    path('<str:identifier>/research/<str:endpoint>/<path:object_id>/', research_endpoint),
     path('<str:identifier>/summary/', hvg_summary),
     path('<str:identifier>/phase1-summary/', hvg_phase1_summary),
     path('<str:identifier>/phase2-summary/', hvg_phase2_summary),

@@ -1,5 +1,5 @@
-﻿<template>
-  <div v-if="!species" class="stack-lg">
+<template>
+  <div v-if="!species || species.species_id !== props.speciesId" class="stack-lg">
     <ModuleState
       v-if="!speciesError"
       state="loading"
@@ -15,7 +15,7 @@
     />
   </div>
 
-  <div v-else class="local-shell species-explorer-shell">
+  <div v-else class="local-shell species-explorer-shell" :class="{'proteome-v3-shell':isScientificVisualActive || isIntegrationVisualActive}">
     <aside class="local-side">
       <div class="sidebar-section">
         <div class="sidebar-label">Species</div>
@@ -111,9 +111,11 @@
         </div>
       </div>
 
-      <div class="sidebar-section" v-if="isOmicsPanel || activePanel === 'cross'">
+      <div class="sidebar-section" v-if="isOmicsPanel || activePanel === 'cross' || isIntegrationVisualActive">
         <div class="sidebar-label">Computation</div>
-        <div class="side-nav">
+        <p v-if="isIntegrationVisualActive" class="muted">Complete Core + optional Genome Full (3 supplemental columns)</p>
+        <p v-else-if="isScientificVisualActive" class="muted">Complete dataset statistics</p>
+        <div v-else class="side-nav">
           <button
             class="side-nav-link"
             :class="{ active: omicsCompute === 'stored' }"
@@ -275,6 +277,8 @@
           </template>
         </section>
 
+        <OverviewVisuals v-if="isIntegrationVisualActive" :context="integrationContext" :species-id="species.species_id" @entity="integrationEntity" @cross="openCross" />
+        <template v-else>
         <section class="grid grid-3">
           <article class="panel">
             <div class="section-header compact">
@@ -422,9 +426,13 @@
             <EChart :option="rnaToProteinShiftChart" :height="220" empty-reason="No RNA-to-protein N-shift histogram bins are available in the cross-omics preview payload." />
           </article>
         </section>
+        </template>
       </template>
 
       <template v-else-if="activePanel === 'cross'">
+        <CrossOmicsWorkspace v-if="isIntegrationVisualActive" :context="integrationContext" :species-id="species.species_id" @entity="integrationEntity" />
+        <template v-else>
+
         <ModuleState
           v-if="crossLoading"
           state="loading"
@@ -872,10 +880,13 @@
             </div>
           </section>
         </template>
+        </template>
       </template>
 
       <template v-else-if="isOmicsPanel">
-        <ModuleState v-if="omicsLoading" state="loading" :title="`Loading ${activePanel} module`" message="Retrieving the summary, analysis payload, and available data scopes." />
+        <ProteomeWorkspace v-if="isProteomeV3Active && omicsTab !== 'table'" :species-id="species.species_id" :scope="omicsScope" :section="omicsTab" @manifest="acceptProteomeManifest" />
+        <SequenceWorkspace v-else-if="isSequenceV1Active && omicsTab !== 'table'" :key="activePanel + omicsScope" :species-id="species.species_id" :omics="activePanel" :scope="omicsScope" :section="omicsTab === 'analysis' ? 'deep' : omicsTab" @manifest="acceptSequenceManifest" />
+        <ModuleState v-else-if="omicsLoading" state="loading" :title="`Loading ${activePanel} module`" message="Retrieving the summary, analysis payload, and available data scopes." />
 
         <ModuleState
           v-else-if="omicsError"
@@ -2583,12 +2594,19 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import EChart from '../components/EChart.vue'
 import CandidateLinkedTable from '../components/CandidateLinkedTable.vue'
 import EmptyState from '../components/EmptyState.vue'
 import EntityDrawer from '../components/EntityDrawer.vue'
+import ProteomeWorkspace from '../components/proteome/ProteomeWorkspace.vue'
+import SequenceWorkspace from '../components/sequence/SequenceWorkspace.vue'
+import OverviewVisuals from '../components/integration/OverviewVisuals.vue'
+import CrossOmicsWorkspace from '../components/integration/CrossOmicsWorkspace.vue'
+import { useIntegrationVisuals } from '../composables/useIntegrationVisuals'
+import { sequenceGet } from '../api/sequenceVisuals'
+import { getProteomeManifest } from '../api/proteomeVisuals'
 import MethodBadge from '../components/MethodBadge.vue'
 import ModuleState from '../components/ModuleState.vue'
 import ResultBlock from '../components/result/ResultBlock.vue'
@@ -2645,6 +2663,15 @@ const activePanel = ref('overview')
 const omicsTab = ref('basic')
 const omicsScope = ref('core')
 const omicsCompute = ref('stored')
+const proteomeV3Enabled = ref(true)
+const isProteomeV3Active = computed(() => activePanel.value === 'proteome' && proteomeV3Enabled.value)
+const sequenceEnabled = reactive({genome: import.meta.env.VITE_SEQUENCE_VIZ_GENOME_ENABLED !== '0', transcriptome: import.meta.env.VITE_SEQUENCE_VIZ_TRANSCRIPTOME_ENABLED !== '0'})
+const isSequenceV1Active = computed(() => ['genome','transcriptome'].includes(activePanel.value) && sequenceEnabled[activePanel.value])
+const isScientificVisualActive = computed(() => isProteomeV3Active.value || isSequenceV1Active.value)
+const integrationFlags = {overview:import.meta.env.VITE_INTEGRATION_OVERVIEW_ENABLED !== '0',cross:import.meta.env.VITE_INTEGRATION_CROSS_ENABLED !== '0'}
+const isIntegrationVisualActive = computed(() => Boolean(integrationFlags[activePanel.value]))
+const integrationContext = useIntegrationVisuals(computed(() => props.speciesId), isIntegrationVisualActive)
+function integrationEntity(entity) { handleEntityChartClick({detail:entity}) }
 const availableScopes = ref(['core'])
 
 const omicsSummary = ref(null)
@@ -2908,7 +2935,7 @@ const currentOmicsCard = computed(() =>
 
 const detailReportRoute = computed(() => {
   const row = detailPayload.value?.row || detailPayload.value || {}
-  const entityKey = row.gene_id || row.ensembl_gene_id || row.entity_id || row.protein_id || row.transcript_id
+  const entityKey = (isSequenceV1Active.value && (activePanel.value === 'transcriptome' ? row.transcript_id : row.gene_id)) || (isProteomeV3Active.value && row.protein_id) || row.gene_id || row.ensembl_gene_id || row.entity_id || row.protein_id || row.transcript_id
   if (!species.value?.species_id || !entityKey) return ''
   return `/species/${encodeURIComponent(species.value.species_id)}/entity/${encodeURIComponent(entityKey)}`
 })
@@ -5090,7 +5117,7 @@ function currentRouteQueryFromState() {
     ...(activePanel.value !== 'overview' ? { panel: activePanel.value } : {}),
     ...(omicsTab.value !== 'basic' && isOmicsPanel.value ? { tab: omicsTab.value } : {}),
     ...(omicsScope.value !== 'core' && isOmicsPanel.value ? { scope: omicsScope.value } : {}),
-    ...(omicsCompute.value !== 'stored' && (isOmicsPanel.value || activePanel.value === 'cross') ? { compute: omicsCompute.value } : {}),
+    ...(isIntegrationVisualActive.value ? {} : isScientificVisualActive.value ? { compute: 'complete_core' } : omicsCompute.value !== 'stored' && (isOmicsPanel.value || activePanel.value === 'cross') ? { compute: omicsCompute.value } : {}),
     ...(rowQuery.value && isOmicsPanel.value && omicsTab.value === 'table' ? { q: rowQuery.value } : {}),
     ...(rowCluster.value && isOmicsPanel.value && omicsTab.value === 'table' ? { cluster: rowCluster.value } : {}),
     ...(sortBy.value && isOmicsPanel.value && omicsTab.value === 'table' ? { sort: sortBy.value } : {}),
@@ -5153,7 +5180,13 @@ function applyRouteState() {
   } else {
     omicsCompute.value = 'stored'
   }
-  if (omicsCompute.value === 'complete_core') {
+  if (isIntegrationVisualActive.value) {
+    omicsCompute.value = 'stored'
+    omicsScope.value = 'core'
+  } else if (isScientificVisualActive.value) {
+    omicsCompute.value = 'stored' // Legacy metadata stays lightweight; v3 always reads its complete artifacts.
+    if (compute === 'full' && isProteomeV3Active.value) omicsScope.value = 'core'
+  } else if (omicsCompute.value === 'complete_core') {
     omicsScope.value = 'core'
   }
 
@@ -5197,7 +5230,7 @@ async function loadSpecies(targetSpeciesId = props.speciesId) {
     species.value = speciesPayload
     void loadIdMappingSummary(targetSpeciesId)
     void loadFunctionalSummary(targetSpeciesId)
-    void loadSpeciesEnhanced(targetSpeciesId)
+    if (!isScientificVisualActive.value) void loadSpeciesEnhanced(targetSpeciesId)
     if (activePanel.value === 'overview' && !cross.value && !crossLoading.value) {
       void loadCrossOmics(targetSpeciesId, { background: true })
     }
@@ -5220,6 +5253,7 @@ async function loadSpecies(targetSpeciesId = props.speciesId) {
 }
 
 async function loadSpeciesEnhanced(targetSpeciesId = props.speciesId) {
+  if (isIntegrationVisualActive.value) return
   const compute = omicsCompute.value
   const cacheKey = `${targetSpeciesId}::${compute}`
   if (speciesEnhancedCache.has(cacheKey)) {
@@ -5238,6 +5272,7 @@ async function loadSpeciesEnhanced(targetSpeciesId = props.speciesId) {
 }
 
 function applyCrossPreviewToSpecies(targetSpeciesId, payload) {
+  if (isIntegrationVisualActive.value) return
   if (!species.value || species.value.species_id !== targetSpeciesId) return
   species.value = {
     ...species.value,
@@ -5247,6 +5282,7 @@ function applyCrossPreviewToSpecies(targetSpeciesId, payload) {
 }
 
 async function loadCrossOmics(targetSpeciesId = props.speciesId, options = {}) {
+  if (isIntegrationVisualActive.value) return
   const { force = false, background = false } = options
   const seq = ++crossRequestSeq
   crossError.value = ''
@@ -5286,37 +5322,25 @@ async function loadCrossOmics(targetSpeciesId = props.speciesId, options = {}) {
   }
 }
 
+let functionalRequestSeq = 0, idMappingRequestSeq = 0
 async function loadFunctionalSummary(targetSpeciesId) {
-  functionalSummaryLoading.value = true
-  functionalSummaryError.value = ''
-  if (functionalSummaryCache.has(targetSpeciesId)) {
-    functionalSummary.value = functionalSummaryCache.get(targetSpeciesId)
-    functionalSummaryLoading.value = false
-    return
-  }
+  const seq = ++functionalRequestSeq
+  const current = () => seq === functionalRequestSeq && targetSpeciesId === props.speciesId
+  functionalSummaryLoading.value = true; functionalSummaryError.value = ''
   try {
-    const payload = await getSpeciesFunctionalSummary(targetSpeciesId)
-    functionalSummaryCache.set(targetSpeciesId, payload)
-    functionalSummary.value = payload
-  } catch (error) {
-    functionalSummary.value = null
-    functionalSummaryError.value = error?.response?.data?.error?.message || error?.message || 'Functional annotation summary is unavailable for this species.'
-  } finally {
-    functionalSummaryLoading.value = false
-  }
+    const payload = functionalSummaryCache.has(targetSpeciesId) ? functionalSummaryCache.get(targetSpeciesId) : await getSpeciesFunctionalSummary(targetSpeciesId)
+    functionalSummaryCache.set(targetSpeciesId,payload)
+    if (current()) functionalSummary.value = payload
+  } catch(error) { if(current()) {functionalSummary.value=null;functionalSummaryError.value=error?.response?.data?.error?.message||error.message} }
+  finally {if(current()) functionalSummaryLoading.value=false}
 }
-
 async function loadIdMappingSummary(targetSpeciesId) {
-  idMappingLoading.value = true
-  idMappingError.value = ''
-  try {
-    idMappingSummary.value = await getSpeciesIdMappingSummary(targetSpeciesId)
-  } catch (error) {
-    idMappingSummary.value = null
-    idMappingError.value = error?.response?.data?.error?.message || error?.message || 'ID mapping summary is unavailable for this species.'
-  } finally {
-    idMappingLoading.value = false
-  }
+  const seq = ++idMappingRequestSeq
+  const current = () => seq === idMappingRequestSeq && targetSpeciesId === props.speciesId
+  idMappingLoading.value=true;idMappingError.value=''
+  try {const payload=await getSpeciesIdMappingSummary(targetSpeciesId);if(current())idMappingSummary.value=payload}
+  catch(error){if(current()){idMappingSummary.value=null;idMappingError.value=error?.response?.data?.error?.message||error.message}}
+  finally {if(current())idMappingLoading.value=false}
 }
 
 function formatPercentNumber(value) {
@@ -5354,11 +5378,60 @@ function rowsCacheKey() {
 }
 
 function loadOmicsAuxiliaryPayloads() {
+  if (isScientificVisualActive.value) return
   void loadFieldSummaryForDistribution()
   void loadCustomScatter()
 }
 
+function acceptProteomeManifest(manifest) {
+  proteomeV3Enabled.value = manifest.enabled !== false
+  if (Array.isArray(manifest.available_scopes)) availableScopes.value = manifest.available_scopes
+}
+
+function acceptSequenceManifest(manifest) {
+  if (['genome','transcriptome'].includes(activePanel.value)) sequenceEnabled[activePanel.value] = manifest.enabled !== false
+  if (Array.isArray(manifest.available_scopes)) availableScopes.value = manifest.available_scopes
+}
+
 async function loadOmics(omics, options = {}) {
+  if (['genome','transcriptome'].includes(omics) && sequenceEnabled[omics]) {
+    const requestId = ++omicsRequestSeq, requestedSpecies = props.speciesId, requestedScope = omicsScope.value
+    omicsLoading.value = true; omicsError.value = ''
+    try {
+      const manifest = await sequenceGet(requestedSpecies, omics, '', {scope:requestedScope})
+      if (requestId !== omicsRequestSeq || requestedSpecies !== props.speciesId || requestedScope !== omicsScope.value || activePanel.value !== omics) return
+      acceptSequenceManifest(manifest)
+      if (manifest.enabled === false) { applyRouteState(); return loadOmics(omics, options) }
+      omicsSummary.value = {display_name:omics==='genome'?'Genome':'Transcript sequence', description:'Complete-population sequence descriptors',available_scopes:manifest.available_scopes,kpis:[{label:'Records',value:manifest.n_source}],feature_fields:(manifest.fields||[]).map(f=>f.key)}
+      omicsAnalysis.value = {}; syncRouteFromState()
+      if (omicsTab.value === 'table') await loadRows({force:options.force||false})
+      return
+    } catch(error) { if(requestId===omicsRequestSeq && requestedSpecies===props.speciesId) omicsError.value=error?.response?.data?.error?.message||error.message; return }
+    finally {if(requestId===omicsRequestSeq) omicsLoading.value=false}
+  }
+
+  if (omics === 'proteome' && proteomeV3Enabled.value) {
+    const requestId = ++omicsRequestSeq
+    const requestedSpecies = props.speciesId
+    const requestedScope = omicsScope.value
+    omicsLoading.value = true
+    omicsError.value = ''
+    try {
+      const manifest = await getProteomeManifest(requestedSpecies, { scope: requestedScope })
+      if (requestId !== omicsRequestSeq || requestedSpecies !== props.speciesId || requestedScope !== omicsScope.value || activePanel.value !== 'proteome') return
+      acceptProteomeManifest(manifest)
+      if (manifest.enabled === false) { applyRouteState(); return loadOmics(omics, options) }
+      omicsSummary.value = { display_name:'Proteome', description:'Complete-population sequence descriptors', available_scopes:manifest.available_scopes, kpis:[{label:'Records',value:manifest.n_source}], feature_fields:(manifest.fields || []).map(f => f.key) }
+      omicsAnalysis.value = {}
+      omicsLoading.value = false
+      syncRouteFromState()
+      if (omicsTab.value === 'table') await loadRows({ force: options.force || false })
+      return
+    } catch (error) {
+      if (requestId === omicsRequestSeq && requestedSpecies === props.speciesId) omicsError.value = error?.response?.data?.error?.message || error.message
+      return
+    } finally { if (requestId === omicsRequestSeq) omicsLoading.value = false }
+  }
   const { force = false } = options
   const seq = ++omicsRequestSeq
   const speciesId = props.speciesId
@@ -5444,7 +5517,7 @@ async function loadRows(options = {}) {
 
   if (!force && rowsCache.has(cacheKey)) {
     rowsPayload.value = rowsCache.get(cacheKey)
-    availableScopes.value = rowsPayload.value?.available_scopes || availableScopes.value
+    if (!isScientificVisualActive.value) availableScopes.value = rowsPayload.value?.available_scopes || availableScopes.value
     rowsLoading.value = false
     return
   }
@@ -5472,7 +5545,7 @@ async function loadRows(options = {}) {
 
     rowsCache.set(cacheKey, payload)
     rowsPayload.value = payload
-    availableScopes.value = payload?.available_scopes || availableScopes.value
+    if (!isScientificVisualActive.value) availableScopes.value = payload?.available_scopes || availableScopes.value
   } catch (error) {
     if (seq !== rowsRequestSeq || speciesId !== props.speciesId || omics !== activePanel.value || scope !== omicsScope.value) return
     console.error('Failed to load rows', error)
@@ -5495,6 +5568,7 @@ async function loadRows(options = {}) {
 }
 
 async function loadFieldSummaryForDistribution() {
+  if (isScientificVisualActive.value) return
   if (!isOmicsPanel.value || !distributionKey.value) {
     fieldSummaryPayload.value = null
     return
@@ -5528,6 +5602,7 @@ async function loadFieldSummaryForDistribution() {
 }
 
 async function loadCustomScatter() {
+  if (isScientificVisualActive.value) return
   if (!isOmicsPanel.value || !customScatterX.value || !customScatterY.value) {
     customScatterPayload.value = null
     return
@@ -5572,7 +5647,7 @@ async function setOmicsScope(scope) {
   if (!['core', 'full'].includes(scope)) return
   if (omicsScope.value === scope) return
   omicsScope.value = scope
-  if (scope === 'full' && omicsCompute.value === 'complete_core') {
+  if (!isScientificVisualActive.value && scope === 'full' && omicsCompute.value === 'complete_core') {
     omicsCompute.value = 'stored'
   }
   rowsCache.clear()
@@ -5587,6 +5662,8 @@ async function setOmicsScope(scope) {
 }
 
 async function setOmicsCompute(compute) {
+  if (isIntegrationVisualActive.value) return
+  if (isScientificVisualActive.value) return
   if (!['stored', 'complete_core'].includes(compute)) return
   if (omicsCompute.value === compute) return
   omicsCompute.value = compute
@@ -5624,7 +5701,7 @@ function resetTableFilters() {
 }
 
 async function showDetail(row) {
-  const entityId = row.entity_id || row.gene_id || row.transcript_id || row.protein_id
+  const entityId = (isSequenceV1Active.value && (activePanel.value === 'transcriptome' ? row.transcript_id : row.gene_id)) || (isProteomeV3Active.value && row.protein_id) || row.entity_id || row.gene_id || row.transcript_id || row.protein_id
   const speciesId = props.speciesId
   const omics = activePanel.value
   const scope = omicsScope.value
@@ -5867,6 +5944,10 @@ watch(
   },
 )
 
+watch(() => [activePanel.value, omicsCompute.value], () => {
+  if (species.value?.species_id === props.speciesId && !isScientificVisualActive.value && !speciesEnhanced.value) void loadSpeciesEnhanced(props.speciesId)
+})
+
 onMounted(async () => {
   window.addEventListener('stoich-entity-chart-click', handleEntityChartClick)
   await initializeForCurrentRoute()
@@ -5885,6 +5966,12 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.proteome-v3-shell .local-side p { overflow-wrap: anywhere; }
+@media (max-width: 1200px) {
+  .proteome-v3-shell { grid-template-columns: minmax(0, 1fr); min-width: 0; max-width: 100%; }
+  .proteome-v3-shell .local-side { min-width: 0; }
+  .proteome-v3-shell > .local-content > .panel p { overflow-wrap: anywhere; }
+}
 .species-coverage-panel { border-color: rgba(49, 126, 182, 0.2); }
 .species-coverage-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .species-coverage-item { min-height: 116px; padding: 13px 14px; border: 1px solid rgba(57, 109, 170, 0.12); border-radius: 13px; background: rgba(248, 252, 255, 0.78); }

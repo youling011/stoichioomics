@@ -85,3 +85,30 @@ instructions. Formal case/release **builder code** remains because current API
 modules and tests reference it; the corresponding case **data** is excluded.
 
 No license was inferred or added by this source export.
+
+## Optimization snapshot — 2026-10-23
+
+This update preserves the unified HVG research workflow, Core comparison runs,
+and proteome/genome/transcriptome/cross-omics visualizations from the active
+platform. It includes the new database migration, runtime figure/field contracts,
+frontend test scripts and end-to-end test configuration, optional requirement
+files, and the corresponding operational documentation. No production data or
+precomputed visualization payloads are shipped.
+
+`HVG_RESEARCH_ENABLED=1` in the environment templates preserves the active
+platform's non-secret feature switch. Existing source and algorithms are not
+refactored by this export. Local paths in documented case configurations remain
+as authored and refer to datasets that are not included.
+
+Dependency declarations are archived as authored: `requirements.txt` requests
+Django >=5.1,<6.1, whereas `requirements-hvg-research-lock.txt` pins Django 4.2.29.
+These files cannot be installed together unchanged. This source archive does not
+resolve that pre-existing environment/version conflict or promise a clean install.
+
+The existing frontend scientific tests refer to two real-data `.json.gz` fixtures
+under `frontend/tests/{proteome,integration}/fixtures/`. Those computed data
+artifacts are excluded from this code-only release; tests requiring them need
+separately supplied local fixtures. The 12-row backend CSV and short test-selection
+lists are retained as small regression-test inputs. Browser tests also require a
+separately configured backend and the relevant data; generated reports and browser
+artifacts are excluded.

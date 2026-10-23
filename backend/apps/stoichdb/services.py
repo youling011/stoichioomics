@@ -2667,6 +2667,10 @@ ATLAS_COMPLETENESS_ARTIFACT = 'species_atlas_core_completeness'
 
 def _atlas_domain_query(domain: Any) -> Q:
     label = _atlas_domain_label(domain)
+    if label == 'Unclassified':
+        return (Q(domain__isnull=True) | Q(domain='') | Q(domain__iexact='Unknown') |
+                Q(domain__iexact='Unclassified') | Q(domain__iexact='NA') |
+                Q(domain__iexact='N/A') | Q(domain__iexact='None'))
     if label == 'Protists':
         return (
             Q(domain__iexact='Protists') |

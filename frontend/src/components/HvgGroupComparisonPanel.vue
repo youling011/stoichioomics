@@ -8,10 +8,12 @@
       <p>{{ error }}</p>
       <button type="button" class="btn secondary" @click="load">Retry comparison</button>
     </div>
-    <div v-else-if="!hasResults" class="comparison-state">
+    <div v-else-if="!hasResults"><div class="comparison-state">
       <h3>{{ stateTitle }}</h3>
       <p>{{ summary.reason || 'No reliable gene-level Genome, Transcriptome or Proteome Core feature block was available.' }}</p>
       <small>Status: {{ comparisonStatus }}<template v-if="summary.error_id"> · Error ID: {{ summary.error_id }}</template></small>
+    </div>
+      <div class="comparison-grid"><article v-for="title in ['Largest distribution differences','Effect and global FDR','Feature-family pattern','Raw and adjusted evidence']" :key="title" class="card"><h3>{{title}}</h3><p class="muted">{{summary.reason || 'No finite saved comparison data for this original chart.'}}</p><small>Status: {{comparisonStatus}}</small></article></div>
     </div>
     <template v-else>
       <div class="comparison-note">
@@ -138,6 +140,7 @@ import {
 const props = defineProps({
   identifier: { type: String, required: true },
   isCase5: { type: Boolean, default: false },
+  embeddedComparison: { type: Object, default: null },
   case5Comparison: { type: Object, default: null },
 })
 
@@ -186,6 +189,7 @@ const summaryCards = computed(() => {
   ]
 })
 
+const validNumeric=value=>value!==null&&value!==undefined&&value!==''&&Number.isFinite(Number(value))
 const plotPayload = computed(() => summary.value.plots || {})
 const filterPlotRows = rows => (rows || []).filter(row =>
   (!appliedFilters.value.omics || row.omics_layer === appliedFilters.value.omics) &&
@@ -195,31 +199,31 @@ const filterPlotRows = rows => (rows || []).filter(row =>
 )
 const forestRows = computed(() => filterPlotRows(plotPayload.value.effect_forest || summary.value.top_features || []))
 const forestOption = computed(() => {
-  const rows = forestRows.value.slice(0, 18).reverse()
+  const rows = forestRows.value.filter(r=>validNumeric(r.effect_value)).slice(0, 18).reverse()
   return {
     tooltip: { trigger: 'item', formatter: ({ data }) => traceTooltip(data.raw, `Cliff’s delta: ${formatNumber(data.raw?.effect_value)}<br/>95% CI: ${formatInterval(data.raw?.effect_ci_low, data.raw?.effect_ci_high)}`) },
     grid: { left: 150, right: 34, top: 24, bottom: 48 },
     xAxis: { type: 'value', name: 'Cliff’s delta', min: -1, max: 1, splitLine: { lineStyle: { color: '#e4edf5' } } },
     yAxis: { type: 'category', data: rows.map(row => row.display_name || row.feature_name), axisLabel: { width: 136, overflow: 'truncate' } },
-    series: [{ type: 'custom', silent: true, renderItem: (params, api) => { const y = api.coord([0, api.value(0)])[1]; const low = api.coord([api.value(1), api.value(0)])[0]; const high = api.coord([api.value(2), api.value(0)])[0]; return { type: 'line', shape: { x1: low, y1: y, x2: high, y2: y }, style: { stroke: '#7594ad', lineWidth: 2 } } }, data: rows.map((row, index) => [index, Number(row.effect_ci_low || 0), Number(row.effect_ci_high || 0)]) }, { type: 'scatter', symbolSize: 9, itemStyle: { color: '#1f5d9a' }, data: rows.map((row, index) => ({ name: row.display_name || row.feature_name, value: [Number(row.effect_value || 0), index], raw: row })) }],
+    series: [{ type: 'custom', encode:{x:[1,2],y:0}, silent: true, renderItem: (params, api) => { if(!validNumeric(api.value(1))||!validNumeric(api.value(2)))return; const y = api.coord([0, api.value(0)])[1]; const low = api.coord([api.value(1), api.value(0)])[0]; const high = api.coord([api.value(2), api.value(0)])[0]; return { type: 'line', shape: { x1: low, y1: y, x2: high, y2: y }, style: { stroke: '#7594ad', lineWidth: 2 } } }, data: rows.map((row, index) => [index, validNumeric(row.effect_ci_low)?Number(row.effect_ci_low):null, validNumeric(row.effect_ci_high)?Number(row.effect_ci_high):null]) }, { type: 'scatter', symbolSize: 9, itemStyle: { color: '#1f5d9a' }, data: rows.map((row, index) => ({ name: row.display_name || row.feature_name, value: [Number(row.effect_value || 0), index], raw: row })) }],
   }
 })
 
 const effectFdrOption = computed(() => {
-  const rows = filterPlotRows(plotPayload.value.effect_fdr_scatter || [])
+  const rows = filterPlotRows(plotPayload.value.effect_fdr_scatter || []).filter(r=>validNumeric(r.effect_value)&&validNumeric(r.global_fdr))
   const colors = { genome: '#2c7a63', transcriptome: '#1f6fae', proteome: '#b44e3a' }
   const omics = [...new Set(rows.map(row => row.omics_layer).filter(Boolean))]
   return {
     tooltip: { trigger: 'item', formatter: ({ data }) => traceTooltip(data.raw, `${humanize(data.raw.effect_type)}: ${formatNumber(data.raw.effect_value)}`) },
     legend: { data: omics, bottom: 0 }, grid: { left: 62, right: 24, top: 24, bottom: 58 },
     xAxis: { type: 'value', name: 'Effect size', splitLine: { lineStyle: { color: '#e4edf5' } } }, yAxis: { type: 'value', name: '-log10(FDR)' },
-    series: omics.map(layer => ({ name: layer, type: 'scatter', symbolSize: 9, itemStyle: { color: colors[layer] || '#536f87' }, data: rows.filter(row => row.omics_layer === layer).map(row => ({ name: row.display_name || row.feature_key, value: [Number(row.effect_value || 0), -Math.log10(Math.max(Number(row.global_fdr || 1), 1e-300))], raw: row })) })),
+    series: omics.map(layer => ({ name: layer, type: 'scatter', symbolSize: 9, itemStyle: { color: colors[layer] || '#536f87' }, data: rows.filter(row => row.omics_layer === layer).map(row => ({ name: row.display_name || row.feature_key, value: [Number(row.effect_value || 0), -Math.log10(Math.max(Number(row.global_fdr ?? 1), 1e-300))], raw: row })) })),
   }
 })
 
 const familyHeatmapOption = computed(() => {
   const rows = (plotPayload.value.family_heatmap || summary.value.family_summary || []).filter(row =>
-    (!appliedFilters.value.omics || row.omics_layer === appliedFilters.value.omics) &&
+    validNumeric(row.median_effect) && (!appliedFilters.value.omics || row.omics_layer === appliedFilters.value.omics) &&
     (!appliedFilters.value.family || row.family === appliedFilters.value.family)
   )
   const omics = [...new Set(rows.map(row => row.omics_layer))]
@@ -228,18 +232,19 @@ const familyHeatmapOption = computed(() => {
 })
 
 const rawAdjustedOption = computed(() => {
-  const rows = filterPlotRows(plotPayload.value.raw_vs_adjusted || []).filter(row => !appliedFilters.value.adjustment || appliedFilters.value.adjustment === 'tested')
+  const rows = filterPlotRows(plotPayload.value.raw_vs_adjusted || []).filter(r=>validNumeric(r.effect_value)&&validNumeric(r.coefficient_per_sd)).filter(row => !appliedFilters.value.adjustment || appliedFilters.value.adjustment === 'tested')
   return { tooltip: { formatter: ({ data }) => traceTooltip(data.raw, `Raw ${humanize(data.raw.effect_type)}: ${formatNumber(data.raw.effect_value)}<br/>Adjusted coefficient per SD: ${formatNumber(data.raw.coefficient_per_sd)}<br/>Adjusted FDR: ${formatP(data.raw.adjusted_global_fdr)}<br/>Adjusted scope: all successfully fitted target coefficients`) }, grid: { left: 64, right: 24, top: 24, bottom: 50 }, xAxis: { type: 'value', name: 'Raw effect size', splitLine: { lineStyle: { color: '#e4edf5' } } }, yAxis: { type: 'value', name: 'Adjusted coefficient' }, series: [{ type: 'scatter', symbolSize: 9, itemStyle: { color: '#536f87' }, data: rows.map(row => ({ name: row.display_name || row.feature_key, value: [Number(row.effect_value || 0), Number(row.coefficient_per_sd || 0)], raw: row })) }] }
 })
 
 const omicsOptions = computed(() => [...new Set([...(summary.value.requested_omics || []), ...(summary.value.resolved_blocks || []), ...blockCoverage.value.map(row => row.omics)].filter(Boolean))])
 const familyOptions = computed(() => [...new Set((summary.value.family_summary || []).map(row => row.family).filter(Boolean))].sort())
-const statusOptions = computed(() => [...new Set(['tested', 'descriptive_only', 'skipped', 'excluded', ...(props.isCase5 ? mergeCase5Rows(summary.value) : (featurePayload.value.rows || [])).map(row => row.status).filter(Boolean)])])
-const optionSourceRows = computed(() => [...(plotPayload.value.effect_fdr_scatter || []), ...(props.isCase5 ? mergeCase5Rows(summary.value) : (featurePayload.value.rows || []))])
+const statusOptions = computed(() => [...new Set(['tested', 'descriptive_only', 'skipped', 'excluded', ...((props.isCase5 || props.embeddedComparison) ? mergeCase5Rows(summary.value) : (featurePayload.value.rows || [])).map(row => row.status).filter(Boolean)])])
+const optionSourceRows = computed(() => [...(plotPayload.value.effect_fdr_scatter || []), ...((props.isCase5 || props.embeddedComparison) ? mergeCase5Rows(summary.value) : (featurePayload.value.rows || []))])
 const evidenceOptions = computed(() => [...new Set(optionSourceRows.value.map(row => row.evidence_level).filter(Boolean))].sort())
 const directionOptions = computed(() => [...new Set(optionSourceRows.value.map(row => row.direction).filter(Boolean))].sort())
-const adjustmentOptions = computed(() => [...new Set(['tested', 'skipped', 'failed', ...(props.isCase5 ? mergeCase5Rows(summary.value) : (featurePayload.value.rows || [])).map(row => row.adjusted_status).filter(Boolean)])])
+const adjustmentOptions = computed(() => [...new Set(['tested', 'skipped', 'failed', ...((props.isCase5 || props.embeddedComparison) ? mergeCase5Rows(summary.value) : (featurePayload.value.rows || [])).map(row => row.adjusted_status).filter(Boolean)])])
 const downloadItems = computed(() => {
+  if (props.embeddedComparison) return []
   if (props.isCase5) return Object.entries(props.case5Comparison?.downloads || {}).map(([label, url]) => ({ label: label.replaceAll('_', ' '), url }))
   return [
     ['Feature audit', 'hvg_nonhvg_feature_audit'], ['Feature comparison', 'hvg_nonhvg_feature_comparison'],
@@ -316,8 +321,8 @@ async function load() {
   error.value = ''
   detail.value = null
   try {
-    if (props.isCase5) {
-      summary.value = props.case5Comparison || { status: 'legacy_not_generated', comparison_status: 'legacy_not_generated' }
+    if ((props.isCase5 || props.embeddedComparison)) {
+      summary.value = props.embeddedComparison || props.case5Comparison || { status: 'legacy_not_generated', comparison_status: 'legacy_not_generated' }
       loadCase5Page()
     } else {
       summary.value = await getHvgGroupComparisonSummary(props.identifier)
@@ -335,20 +340,20 @@ async function loadFeatures() {
 }
 
 function loadCase5Page() { const active = appliedFilters.value; const rows = mergeCase5Rows(summary.value).filter(row => (!active.search || [row.feature_key, row.feature_name, row.display_name].some(value => String(value || '').toLowerCase().includes(active.search.toLowerCase()))) && (!active.omics || row.omics_layer === active.omics) && (!active.family || row.family === active.family) && (!active.status || row.status === active.status) && (!active.evidence || row.evidence_level === active.evidence) && (!active.direction || row.direction === active.direction) && (!active.adjustment || row.adjusted_status === active.adjustment) && (!active.significant || (active.significant === 'true' ? Number(row.global_fdr) < 0.05 : Number(row.global_fdr) >= 0.05))); const start = (page.value - 1) * pageSize; featurePayload.value = { total: rows.length, rows: rows.slice(start, start + pageSize) } }
-async function applyFilters() { appliedFilters.value = { ...filters.value }; page.value = 1; if (props.isCase5) loadCase5Page(); else await loadFeatures() }
-async function changePage(next) { page.value = next; if (props.isCase5) loadCase5Page(); else await loadFeatures() }
-async function showFeature(row) { if (props.isCase5) { const quantiles = (summary.value.quantiles || []).filter(item => item.feature_key === row.feature_key); detail.value = { feature: row, quantiles } } else detail.value = await getHvgGroupComparisonFeature(props.identifier, row.feature_key) }
+async function applyFilters() { appliedFilters.value = { ...filters.value }; page.value = 1; if ((props.isCase5 || props.embeddedComparison)) loadCase5Page(); else await loadFeatures() }
+async function changePage(next) { page.value = next; if ((props.isCase5 || props.embeddedComparison)) loadCase5Page(); else await loadFeatures() }
+async function showFeature(row) { if ((props.isCase5 || props.embeddedComparison)) { const quantiles = (summary.value.quantiles || []).filter(item => item.feature_key === row.feature_key); detail.value = { feature: row, quantiles } } else detail.value = await getHvgGroupComparisonFeature(props.identifier, row.feature_key) }
 async function showFeatureByChart(event) { const row = event?.data?.raw; if (row?.feature_key) await showFeature(row) }
 
 function traceTooltip(row = {}, effectLine = '') { return `${row.display_name || row.feature_name || row.feature_key}<br/>${row.omics_layer || '-'} / ${row.family || '-'}<br/>${effectLine}<br/>n HVG / non-HVG: ${formatInteger(row.n_hvg)} / ${formatInteger(row.n_nonhvg)}<br/>Missingness: ${formatP(row.missing_rate_hvg)} / ${formatP(row.missing_rate_nonhvg)}<br/>Global FDR: ${formatP(row.global_fdr)}<br/>Scope: BH across all tested hypotheses` }
 function humanize(value) { return value ? String(value).replaceAll('_', ' ') : '-' }
 
-function formatNumber(value) { const number = Number(value); return Number.isFinite(number) ? number.toFixed(4).replace(/0+$/, '').replace(/\.$/, '') : '-' }
-function formatInteger(value) { const number = Number(value); return Number.isFinite(number) ? Math.round(number).toLocaleString() : '-' }
-function formatP(value) { const number = Number(value); if (!Number.isFinite(number)) return '-'; return number < 0.0001 ? number.toExponential(2) : number.toFixed(4) }
+function formatNumber(value) { if(!validNumeric(value))return '—';const number = Number(value); return Number.isFinite(number) ? number.toFixed(4).replace(/0+$/, '').replace(/\.$/, '') : '-' }
+function formatInteger(value) { if(!validNumeric(value))return '—';const number = Number(value); return Number.isFinite(number) ? Math.round(number).toLocaleString() : '-' }
+function formatP(value) { if(!validNumeric(value))return '—';const number = Number(value); if (!Number.isFinite(number)) return '-'; return number < 0.0001 ? number.toExponential(2) : number.toFixed(4) }
 function formatInterval(low, high) { return `${formatNumber(low)} to ${formatNumber(high)}` }
 
-watch(() => [props.identifier, props.case5Comparison], load, { immediate: true, deep: true })
+watch(() => [props.identifier, props.case5Comparison, props.embeddedComparison], load, { immediate: true, deep: true })
 </script>
 
 <style scoped>

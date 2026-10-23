@@ -150,10 +150,25 @@ def build_full_pipeline_config(project_root: str | Path, workspace_root: str | P
     if input_adapter['stoich'].get('file'):
         validation['raw_stoich_file'] = str(raw_dir / input_adapter['stoich']['file'])
 
+    from backend.analysis_engine.hvg_research.config import validate_config, deep_merge
+    research_options = dict((analysis_overrides or {}).get('hvg_research') or {})
+    research_options['enabled'] = True
+    hvg_research = validate_config(research_options)
     if analysis_overrides:
         for section_name, updates in analysis_overrides.items():
             if section_name in {'input_adapter','validation','mode_resolution','phase1_analysis','phase2_stoich'} and isinstance(updates, dict):
-                locals()[section_name].update(updates)
+                target = locals()[section_name]
+                merged = deep_merge(target, updates)
+                target.clear(); target.update(merged)
+            elif section_name != 'hvg_research':
+                raise ValueError('Unknown pipeline configuration section: '+section_name)
+    phase2_stoich['model_enabled'] = False
+    phase2_stoich['model_skip_reason'] = 'removed_from_unified_workflow'
+    phase1_analysis['run_supported_auxiliary_modes'] = True
+    if hvg_research['enabled']:
+        phase1_analysis.setdefault('primary_backend','scanpy')
+        phase1_analysis.setdefault('allow_primary_fallback',False)
+        phase1_analysis.setdefault('matrix_semantics',expression_cfg.get('value_semantics','unknown'))
 
     return {
         'input_adapter': input_adapter,
@@ -161,6 +176,7 @@ def build_full_pipeline_config(project_root: str | Path, workspace_root: str | P
         'mode_resolution': mode_resolution,
         'phase1_analysis': phase1_analysis,
         'phase2_stoich': phase2_stoich,
+        'hvg_research': hvg_research,
     }
 
 

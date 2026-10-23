@@ -27,6 +27,7 @@ def build_case_cache(base_dir: str | Path) -> Dict[str, Any]:
 
     cache: Dict[str, Any] = {
         'base_dir': str(base.resolve()),
+        'hvg_research_pointer': _read_json(base / 'hvg_functional_comparison' / 'active_run.json'),
         'has_phase1': p1 is not None,
         'has_phase2': p2 is not None,
         'phase1_summary': p1_summary,

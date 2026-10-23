@@ -24,7 +24,7 @@
           <div class="eyebrow">Expression/HVG workflow</div>
           <h3>New analysis workspace</h3>
         </div>
-        <span class="badge">Research contract</span>
+        <span class="badge">Unified workflow</span>
       </div>
       <div class="grid grid-2">
         <div>
@@ -34,10 +34,7 @@
         <div>
           <div class="label">Run objective</div>
           <select class="input" v-model="runObjective">
-            <option value="phase1_hvg">Phase 1 HVG characterization</option>
-            <option value="phase2_stoich">Phase 2 stoichiometric association</option>
-            <option value="full_extension">Full Expression/HVG Stoich Extension</option>
-            <option value="registry_case">Registry-ready case preparation</option>
+            <option value="stoich_functional_characterization">Unified HVG, context and stoichiometric research</option>
           </select>
         </div>
       </div>
@@ -94,7 +91,7 @@
 import { ref } from 'vue'
 import { createJob } from '../api/jobs'
 const name = ref('')
-const runObjective = ref('full_extension')
+const runObjective = ref('stoich_functional_characterization')
 const researchQuestion = ref('')
 const datasetContext = ref('')
 const speciesId = ref('')

@@ -5,7 +5,7 @@
         <div>
           <div class="eyebrow">Expression/HVG Stoich Extension</div>
           <h1>{{ isModel8Case5 ? model8Case5Title : `Expression/HVG case / ${identifier}` }}</h1>
-          <p class="muted">{{ isModel8Case5 ? 'Published eight-model-organism HVG consensus, stoichiometric model evidence, candidate genes, enrichment, and release downloads rendered through the HVG workflow modules.' : 'Traceable expression-matrix and metadata workflow results linked to stoichiometric evidence, context patterns, model checks, candidate genes, and reusable files.' }}</p>
+          <p class="muted">{{ isModel8Case5 ? 'Published eight-model-organism HVG consensus, stoichiometric model evidence, candidate genes, enrichment, and release downloads rendered through the HVG workflow modules.' : 'Traceable expression-matrix and metadata workflow results linked to stoichiometric evidence, context patterns, statistical evidence, candidate genes, and reusable files.' }}</p>
         </div>
         <div class="row">
           <router-link v-if="isModel8Case5" class="btn secondary" :to="model8Case5BackRoute">Case studies</router-link>
@@ -17,6 +17,7 @@
       </div>
     </div>
 
+    <ResearchScope :state="research" />
     <div class="hvg-tabbar" aria-label="HVG result sections">
       <a
         v-for="item in tabs"
@@ -40,7 +41,9 @@
       <small>{{ activeTabMeta.note }}</small>
     </div>
 
-    <div class="card muted">
+    <ResearchSection v-if="hasResearch && !research.loading" :state="research" :section="tab" :identifier="identifier" @navigate="navigateResearch" />
+    <div v-if="nativeAvailable || loading || loadError" class="hvg-native-panels">
+    <div v-if="!hasResearch" class="card muted">
       Input boundary: this extension starts from an expression matrix plus sample or cell metadata and then maps gene IDs
       to stoichiometric feature context. It is separate from the core transcript sequence database modules.
     </div>
@@ -90,7 +93,7 @@
       </template>
     </section>
 
-    <section v-if="summary && (!isModel8Case5 || tab === 'overview')" class="result-block">
+    <section v-if="summary && tab === 'overview'" class="result-block">
       <div class="result-block-header">
         <div>
           <div class="result-question">Can this HVG case support stoich-linked interpretation?</div>
@@ -108,7 +111,7 @@
           <div class="metric-inline">{{ hvgMetadataSummary }}</div>
         </div>
         <div class="mini-card">
-          <div class="label">Model caveat</div>
+          <div class="label">{{ isUnifiedWorkflow ? 'Evidence boundary' : 'Model caveat' }}</div>
           <p class="muted">{{ hvgModelCaveat }}</p>
         </div>
       </div>
@@ -117,7 +120,8 @@
     <div v-if="loading" class="card"><p>Loading case outputs...</p></div>
     <div v-if="loadError" class="card"><p class="error-text">{{ loadError }}</p></div>
 
-    <template v-if="!loading && !loadError && summary">
+    <div v-if="hasResearch && nativeAvailable" class="card hvg-snapshot-note"><strong>Saved original workflow snapshot · global</strong><p class="muted">The following original panels have their own saved workflow source. They remain available alongside the selected research run. Their baseline, model, background and correction may differ; they are not relabeled as results of the selected research context.</p></div>
+    <template v-if="!loading && nativeAvailable && summary">
       <section v-if="tab==='overview'" class="stack-lg">
         <div class="grid grid-5">
           <div v-for="card in overviewCards" :key="card.key" class="summary-card">
@@ -203,24 +207,24 @@
         />
       </section>
 
-      <section v-if="tab==='phase2'" class="stack-lg">
+      <section v-if="tab==='phase2' && !isUnifiedWorkflow" class="stack-lg">
         <SkippedPanel v-if="phase2.phase2_status === 'skipped'" title="Phase 2 was skipped" :reason="phase2.phase2_skip_reason?.reason_message || phase2.phase2_skip_reason?.message || 'Stoich inputs were not sufficient for Phase 2.'" />
-        <template v-else>
+        <template>
           <div class="grid grid-2">
             <Panel title="Stoich class distribution" note="Class colors and order are fixed across the HVG module.">
-              <EChart :option="classBar" :height="360" @chart-click="filterByClass" />
+              <EChart :option="classBar" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" @chart-click="filterByClass" />
               <DataTable :rows="tableRows('hvg_stoich_class_table')" />
             </Panel>
             <Panel title="Observed vs expected HVG signal" note="The identity line marks agreement between observed HVG signal and stoich expectation.">
-              <EChart :option="expObs" :height="360" />
+              <EChart :option="expObs" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" />
             </Panel>
           </div>
           <div class="grid grid-2">
             <Panel title="Residual distribution" note="Positive residuals identify genes with higher-than-expected HVG signal.">
-              <EChart :option="residualHistogram" :height="360" />
+              <EChart :option="residualHistogram" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" />
             </Panel>
             <Panel title="Feature association forest" note="Effect direction, FDR, and evidence level are shown together.">
-              <EChart :option="featureForest" :height="360" />
+              <EChart :option="featureForest" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" />
             </Panel>
           </div>
           <Panel title="Signal and residual table" note="Download source: signal_residual_table.csv.">
@@ -229,16 +233,16 @@
         </template>
       </section>
 
-      <section v-if="tab==='model_evidence'" class="stack-lg">
+      <section v-if="tab==='model_evidence' && !isUnifiedWorkflow" class="stack-lg">
         <SkippedPanel v-if="phase2.phase2_status === 'skipped'" title="Model evidence unavailable" :reason="phase2.phase2_skip_reason?.reason_message || 'Phase 2 did not run.'" />
-        <template v-else>
+        <template>
           <div class="grid grid-2">
             <Panel title="Generic-M0/M1/M2/M3 comparison" note="Generic workflow models compare intercept-only, confounders, stoich-augmented, and interaction or nonlinear features.">
-              <EChart :option="modelComparisonOption" :height="360" />
+              <EChart :option="modelComparisonOption" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" />
               <DataTable :rows="tableRows('model_comparison_table')" />
             </Panel>
             <Panel title="Bootstrap feature stability" note="Stable features are more reliable candidates than single-fit coefficients.">
-              <EChart :option="bootstrapOption" :height="360" />
+              <EChart :option="bootstrapOption" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" />
               <DataTable :rows="tableRows('bootstrap_feature_stability_table')" />
             </Panel>
           </div>
@@ -253,7 +257,7 @@
         </template>
       </section>
 
-      <section v-if="tab==='downstream'" class="stack-lg">
+      <section v-if="tab==='downstream' && !isUnifiedWorkflow" class="stack-lg">
         <div class="grid grid-2">
           <Panel title="Candidate priority bubble plot" note="Score size combines HVG rank, residual, explained fraction, and class components.">
             <EChart :option="candidateBubble" :height="380" />
@@ -286,7 +290,7 @@
         </div>
       </section>
 
-      <section v-if="tab==='genes'" class="stack-lg">
+      <section v-if="tab==='genes' && !isUnifiedWorkflow" class="stack-lg">
         <div class="card">
           <div class="row">
             <input class="input" v-model="geneQuery" placeholder="Search gene_id or gene_name" style="max-width:320px" />
@@ -318,12 +322,17 @@
         </div>
       </section>
     </template>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { computed, defineComponent, h, onMounted, ref } from 'vue'
 import EChart from '../components/EChart.vue'
+import ResearchScope from '../components/hvg-research/ResearchScope.vue'
+import ResearchSection from '../components/hvg-research/ResearchSection.vue'
+import { useHvgResearch } from '../components/hvg-research/useHvgResearch'
+import { useRoute } from 'vue-router'
 import HvgGroupComparisonPanel from '../components/HvgGroupComparisonPanel.vue'
 import { barOption, buildEnhancedScatterOption, buildIdentityScatterOption, rankLollipopOption } from '../utils/charts'
 import { buildHvgDownloadUrl, getHvgSummary, getHvgPlots, getHvgGenes, getHvgGeneDetail, getHvgPhase2Model } from '../api/hvg'
@@ -342,7 +351,7 @@ const Panel = defineComponent({
   setup(props, { slots }) {
     return () => h('div', { class: 'card' }, [
       h('div', { class: 'section-header compact' }, [
-        h('div', [h('h3', props.title || ''), props.note ? h('p', { class: 'muted' }, props.note) : null]),
+        h('div', [h('h3', props.title || ''), h('p', { class: 'muted' }, [props.note || '', hasResearch.value ? ' Source: saved original workflow snapshot (global); independent of the selected research run and filters.' : ''])]),
       ]),
       slots.default?.(),
     ])
@@ -401,6 +410,11 @@ const SkippedPanel = defineComponent({
 
 const props = defineProps({ identifier: String })
 const identifier = props.identifier
+const research=useHvgResearch(()=>props.identifier)
+const hasResearch=computed(()=>research.available)
+const nativeAvailable=ref(false)
+const route=useRoute()
+function navigateResearch(key){tab.value=key;research.persist(key)}
 const MODEL8_SPECIES_CODES = ['ECOLI', 'BSUB', 'ORYSA', 'DROME', 'YEAST', 'ARATH', 'DANRE', 'MOUSE']
 function model8Case5SpeciesFromIdentifier(value) {
   const raw = String(value || '').toUpperCase()
@@ -411,20 +425,21 @@ const isModel8Case5 = computed(() => {
   const raw = String(identifier || '').toLowerCase()
   return ['model8-case5', 'model8_case5', 'model8_case5_hvg_stoich'].includes(raw) || Boolean(model8Case5SpeciesCode.value)
 })
-const tabs = [
+const isUnifiedWorkflow = computed(() => research.summary.model_policy === 'removed')
+const tabs = computed(() => [
   ['overview', 'Overview', 'Case status'],
   ['input_qc', 'Input & QC', 'Matrix and ID audit'],
   ['phase1', 'Phase 1 HVG', 'Baseline genes'],
   ['context_patterns', 'Context Patterns', 'Metadata modes'],
   ['group_comparison', 'HVG vs non-HVG', 'Stoichiometric differences'],
-  ['phase2', 'Phase 2 Stoich', 'Expected vs observed'],
-  ['model_evidence', 'Model Evidence', 'Stability checks'],
+  ['phase2', isUnifiedWorkflow.value ? 'Feature & Function' : 'Phase 2 Stoich', 'Feature and function'],
+  ['model_evidence', isUnifiedWorkflow.value ? 'Evidence & Stability' : 'Model Evidence', 'Evidence and stability'],
   ['downstream', 'Downstream', 'Candidates and pathways'],
   ['genes', 'Gene Explorer', 'Single-gene lookup'],
   ['downloads', 'Downloads', 'Source files'],
-].map(([key, label, note], index) => ({ key, label, note, index: String(index + 1).padStart(2, '0') }))
+].map(([key, label, note], index) => ({ key, label, note, index: String(index + 1).padStart(2, '0') })))
 
-const tab = ref('overview')
+const tab = ref(String(route.query.research_tab || ({features:'group_comparison',sets:'group_comparison',enrichment:'downstream',pathways:'phase2',within:'downstream',stability:'model_evidence',candidates:'genes'})[route.query.research_panel] || 'overview'))
 const loading = ref(false)
 const loadError = ref('')
 const summary = ref(null)
@@ -461,7 +476,7 @@ const overviewCards = computed(() => overview.value?.cards || [
   { key: 'match_rate', label: 'ID match rate', value: mappingSummary.value.match_rate, format: 'percent' },
   { key: 'evidence', label: 'Evidence', value: modelMetrics.value.predictive_confidence || phase2.value.phase2_status || 'phase1_only' },
 ])
-const activeTabMeta = computed(() => tabs.find(item => item.key === tab.value) || tabs[0])
+const activeTabMeta = computed(() => tabs.value.find(item => item.key === tab.value) || tabs.value[0])
 const model8Case5Title = computed(() => model8Case5SpeciesCode.value
   ? `Model-8 Case 5 HVG-Stoich: ${model8Case5SpeciesCode.value}`
   : 'Model-8 Case 5 HVG-Stoich result')
@@ -491,6 +506,7 @@ const hvgMetadataSummary = computed(() => {
   return `${available}/${rows.length} metadata fields available`
 })
 const hvgModelCaveat = computed(() => {
+  if (isUnifiedWorkflow.value) return 'Feature and pathway associations are non-causal; technical resampling does not establish independent biological replication.'
   if (phase2.value.phase2_status === 'skipped') {
     return phase2.value.phase2_skip_reason?.reason_message || 'Phase 2 model outputs were skipped for this input.'
   }
@@ -503,9 +519,12 @@ const hvgWorkbenchFinding = computed(() => {
 
 function selectTab(key) {
   tab.value = key
+  if (hasResearch.value) research.persist(key)
 }
 
 function tabState(key) {
+  if (research.loading) return 'Loading'
+  if (hasResearch.value) return research.summary.presentation?.sections?.[key]?.state || 'Pending'
   if (loading.value) return 'Loading'
   if (!summary.value) return 'Pending'
   if (key === 'context_patterns' && !hasContextPatterns.value) return 'Skipped'
@@ -851,7 +870,7 @@ function badgeClass(severity = '') {
 }
 
 function histogram(values, bins = 24) {
-  const nums = values.map(Number).filter(Number.isFinite)
+  const nums = values.filter(v=>v!==null&&v!==undefined&&v!=='').map(Number).filter(Number.isFinite)
   if (!nums.length) return { labels: [], counts: [] }
   const min = Math.min(...nums)
   const max = Math.max(...nums)
@@ -892,6 +911,7 @@ const metadataAvailabilityRows = computed(() => {
 })
 
 const idMappingDonut = computed(() => {
+  if(!Object.keys(mappingSummary.value||{}).length)return {series:[]}
   const matched = Number(mappingSummary.value.matched_genes || mappingSummary.value.matched_gene_count || 0)
   const total = Math.max(1, Number(mappingSummary.value.expression_genes || mappingSummary.value.expression_gene_count || matched))
   const conflict = Number(mappingSummary.value.conflict_gene_count || 0)
@@ -957,7 +977,7 @@ const featureForest = computed(() => {
 const modelComparisonOption = computed(() => {
   const rows = tableRows('model_comparison_table')
   const metric = rows.some(r => r.r2 !== null && r.r2 !== undefined) ? 'r2' : rows.some(r => r.roc_auc !== null && r.roc_auc !== undefined) ? 'roc_auc' : 'mae'
-  return barOption(rows.map(r => r.model_id), rows.map(r => Number(r[metric] || 0)), metric)
+  return barOption(rows.map(r => r.model_id), rows.map(r => r[metric]!==null&&r[metric]!==undefined&&r[metric]!==''&&Number.isFinite(Number(r[metric]))?Number(r[metric]):null), metric)
 })
 
 const bootstrapOption = computed(() => {
@@ -1008,7 +1028,7 @@ const functionalEnrichmentDotplot = computed(() => {
       type: 'scatter',
       symbolSize: (data) => Math.max(8, Math.min(30, Number(data?.[2] || 1) * 2.4)),
       data: rows.map((row, idx) => {
-        const fdr = Number(row.fdr_bh || row.fdr || row.p_value || 1)
+        const fdr = Number(row.fdr_bh ?? row.fdr ?? row.p_value ?? 1)
         return {
           value: [Math.max(0, -Math.log10(Math.max(fdr, 1e-300))), idx, Number(row.candidate_hits || row.overlap_count || 1)],
           itemStyle: { color: sourceColors[row.source] || '#64748b' },
@@ -1026,7 +1046,7 @@ const geneDetailRows = computed(() => {
 
 function filterByClass(params) {
   const raw = params?.data?.raw || params?.data || {}
-  stoichClass.value = raw.stoich_class || raw.name || ''
+  stoichClass.value = raw.stoich_class || raw.name || params?.name || ''
   tab.value = 'genes'
   loadGenes()
 }
@@ -1103,6 +1123,8 @@ const load = async () => {
   loading.value = true
   loadError.value = ''
   try {
+    await research.refresh()
+    if(research.accessDenied){loadError.value='Access denied. Provide the job access token to view this workflow.';return}
     if (isModel8Case5.value) {
       const activeCaseCode = model8Case5SpeciesCode.value
       const [s, p1, p2, downstream] = await Promise.all([
@@ -1126,6 +1148,7 @@ const load = async () => {
         }
       }
       const merged = mergeModel8Case5SpeciesPayload(p1, p2, downstream, speciesPayload)
+      nativeAvailable.value=true
       model8Case5Raw.value = { summary: s, phase1: merged.phase1Payload, phase2: merged.phase2Payload, downstream: merged.downstreamPayload }
       model8Case5CandidateRows.value = merged.downstreamPayload?.candidate_genes || []
       summary.value = buildModel8Case5Summary(s, merged.phase1Payload, merged.phase2Payload, merged.downstreamPayload, activeCaseCode)
@@ -1140,12 +1163,16 @@ const load = async () => {
       await loadGenes()
       return
     }
-    const [s, p, m] = await Promise.all([
+    const reads = await Promise.allSettled([
       getHvgSummary(identifier),
       getHvgPlots(identifier),
-      getHvgPhase2Model(identifier).catch(() => null),
+      getHvgPhase2Model(identifier),
     ])
-    summary.value = s
+    if(reads.every(r=>r.status==='rejected'))throw reads[0].reason
+    const [s,p,m]=reads.map(r=>r.status==='fulfilled'?r.value:null)
+    summary.value = s || {phase1:{},phase2:{}}
+    nativeAvailable.value=Boolean(Object.keys(s?.phase1||{}).length || s?.phase2?.phase2_status || Object.keys(p||{}).length || Object.keys(m||{}).length)
+    loadError.value=reads.filter(r=>r.status==='rejected').map(r=>r.reason?.response?.data?.error?.message||r.reason?.message||'An original result source could not be loaded.').join('; ')
     plots.value = p || {}
     phase2Model.value = m || {}
     await loadGenes()
@@ -1414,4 +1441,6 @@ onMounted(load)
     max-width: 220px;
   }
 }
+.hvg-native-panels{min-width:0;margin-top:20px}.hvg-native-panels>section{min-width:0}.hvg-snapshot-note p{margin-bottom:0}.hvg-native-panels :deep(.chart-export-row){position:static;justify-content:flex-end;flex-wrap:wrap;margin:8px 0}.hvg-native-panels :deep(.section-header h3){font-size:1.1rem}.hvg-native-panels :deep(.chart-caption){font-size:.85rem;color:var(--text-soft)}
+@media(max-width:1100px){.hvg-native-panels .grid-2,.hvg-native-panels .grid-3{grid-template-columns:1fr}}@media(max-width:760px){.hvg-native-panels :deep(.chart-export-btn){min-height:44px}}
 </style>

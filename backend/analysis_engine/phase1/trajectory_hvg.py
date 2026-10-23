@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Dict, Any
 import numpy as np
 import pandas as pd
-from backend.analysis_engine.phase1.hvg_core import run_hvg_baseline
+from backend.analysis_engine.phase1.hvg_core import run_configured_hvg
 from backend.analysis_engine.phase1.utils import filter_low_quality_genes, merge_var_features, subset_dataset
 from backend.analysis_engine.phase1.sample_consensus_hvg import _aggregate_consensus
 
@@ -26,7 +26,7 @@ def run_trajectory_mode(dataset, var_df, config: Dict[str, Any], pseudotime_key:
         if sub_ds.n_cells < min_cells_per_subset:
             subset_summaries.append({'label': str(label), 'skipped': True, 'reason': 'too_few_cells', 'n_cells': int(sub_ds.n_cells)})
             continue
-        sub_df, sub_summary = run_hvg_baseline(sub_ds, method=config.get('hvg_method','dispersion'), n_top_genes=config.get('n_top_genes',2000), n_bins=config.get('n_bins',20), loess_span=float(config.get('loess_span', 0.3)))
+        sub_df, sub_summary = run_configured_hvg(sub_ds, config)
         sub_df['subset_key'] = '_trajectory_bin'
         sub_df['subset_value'] = str(label)
         subsets.append(sub_df)

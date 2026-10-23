@@ -1,743 +1,85 @@
 <template>
-  <div class="stack-lg">
-    <section class="panel">
-      <div class="section-header">
-        <div>
-          <div class="eyebrow">Global atlas</div>
-          <h3>Cross-species stoichiometric atlas and ranking panels</h3>
-          <p class="muted">Select species and omics scope to build clustered fingerprint heatmaps, pairwise-distance maps, and feature-ranking views from the current PostgreSQL registry.</p>
-        </div>
-      </div>
-      <div class="compare-control-stack">
-        <div class="toolbar-grid wide">
-          <div class="compare-search-box">
-            <label class="control-label" for="compare-species-search">Species search</label>
-            <div class="compare-search-row">
-              <input id="compare-species-search" v-model="speciesSearch" class="input" type="search" placeholder="Search species ID, name, clade, or habitat" @keyup.enter="loadSpeciesCandidates" />
-              <button class="btn subtle" type="button" :disabled="speciesLoading" @click="loadSpeciesCandidates">Search</button>
-            </div>
-          </div>
-          <select v-model="omicsFocus" class="input" aria-label="Omics focus">
-            <option value="">All metrics</option>
-            <option value="genome">Genome-focused atlas</option>
-            <option value="transcriptome">Transcript sequence-focused atlas</option>
-            <option value="proteome">Proteome-focused atlas</option>
-          </select>
-          <select v-model="normalizationMode" class="input" aria-label="Normalization mode">
-            <option value="raw">Normalization: raw</option>
-            <option value="zscore">Normalization: z-score</option>
-            <option value="robust_zscore">Normalization: robust z-score</option>
-          </select>
-          <button class="btn" :disabled="loading || selectionLimitExceeded" @click="loadCompare">Build atlas</button>
-        </div>
-        <div class="toolbar-grid">
-          <select v-model="adjustmentMode" class="input" aria-label="Adjustment mode">
-            <option value="none">Adjustment: none</option>
-            <option value="length_gc_adjusted">Adjustment: length/GC aware</option>
-            <option value="taxonomy_stratified">Adjustment: taxonomy stratified</option>
-          </select>
-          <select v-model="distanceMethod" class="input" aria-label="Distance method">
-            <option value="euclidean">Distance: Euclidean</option>
-            <option value="cosine">Distance: cosine</option>
-            <option value="correlation">Distance: correlation</option>
-          </select>
-          <select v-model="groupBy" class="input" aria-label="Grouping field">
-            <option value="">Grouping: none</option>
-            <option value="domain">Grouping: domain</option>
-            <option value="clade">Grouping: clade</option>
-            <option value="habitat">Grouping: habitat</option>
-          </select>
-          <select v-model="rankFeature" class="input" aria-label="Ranking feature">
-            <option value="">Ranking feature</option>
-            <option v-for="row in (compareData?.atlas?.rankings || [])" :key="row.feature" :value="row.feature">{{ formatFeature(row.feature) }}</option>
-          </select>
-        </div>
-        <div class="compare-picker-grid">
-          <div>
-            <div class="compare-picker-title">Candidate species, lightweight list</div>
-            <select multiple class="input multi-select compare-candidate-select" v-model="selectedIds">
-              <option v-for="species in allSpecies" :key="species.species_id" :value="species.species_id">{{ species.display_name || species.species_id }}</option>
-            </select>
-            <p class="annotation">Loaded {{ allSpecies.length }} candidates. Search adds a new lightweight page instead of loading the full registry.</p>
-          </div>
-          <div>
-            <div class="compare-picker-title">Selected for this batch</div>
-            <div class="compare-selected-list" aria-live="polite">
-              <button v-for="species in selectedSpeciesRows" :key="species.species_id" type="button" class="compare-chip" @click="removeSpecies(species.species_id)">
-                {{ species.display_name || species.species_id }} <span aria-hidden="true">?</span>
-              </button>
-              <p v-if="!selectedSpeciesRows.length" class="annotation">No species selected. Use the candidate list or search first.</p>
-            </div>
-            <div class="compare-batch-actions">
-              <button class="btn subtle" type="button" @click="resetDefaultSpecies" :disabled="speciesLoading">Reset default batch</button>
-              <button class="btn subtle" type="button" @click="clearSelection" :disabled="!selectedIds.length">Clear selection</button>
-            </div>
-            <p class="annotation">Selected {{ selectedIds.length }}/{{ COMPARE_MAX_SPECIES }}. Pairwise distance is quadratic, so large comparisons must be split into batches.</p>
-          </div>
-        </div>
-      </div>
-      <p v-if="compareData" class="annotation">{{ methodAnnotation }}</p>
-      <p v-if="compareData?.atlas?.selection_policy" class="annotation">Compare policy: max {{ compareData.atlas.selection_policy.max_species_per_request }} species per request; default batch {{ compareData.atlas.selection_policy.default_species_limit }} species.</p>
-      <p v-if="compareDirty && compareData" class="annotation">Controls changed. Click Build atlas to refresh; the page no longer auto-runs heavy compare requests.</p>
-      <p v-if="selectionLimitExceeded" class="annotation">Selection exceeds the safe batch limit. Remove species or split the comparison.</p>
-      <p v-if="compareData?.adjustment_info?.caveat" class="annotation">{{ compareData.adjustment_info.caveat }}</p>
-      <p v-if="loadError" class="annotation">{{ loadError }}</p>
-      <p v-else-if="loading" class="annotation">Loading compare atlas for the selected batch...</p>
-      <p v-else-if="speciesLoading" class="annotation">Loading lightweight species candidates...</p>
-    </section>
-
-    <section v-if="!loading && !loadError && !compareData" class="panel">
-      <p class="muted">No compare payload is available for the current selection.</p>
-    </section>
-
-    <PhylogenyInsightPanel
-      v-if="compareData"
-      title="Phylogeny coverage for selected species"
-      subtitle="Descriptive distance charts use the selected species. PGLS uses the active subset30 branch-length tree and reports selected-species coverage separately."
-      :selected-species="selectedIds"
-    />
-
-    <ResultBlock
-      v-if="compareData"
-      title="X0 match-quality table"
-      question="Are the selected species comparable enough for fingerprint distances and cross-omics rankings?"
-      :finding="compareX0Finding"
-      method="Selected-species cross-omics join quality from current compare payload."
-      normalization="raw row counts and match rates"
-      missing-policy="available cross_omics_payload / join_summary fields"
-      :n="matchQualityRows.length"
-      caveat="Lower mapping coverage, higher missing fields or ID conflicts should reduce confidence in downstream distance and concordance charts."
-      :downloads="compareX0Downloads"
-      :empty-reason="matchQualityRows.length ? '' : 'No match-quality rows are available for the current species selection.'"
-    >
-      <div class="table-wrap">
-        <table class="table compact-table">
-          <thead>
-            <tr>
-              <th>Species</th>
-              <th>Genome</th>
-              <th>Transcript sequence</th>
-              <th>Proteome</th>
-              <th>Matched all three</th>
-              <th>Match rate</th>
-              <th>Conflicts</th>
-              <th>Missing fields</th>
-              <th>Scope</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in matchQualityRows" :key="row.species_id">
-              <td>{{ row.display_name || row.species_id }}</td>
-              <td>{{ row.genome_rows }}</td>
-              <td>{{ row.transcriptome_rows }}</td>
-              <td>{{ row.proteome_rows }}</td>
-              <td>{{ row.matched_all_three }}</td>
-              <td>{{ formatPercent(row.match_rate_all_three) }}</td>
-              <td>{{ row.mapping_conflict_count || 0 }}</td>
-              <td>{{ row.missing_field_count }}</td>
-              <td>{{ row.data_scope }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <button class="btn subtle" style="margin-top: 10px" @click="exportMatchQualityCsv" :disabled="!matchQualityRows.length">Download CSV</button>
-      <p class="annotation">This table is the X0 precondition for X7 comparison: selected species with lower match quality or more missing fields should be interpreted more cautiously.</p>
-    </ResultBlock>
-
-    <section v-if="compareData" class="grid grid-2">
-      <article class="panel chart-panel">
-        <div class="section-header compact">
-          <div>
-            <div class="eyebrow">X7 selected-species fingerprint</div>
-            <h3>Species x fingerprint features</h3>
-          </div>
-          <button class="btn subtle" @click="exportFingerprintMatrixCsv">Download matrix</button>
-        </div>
-        <EChart :option="fingerprintHeatmapChart" :height="460" />
-        <MethodBadge
-          method="species fingerprint matrix"
-          :normalization="compareData.normalization || normalizationMode"
-          missing-policy="available fingerprint metrics only"
-          :n="selectedIds.length"
-          :n-features="compareData.atlas?.metrics?.length || ''"
-        />
-      </article>
-      <article class="panel chart-panel">
-        <div class="section-header compact">
-          <div>
-            <div class="eyebrow">X7 selected-species distance</div>
-            <h3>Pairwise separation matrix</h3>
-          </div>
-          <button class="btn subtle" @click="exportDistanceMatrixCsv">Download matrix</button>
-        </div>
-        <EChart :option="distanceHeatmapChart" :height="460" />
-        <MethodBadge
-          :method="compareData.atlas?.distance_info?.method || distanceMethod"
-          :normalization="compareData.normalization || normalizationMode"
-          missing-policy="pairwise complete fingerprint metrics"
-          :n="distancePairCount"
-          :n-features="compareData.atlas?.metrics?.length || ''"
-          :note="distanceConfidenceNote"
-        />
-      </article>
-    </section>
-
-    <section v-if="compareData" class="grid grid-2">
-      <article class="panel chart-panel">
-        <div class="section-header compact">
-          <div>
-            <div class="eyebrow">Feature ranking</div>
-            <h3>{{ formatFeature(rankFeature || defaultRankFeature) }}</h3>
-          </div>
-          <button class="btn subtle" @click="exportRankingCsv" :disabled="!selectedRanking">Download CSV</button>
-        </div>
-        <EChart :option="rankingChart" :height="360" />
-      </article>
-      <article class="panel">
-        <div class="section-header compact">
-          <div>
-            <div class="eyebrow">Distribution summary</div>
-            <h3>Metric-level cross-species stats</h3>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table class="table compact-table">
-            <thead>
-              <tr>
-                <th>Feature</th>
-                <th>Min</th>
-                <th>P25</th>
-                <th>P50</th>
-                <th>P75</th>
-                <th>Max</th>
-                <th>Mean</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="row in compareData.atlas.metric_distributions || []" :key="row.feature">
-                <td>{{ formatFeature(row.feature) }}</td>
-                <td>{{ row.min }}</td>
-                <td>{{ row.p25 }}</td>
-                <td>{{ row.p50 }}</td>
-                <td>{{ row.p75 }}</td>
-                <td>{{ row.max }}</td>
-                <td>{{ row.mean }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
-    </section>
-
-    <section v-if="compareData" class="grid grid-2">
-      <article class="panel chart-panel">
-        <div class="section-header compact">
-          <div>
-            <div class="eyebrow">Fingerprint radar</div>
-            <h3>Integrated species summary</h3>
-          </div>
-        </div>
-        <EChart v-if="radarEligible" :option="radarChart" :height="380" />
-        <EmptyState
-          v-else
-          eyebrow="Radar limit"
-          title="Radar view hidden by scientific guard"
-          message="Radar is shown only for 2-6 species with at least three finite standardized metrics. Use heatmap, distance matrix, and parallel coordinates otherwise."
-        />
-      </article>
-      <article class="panel chart-panel">
-        <div class="section-header compact">
-          <div>
-            <div class="eyebrow">Feature panel</div>
-            <h3>Parallel metric view</h3>
-          </div>
-        </div>
-        <EChart :option="parallelChart" :height="380" />
-      </article>
-    </section>
-
-    <section v-if="compareData" class="grid grid-2">
-      <article class="panel chart-panel">
-        <div class="section-header compact">
-          <div>
-            <div class="eyebrow">X7 selected-species ordination</div>
-            <h3>Species ordination map</h3>
-          </div>
-          <select class="input select-inline" v-model="ordinationMode">
-            <option value="umap">UMAP</option>
-            <option value="pca">PCA</option>
-          </select>
-        </div>
-        <EChart :option="ordinationChart" :height="380" />
-        <MethodBadge
-          :method="`${selectedOrdination.method} species ordination`"
-          :normalization="compareData.normalization || normalizationMode"
-          :missing-policy="compareData.atlas?.ordination?.missing_policy || 'complete fingerprint metrics from compare payload'"
-          :n="selectedIds.length"
-          :n-features="compareData.atlas?.metrics?.length || ''"
-          :note="ordinationSummary"
-          exploratory
-        />
-      </article>
-      <article class="panel chart-panel">
-        <div class="section-header compact">
-          <div>
-            <div class="eyebrow">X7/X8 selected-species consistency</div>
-            <h3>Cross-omics consistency ranking</h3>
-          </div>
-        </div>
-        <EChart :option="concordanceChart" :height="380" />
-        <MethodBadge
-          method="negative mean discordance or sign-concordance fallback"
-          :normalization="compareData.normalization || normalizationMode"
-          missing-policy="top_transformations when full matched residuals are unavailable"
-          :n="matchQualityRows.length"
-          note="Higher score means lower average discordance in the selected species set; this is descriptive rather than phylogenetic."
-          exploratory
-        />
-      </article>
-    </section>
-
-    <section v-if="groupSummaryRows.length" class="panel">
-      <div class="section-header compact">
-        <div>
-          <div class="eyebrow">Grouped summary</div>
-          <h3>{{ groupBy || 'group' }} level means</h3>
-        </div>
-        <button class="btn subtle" @click="exportGroupSummaryCsv">Download CSV</button>
-      </div>
-      <div class="table-wrap">
-        <table class="table compact-table">
-          <thead>
-            <tr>
-              <th>Group</th>
-              <th>Count</th>
-              <th v-for="metric in previewGroupMetrics" :key="metric">{{ formatFeature(metric) }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in groupSummaryRows" :key="row.group">
-              <td>{{ row.group }}</td>
-              <td>{{ row.count }}</td>
-              <td v-for="metric in previewGroupMetrics" :key="`${row.group}-${metric}`">{{ row[metric] }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section v-if="clusterRows.length" class="panel">
-      <div class="section-header compact">
-        <div>
-          <div class="eyebrow">Species clusters</div>
-          <h3>K-means cluster membership</h3>
-        </div>
-        <button class="btn subtle" @click="exportClustersCsv">Download CSV</button>
-      </div>
-      <div class="table-wrap">
-        <table class="table compact-table">
-          <thead>
-            <tr>
-              <th>Species</th>
-              <th>Cluster</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in clusterRows" :key="row.species_id">
-              <td>{{ row.display_name || row.species_id }}</td>
-              <td>{{ row.cluster }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </div>
+ <div class="stack-lg compare-core">
+  <section class="panel stack-lg">
+   <div class="section-header"><div><div class="eyebrow">Global atlas · strict Core</div><h3>Cross-species stoichiometric comparison</h3><p class="muted">Complete chemical features, composition and coverage with reproducible species-level summaries.</p></div><span>{{ catalog?.field_count || '…' }} Core fields</span></div>
+   <p v-if="error" class="annotation compare-error" role="alert">{{ error }}</p>
+   <div class="compare-controls">
+    <label>Task<select v-model="task" class="input"><option value="species_profile">Single-species profile</option><option value="pairwise">Two-species comparison</option><option value="multi_species">Multi-species atlas</option><option value="reference_profile">Target vs reference cohort</option><option value="two_groups">Two independent groups</option></select></label>
+    <label>Species search<div class="compare-inline"><input v-model="search" class="input" type="search" placeholder="ID, name or taxonomy ID" @keyup.enter="findSpecies(1)" /><button class="btn subtle" :disabled="searching" @click="findSpecies(1)">Search</button></div></label>
+    <label>Domain<select v-model="domain" class="input" @change="findSpecies(1)"><option value="">All domains</option><option v-for="d in domains" :key="d">{{ d }}</option></select></label>
+    <label>Summary<select v-model="stat" class="input"><option value="median">Median</option><option value="mean">Mean</option></select></label>
+   </div>
+   <div class="compare-inline"><span>Omics</span><label v-for="o in omicsOptions" :key="o"><input v-model="omics" type="checkbox" :value="o" /> {{ o }}</label><label>Normalization<select v-model="normalization" class="input"><option value="auto">Automatic robust scaling</option><option value="robust_zscore">Robust z-score</option><option value="raw">Raw / composition geometry</option></select></label></div>
+   <div class="grid grid-2">
+    <div><h4>Candidate species · lightweight page</h4><div class="compare-candidates"><label v-for="s in candidates" :key="s.species_id"><input type="checkbox" :checked="selected.includes(s.species_id)" :disabled="!selected.includes(s.species_id) && selected.length >= 24" @change="toggle(s.species_id)" /><span>{{ s.display_name || s.species_id }}<small>{{ s.domain }} · {{ s.taxonomy_id || 'Taxonomy ID unavailable' }}</small></span><button v-if="explicitReference || task === 'reference_profile'" class="btn subtle" @click="addReference(s.species_id)">Reference +</button></label></div><div class="compare-inline"><button class="btn subtle" :disabled="candidatePage <= 1 || searching" @click="findSpecies(candidatePage-1)">Previous</button><span>Page {{ candidatePage }} · {{ candidateTotal }} species</span><button class="btn subtle" :disabled="!candidateNext || searching" @click="findSpecies(candidatePage+1)">Next</button></div></div>
+    <div><h4>Selected targets · {{ selected.length }}/24</h4><div class="compare-chips"><button v-for="sid in selected" :key="sid" class="compare-chip" @click="toggle(sid)">{{ name(sid) }} ×</button></div><div class="compare-inline"><button class="btn subtle" @click="selected=[...defaults]">Reset default batch</button><button class="btn subtle" @click="selected=[]">Clear selection</button></div><div v-if="task==='two_groups'"><h4>Group allocation</h4><label v-for="sid in selected" :key="sid" class="compare-inline">{{ name(sid) }}<select v-model="groupAssignments[sid]" class="input"><option value="A">Group A</option><option value="B">Group B</option></select></label><p class="annotation">Inference requires ≥5 independent taxonomy units per group. Otherwise descriptive results are retained.</p></div></div>
+   </div>
+   <details :open="task==='reference_profile'"><summary>Reference cohort and thresholds</summary><div class="compare-controls"><label><input v-model="explicitReference" type="checkbox" :disabled="task==='reference_profile'" /> Explicit reference</label><label>Reference IDs (one per line)<textarea v-model="referenceText" class="input" rows="3" placeholder="Add candidates above or enter IDs" /></label><label>Minimum valid rows<input v-model.number="minRows" type="number" class="input" min="1" /></label><label>Minimum valid fraction<input v-model.number="minFraction" type="number" class="input" min="0.01" max="1" step="0.05" /></label></div><p class="annotation">Targets are excluded from explicit references. Robust scaling requires ≥5 valid reference species or ≥3 batch species. No imputation.</p></details>
+   <details><summary>Feature panel · all Core or custom</summary><div class="compare-inline"><label>Panel<select v-model="fieldMode" class="input"><option value="all_core">All Core (default)</option><option value="custom">Custom panel</option></select></label><input v-model="featureSearch" class="input" aria-label="Search Core features" placeholder="Search field, role or family" /><select v-model="family" class="input" aria-label="Feature family"><option value="">All families</option><option v-for="f in families" :key="f">{{ f }}</option></select></div><p class="annotation">Complete scoped coverage is retained. Partial compositions are excluded from distances without adding unselected components.</p><div class="compare-fields"><label v-for="f in filteredFields" :key="f.field_key"><input v-if="fieldMode==='custom'" v-model="customFields" type="checkbox" :value="f.field_key" /><span>{{ f.field_key }}<small>{{ f.compare_role }} · {{ f.family }} · {{ f.unit_canonical || 'metadata' }}</small></span></label></div></details>
+   <div class="compare-inline"><button class="btn" :disabled="busy || !catalog || !selected.length || !omics.length" @click="submit">Build comparison</button><button v-if="busy && run && !submitting" class="btn subtle" @click="cancel">Cancel run</button><button v-if="run && ['failed','interrupted'].includes(run.status)" class="btn subtle" @click="resume">Resume run</button><span v-if="run" role="status">{{ run.status }} · {{ run.phase }} · {{ run.progress || 0 }}%</span></div><p v-if="result && settingsChanged" class="annotation">Settings changed. Build comparison to update results. Saved charts still use run {{ result.run_id }}.</p><progress v-if="busy" :value="run?.progress || 0" max="100" aria-label="Comparison progress" />
+   <p class="annotation">Core sources only. Equal omics/family/unit weights; complete shared panel. Sequence-derived chemistry describes composition, not physiological demand or causality.</p>
+  </section>
+  <template v-if="result">
+   <section class="panel stack"><div class="section-header"><h3>{{ result.request_snapshot.task.replaceAll('_',' ') }}</h3><a class="btn" :href="download('bundle')">Download complete package</a></div><p class="annotation">Run {{ result.run_id }} · {{ result.targets.length }} targets · {{ result.field_accounting.covered_scope_field_count }}/{{ result.field_accounting.selected_scope_field_count }} scoped fields · {{ result.field_accounting.n_blocks }} distance blocks · {{ result.field_accounting.resolved_dataset_field_records }}/{{ result.field_accounting.expected_dataset_field_records }} field records</p><p v-if="run?.status==='partial'" class="annotation compare-error">Partial result: inspect coverage and source errors.</p><div class="tab-strip" role="tablist" aria-label="Comparison results"><button v-for="t in tabs" :id="`compare-tab-${t.id}`" :key="t.id" class="tab-btn" :class="{active:tab===t.id}" role="tab" :aria-selected="tab===t.id" :aria-controls="`compare-panel-${t.id}`" @click="tab=t.id">{{ t.label }}</button></div></section>
+   <ResultBlock title="Saved analysis conditions" :method="`Core · ${result.request_snapshot.summary_stat} · ${result.request_snapshot.omics.join(', ')}`" :normalization="result.normalization_info.mode" :missing-policy="result.request_snapshot.missing_policy" :n="result.targets.length" :n-features="result.field_accounting.n_blocks" :finding="`${result.field_accounting.resolved_dataset_field_records} field records audited; ${result.tables.distances.total} estimable species pairs.`" caveat="Reference cohort and thresholds are frozen in the saved request; sequence chemistry is descriptive." /><section :id="`compare-panel-${tab}`" class="panel stack-lg" role="tabpanel" :aria-labelledby="`compare-tab-${tab}`">
+    <template v-if="tab==='overview'"><h3>Coverage and field accountability</h3><p class="annotation">True zero, missing, invalid, nonfinite and structural inapplicability are counted separately. Metadata and categories remain traceable outside chemical distances.</p><CompareCoreTable v-if="result.tables.dataset_qc" :run-id="result.run_id" kind="dataset_qc" label="Source rows and identity quality" /><details v-if="result.source_failures?.length"><summary>Source failures</summary><pre>{{ JSON.stringify(result.source_failures,null,2) }}</pre></details><CompareCoreTable :run-id="result.run_id" kind="coverage" label="Field coverage" /><details><summary>All field statistics and metadata previews</summary><CompareCoreTable :run-id="result.run_id" kind="profiles" label="All Core field details including metadata" /></details><details><summary>Excluded distance fields</summary><CompareCoreTable :run-id="result.run_id" kind="excluded_fields" /></details><CompareCoreTable :run-id="result.run_id" kind="categories" label="Category and metadata summaries" /></template>
+    <template v-if="tab==='features'"><h3>Fingerprints and distributions</h3><div class="compare-inline"><label>Feature<select v-model="distributionField" class="input" @change="loadDistribution"><option v-for="f in result.plots.fingerprint.fields" :key="f.field_key" :value="f.field_key">{{ f.field_key }}</option></select></label><label>Matrix<select v-model="matrixScale" class="input"><option value="scaled">Robust scaled scalar values</option><option value="raw">Canonical raw values · inspect units</option></select></label><label>Family<select v-model="matrixFamily" class="input"><option value="">All families</option><option v-for="f in resultFamilies" :key="f">{{ f }}</option></select></label></div><p class="annotation">Raw columns may have different units. Unavailable scaled cells stay grey. Composition statistics appear in raw mode; distances use complete Hellinger blocks.</p><EChart :option="fingerprintOption" :height="460" :auto-loading="false" /><p v-if="distributionError" class="annotation" role="alert">{{ distributionError }}</p><div v-if="distribution?.rows?.some(r=>r.ecdf)" class="grid grid-2"><div class="chart-panel"><h4>Empirical cumulative distribution</h4><EChart :option="ecdfChart" :height="380" :auto-loading="false" /><p class="annotation">≤1,000 order statistics per curve for display; statistics use all applicable rows.</p></div><div class="chart-panel"><h4>Common-bin histogram</h4><EChart :option="histogramChart" :height="380" :auto-loading="false" /><p class="annotation">Same canonical unit and bins. Wasserstein: {{ distribution.wasserstein ?? 'requires two species' }}.</p></div></div><EChart v-if="distribution?.rows?.some(r=>r.median!=null)" :option="iqrOption" :height="360" :auto-loading="false" /><CompareCorePlots :result="result" mode="composition" /><CompareCoreTable v-if="result.tables.weighted_densities" :run-id="result.run_id" kind="weighted_densities" label="Length-weighted atom densities and explicit denominators" /><CompareCoreTable :run-id="result.run_id" kind="profiles" :field="distributionField" label="Full-data statistics and IQR" /><CompareCoreTable :run-id="result.run_id" kind="rankings" :field="distributionField" label="Complete feature ranking" /><CompareCoreTable :run-id="result.run_id" kind="candidates" :field="distributionField" label="Reference percentile and candidate evidence" /></template>
+    <template v-if="tab==='differences'"><h3>Species and group differences</h3><p class="annotation">Direction A minus B. Meaningful positive ratios only. Group inference: tie-corrected Mann–Whitney U, 2,000-bootstrap Cliff A−B intervals, run-wide BH.</p><CompareCorePlots :result="result" mode="differences" /><CompareCoreTable :run-id="result.run_id" kind="differences" label="Two-species differences" /><CompareCoreTable :run-id="result.run_id" kind="group_comparison" label="Group effects and confidence intervals" /></template>
+    <template v-if="tab==='similarity'"><h3>Stoichiometric similarity and structure</h3><p class="annotation">{{ result.analysis_status.distance.status }} · {{ result.analysis_status.distance.reason || result.analysis_status.distance.kind }}<span v-if="result.analysis_status.distance.low_dimensional"> · Low-dimensional panel</span></p><EChart v-if="result.plots.distance.values.length" :option="distanceOption" :height="460" :auto-loading="false" @chart-click="showPair" /><EChart v-if="result.plots.ordination.status==='ok'" :option="pcaOption" :height="380" :auto-loading="false" /><p v-else class="annotation">PCA unavailable: {{ result.plots.ordination.reason }}. Requires ≥4 species and rank ≥2.</p><ComparePairEvidence v-if="pairFocus.length" :run-id="result.run_id" :species-ids="pairFocus" @close="pairFocus=[]" /><CompareCoreTable :run-id="result.run_id" kind="distances" label="Shared-panel distances" /><CompareCoreTable :run-id="result.run_id" kind="contributions" label="Contributions · zero-distance shares remain null" /><CompareCoreTable :run-id="result.run_id" kind="clusters" label="Descriptive clusters" /><CompareCoreTable v-if="result.request_snapshot.reference.mode==='explicit'" :run-id="result.run_id" kind="rankings" field="__reference_distance__" label="Nearest references" /></template>
+    <template v-if="tab==='cross'"><h3>Cross-omics concordance</h3><p class="annotation">Layer-specific complete panels. Associations of dependent pair distances are descriptive; no ordinary independent-sample p-values.</p><CompareCorePlots :result="result" mode="cross" /><CompareCoreTable :run-id="result.run_id" kind="cross_omics" label="Cross-omics distance concordance" /></template>
+    <template v-if="tab==='data'"><h3>Frozen methods, data and exports</h3><p class="annotation">Package: dictionary, coverage, raw/scaled matrices, all tables, request/source snapshots, versions, methods and SHA-256. Chart CSV/TSV exports displayed data; complete CSV contains all rows.</p><div class="compare-chips"><a class="btn subtle" :href="download('manifest')">Method manifest</a><a class="btn subtle" :href="download('source_manifest')">Source manifest</a><a class="btn subtle" :href="download('request')">Frozen request</a><a v-for="(meta,kind) in result.tables" :key="kind" class="btn subtle" :href="download(kind)">{{ kind.replaceAll('_',' ') }} ({{ meta.total }})</a></div><details><summary>Method snapshot</summary><pre>{{ JSON.stringify({provenance:result.provenance,normalization:result.normalization_info,analysis:result.analysis_status,panel_hash:result.panel_hash},null,2) }}</pre></details></template>
+   </section>
+  </template>
+  <section v-else-if="!busy" class="panel"><EmptyState eyebrow="Core comparison" title="Build a reproducible comparison" message="Select a task and species. Every scoped Core field is audited; results include data coverage and method conditions." /></section>
+ </div>
 </template>
-
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import EChart from '../components/EChart.vue'
 import EmptyState from '../components/EmptyState.vue'
-import MethodBadge from '../components/MethodBadge.vue'
-import PhylogenyInsightPanel from '../components/PhylogenyInsightPanel.vue'
+import CompareCoreTable from '../components/CompareCoreTable.vue'
+import CompareCorePlots from '../components/CompareCorePlots.vue'
+import ComparePairEvidence from '../components/ComparePairEvidence.vue'
 import ResultBlock from '../components/result/ResultBlock.vue'
-import { compareSpecies, listSpecies } from '../api/stoichdb'
-import { buildOrdinationOption, matrixHeatmapOption, parallelOption, radarOption, rankLollipopOption } from '../utils/charts'
-
-const allSpecies = ref([])
-const selectedIds = ref([])
-const omicsFocus = ref('')
-const normalizationMode = ref('robust_zscore')
-const adjustmentMode = ref('none')
-const distanceMethod = ref('euclidean')
-const groupBy = ref('')
-const rankFeature = ref('')
-const ordinationMode = ref('umap')
-const compareData = ref(null)
-const loading = ref(false)
-const speciesLoading = ref(false)
-const loadError = ref('')
-const speciesSearch = ref('')
-const compareDirty = ref(false)
-const COMPARE_DEFAULT_COUNT = 6
-const COMPARE_CANDIDATE_PAGE_SIZE = 12
-const COMPARE_MAX_SPECIES = 24
-let compareAbortController = null
-
-const defaultRankFeature = computed(() => compareData.value?.atlas?.rankings?.[0]?.feature || '')
-
-const selectedRanking = computed(() => {
-  const key = rankFeature.value || defaultRankFeature.value
-  return (compareData.value?.atlas?.rankings || []).find((row) => row.feature === key) || null
-})
-
-const methodAnnotation = computed(() => {
-  const payload = compareData.value
-  if (!payload) return ''
-  const norm = payload?.normalization || payload?.atlas?.normalization_info?.mode || normalizationMode.value
-  const adjustment = payload?.adjustment || payload?.atlas?.adjustment_info?.mode || adjustmentMode.value
-  const dist = payload?.distance_method || payload?.atlas?.distance_info?.method || distanceMethod.value
-  const grouping = payload?.group_by || groupBy.value || 'none'
-  return `Fingerprint chart values use "${norm}" normalization, adjustment "${adjustment}", pairwise distance "${dist}", grouping dimension: ${grouping}. Raw values remain available in ranking table fields.`
-})
-
-const compareFingerprints = computed(() => compareData.value?.fingerprints || [])
-const compareMetricKeys = computed(() => compareData.value?.atlas?.metrics || [])
-const compareNormalization = computed(() => compareData.value?.normalization || compareData.value?.atlas?.normalization_info?.mode || normalizationMode.value)
-
-const radarEligible = computed(() => {
-  const rows = compareFingerprints.value
-  const metrics = compareMetricKeys.value.filter((key) => rows.some((row) => Number.isFinite(Number(row?.[key]))))
-  return rows.length >= 2 && rows.length <= 6 && metrics.length >= 3 && !String(compareNormalization.value || '').toLowerCase().includes('raw')
-})
-
-const radarChart = computed(() => radarOption(compareFingerprints.value, {
-  mode: 'normalize',
-  metrics: compareMetricKeys.value,
-  maxMetrics: 6,
-  exportName: 'compare_standardized_fingerprint_radar',
-}))
-
-const parallelChart = computed(() =>
-  parallelOption(
-    compareFingerprints.value,
-    compareData.value?.atlas?.metrics || ['genome_gc', 'promoter_gc', 'transcript_entropy', 'proteome_n_per_aa', 'proteome_pi'],
-  ),
-)
-
-const fingerprintHeatmapChart = computed(() => {
-  const payload = compareData.value?.atlas?.fingerprint_heatmap || { x_labels: [], y_labels: [], values: [] }
-  const values = (payload.values || []).map((row) => Number(row?.[2])).filter((value) => Number.isFinite(value))
-  const min = values.length ? Math.min(...values) : -1
-  const max = values.length ? Math.max(...values) : 1
-  return matrixHeatmapOption(payload.x_labels || [], payload.y_labels || [], payload.values || [], {
-    min,
-    max,
-    scaleType: String(compareNormalization.value || '').toLowerCase().includes('z') ? 'zscore' : 'effect',
-    exportName: 'compare_fingerprint_heatmap',
-  })
-})
-
-const distanceHeatmapChart = computed(() => {
-  const payload = compareData.value?.atlas?.distance_heatmap || { x_labels: [], y_labels: [], values: [] }
-  const values = (payload.values || []).map((row) => Number(row?.[2])).filter((value) => Number.isFinite(value))
-  const max = values.length ? Math.max(...values) : 1
-  return matrixHeatmapOption(payload.x_labels || [], payload.y_labels || [], payload.values || [], {
-    min: 0,
-    max: max || 1,
-    scaleType: 'distance',
-    exportName: 'compare_distance_heatmap',
-  })
-})
-
-const distancePairCount = computed(() => {
-  const values = compareData.value?.atlas?.distance_heatmap?.values || []
-  return values.filter((row) => row[0] < row[1]).length
-})
-
-const distanceConfidenceNote = computed(() => {
-  const metricCount = compareData.value?.atlas?.metrics?.length || 0
-  if (metricCount < 4) return 'Low confidence: fewer than four shared fingerprint metrics are available.'
-  return 'Interpret distances as descriptive separation, not phylogenetic distance.'
-})
-
-const rankingChart = computed(() => {
-  const rows = selectedRanking.value?.top || []
-  return rankLollipopOption(
-    rows.map((row) => ({ name: row.display_name, value: row.value })),
-    'name',
-    'value',
-    formatFeature(selectedRanking.value?.feature || ''),
-  )
-})
-
-const selectedOrdination = computed(() => {
-  const payload = compareData.value?.atlas?.ordination || {}
-  const umapPayload = payload?.umap || {}
-  if (ordinationMode.value === 'umap' && (umapPayload.points || []).length) {
-    return {
-      method: 'UMAP',
-      points: umapPayload.points || [],
-      xKey: 'x',
-      yKey: 'y',
-      axisLabels: ['UMAP1', 'UMAP2'],
-      summary: `UMAP with n_neighbors=${umapPayload?.params?.n_neighbors ?? '-'}, min_dist=${umapPayload?.params?.min_dist ?? '-'}, random_state=${umapPayload?.params?.random_state ?? '-'} on the compare fingerprint matrix.`,
-    }
-  }
-  const ratios = payload?.explained_variance_ratio || []
-  return {
-    method: 'PCA',
-    points: payload?.points || [],
-    xKey: 'x',
-    yKey: 'y',
-    axisLabels: [
-      ratios.length ? `PC1 (${(Number(ratios[0] || 0) * 100).toFixed(1)}%)` : 'PC1',
-      ratios.length ? `PC2 (${(Number(ratios[1] || 0) * 100).toFixed(1)}%)` : 'PC2',
-    ],
-    summary: ratios.length
-      ? `Explained variance PC1 ${(Number(ratios[0] || 0) * 100).toFixed(1)}%, PC2 ${(Number(ratios[1] || 0) * 100).toFixed(1)}%.`
-      : 'Explained variance ratio is not available in this payload.',
-  }
-})
-
-const ordinationChart = computed(() => {
-  const points = (selectedOrdination.value?.points || []).map((row) => ({
-    ...row,
-    entity_id: row.display_name || row.species_id,
-  }))
-  return buildOrdinationOption(points, selectedOrdination.value.xKey, selectedOrdination.value.yKey, ordinationAxisLabels.value[0], ordinationAxisLabels.value[1], {
-    title: 'Optional selected-species ordination',
-    subtitle: `${selectedOrdination.value.summary || ''} Use the distance matrix as the primary view when few species are selected.`,
-  })
-})
-
-const ordinationAxisLabels = computed(() => selectedOrdination.value?.axisLabels || ['PC1', 'PC2'])
-
-const ordinationSummary = computed(() => selectedOrdination.value?.summary || '')
-
-const concordanceChart = computed(() => {
-  const rows = compareData.value?.atlas?.concordance_ranking || []
-  return rankLollipopOption(
-    rows.map((row) => ({ name: row.display_name || row.species_id, value: row.concordance_score })),
-    'name',
-    'value',
-    'Concordance score',
-  )
-})
-
-const matchQualityRows = computed(() => compareData.value?.atlas?.match_quality || [])
-const groupSummaryRows = computed(() => compareData.value?.atlas?.group_summary || [])
-const clusterRows = computed(() => compareData.value?.atlas?.clusters || [])
-const compareX0Finding = computed(() => {
-  const rows = matchQualityRows.value || []
-  if (!rows.length) return 'No selected species have cross-omics match-quality rows in this payload.'
-  const meanRate = rows.reduce((sum, row) => sum + (Number(row.match_rate_all_three) || 0), 0) / rows.length
-  const conflicts = rows.reduce((sum, row) => sum + (Number(row.mapping_conflict_count) || 0), 0)
-  return `Mean all-three match rate is ${(meanRate * 100).toFixed(2)}%; ${conflicts} mapping conflict(s) are reported across selected species.`
-})
-const compareX0Downloads = computed(() => [
-  { label: 'Preview JSON', filename: 'compare_x0_match_quality.json', payload: { rows: matchQualityRows.value, adjustment: compareData.value?.adjustment_info } },
-])
-
-const previewGroupMetrics = computed(() => {
-  const row = groupSummaryRows.value?.[0] || {}
-  return Object.keys(row).filter((key) => !['group', 'count'].includes(key)).slice(0, 5)
-})
-
-const selectedSpeciesRows = computed(() => selectedIds.value.map((id) => speciesById.value.get(id) || { species_id: id, display_name: id }))
-const speciesById = computed(() => new Map(allSpecies.value.map((row) => [row.species_id, row])))
-const selectionLimitExceeded = computed(() => selectedIds.value.length > COMPARE_MAX_SPECIES)
-
-function mergeSpeciesRows(rows = []) {
-  const byId = new Map(allSpecies.value.map((row) => [row.species_id, row]))
-  rows.forEach((row) => {
-    if (row?.species_id) byId.set(row.species_id, { ...(byId.get(row.species_id) || {}), ...row })
-  })
-  allSpecies.value = [...byId.values()].sort((a, b) => String(a.display_name || a.species_id).localeCompare(String(b.display_name || b.species_id)))
-}
-
-function defaultComparableSpecies() {
-  const eligible = allSpecies.value.filter((row) => row.default_compare_eligible !== false && !['C', 'Fail'].includes(row.qc_grade))
-  return (eligible.length ? eligible : allSpecies.value).slice(0, COMPARE_DEFAULT_COUNT).map((row) => row.species_id)
-}
-
-function normalizeSpeciesPayload(payload) {
-  if (Array.isArray(payload)) return payload
-  return payload?.items || payload?.results || payload?.species || []
-}
-
-async function loadSpeciesCandidates() {
-  speciesLoading.value = true
-  loadError.value = ''
-  try {
-    const payload = await listSpecies({
-      query: speciesSearch.value || '',
-      page: 1,
-      page_size: COMPARE_CANDIDATE_PAGE_SIZE,
-      has_all_omics: 'true',
-      compare_default: '1',
-      include_aggregate: 'false',
-      sort_by: 'display_name',
-      sort_order: 'asc',
-    })
-    mergeSpeciesRows(normalizeSpeciesPayload(payload))
-    if (!selectedIds.value.length) selectedIds.value = defaultComparableSpecies()
-  } catch (error) {
-    loadError.value = error?.response?.data?.error?.message || error?.message || 'Failed to load lightweight species candidates.'
-  } finally {
-    speciesLoading.value = false
-  }
-}
-
-function removeSpecies(speciesId) {
-  selectedIds.value = selectedIds.value.filter((id) => id !== speciesId)
-  compareDirty.value = true
-}
-
-function clearSelection() {
-  selectedIds.value = []
-  compareDirty.value = true
-}
-
-function resetDefaultSpecies() {
-  selectedIds.value = defaultComparableSpecies()
-  compareDirty.value = true
-}
-
-function csvEscape(value) {
-  if (value === null || value === undefined) return ''
-  const text = String(value)
-  if (text.includes(',') || text.includes('"') || text.includes('\n')) {
-    return `"${text.replaceAll('"', '""')}"`
-  }
-  return text
-}
-
-function downloadCsv(filename, rows) {
-  if (!rows?.length) return
-  const headers = Array.from(
-    rows.reduce((set, row) => {
-      Object.keys(row || {}).forEach((key) => set.add(key))
-      return set
-    }, new Set()),
-  )
-  const lines = [headers.join(',')]
-  rows.forEach((row) => {
-    lines.push(headers.map((header) => csvEscape(row?.[header])).join(','))
-  })
-  const blob = new Blob([`\uFEFF${lines.join('\n')}`], { type: 'text/csv;charset=utf-8;' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = filename
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  URL.revokeObjectURL(url)
-}
-
-function exportRankingCsv() {
-  const ranking = selectedRanking.value
-  if (!ranking) return
-  const rows = [
-    ...(ranking.top || []).map((row) => ({ bucket: 'top', ...row })),
-    ...(ranking.bottom || []).map((row) => ({ bucket: 'bottom', ...row })),
-  ]
-  downloadCsv(`compare_ranking_${ranking.feature || 'feature'}.csv`, rows)
-}
-
-function matrixRows(payload) {
-  const xLabels = payload?.x_labels || []
-  const yLabels = payload?.y_labels || []
-  return (payload?.values || []).map((item) => ({
-    row: yLabels[item[1]] || item[1],
-    column: xLabels[item[0]] || item[0],
-    value: item[2],
-  }))
-}
-
-function exportFingerprintMatrixCsv() {
-  downloadCsv('compare_fingerprint_matrix.csv', matrixRows(compareData.value?.atlas?.fingerprint_heatmap || {}))
-}
-
-function exportDistanceMatrixCsv() {
-  downloadCsv('compare_pairwise_distance_matrix.csv', matrixRows(compareData.value?.atlas?.distance_heatmap || {}))
-}
-
-function exportGroupSummaryCsv() {
-  downloadCsv(`compare_group_summary_${groupBy.value || 'none'}.csv`, groupSummaryRows.value || [])
-}
-
-function exportClustersCsv() {
-  downloadCsv('compare_clusters.csv', clusterRows.value || [])
-}
-
-function formatFeature(key) {
-  return String(key || '').replaceAll('_', ' ')
-}
-
-function formatPercent(value) {
-  const num = Number(value)
-  if (!Number.isFinite(num)) return ''
-  return `${(num * 100).toFixed(2)}%`
-}
-
-function exportMatchQualityCsv() {
-  downloadCsv('compare_x0_match_quality.csv', matchQualityRows.value || [])
-}
-
-const loadCompare = async () => {
-  if (!selectedIds.value.length && allSpecies.value.length) selectedIds.value = defaultComparableSpecies()
-  if (!selectedIds.value.length) {
-    compareData.value = null
-    rankFeature.value = ''
-    loadError.value = 'Select at least one species before building the atlas.'
-    return
-  }
-  if (selectionLimitExceeded.value) {
-    loadError.value = `Compare supports at most ${COMPARE_MAX_SPECIES} species per batch.`
-    return
-  }
-
-  if (compareAbortController) compareAbortController.abort()
-  compareAbortController = new AbortController()
-  const controller = compareAbortController
-  loading.value = true
-  loadError.value = ''
-  try {
-    compareData.value = await compareSpecies(selectedIds.value, {
-      omics: omicsFocus.value,
-      normalization: normalizationMode.value,
-      adjustment: adjustmentMode.value,
-      distance: distanceMethod.value,
-      group_by: groupBy.value,
-    }, { signal: controller.signal })
-    compareDirty.value = false
-    const rankings = compareData.value?.atlas?.rankings || []
-    if (!rankings.length) {
-      rankFeature.value = ''
-      return
-    }
-    if (!rankFeature.value || !rankings.some((row) => row.feature === rankFeature.value)) rankFeature.value = rankings[0].feature
-  } catch (error) {
-    if (error?.code === 'ERR_CANCELED' || error?.name === 'CanceledError') return
-    compareData.value = null
-    loadError.value =
-      error?.response?.data?.error?.message ||
-      error?.response?.data?.message ||
-      error?.message ||
-      'Failed to load compare atlas payload.'
-  } finally {
-    if (controller === compareAbortController) loading.value = false
-  }
-}
-
-watch([selectedIds, omicsFocus, normalizationMode, adjustmentMode, distanceMethod, groupBy], () => {
-  if (compareData.value) compareDirty.value = true
-}, { deep: true })
-
-onMounted(async () => {
-  await loadSpeciesCandidates()
-  if (selectedIds.value.length) await loadCompare()
-})
+import { matrixHeatmapOption, buildOrdinationOption, rangeOrBoxOption } from '../utils/charts'
+import { compareCatalog, compareSpecies, createCompare, compareStatus, compareResult, compareTable, compareDistribution, cancelCompare, resumeCompare, compareDownload } from '../api/compareCore'
+const defaults=['acanthamoeba_castellanii','achlya_hypogyna_gca_002081595','angomonas_deanei_gca_000442575','aureococcus_anophagefferens_gca_000186865','babesia_bigemina_gca_000981445','babesia_bovis']
+const omicsOptions=['genome','transcriptome','proteome'], domains=['Bacteria','Fungi','Metazoa','Plants','Protists','Vertebrates']
+const tabs=[{id:'overview',label:'Overview'},{id:'features',label:'Features & distributions'},{id:'differences',label:'Differences'},{id:'similarity',label:'Similarity & structure'},{id:'cross',label:'Cross-omics'},{id:'data',label:'Data & export'}]
+const catalog=ref(null),error=ref(''),search=ref(''),domain=ref(''),candidates=ref([]),candidatePage=ref(1),candidateTotal=ref(0),candidateNext=ref(false),searching=ref(false)
+const selected=ref([...defaults]),omics=ref([...omicsOptions]),task=ref('multi_species'),stat=ref('median'),normalization=ref('auto'),explicitReference=ref(false),referenceText=ref(''),minRows=ref(10),minFraction=ref(.8),groupAssignments=ref({})
+const fieldMode=ref('all_core'),customFields=ref([]),featureSearch=ref(''),family=ref(''),run=ref(null),result=ref(null),tab=ref('overview'),matrixScale=ref('scaled'),matrixFamily=ref(''),distributionField=ref(''),distribution=ref(null),distributionError=ref('')
+const pairFocus=ref([]);function showPair(event){const v=event?.data?.value||event?.data;if(!Array.isArray(v)||v[0]===v[1])return;pairFocus.value=[result.value.analysis_species[v[0]],result.value.analysis_species[v[1]]]}
+const submitting=ref(false);const names=new Map(); let alive=true,timer,pollSequence=0,distributionSequence=0,candidateSequence=0,submitSequence=0
+const message=e=>e.response?.data?.error?.message || e.message
+const busy=computed(()=>submitting.value || run.value && ['queued','preparing','profiling','analyzing','exporting','running','cancel_requested'].includes(run.value.status))
+const scopedFields=computed(()=>(catalog.value?.fields || []).filter(f=>omics.value.includes(f.omics)))
+const families=computed(()=>[...new Set(scopedFields.value.map(f=>f.family))].sort())
+const filteredFields=computed(()=>scopedFields.value.filter(f=>(!family.value || f.family===family.value) && `${f.field_key} ${f.compare_role} ${f.family}`.toLowerCase().includes(featureSearch.value.toLowerCase())))
+const resultFamilies=computed(()=>[...new Set((result.value?.plots.fingerprint.fields || []).map(f=>f.family))].sort())
+function name(sid){return names.get(sid) || sid.replaceAll('_',' ')}
+function toggle(sid){if(selected.value.includes(sid))selected.value=selected.value.filter(x=>x!==sid);else if(selected.value.length<24){selected.value.push(sid);groupAssignments.value[sid]||='A'}}
+function addReference(sid){referenceText.value=[...new Set([...referenceText.value.split(/[\s,]+/).filter(Boolean),sid])].join('\n')}
+async function findSpecies(page=1){const seq=++candidateSequence;searching.value=true;try{const data=await compareSpecies({query:search.value,domain:domain.value,page,page_size:12});if(!alive || seq!==candidateSequence)return;candidates.value=data.items;candidatePage.value=data.page;candidateTotal.value=data.total;candidateNext.value=data.has_next;data.items.forEach(s=>names.set(s.species_id,s.display_name))}catch(e){if(alive)error.value=message(e)}finally{if(alive && seq===candidateSequence)searching.value=false}}
+async function submit(){const sequence=++submitSequence;submitting.value=true;error.value='';result.value=null;pairFocus.value=[];distribution.value=null;clearTimeout(timer);try{const payload={task:task.value,species_ids:[...selected.value],omics:[...omics.value],summary_stat:stat.value,normalization:normalization.value,scope:'core',thresholds:{min_valid_rows:minRows.value,min_valid_fraction:minFraction.value},field_selection:fieldMode.value==='custom'?{mode:'custom',fields:customFields.value}:{mode:'all_core'},reference:explicitReference.value || task.value==='reference_profile'?{mode:'explicit',species_ids:referenceText.value.split(/[\s,]+/).filter(Boolean),exclude_targets:true}:{mode:'selected'}};if(task.value==='two_groups')payload.groups={A:selected.value.filter(s=>(groupAssignments.value[s]||'A')==='A'),B:selected.value.filter(s=>groupAssignments.value[s]==='B')};submittedSettings.value=currentSettings.value;const submittedRun=await createCompare(payload);if(!alive || sequence!==submitSequence)return;run.value=submittedRun;localStorage.setItem('stoich.compare.core.run',run.value.run_id);await poll(++pollSequence)}catch(e){if(alive && sequence===submitSequence)error.value=message(e)}finally{if(sequence===submitSequence)submitting.value=false}}
+async function poll(seq){if(!alive || seq!==pollSequence || !run.value)return;try{const status=await compareStatus(run.value.run_id);if(!alive || seq!==pollSequence)return;run.value=status;if(['completed','partial'].includes(status.status)){const data=await compareResult(status.run_id);if(!alive || seq!==pollSequence)return;result.value=data;data.species.forEach(s=>names.set(s.species_id,s.display_name));distributionField.value=data.plots.fingerprint.fields.find(f=>f.compare_role==='numeric' && f.family!=='quality_numeric')?.field_key || '';if(tab.value==='features')await loadDistribution();return}if(['failed','cancelled','interrupted'].includes(status.status)){if(status.error)error.value=typeof status.error==='string'?status.error:JSON.stringify(status.error);return}timer=setTimeout(()=>poll(seq),1500)}catch(e){if(alive){error.value=message(e);timer=setTimeout(()=>poll(seq),5000)}}}
+async function cancel(){try{run.value=await cancelCompare(run.value.run_id)}catch(e){error.value=message(e)}}
+async function resume(){try{run.value=await resumeCompare(run.value.run_id);poll(++pollSequence)}catch(e){error.value=message(e)}}
+async function loadDistribution(){if(!result.value || !distributionField.value)return;const seq=++distributionSequence;distribution.value=null;distributionError.value='';try{const data=await compareDistribution(result.value.run_id,{field_key:distributionField.value,species_ids:result.value.targets.join(',')});if(alive && seq===distributionSequence)distribution.value=data}catch(e){if(alive && seq===distributionSequence)distributionError.value=message(e)}}
+const currentSettings=computed(()=>JSON.stringify([task.value,selected.value,omics.value,stat.value,normalization.value,explicitReference.value,referenceText.value,minRows.value,minFraction.value,fieldMode.value,customFields.value,groupAssignments.value]));const submittedSettings=ref('');const settingsChanged=computed(()=>submittedSettings.value!==currentSettings.value)
+const download=kind=>compareDownload(result.value.run_id,kind)
+function heatmap(plot,title,distance=false){const vals=plot.values.filter(v=>v[2]!=null).map(v=>v[2]);const lo=vals.length?Math.min(...vals):0,hi=vals.length?Math.max(...vals):1;const option=matrixHeatmapOption(plot.x_labels,plot.y_labels,plot.values,{title,min:lo,max:hi>lo?hi:lo+1,distance,scaleType:distance?'distance':matrixScale.value==='raw'?'coverage':'zscore'});if(plot.x_labels.length>18)option.dataZoom=[{type:'slider',bottom:0,height:18,xAxisIndex:0,start:0,end:Math.min(100,1800/plot.x_labels.length)},{type:'inside',xAxisIndex:0}];option.__semantic={...option.__semantic,run_id:result.value?.run_id,scope:'core',displayedCount:plot.values.length,totalCount:plot.values.length,samplingPolicy:'none; axis zoom affects viewport only'};option.__dataRows=plot.values.map(([i,j,v])=>({field_or_target:plot.x_labels[i],species:plot.y_labels[j],value:v,scale:distance?'distance':matrixScale.value}));if(option.dataZoom){option.visualMap.bottom=36;option.grid.bottom=110}return option}
+const fingerprintOption=computed(()=>{if(!result.value)return {};const p=result.value.plots.fingerprint,positions=p.fields.map((f,i)=>!matrixFamily.value || f.family===matrixFamily.value?i:-1).filter(i=>i>=0),remap=new Map(positions.map((i,j)=>[i,j]));return heatmap({x_labels:positions.map(i=>p.x_labels[i]),y_labels:p.y_labels,values:(matrixScale.value==='raw'?p.raw_values:p.values).filter(v=>remap.has(v[0])).map(v=>[remap.get(v[0]),v[1],v[2]])},'Core feature fingerprint')})
+const distanceOption=computed(()=>heatmap(result.value.plots.distance,'Shared-panel stoichiometric distance',true))
+const pcaOption=computed(()=>buildOrdinationOption(result.value.plots.ordination.points,'x','y',`PC1 (${(100*result.value.plots.ordination.explained_variance_ratio[0]).toFixed(1)}%)`,`PC2 (${(100*result.value.plots.ordination.explained_variance_ratio[1]).toFixed(1)}%)`,{title:'Weighted Core PCA',subtitle:'Descriptive projection of the shared chemical feature panel.'}))
+function distributionOption(histogram){const rows=distribution.value?.rows || [],base=matrixHeatmapOption([],[],[],{title:histogram?'Common-bin histogram':'Empirical cumulative distribution'});delete base.visualMap;base.xAxis={type:histogram?'category':'value',name:distribution.value?.unit || '',data:histogram?(distribution.value.bin_edges || []).slice(0,-1).map((x,i)=>`${Number(x.toPrecision(4))}–${Number(distribution.value.bin_edges[i+1].toPrecision(4))}`):undefined};base.yAxis={type:'value',name:histogram?'Count':'Cumulative fraction',max:histogram?undefined:1};base.series=rows.filter(r=>r.ecdf).map(r=>({type:histogram?'bar':'line',name:name(r.species_id),showSymbol:false,step:histogram?undefined:'end',data:histogram?r.histogram:r.ecdf}));base.legend={type:'scroll',top:36};base.tooltip={trigger:'axis'};base.__semantic={minPoints:1,totalCount:rows.reduce((n,r)=>n+(r.n_valid||0),0),displayedCount:rows.reduce((n,r)=>n+(r.display_n||0),0),samplingPolicy:histogram?'common_bins_all_values':'ecdf_display_order_statistics',run_id:result.value?.run_id,scope:'core'};base.__exportName=histogram?'compare_histogram':'compare_ecdf';base.__dataRows=rows.flatMap(r=>histogram?r.histogram?.map((n,i)=>({species_id:r.species_id,bin_left:distribution.value.bin_edges[i],bin_right:distribution.value.bin_edges[i+1],count:n,unit:r.unit})) || []:r.ecdf?.map(([x,f])=>({species_id:r.species_id,value:x,cumulative_fraction:f,unit:r.unit})) || []);return base}
+const iqrOption=computed(()=>{const rows=(distribution.value?.rows || []).filter(r=>r.median!=null).map(r=>({...r,name:name(r.species_id),n:r.n_valid}));const o=rangeOrBoxOption(rows,'name',{xName:distribution.value?.unit,method:'Full-data P25–P75 interval and median'});o.__dataRows=rows;o.__semantic={...o.__semantic,run_id:result.value?.run_id,scope:'core',samplingPolicy:'none'};return o})
+const ecdfChart=computed(()=>distributionOption(false)),histogramChart=computed(()=>distributionOption(true))
+watch(tab,value=>{if(value==='features' && !distribution.value)loadDistribution()})
+watch(task,value=>{if(value==='reference_profile')explicitReference.value=true})
+onMounted(async()=>{try{catalog.value=await compareCatalog();await findSpecies();const id=localStorage.getItem('stoich.compare.core.run');if(id){run.value=await compareStatus(id);poll(++pollSequence)}}catch(e){error.value=message(e)}})
+onBeforeUnmount(()=>{alive=false;submitSequence++;pollSequence++;distributionSequence++;candidateSequence++;clearTimeout(timer)})
 </script>
+<style scoped>
+.compare-core{min-width:0}.compare-core [role=tabpanel]{scroll-margin-top:155px}.compare-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.compare-core label{font-weight:600;color:#365d7e}.compare-controls .input{margin-top:6px}.compare-inline{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.compare-inline>.input{max-width:340px}.compare-inline label .input{width:auto;max-width:100%}.compare-candidates{max-height:286px;overflow:auto;border:1px solid #dfebf5;border-radius:14px;margin-bottom:12px}.compare-candidates>label,.compare-fields>label{display:flex;align-items:center;gap:9px;padding:9px 12px;border-bottom:1px solid #edf3f9}.compare-candidates span,.compare-fields span{overflow-wrap:anywhere;min-width:0;flex:1}.compare-core small{display:block;color:#6d86a0;font-weight:400;font-size:12px}.compare-chips{display:flex;gap:8px;flex-wrap:wrap;padding:10px 0}.compare-chip{border:1px solid #cfe1f6;background:#e6f2ff;border-radius:22px;padding:8px 12px;color:#265d87;font:inherit;cursor:pointer;max-width:100%;overflow-wrap:anywhere}.compare-core details{border:1px solid #deebf5;border-radius:14px;padding:14px}.compare-core summary{cursor:pointer;font-weight:600;color:#365d7e;margin-bottom:10px}.compare-fields{max-height:260px;overflow:auto;margin-top:12px}.compare-core .grid,.compare-core .grid>*{min-width:0}.compare-core pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:460px;overflow:auto;font-size:12px}.compare-error{color:#963947!important;background:#fff2f3!important}.compare-core progress{width:100%;accent-color:#3481c8}.compare-core .tab-strip{flex-wrap:wrap}.compare-core input[type=checkbox]{accent-color:#3481c8;flex-shrink:0;width:16px;height:16px}.compare-core .annotation{overflow-wrap:anywhere}.compare-core h4{margin:8px 0 12px}@media(max-width:1100px){.compare-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:720px){.compare-controls,.compare-core .grid-2{grid-template-columns:1fr}.compare-inline{align-items:stretch}.compare-inline label,.compare-inline>.input{width:100%;max-width:100%}.compare-inline label .input{width:100%}.compare-core .section-header{flex-wrap:wrap}.compare-core .tab-btn{white-space:normal}.compare-candidates>label{font-size:13px}}
+@media(max-width:720px){.compare-core :deep(.echart-shell){overflow-x:auto;max-width:100%}.compare-core :deep(.chart-host){min-width:640px}}</style>

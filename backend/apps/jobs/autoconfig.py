@@ -232,6 +232,19 @@ def build_job_auto_config(
     stoich_cfg = {"file": stoich_file, "require": False} if stoich_file else {"require": False}
 
     overrides = _merge_dict(PROFILE_DEFAULTS[profile], user_overrides)
+    overrides.setdefault('hvg_research', {})['enabled'] = True
+    overrides.setdefault('phase2_stoich', {})['model_enabled'] = False
+    overrides['phase2_stoich']['model_skip_reason'] = 'removed_from_unified_workflow'
+    overrides.setdefault('phase1_analysis', {})['run_supported_auxiliary_modes'] = True
+    if (overrides.get('hvg_research') or {}).get('enabled'):
+        overrides.setdefault('phase1_analysis',{}).setdefault('primary_backend','scanpy')
+        overrides['phase1_analysis'].setdefault('matrix_semantics',expression_cfg.get('value_semantics','unknown'))
+        from backend.apps.jobs.stoich_registry_resolver import _resolve_species_id
+        declared=_resolve_species_id((job.metadata_json or {}).get('species_id') or '')
+        if declared:
+            if resolved := stoich_registry_resolution.get('species_id'):
+                if resolved != declared:raise ValueError('Declared and resolved species conflict')
+            overrides.setdefault('phase2_stoich',{})['species_id']=declared
     resolved_species_id = stoich_registry_resolution.get("species_id")
     resolved_omics = stoich_registry_resolution.get("omics")
     resolved_feature_set = stoich_registry_resolution.get("feature_set")
@@ -282,7 +295,7 @@ def build_job_auto_config(
             },
         })
     blocking_errors = [w for w in warnings if w.get("severity") == "error"]
-    model_will_run = capability["modes"].get("phase2_stoich", {}).get("status") == "available"
+    model_will_run = False
     comparison_cfg = (overrides.get("phase2_stoich") or {})
     comparison_will_run = bool(comparison_cfg.get("enable_hvg_nonhvg_comparison", True)) and bool(comparison_cfg.get("comparison_context_enabled", True))
     recommended_run_plan = {
@@ -307,8 +320,8 @@ def build_job_auto_config(
         },
         "model": {
             "will_run": model_will_run,
-            "status": "planned" if model_will_run else "skipped",
-            "reason": None if model_will_run else (stoich_readiness.get("reason_code") or "phase2_not_ready"),
+            "status": "removed",
+            "reason": "removed_from_unified_workflow",
         },
         "comparison": {
             "will_run": comparison_will_run,
@@ -337,6 +350,8 @@ def build_job_auto_config(
 
     config_path = None
     if write_config and not blocking_errors:
+        from .research_config_guard import validate_job_research_config
+        validate_job_research_config(job,effective_config)
         import yaml
         cfg_path = cfg_dir / f"{pipeline_type}_pipeline.yaml"
         cfg_path.write_text(yaml.safe_dump(effective_config, sort_keys=False, allow_unicode=True), encoding="utf-8")

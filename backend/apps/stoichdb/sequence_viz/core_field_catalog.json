@@ -1,0 +1,1724 @@
+[
+  {
+    "omics": "genome",
+    "field": "species_id",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "gene_id",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "source_gene_id",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "gene_name",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_tag",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "biotype",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "seqid",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "start_1",
+    "role": "numeric",
+    "unit": "1-based闭区间坐标；Genome bp / RNA nt",
+    "coverage": "GA01"
+  },
+  {
+    "omics": "genome",
+    "field": "end_1",
+    "role": "numeric",
+    "unit": "1-based闭区间坐标；Genome bp / RNA nt",
+    "coverage": "GA01"
+  },
+  {
+    "omics": "genome",
+    "field": "strand",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "is_coding",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "transcript_count",
+    "role": "numeric",
+    "unit": "transcript count",
+    "coverage": "GA01"
+  },
+  {
+    "omics": "genome",
+    "field": "chosen_transcript_source_id",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "chosen_transcript_reason",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_seq_strategy",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "transl_table_used",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "upstream_intergenic_bp",
+    "role": "numeric",
+    "unit": "bp",
+    "coverage": "GA01"
+  },
+  {
+    "omics": "genome",
+    "field": "downstream_intergenic_bp",
+    "role": "numeric",
+    "unit": "bp",
+    "coverage": "GA01"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_length_bp",
+    "role": "numeric",
+    "unit": "bp",
+    "coverage": "GA01"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_length_acgt_bp",
+    "role": "numeric",
+    "unit": "bp",
+    "coverage": "GA02"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_n_percent",
+    "role": "numeric",
+    "unit": "%（非fraction）",
+    "coverage": "GA02"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_gc_percent",
+    "role": "numeric",
+    "unit": "%（非fraction）",
+    "coverage": "GA02"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_length_bp",
+    "role": "numeric",
+    "unit": "bp",
+    "coverage": "GA02"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_length_acgt_bp",
+    "role": "numeric",
+    "unit": "bp",
+    "coverage": "GA02"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_n_percent",
+    "role": "numeric",
+    "unit": "%（非fraction）",
+    "coverage": "GA02"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_gc_percent",
+    "role": "numeric",
+    "unit": "%（非fraction）",
+    "coverage": "GA03"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_shannon_entropy_acgt",
+    "role": "numeric",
+    "unit": "bits",
+    "coverage": "GA03"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_atoms_C_per_base",
+    "role": "numeric",
+    "unit": "atoms/base",
+    "coverage": "GA03"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_atoms_H_per_base",
+    "role": "numeric",
+    "unit": "atoms/base",
+    "coverage": "GA03"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_atoms_O_per_base",
+    "role": "numeric",
+    "unit": "atoms/base",
+    "coverage": "GA03"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_atoms_N_per_base",
+    "role": "numeric",
+    "unit": "atoms/base",
+    "coverage": "GA03"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_atoms_P_per_base",
+    "role": "numeric",
+    "unit": "atoms/base",
+    "coverage": "GA04"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_ratio_C_N",
+    "role": "numeric",
+    "unit": "dimensionless ratio",
+    "coverage": "GA04"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_ratio_C_P",
+    "role": "numeric",
+    "unit": "dimensionless ratio",
+    "coverage": "GA04"
+  },
+  {
+    "omics": "genome",
+    "field": "exon_ratio_N_P",
+    "role": "numeric",
+    "unit": "dimensionless ratio",
+    "coverage": "GA04"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_length_bp",
+    "role": "numeric",
+    "unit": "bp",
+    "coverage": "GA04"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_length_acgt_bp",
+    "role": "numeric",
+    "unit": "bp",
+    "coverage": "GA04"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_n_percent",
+    "role": "numeric",
+    "unit": "%（非fraction）",
+    "coverage": "GA05"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_gc_percent",
+    "role": "numeric",
+    "unit": "%（非fraction）",
+    "coverage": "GA05"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_shannon_entropy_acgt",
+    "role": "numeric",
+    "unit": "bits",
+    "coverage": "GA05"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_atoms_C_per_base",
+    "role": "numeric",
+    "unit": "atoms/base",
+    "coverage": "GA05"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_atoms_H_per_base",
+    "role": "numeric",
+    "unit": "atoms/base",
+    "coverage": "GA05"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_atoms_O_per_base",
+    "role": "numeric",
+    "unit": "atoms/base",
+    "coverage": "GA05"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_atoms_N_per_base",
+    "role": "numeric",
+    "unit": "atoms/base",
+    "coverage": "GA06"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_atoms_P_per_base",
+    "role": "numeric",
+    "unit": "atoms/base",
+    "coverage": "GA06"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_ratio_C_N",
+    "role": "numeric",
+    "unit": "dimensionless ratio",
+    "coverage": "GA06"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_ratio_C_P",
+    "role": "numeric",
+    "unit": "dimensionless ratio",
+    "coverage": "GA06"
+  },
+  {
+    "omics": "genome",
+    "field": "promoter_ratio_N_P",
+    "role": "numeric",
+    "unit": "dimensionless ratio",
+    "coverage": "GA06"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_AA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA06"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_AC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA07"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_AG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA07"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_AT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA07"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_CA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA07"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_CC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA07"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_CG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA07"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_CT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA08"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_GA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA08"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_GC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA08"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_GG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA08"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_GT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA08"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_TA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA08"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_TC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA09"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_TG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA09"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_TT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA09"
+  },
+  {
+    "omics": "genome",
+    "field": "locus_dinuc_total_valid",
+    "role": "numeric",
+    "unit": "valid pairs",
+    "coverage": "GA09"
+  },
+  {
+    "omics": "genome",
+    "field": "coding_valid",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "genome",
+    "field": "cds_length_bp",
+    "role": "numeric",
+    "unit": "bp",
+    "coverage": "GA09"
+  },
+  {
+    "omics": "genome",
+    "field": "cds_gc_percent",
+    "role": "numeric",
+    "unit": "%（非fraction）",
+    "coverage": "GA09"
+  },
+  {
+    "omics": "genome",
+    "field": "gc1_percent",
+    "role": "numeric",
+    "unit": "%（非fraction）",
+    "coverage": "GA10"
+  },
+  {
+    "omics": "genome",
+    "field": "gc2_percent",
+    "role": "numeric",
+    "unit": "%（非fraction）",
+    "coverage": "GA10"
+  },
+  {
+    "omics": "genome",
+    "field": "gc3_percent",
+    "role": "numeric",
+    "unit": "%（非fraction）",
+    "coverage": "GA10"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_total_valid",
+    "role": "numeric",
+    "unit": "valid codons",
+    "coverage": "GA10"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_entropy_bits",
+    "role": "numeric",
+    "unit": "bits",
+    "coverage": "GA10"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_total_20",
+    "role": "numeric",
+    "unit": "aa residues",
+    "coverage": "GA10"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_entropy_bits",
+    "role": "numeric",
+    "unit": "bits",
+    "coverage": "GA11"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_stop_count",
+    "role": "numeric",
+    "unit": "stop count",
+    "coverage": "GA11"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_AAA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA11"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_AAC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA11"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_AAG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA11"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_AAT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA11"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_ACA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA12"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_ACC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA12"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_ACG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA12"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_ACT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA12"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_AGA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA12"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_AGC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA12"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_AGG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA13"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_AGT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA13"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_ATA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA13"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_ATC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA13"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_ATG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA13"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_ATT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA13"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CAA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA14"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CAC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA14"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CAG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA14"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CAT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA14"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CCA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA14"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CCC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA14"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CCG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA15"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CCT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA15"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CGA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA15"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CGC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA15"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CGG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA15"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CGT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA15"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CTA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA16"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CTC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA16"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CTG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA16"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_CTT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA16"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GAA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA16"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GAC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA16"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GAG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA17"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GAT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA17"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GCA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA17"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GCC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA17"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GCG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA17"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GCT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA17"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GGA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA18"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GGC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA18"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GGG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA18"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GGT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA18"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GTA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA18"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GTC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA18"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GTG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA19"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_GTT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA19"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TAA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA19"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TAC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA19"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TAG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA19"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TAT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA19"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TCA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA20"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TCC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA20"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TCG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA20"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TCT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA20"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TGA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA20"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TGC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA20"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TGG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA21"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TGT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA21"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TTA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA21"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TTC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA21"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TTG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA21"
+  },
+  {
+    "omics": "genome",
+    "field": "codon_TTT_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA21"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_A_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA22"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_C_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA22"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_D_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA22"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_E_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA22"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_F_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA22"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_G_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA22"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_H_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA23"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_I_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA23"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_K_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA23"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_L_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA23"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_M_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA23"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_N_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA23"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_P_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA24"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_Q_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA24"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_R_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA24"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_S_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA24"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_T_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA24"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_V_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA24"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_W_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA25"
+  },
+  {
+    "omics": "genome",
+    "field": "aa_Y_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "GA25"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "species_id",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "omics",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "element_rule",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "transcript_id",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "gene_id",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "gene_symbol",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "gene_biotype",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "transcript_biotype",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "assembly",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "seq_region",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "start",
+    "role": "numeric",
+    "unit": "1-based闭区间坐标；Genome bp / RNA nt",
+    "coverage": "TA01"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "end",
+    "role": "numeric",
+    "unit": "1-based闭区间坐标；Genome bp / RNA nt",
+    "coverage": "TA01"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "strand",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "length_nt_total",
+    "role": "numeric",
+    "unit": "nt",
+    "coverage": "TA01"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "length_nt_acgu",
+    "role": "numeric",
+    "unit": "nt",
+    "coverage": "TA01"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "n_N",
+    "role": "numeric",
+    "unit": "ambiguous N nucleotide count",
+    "coverage": "TA01"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "frac_A",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA01"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "frac_C",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA02"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "frac_G",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA02"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "frac_U",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA02"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "gc_content",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA02"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "at_skew",
+    "role": "numeric",
+    "unit": "dimensionless ratio",
+    "coverage": "TA02"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "gc_skew",
+    "role": "numeric",
+    "unit": "dimensionless ratio",
+    "coverage": "TA02"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "purine_frac",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA03"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "nt_entropy",
+    "role": "numeric",
+    "unit": "bits",
+    "coverage": "TA03"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "C_atoms",
+    "role": "numeric",
+    "unit": "atoms/record",
+    "coverage": "TA03"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "N_atoms",
+    "role": "numeric",
+    "unit": "atoms/record",
+    "coverage": "TA03"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "P_atoms",
+    "role": "numeric",
+    "unit": "atoms/record",
+    "coverage": "TA03"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "C_N_ratio",
+    "role": "numeric",
+    "unit": "dimensionless ratio",
+    "coverage": "TA03"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "C_P_ratio",
+    "role": "numeric",
+    "unit": "dimensionless ratio",
+    "coverage": "TA04"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "N_P_ratio",
+    "role": "numeric",
+    "unit": "dimensionless ratio",
+    "coverage": "TA04"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "atoms_per_nt_C",
+    "role": "numeric",
+    "unit": "atoms/nt",
+    "coverage": "TA04"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "atoms_per_nt_N",
+    "role": "numeric",
+    "unit": "atoms/nt",
+    "coverage": "TA04"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "atoms_per_nt_P",
+    "role": "numeric",
+    "unit": "atoms/nt",
+    "coverage": "TA04"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "mw_rna_nmp_per_nt_Da",
+    "role": "numeric",
+    "unit": "Da/nt",
+    "coverage": "TA04"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_AA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA05"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_AC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA05"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_AG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA05"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_AU_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA05"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_CA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA05"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_CC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA05"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_CG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA06"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_CU_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA06"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_GA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA06"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_GC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA06"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_GG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA06"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_GU_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA06"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_UA_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA07"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_UC_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA07"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_UG_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA07"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_UU_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA07"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "dinuc_valid_pairs",
+    "role": "numeric",
+    "unit": "valid pairs",
+    "coverage": "TA07"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "clean_rna_len",
+    "role": "numeric",
+    "unit": "nt",
+    "coverage": "TA07"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "avg_spacing_A",
+    "role": "numeric",
+    "unit": "nt",
+    "coverage": "TA08"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "avg_spacing_U",
+    "role": "numeric",
+    "unit": "nt",
+    "coverage": "TA08"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "max_run_A",
+    "role": "numeric",
+    "unit": "nt",
+    "coverage": "TA08"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "max_run_any",
+    "role": "numeric",
+    "unit": "nt",
+    "coverage": "TA08"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "orf_len_nt",
+    "role": "numeric",
+    "unit": "nt",
+    "coverage": "TA08"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "orf_len_aa",
+    "role": "numeric",
+    "unit": "aa residues",
+    "coverage": "TA08"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "orf_has_stop",
+    "role": "metadata",
+    "unit": "原始字符串/布尔分类",
+    "coverage": "metadata_catalog"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "protein_mw_Da",
+    "role": "numeric",
+    "unit": "Da",
+    "coverage": "TA09"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "protein_isoelectric_point",
+    "role": "numeric",
+    "unit": "pI",
+    "coverage": "TA09"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "protein_gravy",
+    "role": "numeric",
+    "unit": "published descriptor index；非表达值",
+    "coverage": "TA09"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "protein_instability_index",
+    "role": "numeric",
+    "unit": "published descriptor index；非表达值",
+    "coverage": "TA09"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_len",
+    "role": "numeric",
+    "unit": "aa residues",
+    "coverage": "TA09"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_A_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA09"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_C_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA10"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_D_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA10"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_E_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA10"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_F_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA10"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_G_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA10"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_H_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA10"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_I_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA11"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_K_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA11"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_L_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA11"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_M_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA11"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_N_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA11"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_P_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA11"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_Q_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA12"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_R_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA12"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_S_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA12"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_T_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA12"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_V_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA12"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_W_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA12"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "aa_Y_freq",
+    "role": "numeric",
+    "unit": "fraction（显示%时×100）",
+    "coverage": "TA13"
+  },
+  {
+    "omics": "transcriptome",
+    "field": "codon_valid_codons",
+    "role": "numeric",
+    "unit": "valid codons",
+    "coverage": "TA13"
+  }
+]

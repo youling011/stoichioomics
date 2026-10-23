@@ -23,14 +23,15 @@ def subset_dataset(dataset: ExpressionDataset, mask: np.ndarray) -> ExpressionDa
         matrix=dataset.matrix[mask, :].tocsr(),
         gene_ids=list(dataset.gene_ids),
         gene_names=list(dataset.gene_names),
-        cell_ids=sub_obs['cell_id'].astype(str).tolist() if 'cell_id' in sub_obs.columns else [str(i) for i in range(sub_obs.shape[0])],
+        cell_ids=list(np.asarray(dataset.cell_ids)[mask].astype(str)),
         obs=sub_obs,
         uns=dict(dataset.uns),
     )
 
 
 def filter_low_quality_genes(dataset: ExpressionDataset, min_cells: int = 3, min_counts: int = 1) -> Tuple[ExpressionDataset, Dict[str, int]]:
-    matrix = dataset.matrix.tocsc(copy=False)
+    matrix = dataset.matrix.tocsc(copy=True)
+    matrix.eliminate_zeros()
     nonzero_cells = np.diff(matrix.indptr)
     total_counts = np.asarray(matrix.sum(axis=0)).ravel()
     keep_mask = (nonzero_cells >= int(min_cells)) & (total_counts >= int(min_counts))

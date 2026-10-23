@@ -764,3 +764,7 @@ class ComparativeAnalysisRun(models.Model):
             models.Index(fields=['analysis_type'], name='stoichdb_co_analysi_647134_idx'),
             models.Index(fields=['status'], name='stoichdb_co_status_ea6fd5_idx'),
         ]
+
+
+# Dedicated Core comparison tables; legacy models and payloads are unchanged.
+from .compare_core.models import CompareCoreProfile, CompareRun

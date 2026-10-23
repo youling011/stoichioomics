@@ -1,9 +1,5 @@
 import client from './client'
-const tokenKey = (jobId) => `stoich_job_token_${jobId}`
-const authConfig = (jobId) => {
-  const token = localStorage.getItem(tokenKey(jobId))
-  return token ? { headers: { 'X-Job-Token': token } } : {}
-}
+import {tokenKey,authConfig} from './jobAuth'
 export const listJobs = () => client.get('/jobs/').then(r => r.data.data)
 export const createJob = (payload) => client.post('/jobs/', payload).then(r => {
   const data = r.data.data

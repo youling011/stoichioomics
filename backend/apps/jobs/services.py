@@ -97,6 +97,9 @@ def create_job(name: str = '', module_name: str = 'hvg', metadata_json: Dict[str
 
 
 def add_uploaded_file(job: AnalysisJob, upload, category: str = 'raw') -> JobFile:
+    job.refresh_from_db(fields=['status'])
+    if job.status in ['RUNNING','CANCEL_REQUESTED']:
+        raise RuntimeError('Cannot modify inputs/config while job is running')
     raw_dir = Path(job.workspace_path) / 'raw'
     stored = store_uploaded_file(upload, raw_dir, Path(job.workspace_path))
     job_file, _ = JobFile.objects.get_or_create(
@@ -126,6 +129,14 @@ def add_uploaded_file(job: AnalysisJob, upload, category: str = 'raw') -> JobFil
 
 
 def save_job_config(job: AnalysisJob, cfg: Dict[str, Any], pipeline_type: str) -> Path:
+    job.refresh_from_db(fields=['status'])
+    if job.status in ['RUNNING','CANCEL_REQUESTED']:
+        raise RuntimeError('Cannot modify inputs/config while job is running')
+    if pipeline_type == 'full':
+        from backend.analysis_engine.hvg_research.workflow import normalize_workflow_config
+        cfg = normalize_workflow_config(cfg)
+    from .research_config_guard import validate_job_research_config
+    validate_job_research_config(job,cfg)
     cfg_dir = Path(job.workspace_path) / 'configs'
     cfg_dir.mkdir(parents=True, exist_ok=True)
     cfg_path = cfg_dir / f'{pipeline_type}_pipeline.yaml'
@@ -201,6 +212,9 @@ def run_job_preflight(job: AnalysisJob) -> Dict[str, Any]:
 
     import yaml
     cfg = yaml.safe_load(cfg_path.read_text(encoding='utf-8')) or {}
+    if job.pipeline_type == 'full':
+        from backend.analysis_engine.hvg_research.workflow import normalize_workflow_config
+        cfg = normalize_workflow_config(cfg)
     raw_dir = Path(job.workspace_path) / 'raw'
     uploaded = list(raw_dir.glob('*')) if raw_dir.exists() else []
     checks.append({
@@ -209,6 +223,13 @@ def run_job_preflight(job: AnalysisJob) -> Dict[str, Any]:
         "file_count": len(uploaded),
         "files": [p.name for p in uploaded[:30]],
     })
+    research_cfg = cfg.get('hvg_research') or {}
+    if research_cfg.get('enabled'):
+        from backend.analysis_engine.hvg_research.config import validate_config
+        validate_config(research_cfg)
+        from backend.analysis_engine.hvg_research.preflight import research_preflight
+        checks.extend(research_preflight(cfg))
+        checks.append({'name':'hvg_research_gate','status':'ready' if getattr(settings,'HVG_RESEARCH_ENABLED',False) else 'blocked','message':'Research creation deployment gate'})
     phase2_cfg = cfg.get('phase2_stoich') or {}
     checks.append({
         "name": "phase2_contract",
@@ -247,7 +268,7 @@ def run_job_preflight(job: AnalysisJob) -> Dict[str, Any]:
         mapping = json.loads(mapping_summary_path.read_text(encoding='utf-8'))
         checks.append({
             "name": "strict_id_mapping",
-            "status": "ready" if mapping.get('ready_for_phase2_stoich') else "blocked",
+            "status": "ready" if mapping.get('ready_for_phase2_stoich') else ('degraded' if research_cfg.get('enabled') else 'blocked'),
             "details": mapping,
         })
     else:
@@ -276,6 +297,9 @@ def _run_job_sync(job_id: str):
         return {'cancelled': True}
     import yaml
     cfg = yaml.safe_load(Path(job.config_path).read_text(encoding='utf-8'))
+    if job.pipeline_type == 'full':
+        from backend.analysis_engine.hvg_research.workflow import normalize_workflow_config
+        cfg = normalize_workflow_config(cfg)
     job.status = AnalysisJob.Status.RUNNING
     job.error_message = ''
     job.run_attempts += 1
@@ -299,6 +323,13 @@ def _run_job_sync(job_id: str):
             result = run_preanalysis_from_config(cfg)
         else:
             result = run_full_pipeline_from_config(cfg)
+        if result.get('research'):
+            job.refresh_from_db()
+            from django.utils.dateparse import parse_datetime
+            metadata=job.metadata_json or {};days=int((cfg.get('hvg_research') or {}).get('execution',{}).get('retain_days',30));until=timezone.now()+timedelta(days=days);previous=parse_datetime(str(metadata.get('retain_until') or ''))
+            if previous and previous>until:until=previous
+            job.metadata_json={**metadata,'hvg_research':result['research'],'retain_until':until.isoformat()}
+            job.save(update_fields=['metadata_json','updated_at'])
         # refresh recommended mode and registry cache
         mode_path = Path(job.workspace_path) / 'mode_resolution' / 'mode_resolution.json'
         if mode_path.exists():
@@ -313,8 +344,11 @@ def _run_job_sync(job_id: str):
         refresh_registry_cache()
         return result
     except Exception as e:
-        job.status = AnalysisJob.Status.FAILED
-        job.error_message = str(e)
+        from backend.analysis_engine.hvg_research.locking import ResearchCancelled
+        job.refresh_from_db()
+        cancelled = isinstance(e, ResearchCancelled) or job.status == AnalysisJob.Status.CANCEL_REQUESTED
+        job.status = AnalysisJob.Status.CANCELLED if cancelled else AnalysisJob.Status.FAILED
+        job.error_message = '' if cancelled else str(e)
         job.save(update_fields=['status', 'error_message', 'updated_at'])
         write_workflow_contracts(job, stage='failed', cfg=cfg)
         append_job_log(job, 'job_failed', {'error': str(e)})
@@ -322,12 +356,32 @@ def _run_job_sync(job_id: str):
 
 
 def run_job_async(job: AnalysisJob):
-    append_job_log(job, 'job_queued', {'executor': 'in_process_thread'})
-    def target():
-        _run_job_sync(job.job_id)
-    t = threading.Thread(target=target, daemon=True)
-    t.start()
-    return t
+    import yaml
+    from backend.analysis_engine.hvg_research.config import validate_config
+    if job.config_path:
+        saved_cfg=yaml.safe_load(Path(job.config_path).read_text(encoding='utf-8')) or {}
+        if (saved_cfg.get('hvg_research') or {}).get('enabled'):
+            validate_config(saved_cfg['hvg_research'])
+            if not getattr(settings,'HVG_RESEARCH_ENABLED',False):raise ValueError('Research creation is disabled by HVG_RESEARCH_ENABLED')
+    from django.db import transaction, close_old_connections
+    from backend.analysis_engine.hvg_research.locking import RunConflict
+    with transaction.atomic():
+        claimed = AnalysisJob.objects.select_for_update().get(pk=job.pk)
+        if claimed.status in [AnalysisJob.Status.RUNNING, AnalysisJob.Status.CANCEL_REQUESTED]:
+            raise RunConflict('This job already has an active execution')
+        claimed.status = AnalysisJob.Status.RUNNING
+        claimed.save(update_fields=['status','updated_at'])
+    append_job_log(claimed, 'job_queued', {'executor':'in_process_thread','atomic_claim':True})
+    def execute():
+        close_old_connections()
+        try:_run_job_sync(claimed.job_id)
+        except Exception:pass  # _run_job_sync persists the full failure to the job and log.
+        finally:close_old_connections()
+    thread=threading.Thread(target=execute,daemon=True,name='hvg-job-'+claimed.job_id)
+    try:thread.start()
+    except Exception as exc:
+        claimed.status=AnalysisJob.Status.FAILED;claimed.error_message=str(exc);claimed.save(update_fields=['status','error_message','updated_at']);raise
+    return thread
 
 
 def request_job_cancel(job: AnalysisJob) -> Dict[str, Any]:
@@ -338,19 +392,33 @@ def request_job_cancel(job: AnalysisJob) -> Dict[str, Any]:
     cancel_path = Path(job.workspace_path) / 'logs' / 'cancel_requested.json'
     cancel_path.parent.mkdir(parents=True, exist_ok=True)
     cancel_path.write_text(json.dumps({'job_id': job.job_id, 'requested_at': utc_now_iso()}, ensure_ascii=False, indent=2), encoding='utf-8')
+    pointer=Path(job.workspace_path)/'hvg_functional_comparison/running_run.json'
+    if pointer.is_file():
+        from backend.analysis_engine.hvg_research.artifacts import safe_path, atomic_json
+        runid=json.loads(pointer.read_text(encoding='utf-8')).get('analysis_run_id')
+        if runid:
+            run=safe_path(pointer.parent/'runs',runid)
+            atomic_json(run/'cancel_requested.json',{'job_id':job.job_id,'analysis_run_id':runid,'requested_at':utc_now_iso()})
     append_job_log(job, 'cancel_requested')
     return {'job_id': job.job_id, 'status': job.status, 'cancel_requested': True}
 
 
 def cleanup_expired_analysis_jobs() -> Dict[str, Any]:
-    cutoff = timezone.now() - timedelta(hours=int(getattr(settings, 'JOB_WORKSPACE_TTL_HOURS', 168)))
-    terminal = [AnalysisJob.Status.SUCCEEDED, AnalysisJob.Status.FAILED, AnalysisJob.Status.CANCELLED]
-    candidates = AnalysisJob.objects.filter(status__in=terminal, updated_at__lt=cutoff)
-    removed = []
-    for job in candidates:
-        workspace = Path(job.workspace_path)
-        if workspace.exists():
-            shutil.rmtree(workspace, ignore_errors=True)
-        removed.append(job.job_id)
-        job.delete()
-    return {'removed_count': len(removed), 'removed_job_ids': removed, 'cutoff': cutoff.isoformat()}
+    from django.db import transaction
+    from django.utils.dateparse import parse_datetime
+    cutoff=timezone.now()-timedelta(hours=int(getattr(settings,'JOB_WORKSPACE_TTL_HOURS',168)))
+    terminal=[AnalysisJob.Status.SUCCEEDED,AnalysisJob.Status.FAILED,AnalysisJob.Status.CANCELLED]
+    ids=list(AnalysisJob.objects.filter(status__in=terminal,updated_at__lt=cutoff).values_list('pk',flat=True))
+    removed=[];retained=0
+    for pk in ids:
+        with transaction.atomic():
+            job=AnalysisJob.objects.select_for_update().filter(pk=pk).first()
+            if not job or job.status not in terminal or job.updated_at>=cutoff:continue
+            metadata=job.metadata_json or {};until=parse_datetime(str(metadata.get('retain_until') or ''))
+            if until and timezone.is_naive(until):until=timezone.make_aware(until)
+            if metadata.get('archived') or metadata.get('export_in_progress') or metadata.get('resume_in_progress') or (until and until>timezone.now()):retained+=1;continue
+            workspace=Path(job.workspace_path).resolve();allowed=Path(settings.WORKSPACE_ROOT).resolve()
+            if not workspace.is_relative_to(allowed) or workspace==allowed:retained+=1;continue
+            if workspace.exists():shutil.rmtree(workspace,ignore_errors=True)
+            removed.append(job.job_id);job.delete()
+    return {'removed_count':len(removed),'removed_job_ids':removed,'retained_count':retained,'cutoff':cutoff.isoformat()}

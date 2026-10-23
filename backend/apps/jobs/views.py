@@ -119,6 +119,10 @@ def job_autoconfigure(request, job_id: str):
         payload = autoconfigure_job(job, profile=profile, user_overrides=user_overrides, pipeline_type=pipeline_type)
         payload['job'] = _job_payload(AnalysisJob.objects.get(job_id=job_id))
         return ok(payload)
+    except (ValueError,TypeError) as exc:
+        return err(str(exc),status=400)
+    except RuntimeError as exc:
+        return err(str(exc),status=409)
     except Exception as exc:
         return err(str(exc), status=500)
 
@@ -139,6 +143,10 @@ def job_confirm_config(request, job_id: str):
         payload['accepted_auto_config'] = bool(request.data.get('accepted_auto_config', True))
         payload['job'] = _job_payload(AnalysisJob.objects.get(job_id=job_id))
         return ok(payload)
+    except (ValueError,TypeError) as exc:
+        return err(str(exc),status=400)
+    except RuntimeError as exc:
+        return err(str(exc),status=409)
     except Exception as exc:
         return err(str(exc), status=500)
 
@@ -152,7 +160,12 @@ def job_run(request, job_id: str):
         return err(str(exc), status=403)
     if not job.config_path:
         return err('Job is not configured yet', status=400)
-    run_job_async(job)
+    try:
+        run_job_async(job)
+    except ValueError as exc:
+        return err(str(exc),status=400)
+    except RuntimeError as exc:
+        return err(str(exc),status=409)
     return ok({'started': True, 'job_id': job.job_id, 'status': 'RUNNING'})
 
 
@@ -161,6 +174,10 @@ def job_preflight(request, job_id: str):
     job = get_object_or_404(AnalysisJob, job_id=job_id)
     try:
         return ok(run_job_preflight(job))
+    except (ValueError,TypeError) as exc:
+        return err(str(exc),status=400)
+    except RuntimeError as exc:
+        return err(str(exc),status=409)
     except Exception as exc:
         return err(str(exc), status=500)
 

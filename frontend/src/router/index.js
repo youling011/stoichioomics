@@ -341,7 +341,7 @@ const routes = [
   {
     path: '/hvg/:identifier',
     component: HvgCaseView,
-    props: true,
+    props: route => ({ identifier: route.params.identifier, key: `hvg-case-${route.params.identifier}` }),
     meta: {
       title: 'Expression/HVG Case View',
       subtitle: 'Detailed view of an expression variability case linked to stoichiometric feature context.',

@@ -152,3 +152,31 @@ LOGGING = {
     },
     'root': {'handlers': ['console'], 'level': 'INFO'},
 }
+
+# New research creation gate; existing runs remain readable when disabled.
+HVG_RESEARCH_ENABLED = os.environ.get('HVG_RESEARCH_ENABLED', '0') == '1'
+
+
+# Strict Core comparison uses bounded, durable, per-task workers.
+COMPARE_CORE_ENABLED = os.environ.get('COMPARE_CORE_ENABLED', '1') == '1'
+COMPARE_CORE_AUTOSTART = os.environ.get('COMPARE_CORE_AUTOSTART', '1') == '1'
+COMPARE_CORE_ROOT = BASE_DIR / 'runtime' / 'compare_core'
+
+# Whole-population Proteome scientific visualizations; source CSVs remain immutable.
+STOICH_PROTEOME_VIZ_V3_ENABLED = os.environ.get("STOICH_PROTEOME_VIZ_V3_ENABLED", "1") == "1"
+PROTEOME_VIZ_ROOT = Path(os.environ.get("PROTEOME_VIZ_ROOT", str(BASE_DIR / "runtime" / "proteome_visuals_v3")))
+
+# Independent Genome / Transcriptome complete-population result channel.
+SEQUENCE_VIZ_GENOME_ENABLED = os.environ.get("SEQUENCE_VIZ_GENOME_ENABLED", "1") == "1"
+SEQUENCE_VIZ_TRANSCRIPTOME_ENABLED = os.environ.get("SEQUENCE_VIZ_TRANSCRIPTOME_ENABLED", "1") == "1"
+SEQUENCE_VIZ_ROOT = Path(os.environ.get("SEQUENCE_VIZ_ROOT", str(BASE_DIR / "runtime" / "sequence_visuals_v1")))
+SEQUENCE_VIZ_ON_DEMAND = os.environ.get("SEQUENCE_VIZ_ON_DEMAND", "1") == "1"
+SEQUENCE_VIZ_COHORT_LIMIT = 32
+
+# Independent complete-Core integration namespace. Enabled only after acceptance.
+INTEGRATION_VIZ_ENABLED = os.getenv('INTEGRATION_VIZ_ENABLED', '1').strip().lower() in {'1','true','yes'}
+INTEGRATION_VIZ_ON_DEMAND = os.getenv('INTEGRATION_VIZ_ON_DEMAND', '1').strip().lower() in {'1','true','yes'}
+INTEGRATION_VIZ_ROOT = Path(os.getenv('INTEGRATION_VIZ_ROOT', str(BASE_DIR / 'runtime/integration_visuals_v1')))
+INTEGRATION_VIZ_COHORT_LIMIT = 32
+
+MIDDLEWARE = ['backend.apps.stoichdb.integration_viz.middleware.IntegrationCompressionMiddleware'] + MIDDLEWARE
