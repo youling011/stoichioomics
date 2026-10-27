@@ -1,5 +1,5 @@
 from __future__ import annotations
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import List, Dict, Any
 import json
 from .library import load_registry

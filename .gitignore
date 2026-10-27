@@ -1,4 +1,4 @@
-# Private configuration (safe templates remain tracked)
+# Private configuration; only public examples belong in Git.
 .env
 .env.*
 !.env.example
@@ -7,27 +7,30 @@
 *.key
 *.p12
 *.pfx
+**/runtime-env.json
+**/production.env
+**/config.json
+**/local.config.json
 
-# Dependencies, builds, caches
+# Runtime software, build output and caches.
 .venv/
 venv/
 node_modules/
 dist/
 __pycache__/
 *.py[cod]
-.pytest_cache/
-.coverage
-htmlcov/
+.cache/
 .vite/
 *.egg-info/
 
-# Data, database storage, user output
+# External data, databases and scientific output.
 /data/
 /runtime/
 /workspace/
 /uploads/
-/postgres_data/
 /staticfiles/
+/var/
+/postgres_data/
 /backups/
 *.sqlite3
 *.sqlite3-*
@@ -35,36 +38,27 @@ htmlcov/
 *.backup
 *.bak
 *.bak_*
-*.log
-*.zip
-*.tar
-*.gz
+*.parquet
 *.h5ad
 *.h5
-*.parquet
+*.zip
+*.gz
+*.tar
 
-# Reports and local editor files
+# Local investigation, tests and evidence are intentionally not distributed.
+/work/
+/deploy/evidence/
+/deploy/generated/
+/deploy/validation/
+**/tests/
+**/test-results/
+**/playwright-report/
+*.log
 *.docx
 *.doc
 *.pptx
 *.xlsx
-~$*
 .DS_Store
 Thumbs.db
 .idea/
 .vscode/
-/codex_hvg_publication_backup_*/
-
-# Optimization-development and test output
-/work/
-.cache/
-frontend/test-results/
-frontend/playwright-report/
-
-# Target-specific deployment configuration and local evidence
-/deploy/evidence/
-/deploy/VALIDATION_REPORT.md
-/deploy/VALIDATION_MANIFEST.json
-/deploy/generated/
-/deploy/config.json
-/deploy/production.env

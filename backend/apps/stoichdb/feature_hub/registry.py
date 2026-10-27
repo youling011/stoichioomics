@@ -4,7 +4,7 @@ import csv
 import json
 import re
 from functools import lru_cache
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 from django.conf import settings

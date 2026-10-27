@@ -1,10 +1,11 @@
 import { reactive, onBeforeUnmount, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { researchGet } from '../../api/hvgResearch'
+import {getWorkflowCapabilities,workflowVisualsEnabled} from '../../api/workflowVisuals'
 
 export function useHvgResearch(identifier) {
   const route=useRoute(), router=useRouter()
-  const state=reactive({available:false, initialized:false, loading:false, error:'', accessDenied:false, summary:{}, runs:[], phenomena:[],sharedVisuals:{},modelClass:'',
+  const state=reactive({available:false, initialized:false, loading:false, error:'', accessDenied:false, summary:{}, visualCapabilities:null, runs:[], phenomena:[],sharedVisuals:{},modelClass:'',
     run:String(route.query.research_run||''),context:String(route.query.research_context||'global'),
     feature:String(route.query.research_feature||''),term:String(route.query.research_term||''),source:'',direction:'',scope:'all_annotated',qmax:'',gene:String(route.query.research_gene||''),set:'',version:0,compact:window.matchMedia('(max-width:760px)').matches})
   let generation=0,timer,disposed=false
@@ -21,6 +22,8 @@ export function useHvgResearch(identifier) {
       const [s,r]=await Promise.all([state.get('summary',{},false),researchGet(identifier(),'runs')])
       if(disposed||id!==generation)return
       state.summary=s;state.runs=r.rows||[];state.available=true;state.run=s.analysis_run_id
+      if(workflowVisualsEnabled){try{const caps=await getWorkflowCapabilities('hvg',identifier());if(!disposed&&id===generation)state.visualCapabilities=caps}catch{if(!disposed&&id===generation)state.visualCapabilities=null}}
+      if(disposed||id!==generation)return
       if(!(s.contexts||[]).some(c=>c.context_id===state.context))state.context=s.contexts?.[0]?.context_id||'global'
       const p=await state.get('phenomena',{},false)
       if(disposed||id!==generation)return

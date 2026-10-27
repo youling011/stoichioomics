@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 
 from django.conf import settings
 

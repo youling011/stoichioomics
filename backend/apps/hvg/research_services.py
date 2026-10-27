@@ -1,5 +1,5 @@
 """Authenticated, run-scoped result access without loading legacy case caches."""
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 import json,io
 import pandas as pd,numpy as np
 import pyarrow.dataset as ds
@@ -43,7 +43,7 @@ def read_table(run,key,params=None):
    if params.get('context_id') and c['context_id']!=params['context_id']:continue
    folder=safe_path(run,c['directory']);p=folder/(relative+'.parquet')
    if p.exists():frame=pd.read_parquet(p)
-   elif key in ['mapping','feature_provenance'] and (folder/(relative+'.csv')).exists():frame=pd.read_csv(folder/(relative+'.csv'),keep_default_na=False)
+   elif key in ['mapping','feature_provenance'] and (folder/(relative+'.csv')).exists():frame=pd.read_csv(folder/(relative+'.csv'),keep_default_na=False,engine='python')
    else:continue
    frame['context_id']=c['context_id']
    if key=='mapping' and 'expression_gene_id' in frame:frame['gene_id']=frame.expression_gene_id
@@ -126,7 +126,7 @@ def gene_detail(run,m,gene,params):
   if params.get('context_id') and c['context_id']!=params['context_id']:continue
   p=safe_path(run,c['directory'])/'core/hvg_multiomics_mapping_table.csv'
   if p.exists():
-   f=pd.read_csv(p,keep_default_na=False);f=f[f.expression_gene_id.eq(gene)];result['mapping_identity'].extend(clean(f.to_dict('records')))
+   f=pd.read_csv(p,keep_default_na=False,engine='python');f=f[f.expression_gene_id.eq(gene)];result['mapping_identity'].extend(clean(f.to_dict('records')))
  return result
 def feature_detail(run,m,key,params):
  params={"context_id":params.get("context_id")}

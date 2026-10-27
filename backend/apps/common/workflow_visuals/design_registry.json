@@ -1,0 +1,3304 @@
+[
+  {
+    "code": "S01",
+    "title": "全部保存字段状态总览",
+    "scope": "三个完整序列任务的全部原始保存列",
+    "n": 818,
+    "change": "将单一均值画像扩展为完整列状态条带，未进入模型的保存字段也保留。",
+    "method": "逐列审计全行，区分元数据、全空、有限常数和有限变异列；显示原字段顺序，不将完整性等同质量合格。",
+    "reading": "所有列均有位置；各任务记录数与模型特征数是不同分母。",
+    "sources": [
+      "seqP_sequence_features",
+      "seqG_sequence_features",
+      "seqT_sequence_features"
+    ],
+    "section": "catalog / features / Core / overview 原 family 图位",
+    "graphical_implementation": "多组学字段状态条带、类别完整计数；可检索全列目录",
+    "full_data_contract": "遍历 sequence_features.csv 的所有原列；结合 feature_catalog/registry 先识别身份元数据，其余区分全空、有限常数、有限变异、非数值及实际解析失败",
+    "condition_and_interaction": "所有任务；字段点击沿用 explorer，不能按均值为空直接删列",
+    "regression_assertion": "固定 P/G/T 分别 143/382/293 列，合计818；每列恰一主要状态，保留元数据行",
+    "word_paragraphs": [
+      {
+        "index": 82,
+        "text": [
+          "S01 至 S04",
+          "序列总体 字段覆盖 PCA和完整差异结果",
+          "S05 至 S09",
+          "基因组 转录序列 蛋白组各自的组成与元素预算",
+          "S10 至 S15",
+          "字段探索 极值 策略类别 耦合及样本比较",
+          "S16 至 S22"
+        ]
+      },
+      {
+        "index": 122,
+        "text": [
+          "S01  全部保存字段状态总览",
+          "数据范围：三个完整序列任务的全部原始保存列。本图记录或检验行口径 n = 818。",
+          "",
+          "优化调整  将单一均值画像扩展为完整列状态条带，未进入模型的保存字段也保留。",
+          "方法与完整性  逐列审计全行，区分元数据、全空、有限常数和有限变异列；显示原字段顺序，不将完整性等同质量合格。",
+          "阅读边界  所有列均有位置；各任务记录数与模型特征数是不同分母。",
+          "来源标记：seqP_sequence_features  seqG_sequence_features  seqT_sequence_features。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 550,
+        "text": [
+          "S01 S23 S24 S25",
+          "corePanelChartOption(panel)",
+          "SequenceAnalysisResultView.vue L326",
+          "S01 S05 S06 S07 S08 S09 S23 S24 S25",
+          "featureFamilyOption",
+          "SequenceAnalysisResultView.vue L379",
+          "S01 S23 S24 S25"
+        ]
+      },
+      {
+        "index": 553,
+        "text": [
+          "S01 S05 S06 S07 S08 S09 S23 S24 S25",
+          "featureFamilyOption",
+          "SequenceAnalysisResultView.vue L379",
+          "S01 S23 S24 S25",
+          "fieldSummaryOption",
+          "SequenceAnalysisResultView.vue L391",
+          "S10 S23 S24 S25"
+        ]
+      },
+      {
+        "index": 556,
+        "text": [
+          "S01 S23 S24 S25",
+          "fieldSummaryOption",
+          "SequenceAnalysisResultView.vue L391",
+          "S10 S23 S24 S25",
+          "scatterOption",
+          "SequenceAnalysisResultView.vue L400",
+          "S11"
+        ]
+      },
+      {
+        "index": 853,
+        "text": [
+          "S01 S07 S08 S23",
+          "proteome_physicochemical",
+          "seqP 面板proteome_physicochemical P1. 蛋白长度、分子量与基本理化性质",
+          "S01 S07 S08 S23",
+          "proteome_aa_class_resource",
+          "seqP 面板proteome_aa_class_resource P2. 氨基酸类别与资源属性摘要",
+          "S01 S07 S08 S23"
+        ]
+      },
+      {
+        "index": 856,
+        "text": [
+          "S01 S07 S08 S23",
+          "proteome_aa_class_resource",
+          "seqP 面板proteome_aa_class_resource P2. 氨基酸类别与资源属性摘要",
+          "S01 S07 S08 S23",
+          "proteome_element_budget",
+          "seqP 面板proteome_element_budget P3. 蛋白元素计量与元素资源比值",
+          "S01 S07 S08 S23"
+        ]
+      },
+      {
+        "index": 859,
+        "text": [
+          "S01 S07 S08 S23",
+          "proteome_element_budget",
+          "seqP 面板proteome_element_budget P3. 蛋白元素计量与元素资源比值",
+          "S01 S07 S08 S23",
+          "proteome_aa_percentage",
+          "seqP 面板proteome_aa_percentage P4. 20AA 组成百分比",
+          "S01 S07 S08 S23"
+        ]
+      },
+      {
+        "index": 862,
+        "text": [
+          "S01 S07 S08 S23",
+          "proteome_aa_percentage",
+          "seqP 面板proteome_aa_percentage P4. 20AA 组成百分比",
+          "S01 S07 S08 S23",
+          "genome_annotation_overview",
+          "seqG 面板genome_annotation_overview G0. 实体追踪与注释概览",
+          "S01 S05 S08 S09 S24"
+        ]
+      },
+      {
+        "index": 865,
+        "text": [
+          "S01 S07 S08 S23",
+          "genome_annotation_overview",
+          "seqG 面板genome_annotation_overview G0. 实体追踪与注释概览",
+          "S01 S05 S08 S09 S24",
+          "genome_region_quality",
+          "seqG 面板genome_region_quality G1. 区域长度、GC 与序列质量",
+          "S01 S05 S08 S09 S24"
+        ]
+      },
+      {
+        "index": 868,
+        "text": [
+          "S01 S05 S08 S09 S24",
+          "genome_region_quality",
+          "seqG 面板genome_region_quality G1. 区域长度、GC 与序列质量",
+          "S01 S05 S08 S09 S24",
+          "genome_element_budget",
+          "seqG 面板genome_element_budget G2. DNA 元素计量密度与元素比值",
+          "S01 S05 S08 S09 S24"
+        ]
+      },
+      {
+        "index": 871,
+        "text": [
+          "S01 S05 S08 S09 S24",
+          "genome_element_budget",
+          "seqG 面板genome_element_budget G2. DNA 元素计量密度与元素比值",
+          "S01 S05 S08 S09 S24",
+          "genome_locus_dinucleotide",
+          "seqG 面板genome_locus_dinucleotide G3. locus 二核苷酸模式",
+          "S01 S05 S08 S09 S24"
+        ]
+      },
+      {
+        "index": 874,
+        "text": [
+          "S01 S05 S08 S09 S24",
+          "genome_locus_dinucleotide",
+          "seqG 面板genome_locus_dinucleotide G3. locus 二核苷酸模式",
+          "S01 S05 S08 S09 S24",
+          "genome_cds_codon_usage",
+          "seqG 面板genome_cds_codon_usage G4. CDS 密码子使用与编码偏好",
+          "S01 S05 S08 S09 S24"
+        ]
+      },
+      {
+        "index": 877,
+        "text": [
+          "S01 S05 S08 S09 S24",
+          "genome_cds_codon_usage",
+          "seqG 面板genome_cds_codon_usage G4. CDS 密码子使用与编码偏好",
+          "S01 S05 S08 S09 S24",
+          "genome_cds_translated_aa",
+          "seqG 面板genome_cds_translated_aa G5. CDS 翻译氨基酸组成代理",
+          "S01 S05 S08 S09 S24"
+        ]
+      },
+      {
+        "index": 880,
+        "text": [
+          "S01 S05 S08 S09 S24",
+          "genome_cds_translated_aa",
+          "seqG 面板genome_cds_translated_aa G5. CDS 翻译氨基酸组成代理",
+          "S01 S05 S08 S09 S24",
+          "transcriptome_annotation_overview",
+          "seqT 面板transcriptome_annotation_overview T0. 实体追踪与注释概览",
+          "S01 S06 S08 S09 S25"
+        ]
+      },
+      {
+        "index": 883,
+        "text": [
+          "S01 S05 S08 S09 S24",
+          "transcriptome_annotation_overview",
+          "seqT 面板transcriptome_annotation_overview T0. 实体追踪与注释概览",
+          "S01 S06 S08 S09 S25",
+          "transcriptome_rna_base_complexity",
+          "seqT 面板transcriptome_rna_base_complexity T1. RNA 长度、碱基组成与复杂度",
+          "S01 S06 S08 S09 S25"
+        ]
+      },
+      {
+        "index": 886,
+        "text": [
+          "S01 S06 S08 S09 S25",
+          "transcriptome_rna_base_complexity",
+          "seqT 面板transcriptome_rna_base_complexity T1. RNA 长度、碱基组成与复杂度",
+          "S01 S06 S08 S09 S25",
+          "原行为保留  表格分页、控制、下载及无数据状态继续沿用。模型支线按用户要求轻量保留；不可用分支显示原原因，不生成替代性的假结果。",
+          "动态序列Core面板覆盖 2",
+          "所有原图位均有去向；重复图位可以复用相同完整结果，详情图按声明的选择条件呈现完整详情。"
+        ]
+      },
+      {
+        "index": 889,
+        "text": [
+          "S01 S06 S08 S09 S25",
+          "原行为保留  表格分页、控制、下载及无数据状态继续沿用。模型支线按用户要求轻量保留；不可用分支显示原原因，不生成替代性的假结果。",
+          "动态序列Core面板覆盖 2",
+          "所有原图位均有去向；重复图位可以复用相同完整结果，详情图按声明的选择条件呈现完整详情。",
+          "原图标识",
+          "所属内容",
+          "对应新图"
+        ]
+      },
+      {
+        "index": 898,
+        "text": [
+          "S01 S06 S08 S09 S25",
+          "transcriptome_rna_dinucleotide",
+          "seqT 面板transcriptome_rna_dinucleotide T3. RNA 二核苷酸模式",
+          "S01 S06 S08 S09 S25",
+          "transcriptome_structure_repeats",
+          "seqT 面板transcriptome_structure_repeats T4. RNA 序列结构与重复模式",
+          "S01 S06 S08 S09 S25"
+        ]
+      },
+      {
+        "index": 901,
+        "text": [
+          "S01 S06 S08 S09 S25",
+          "transcriptome_structure_repeats",
+          "seqT 面板transcriptome_structure_repeats T4. RNA 序列结构与重复模式",
+          "S01 S06 S08 S09 S25",
+          "transcriptome_orf_coding_proxy",
+          "seqT 面板transcriptome_orf_coding_proxy T5. ORF 编码潜力与翻译代理属性",
+          "S01 S06 S08 S09 S25"
+        ]
+      },
+      {
+        "index": 904,
+        "text": [
+          "S01 S06 S08 S09 S25",
+          "transcriptome_orf_coding_proxy",
+          "seqT 面板transcriptome_orf_coding_proxy T5. ORF 编码潜力与翻译代理属性",
+          "S01 S06 S08 S09 S25",
+          "transcriptome_orf_translated_aa",
+          "seqT 面板transcriptome_orf_translated_aa T6. ORF 翻译氨基酸组成",
+          "S01 S06 S08 S09 S25"
+        ]
+      },
+      {
+        "index": 907,
+        "text": [
+          "S01 S06 S08 S09 S25",
+          "transcriptome_orf_translated_aa",
+          "seqT 面板transcriptome_orf_translated_aa T6. ORF 翻译氨基酸组成",
+          "S01 S06 S08 S09 S25",
+          "原行为保留  表格分页、控制、下载及无数据状态继续沿用。模型支线按用户要求轻量保留；不可用分支显示原原因，不生成替代性的假结果。",
+          "数据核验与测试结果",
+          "本次核对当前保存产物的完整性和展示运算，同时核验原平台源文件未被修改。"
+        ]
+      },
+      {
+        "index": 910,
+        "text": [
+          "S01 S06 S08 S09 S25",
+          "原行为保留  表格分页、控制、下载及无数据状态继续沿用。模型支线按用户要求轻量保留；不可用分支显示原原因，不生成替代性的假结果。",
+          "数据核验与测试结果",
+          "本次核对当前保存产物的完整性和展示运算，同时核验原平台源文件未被修改。",
+          "检查",
+          "结果",
+          "真实源文件一致性"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S01.png",
+    "reference_svg": "reference_figures/S01.svg",
+    "word_embedded_image": "media/image4.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 13,
+      "source_line": "head(f,'Complete stored-column audit','Metadata, all-empty, constant and variable fields remain separate; no model-based field deletion.');f.legend([Rectangle((0,0),1,1,fc=c) for c in colors],state_order,loc='lower center',ncol=4,fontsize=8);source_csv('S01',pd.concat(out));done(f,'S01','全部保存字段状态总览','三个完整序列任务的全部原始保存列',sum(len(x.columns) for x in DATA.values()),'将单一均值画像扩展为完整列状态条带，未进入模型的保存字段也保留。','逐列审计全行，区分元数据、全空、有限常数和有限变异列；显示原字段顺序，不将完整性等同质量合格。','所有列均有位置；各任务记录数与模型特征数是不同分母。',[m+'_sequence_features' for m in DATA])"
+    },
+    "target_design": "全部原保存字段按列顺序的离散状态条带，元数据/全空/常量/变异/非数值分别编码；数量在图注而非另做大柱。",
+    "target_location": "basic原family位置；Core各面板的辅助审计；与catalog全数值图谱互补。",
+    "specific_acceptance": "每列恰一主要状态，状态色固定离散；单任务不拼入其他任务的三组学。",
+    "revision_action": "将状态汇总从categories大图移入辅助说明；别把每个身份字段都画成分类柱。",
+    "reference_sha256": "9c33e360da4436ddae8d81c7003a9b7af064508ebe446eb2554365c651417fe8",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S02",
+    "title": "全部分析特征的组间分位画像",
+    "scope": "72个蛋白 73个基因组及72个转录序列分析特征",
+    "n": 578,
+    "change": "用全特征分位矩阵代替不同单位均值并列的折线或雷达图。",
+    "method": "各特征用同一任务全量原值作为自身ECDF参考，仅做显示变换；不更改模型输入或差异统计。",
+    "reading": "颜色可比较相对位置，不能解释为特征原单位、效应量或显著性。",
+    "sources": [
+      "seqP_feature_summary",
+      "seqG_feature_summary",
+      "seqT_feature_summary",
+      "seqP_sequence_features",
+      "seqG_sequence_features",
+      "seqT_sequence_features"
+    ],
+    "section": "overview 的 featureProfileOption；当前组学 Core 画像",
+    "graphical_implementation": "按组×完整分析特征的顺序色矩阵，固定 0..1 色标",
+    "full_data_contract": "feature_summary 确认分析特征集合；从全 sequence_features 原值求每组 median 在全体同字段 ECDF 的位置；明确 reference filters",
+    "condition_and_interaction": "多组优先；单组照实可显示；工具提示原 median、unit、n；完整分析集合不取 Top12",
+    "regression_assertion": "参考三任务 72/73/72 特征、578有效图格；色标所有 panel一致；统计不跨字段混池",
+    "word_paragraphs": [
+      {
+        "index": 129,
+        "text": [
+          "S02  全部分析特征的组间分位画像",
+          "数据范围：72个蛋白 73个基因组及72个转录序列分析特征。本图记录或检验行口径 n = 578。",
+          "",
+          "优化调整  用全特征分位矩阵代替不同单位均值并列的折线或雷达图。",
+          "方法与完整性  各特征用同一任务全量原值作为自身ECDF参考，仅做显示变换；不更改模型输入或差异统计。",
+          "阅读边界  颜色可比较相对位置，不能解释为特征原单位、效应量或显著性。",
+          "字段序号用于紧凑定位。配套CSV按相同顺序保留完整字段名称、原值或统计结果，未标注的字段仍完整参与绘图。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S02.png",
+    "reference_svg": "reference_figures/S02.svg",
+    "word_embedded_image": "media/image5.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 24,
+      "source_line": "head(f,'Every analysis feature compared on its own reference','Cell color = percentile of a group median in the pooled empirical distribution of the same feature.');source_csv('S02',pd.DataFrame(rows));done(f,'S02','全部分析特征的组间分位画像','72个蛋白 73个基因组及72个转录序列分析特征',len(rows),'用全特征分位矩阵代替不同单位均值并列的折线或雷达图。','各特征用同一任务全量原值作为自身ECDF参考，仅做显示变换；不更改模型输入或差异统计。','颜色可比较相对位置，不能解释为特征原单位、效应量或显著性。',[m+'_feature_summary' for m in DATA]+[m+'_sequence_features' for m in DATA])"
+    },
+    "target_design": "全部分析特征×实际组别的分位矩阵，使用固定0..1顺序色标；原值中位数、单位和n在tooltip。",
+    "target_location": "overview.featureProfileOption；当前任务适用分析特征，保留原组筛选。",
+    "specific_acceptance": "每字段独立参考ECDF；组中位数的位置为count(reference<=median)/n_ref，所有比较声明reference filters。",
+    "revision_action": "保留现有矩阵统计，补原median、分母及单位标注；按组学家族检索而不截字段。",
+    "reference_sha256": "a114bb6dfad0cf9b3f635abda2940d9a315abb127fcdcf0d2f424124700f5eaf",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S03",
+    "title": "全量保存PCA坐标展示",
+    "scope": "三个任务的全部保存PCA点",
+    "n": 29112,
+    "change": "保留PCA方法，改善透明度、颜色和组别计数，完整显示点云。",
+    "method": "直接读取保存的pc1和pc2，不重拟合PCA，不随机抽点。",
+    "reading": "不同任务分别拟合，不能跨面板比较坐标大小。",
+    "sources": [
+      "seqP_plots_payload",
+      "seqG_plots_payload",
+      "seqT_plots_payload"
+    ],
+    "section": "overview 的 pcaOption",
+    "graphical_implementation": "全点 PCA 散点；超大任务完整计数密度",
+    "full_data_contract": "plots_payload.pca_scatter 中保存 pc1/pc2/group；不重算 PCA；坐标完整性与原输入/保存 manifest核对",
+    "condition_and_interaction": "有完整保存坐标才可用；沿用实体查询/组筛选；显示真实解释方差（若保存）",
+    "regression_assertion": "三任务 10,839/11,661/6,612 点，共29,112；坐标/标签逐项与原值一致",
+    "word_paragraphs": [
+      {
+        "index": 137,
+        "text": [
+          "S03  全量保存PCA坐标展示",
+          "数据范围：三个任务的全部保存PCA点。本图记录或检验行口径 n = 29,112。",
+          "",
+          "优化调整  保留PCA方法，改善透明度、颜色和组别计数，完整显示点云。",
+          "方法与完整性  直接读取保存的pc1和pc2，不重拟合PCA，不随机抽点。",
+          "阅读边界  不同任务分别拟合，不能跨面板比较坐标大小。",
+          "来源标记：seqP_plots_payload  seqG_plots_payload  seqT_plots_payload。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S03.png",
+    "reference_svg": "reference_figures/S03.svg",
+    "word_embedded_image": "media/image6.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 31,
+      "source_line": "head(f,'All saved PCA coordinates','Original task preprocessing and axes retained; every saved record is drawn.');source_csv('S03',pd.concat(pca_rows));done(f,'S03','全量保存PCA坐标展示','三个任务的全部保存PCA点',sum(len(x) for x in DATA.values()),'保留PCA方法，改善透明度、颜色和组别计数，完整显示点云。','直接读取保存的pc1和pc2，不重拟合PCA，不随机抽点。','不同任务分别拟合，不能跨面板比较坐标大小。',[m+'_plots_payload' for m in DATA])"
+    },
+    "target_design": "全量保存PCA点云，实际group配色和每组计数，低透明度小点；超大任务可全量密度并保留组别信息。",
+    "target_location": "overview.pcaOption原卡。",
+    "specific_acceptance": "保存pc1/pc2逐点与身份一致；缺完整坐标时说明，不能以预览当全点；解释方差仅有保存时显示。",
+    "revision_action": "保留可用散点实现，补原轴方差和明确来源，禁止重拟合或随机抽样。",
+    "reference_sha256": "2311bcea8f1afffe42ea3f14ba96905389760c1ef2c334e364c9fdf390b8c48d",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S04",
+    "title": "完整差异特征结果及推断可用性",
+    "scope": "全部72 73及216条保存差异特征结果",
+    "n": 361,
+    "change": "以全排名点线展示替代Top30截取，并显式报告p和q的真实可用数。",
+    "method": "直接读取完整differential_features.csv；保存RF重要度与其他方法效应分面保留各自定义，不计算新p值。",
+    "reading": "蛋白任务的保存p和q均缺失，重要度高不等于统计显著。",
+    "sources": [
+      "seqP_differential_features",
+      "seqG_differential_features",
+      "seqT_differential_features"
+    ],
+    "section": "overview 与 diff_features 的 topDiffOption",
+    "graphical_implementation": "全结果排名点线；有效 p/q 状态条；必要时按比较组分面",
+    "full_data_contract": "读完整 differential_features.csv；importance/effect_size/statistic 由原 method 决定，各指标分面；原排序/缺失不造值",
+    "condition_and_interaction": "原结果池所有比较；排名点击对应特征明细，保持原校正族",
+    "regression_assertion": "P72/G73/T216结果；P p/q全缺失仍显示真实重要度，不能画假显著性火山图",
+    "word_paragraphs": [
+      {
+        "index": 144,
+        "text": [
+          "S04  完整差异特征结果及推断可用性",
+          "数据范围：全部72 73及216条保存差异特征结果。本图记录或检验行口径 n = 361。",
+          "",
+          "优化调整  以全排名点线展示替代Top30截取，并显式报告p和q的真实可用数。",
+          "方法与完整性  直接读取完整differential_features.csv；保存RF重要度与其他方法效应分面保留各自定义，不计算新p值。",
+          "阅读边界  蛋白任务的保存p和q均缺失，重要度高不等于统计显著。",
+          "来源标记：seqP_differential_features  seqG_differential_features  seqT_differential_features。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S04.png",
+    "reference_svg": "reference_figures/S04.svg",
+    "word_embedded_image": "media/image7.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 36,
+      "source_line": "head(f,'Complete differential-feature result pools','Saved ranking/effect fields are displayed; unavailable p or q values are never replaced by zero.');source_csv('S04',pd.concat(out));done(f,'S04','完整差异特征结果及推断可用性','全部72 73及216条保存差异特征结果',sum(len(x) for x in out),'以全排名点线展示替代Top30截取，并显式报告p和q的真实可用数。','直接读取完整differential_features.csv；保存RF重要度与其他方法效应分面保留各自定义，不计算新p值。','蛋白任务的保存p和q均缺失，重要度高不等于统计显著。',[m+'_differential_features' for m in DATA])"
+    },
+    "target_design": "全部保存差异特征的排序证据轮廓；使用实际保存importance/效应/统计量，p与q可用数量写在辅助行。",
+    "target_location": "overview.topDiffOption；diff_features保留原表与跳转。",
+    "specific_acceptance": "差异特征72/73/216仅固定快照；没有p/q时不制造火山图；比较族分别呈现。",
+    "revision_action": "删除availability_p_value、availability_fdr的独立大柱，改为紧凑可用性说明。",
+    "reference_sha256": "a68b2bc4ddc10d7b49b0914172c8bc86501b31476b5fe6ad54d6c2eb47f3aa20",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S05",
+    "title": "完整基因组坐标与序列组成",
+    "scope": "全部11661条基因组任务记录",
+    "n": 11661,
+    "change": "用全基因组坐标密度图展示GC异质性，替代几个均值柱。",
+    "method": "按物种及原seqid稳定排序累计坐标；每个有限基因贡献一个密度计数，不生成新的基因注释。",
+    "reading": "横轴仅代表拼接后的注释坐标，不用于推断组装质量或染色体重排。",
+    "sources": [
+      "seqG_sequence_features"
+    ],
+    "section": "genome Core 的区域背景图",
+    "graphical_implementation": "全坐标 GC 六边形密度，物种/seqid分面或累计轴",
+    "full_data_contract": "species_id/seqid/start_1/end_1/exon_gc_percent；按保存物种及seqid稳定顺序累计坐标 offset=max(end_1)，记录染色体/contig边界",
+    "condition_and_interaction": "需真实注释坐标；非有限/无效坐标计数；点击格查询完整范围实体",
+    "regression_assertion": "参考11,661 loci；密度计数守恒；不能把累计注释范围称真实组装总长度",
+    "word_paragraphs": [
+      {
+        "index": 84,
+        "text": [
+          "S05 至 S09",
+          "基因组 转录序列 蛋白组各自的组成与元素预算",
+          "S10 至 S15",
+          "字段探索 极值 策略类别 耦合及样本比较",
+          "S16 至 S22",
+          "序列可分性诊断 自定义比较及完整实体结果池",
+          "S23 至 S25"
+        ]
+      },
+      {
+        "index": 151,
+        "text": [
+          "S05  完整基因组坐标与序列组成",
+          "数据范围：全部11661条基因组任务记录。本图记录或检验行口径 n = 11,661。",
+          "",
+          "优化调整  用全基因组坐标密度图展示GC异质性，替代几个均值柱。",
+          "方法与完整性  按物种及原seqid稳定排序累计坐标；每个有限基因贡献一个密度计数，不生成新的基因注释。",
+          "阅读边界  横轴仅代表拼接后的注释坐标，不用于推断组装质量或染色体重排。",
+          "来源标记：seqG_sequence_features。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S05.png",
+    "reference_svg": "reference_figures/S05.svg",
+    "word_embedded_image": "media/image8.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 44,
+      "source_line": "head(f,'Genome-wide sequence context','All 11,661 saved loci; ordered contigs retain all coordinates and all tails.');source_csv('S05',pd.concat(out));done(f,'S05','完整基因组坐标与序列组成','全部11661条基因组任务记录',len(G),'用全基因组坐标密度图展示GC异质性，替代几个均值柱。','按物种及原seqid稳定排序累计坐标；每个有限基因贡献一个密度计数，不生成新的基因注释。','横轴仅代表拼接后的注释坐标，不用于推断组装质量或染色体重排。',['seqG_sequence_features'])"
+    },
+    "target_design": "每物种或组的累计注释位置×外显子GC全量hexbin；轮廓和计数色条保留尾部及坐标有效数。",
+    "target_location": "Core genome_region_quality的基因组背景局部视图；仅有真实Full坐标才启用。",
+    "specific_acceptance": "按实际seqid稳定排序及已保存坐标构造累计注释跨度；没有contig总长时轴名不能称完整组装染色体长度。",
+    "revision_action": "将现有coordinate_panels的结果作为该家族明确主视图，不藏在逐字段ECDF列表尾部。",
+    "reference_sha256": "9f75c7c070c634293b2a50b5cdef81b11d696f746ff9c1262debe2d62b85e3c4",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S06",
+    "title": "转录序列完整64密码子组成",
+    "scope": "6612条转录序列及64个保存密码子频率",
+    "n": 6612,
+    "change": "用完整密码子组成矩阵取代仅展示部分密码子的并列柱。",
+    "method": "对每个原分组的全部转录序列计算保存频率的算术均值，64种密码子全部保留，包括终止密码子。",
+    "reading": "原分组为技术分桶，不当作独立生物条件或表达变化。",
+    "sources": [
+      "seqT_sequence_features"
+    ],
+    "section": "transcriptome codon Full 扩展/编码代理图位",
+    "graphical_implementation": "完整 64 RNA codon 的组×codon矩阵",
+    "full_data_contract": "识别 codon_[ACGU]{3}_freq，所有64项含终止密码子；各组全部有限记录算术均值，保存有效n；不按序列长度另加权",
+    "condition_and_interaction": "字段不齐的schema显示缺失格/原因；DNA面板用明确独立T字母适配，不能把T悄悄改U",
+    "regression_assertion": "6,612 transcripts全部参与；codon集合完整；不声称技术分桶为生物处理",
+    "word_paragraphs": [
+      {
+        "index": 158,
+        "text": [
+          "S06  转录序列完整64密码子组成",
+          "数据范围：6612条转录序列及64个保存密码子频率。本图记录或检验行口径 n = 6,612。",
+          "",
+          "优化调整  用完整密码子组成矩阵取代仅展示部分密码子的并列柱。",
+          "方法与完整性  对每个原分组的全部转录序列计算保存频率的算术均值，64种密码子全部保留，包括终止密码子。",
+          "阅读边界  原分组为技术分桶，不当作独立生物条件或表达变化。",
+          "来源标记：seqT_sequence_features。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S06.png",
+    "reference_svg": "reference_figures/S06.svg",
+    "word_embedded_image": "media/image9.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 47,
+      "source_line": "f,ax=fig(figsize=(8,4.8));groups=sorted(T.group.unique());matrix=np.array([[np.nanmean(vals(T[T.group.eq(g)],k)) for k in codons] for g in groups]);im=ax.imshow(matrix,cmap=CMAP,aspect='auto');ax.set(yticks=range(len(groups)),yticklabels=groups,xticks=range(0,64,4),xticklabels=[k.split('_')[1] for k in codons[::4]],xlabel='All 64 RNA codons in stable order');f.colorbar(im,ax=ax,pad=.02,label='Mean saved codon frequency');head(f,'Complete codon-usage landscape','All 6,612 transcripts contribute; technical fraction groups retain their saved labels.');source_csv('S06',pd.DataFrame([{'group':g,'codon':k,'mean_frequency':matrix[i,z]} for i,g in enumerate(groups) for z,k in enumerate(codons)]));mass('S06_codons',64,len(codons));done(f,'S06','转录序列完整64密码子组成','6612条转录序列及64个保存密码子频率',len(T),'用完整密码子组成矩阵取代仅展示部分密码子的并列柱。','对每个原分组的全部转录序列计算保存频率的算术均值，64种密码子全部保留，包括终止密码子。','原分组为技术分桶，不当作独立生物条件或表达变化。',['seqT_sequence_features'])"
+    },
+    "target_design": "全部64密码子×组别的组成矩阵，原频率单位，稳定字母序；每个codon有位置。",
+    "target_location": "基因组genome_cds_codon_usage使用DNA扩展；转录组transcriptome_orf_translated_aa中RNA Full扩展。",
+    "specific_acceptance": "RNA用ACGU，DNA用ACGT；均值/中位数按设计显式标记，参考图用全量每组mean，缺值不得补0。",
+    "revision_action": "分别识别RNA与DNA列；禁止套统一codon字段清单；其他GC/entropy字段走辅助分位图谱。",
+    "reference_sha256": "a7120167db79022a3aa49c470897ae3117c8a6a1d847edac7cb08beeecb8fad3",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S07",
+    "title": "蛋白质全部20种标准氨基酸组成",
+    "scope": "10839条蛋白记录",
+    "n": 10839,
+    "change": "改为两物种点区间组成图，避免20组堆叠和饼图的面积比较。",
+    "method": "每种氨基酸使用全记录的中位数和IQR，保持保存的百分比单位。",
+    "reading": "区间是蛋白之间的分布范围，不是均值置信区间。",
+    "sources": [
+      "seqP_sequence_features"
+    ],
+    "section": "proteome 20AA / translated-AA Core 图位",
+    "graphical_implementation": "原单位点区间：median+IQR，20AA稳定顺序",
+    "full_data_contract": "蛋白 AA_[20AA]_pct；全有限记录分组Q25/50/75；translated-aa按其freq单位独立适配；AA_other_pct另列",
+    "condition_and_interaction": "蛋白有适用字段；点击AA进入完整字段分布；不将区间当mean CI",
+    "regression_assertion": "参考10,839蛋白、20标准AA；每组n与完整源表一致",
+    "word_paragraphs": [
+      {
+        "index": 165,
+        "text": [
+          "S07  蛋白质全部20种标准氨基酸组成",
+          "数据范围：10839条蛋白记录。本图记录或检验行口径 n = 10,839。",
+          "",
+          "优化调整  改为两物种点区间组成图，避免20组堆叠和饼图的面积比较。",
+          "方法与完整性  每种氨基酸使用全记录的中位数和IQR，保持保存的百分比单位。",
+          "阅读边界  区间是蛋白之间的分布范围，不是均值置信区间。",
+          "来源标记：seqP_sequence_features。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S07.png",
+    "reference_svg": "reference_figures/S07.svg",
+    "word_embedded_image": "media/image10.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 52,
+      "source_line": "ax.set(xticks=range(20),xticklabels=[x.split('_')[1] for x in aa],xlabel='All 20 canonical amino acids',ylabel='Per-protein amino-acid content (%)');legend(ax);head(f,'Full-proteome amino-acid composition','Median and IQR from all 10,839 protein records, with native percent units.');source_csv('S07',pd.DataFrame(out));done(f,'S07','蛋白质全部20种标准氨基酸组成','10839条蛋白记录',len(P),'改为两物种点区间组成图，避免20组堆叠和饼图的面积比较。','每种氨基酸使用全记录的中位数和IQR，保持保存的百分比单位。','区间是蛋白之间的分布范围，不是均值置信区间。',['seqP_sequence_features'])"
+    },
+    "target_design": "20标准AA的median点与IQR区间，按组轻微错位；额外other/stop/QC有明确辅助入口。",
+    "target_location": "proteome_aa_percentage；genome_cds_translated_aa与transcriptome_orf_translated_aa的翻译代理。",
+    "specific_acceptance": "蛋白AA_*_pct为百分数，翻译代理aa_*_freq为比例；IQR不称CI；20AA固定顺序。",
+    "revision_action": "保留区间图基础，给20AA独立清晰轴和单位；other不另做大面积无信息分布图。",
+    "reference_sha256": "774790d57c0b41b0b9c45e84344e2f3fe694771ebdda9013d19ab95c61479559",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S08",
+    "title": "三层序列元素预算的完整分布",
+    "scope": "三个序列任务的全部可用碳预算值",
+    "n": 29112,
+    "change": "用三种分子单位的ECDF小多图，取代不同单位直接拼接的统一柱图。",
+    "method": "直接读取已有每碱基 每核苷酸 每残基碳原子数，按全量有限值绘制精确ECDF。",
+    "reading": "分面间单位不同，不做跨分子数值高低推断。",
+    "sources": [
+      "seqP_sequence_features",
+      "seqG_sequence_features",
+      "seqT_sequence_features"
+    ],
+    "section": "三个组学元素资源图位",
+    "graphical_implementation": "各分子单位独立的精确ECDF",
+    "full_data_contract": "genome exon_atoms_C_per_base、RNA atoms_per_nt_C、protein C_atoms_per_aa；参数化其他原资源字段但不合并单位",
+    "condition_and_interaction": "仅当前任务组学显示；元素切换完整重算展示统计；保留缺失与恒定",
+    "regression_assertion": "每条完整有限记录计入ECDF；per-base/per-nt/per-residue不直接作数值排名",
+    "word_paragraphs": [
+      {
+        "index": 172,
+        "text": [
+          "S08  三层序列元素预算的完整分布",
+          "数据范围：三个序列任务的全部可用碳预算值。本图记录或检验行口径 n = 29,112。",
+          "",
+          "优化调整  用三种分子单位的ECDF小多图，取代不同单位直接拼接的统一柱图。",
+          "方法与完整性  直接读取已有每碱基 每核苷酸 每残基碳原子数，按全量有限值绘制精确ECDF。",
+          "阅读边界  分面间单位不同，不做跨分子数值高低推断。",
+          "来源标记：seqP_sequence_features  seqG_sequence_features  seqT_sequence_features。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S08.png",
+    "reference_svg": "reference_figures/S08.svg",
+    "word_embedded_image": "media/image11.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 60,
+      "source_line": "head(f,'Elemental budgets with the correct molecular units','Complete empirical distributions; genome, transcript and protein units are shown separately.');source_csv('S08',pd.DataFrame(out));done(f,'S08','三层序列元素预算的完整分布','三个序列任务的全部可用碳预算值',len(out),'用三种分子单位的ECDF小多图，取代不同单位直接拼接的统一柱图。','直接读取已有每碱基 每核苷酸 每残基碳原子数，按全量有限值绘制精确ECDF。','分面间单位不同，不做跨分子数值高低推断。',[m+'_sequence_features' for m in DATA])"
+    },
+    "target_design": "按当前组学分面的完整元素预算ECDF，元素/比值为局部选择，避免不同分母混同。",
+    "target_location": "三个组学element_budget与transcriptome_rna_nmp_element_budget原Core卡。",
+    "specific_acceptance": "DNA atoms/base、RNA atoms/nt、protein atoms/residue分别标注；所有家族字段通过总览和选择可达。",
+    "revision_action": "停止为每一个元素字段默认串排多张全高图；主区ECDF+可切换元素，完整字段分位总览作辅助。",
+    "reference_sha256": "07be83c9a85f515cdeed9834a67d9a1162674cfb1d26af4eb8d92667e2d2e5e4",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S09",
+    "title": "碱基组成与启动子外显子背景",
+    "scope": "完整基因组和转录序列任务",
+    "n": 18273,
+    "change": "同时呈现局部组成分布和RNA碱基组成，增强不同组学的专属表达。",
+    "method": "GC按原百分比，RNA按原frac_A/C/G/U；所有行进入各自统计，不混用原始计数与频率。",
+    "reading": "保存字段间存在定义差异，图中不强制把不适用值补成0。",
+    "sources": [
+      "seqG_sequence_features",
+      "seqT_sequence_features"
+    ],
+    "section": "genome局部组成与RNA基础组成",
+    "graphical_implementation": "GC上下文ECDF与A/C/G/U组成分面",
+    "full_data_contract": "genome exon_gc_percent/promoter_gc_percent全行；RNA frac_A/C/G/U 原fraction全行算术均值；不强制不同定义闭合为100%",
+    "condition_and_interaction": "按当前组学和字段能力选择对应panel，缺promoter不伪造；保留单位",
+    "regression_assertion": "GC百分比与RNA fraction分开；缺失不填0；所有有效行参与",
+    "word_paragraphs": [
+      {
+        "index": 179,
+        "text": [
+          "S09  碱基组成与启动子外显子背景",
+          "数据范围：完整基因组和转录序列任务。本图记录或检验行口径 n = 18,273。",
+          "",
+          "优化调整  同时呈现局部组成分布和RNA碱基组成，增强不同组学的专属表达。",
+          "方法与完整性  GC按原百分比，RNA按原frac_A/C/G/U；所有行进入各自统计，不混用原始计数与频率。",
+          "阅读边界  保存字段间存在定义差异，图中不强制把不适用值补成0。",
+          "来源标记：seqG_sequence_features  seqT_sequence_features。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S09.png",
+    "reference_svg": "reference_figures/S09.svg",
+    "word_embedded_image": "media/image12.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 67,
+      "source_line": "basekeys=['frac_A','frac_C','frac_G','frac_U'];a=T[basekeys].apply(pd.to_numeric,errors='coerce');q=a.mean().to_numpy();axs[1].bar(range(4),q,color=[BLUE,TEAL,GOLD,PURPLE],width=.55);axs[1].set(xticks=range(4),xticklabels=['A','C','G','U'],ylabel='Mean per-transcript saved fraction',title=f'RNA composition · all {len(T):,} transcripts');head(f,'Nucleotide composition and local context','Distribution shape and the original A/C/G/U fraction definition remain visible.');source_csv('S09',pd.concat([pd.DataFrame(out),pd.DataFrame({'dataset':'transcriptome','field':basekeys,'value':q})],ignore_index=True));done(f,'S09','碱基组成与启动子外显子背景','完整基因组和转录序列任务',len(G)+len(T),'同时呈现局部组成分布和RNA碱基组成，增强不同组学的专属表达。','GC按原百分比，RNA按原frac_A/C/G/U；所有行进入各自统计，不混用原始计数与频率。','保存字段间存在定义差异，图中不强制把不适用值补成0。',['seqG_sequence_features','seqT_sequence_features'])"
+    },
+    "target_design": "基因组promoter/exon GC的同轴ECDF，区域用线型；转录组四碱基组成用紧凑4点图或原参考小柱。",
+    "target_location": "genome_region_quality的区域分布子视图；transcriptome_rna_base_complexity的组成主视图。",
+    "specific_acceptance": "GC百分数与RNA frac比例明确分开；每条曲线全量有效数据；4碱基不强制补齐未定义值。",
+    "revision_action": "把RNA组成和GC分布按组学投影，不能给RNA发两条不存在的exon/promoter字段后空白。",
+    "reference_sha256": "66a32fdec6637f6cff1ea70dae454507aad20b313c87d0c0da150e2f7641a8ee",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S10",
+    "title": "单特征探索的全尾部与分位区间",
+    "scope": "全部10839条蛋白pI值",
+    "n": 10839,
+    "change": "以ECDF和分位区间替代单一均值柱或不稳定密度估计。",
+    "method": "全量原始pI的ECDF和5/25/50/75/95%分位数；没有抽点或截尾。",
+    "reading": "区间是描述性分布范围，不是pI估计的不确定性。",
+    "sources": [
+      "seqP_sequence_features"
+    ],
+    "section": "explorer / basic / compare 的单字段图位",
+    "graphical_implementation": "ECDF+Q05/25/50/75/95点区间",
+    "full_data_contract": "从当前完整 scope 的所选数值字段读取，不用summary的top_rows画分布；默认pI仅为示例字段",
+    "condition_and_interaction": "任何数值字段；允许单组/恒定/单点；点开原表/范围筛选",
+    "regression_assertion": "参考pI10,839；ECDF和区间的有效n相同；完整尾部不截断",
+    "word_paragraphs": [
+      {
+        "index": 86,
+        "text": [
+          "S10 至 S15",
+          "字段探索 极值 策略类别 耦合及样本比较",
+          "S16 至 S22",
+          "序列可分性诊断 自定义比较及完整实体结果池",
+          "S23 至 S25",
+          "三序列分支全部可数值解析字段的全量分位图谱",
+          "H01 至 H11"
+        ]
+      },
+      {
+        "index": 186,
+        "text": [
+          "S10  单特征探索的全尾部与分位区间",
+          "数据范围：全部10839条蛋白pI值。本图记录或检验行口径 n = 10,839。",
+          "",
+          "优化调整  以ECDF和分位区间替代单一均值柱或不稳定密度估计。",
+          "方法与完整性  全量原始pI的ECDF和5/25/50/75/95%分位数；没有抽点或截尾。",
+          "阅读边界  区间是描述性分布范围，不是pI估计的不确定性。",
+          "来源标记：seqP_sequence_features。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 541,
+        "text": [
+          "S10 S20 S23 S24 S25",
+          "pcaOption",
+          "SequenceAnalysisResultView.vue L185",
+          "S03",
+          "topDiffOption",
+          "SequenceAnalysisResultView.vue L197",
+          "S04"
+        ]
+      },
+      {
+        "index": 559,
+        "text": [
+          "S10 S23 S24 S25",
+          "scatterOption",
+          "SequenceAnalysisResultView.vue L400",
+          "S11",
+          "fieldSummaryOption",
+          "SequenceAnalysisResultView.vue L419",
+          "S10 S23 S24 S25"
+        ]
+      },
+      {
+        "index": 565,
+        "text": [
+          "S10 S23 S24 S25",
+          "topLowOption",
+          "SequenceAnalysisResultView.vue L460",
+          "S12",
+          "strategyOption",
+          "SequenceAnalysisResultView.vue L478",
+          "S13"
+        ]
+      },
+      {
+        "index": 607,
+        "text": [
+          "S10 S20",
+          "entityComparisonOption",
+          "SequenceAnalysisResultView.vue L693",
+          "S21",
+          "workflowOption",
+          "HvgCaseView.vue L135",
+          "H01 H05"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S10.png",
+    "reference_svg": "reference_figures/S10.svg",
+    "word_embedded_image": "media/image13.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 72,
+      "source_line": "axs[0].set(xlabel='Saved protein pI',ylabel='Cumulative fraction',title='Complete distribution');axs[1].set(yticks=[0,1],yticklabels=sorted(P.group.unique()),xlabel='Saved protein pI',title='5–95% interval and IQR');legend(axs[0]);head(f,'Feature explorer with complete tails','All finite saved pI values; quantiles summarize the same records as the empirical CDF.');source_csv('S10',pd.DataFrame(out));mass('S10_all_pI',len(P),len(out));done(f,'S10','单特征探索的全尾部与分位区间','全部10839条蛋白pI值',len(P),'以ECDF和分位区间替代单一均值柱或不稳定密度估计。','全量原始pI的ECDF和5/25/50/75/95%分位数；没有抽点或截尾。','区间是描述性分布范围，不是pI估计的不确定性。',['seqP_sequence_features'])"
+    },
+    "target_design": "同一字段的完整ECDF与横向Q05/Q25/median/Q75/Q95区间并列；组别同色，常量真实跳跃。",
+    "target_location": "overview.selected-feature、basic.distribution、explorer、compare.feature原图位；使用各自当前字段控件。",
+    "specific_acceptance": "同一份完整有限值产生两个画面；区间与ECDF的有效n一致；n=0/1和全常量均明确。",
+    "revision_action": "当前distribution已有ECDF与quantile基础，必须组合同时可见而非内滚动切成两大图。",
+    "reference_sha256": "8c33a1358a3f9ef9926456bb7cd3f2380eed0edacca4b9958fa16ee3a7ef0919",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S11",
+    "title": "成对特征全量联合密度",
+    "scope": "全部蛋白记录的碳预算与pI",
+    "n": 10839,
+    "change": "用计数守恒的分面hexbin缓解重叠，保留尾部与异质性。",
+    "method": "全量有限坐标进入密度格，色阶为每格真实记录数的log显示；验证格计数和等于有效记录数。",
+    "reading": "密度不是相关因果证据，也未重新拟合预测模型。",
+    "sources": [
+      "seqP_sequence_features"
+    ],
+    "section": "basic / explorer 的 scatterOption",
+    "graphical_implementation": "全量联合六边形密度与明确对数计数色标",
+    "full_data_contract": "完整所选x/y有限交集，按group或species分面；参考 C_atoms_per_aa vs pI，默认选择沿用原表单",
+    "condition_and_interaction": "两个数值字段；bin点击只查询范围明细，不使用随机示例gene；保存所有坐标范围",
+    "regression_assertion": "sum(count)=finite_pairs；原scatter1200点上限不能用于v2输入",
+    "word_paragraphs": [
+      {
+        "index": 193,
+        "text": [
+          "S11  成对特征全量联合密度",
+          "数据范围：全部蛋白记录的碳预算与pI。本图记录或检验行口径 n = 10,839。",
+          "",
+          "优化调整  用计数守恒的分面hexbin缓解重叠，保留尾部与异质性。",
+          "方法与完整性  全量有限坐标进入密度格，色阶为每格真实记录数的log显示；验证格计数和等于有效记录数。",
+          "阅读边界  密度不是相关因果证据，也未重新拟合预测模型。",
+          "来源标记：seqP_sequence_features。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S11.png",
+    "reference_svg": "reference_figures/S11.svg",
+    "word_embedded_image": "media/image14.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 77,
+      "source_line": "head(f,'Pairwise structure without point subsampling','Hexagon counts conserve every finite record; full coordinate limits retain all tails.');source_csv('S11',pd.concat(out));done(f,'S11','成对特征全量联合密度','全部蛋白记录的碳预算与pI',len(P),'用计数守恒的分面hexbin缓解重叠，保留尾部与异质性。','全量有限坐标进入密度格，色阶为每格真实记录数的log显示；验证格计数和等于有效记录数。','密度不是相关因果证据，也未重新拟合预测模型。',['seqP_sequence_features'])"
+    },
+    "target_design": "实际选择x/y的全量hexbin按组分面，计数log色条与原计数tooltip，坐标保留完整尾部。",
+    "target_location": "basic.scatter与已有explorer成对探索。",
+    "specific_acceptance": "每个有限源记录只入一格；总计与成员身份守恒；x/y切换重建确定性grid并更新signature。",
+    "revision_action": "控制分面而不是每组大图串排，修正长宽比下hexagon形状和图例对齐。",
+    "reference_sha256": "7f5d46a9a1116d79f3dd687224a5b07a8bf5a9a4612541aae3018ac152864efe",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S12",
+    "title": "极值记录在全体序列中的位置",
+    "scope": "原TopLow所选特征的全部10839条有效记录",
+    "n": 10839,
+    "change": "以全排名曲线提供背景，保留原TopLow成员作为高亮。",
+    "method": "全量原值排序仅用于展示；极值成员读取原top_low_entities.csv，不更改原分析规则。",
+    "reading": "少量标记是原结果成员，背景曲线包含全部记录。",
+    "sources": [
+      "seqP_sequence_features",
+      "seqP_top_low_entities"
+    ],
+    "section": "top_low 的 topLowOption",
+    "graphical_implementation": "完整原值秩曲线+原Top/Low成员高亮",
+    "full_data_contract": "所选字段全有限值稳定排序；高亮名单从原 top_low_entities.csv 或现有用户明确请求的结果；不重定义TopLow规则",
+    "condition_and_interaction": "原结果选定字段与成员；点击高亮打开该实体；可切其他支持字段",
+    "regression_assertion": "全分布背景完整；原极值成员不因绘图排序改变；非高亮不等于未纳入",
+    "word_paragraphs": [
+      {
+        "index": 200,
+        "text": [
+          "S12  极值记录在全体序列中的位置",
+          "数据范围：原TopLow所选特征的全部10839条有效记录。本图记录或检验行口径 n = 10,839。",
+          "",
+          "优化调整  以全排名曲线提供背景，保留原TopLow成员作为高亮。",
+          "方法与完整性  全量原值排序仅用于展示；极值成员读取原top_low_entities.csv，不更改原分析规则。",
+          "阅读边界  少量标记是原结果成员，背景曲线包含全部记录。",
+          "来源标记：seqP_sequence_features  seqP_top_low_entities。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S12.png",
+    "reference_svg": "reference_figures/S12.svg",
+    "word_embedded_image": "media/image15.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 79,
+      "source_line": "tl=d('seqP_top_low_entities');field=str(tl.feature_name.iloc[0]);a=P[['entity_id',field,'group']].copy();a=a[np.isfinite(pd.to_numeric(a[field],errors='coerce'))].sort_values(field).reset_index(drop=True);a['display_rank']=np.arange(1,len(a)+1);f,ax=fig();ax.plot(a.display_rank,a[field],color=BLUE,lw=1);chosen=tl[tl.feature_name.eq(field)];mark=a[a.entity_id.isin(chosen.entity_id)];ax.scatter(mark.display_rank,mark[field],color=GOLD,s=20,zorder=3,label='Original Top/Low result members');ax.set(xlabel=f'All {len(a):,} valid records ranked',ylabel=field);legend(ax);head(f,'Extremes placed back into the complete distribution',f'Feature: {field}; original saved Top/Low members are highlighted, not reselected.');source_csv('S12',a);mass('S12_rank',len(P),len(a));done(f,'S12','极值记录在全体序列中的位置','原TopLow所选特征的全部10839条有效记录',len(a),'以全排名曲线提供背景，保留原TopLow成员作为高亮。','全量原值排序仅用于展示；极值成员读取原top_low_entities.csv，不更改原分析规则。','少量标记是原结果成员，背景曲线包含全部记录。',['seqP_sequence_features','seqP_top_low_entities'])"
+    },
+    "target_design": "全体有限记录的原值排序轮廓，原保存Top/Low成员以金色点高亮，背景不截断。",
+    "target_location": "top_low.topLowOption原图位。",
+    "specific_acceptance": "原Top/Low成员保持身份与业务排名；显示排序与业务排名分开，不能重新选极值替代。",
+    "revision_action": "仅改善轮廓、标注与高亮，不以原Top10的柱形作为全部背景。",
+    "reference_sha256": "7646b30ffe619821e55c844007003dd52a99c90aecfbe0d8f091a90a00cdb1d4",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S13",
+    "title": "原策略类别的完整组成",
+    "scope": "三个任务全部保存策略标签",
+    "n": 29112,
+    "change": "以分组计数条替代donut，让组别规模与策略组成同时可读。",
+    "method": "直接计数strategy_cluster，未运行聚类、重命名分类或更换阈值。",
+    "reading": "这些类别来自现有探索性策略规则，不是实验适应性证据。",
+    "sources": [
+      "seqP_sequence_features",
+      "seqG_sequence_features",
+      "seqT_sequence_features"
+    ],
+    "section": "deep 的 strategyOption",
+    "graphical_implementation": "全组别×原策略类别计数/比例条",
+    "full_data_contract": "读取每行保存 strategy_cluster，缺失计unassigned；计数与比例切换各有分母；不重聚类",
+    "condition_and_interaction": "有原策略标签；无标签时明确未生成；原策略点击筛选对应完整实体表",
+    "regression_assertion": "三任务所有29,112行计数守恒；不把新画的分类当新算法结果",
+    "word_paragraphs": [
+      {
+        "index": 207,
+        "text": [
+          "S13  原策略类别的完整组成",
+          "数据范围：三个任务全部保存策略标签。本图记录或检验行口径 n = 29,112。",
+          "",
+          "优化调整  以分组计数条替代donut，让组别规模与策略组成同时可读。",
+          "方法与完整性  直接计数strategy_cluster，未运行聚类、重命名分类或更换阈值。",
+          "阅读边界  这些类别来自现有探索性策略规则，不是实验适应性证据。",
+          "来源标记：seqP_sequence_features  seqG_sequence_features  seqT_sequence_features。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S13.png",
+    "reference_svg": "reference_figures/S13.svg",
+    "word_embedded_image": "media/image16.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 84,
+      "source_line": "head(f,'Original strategy labels and complete group composition','No re-clustering: saved strategy classes are counted for every sequence.');f.legend([Rectangle((0,0),1,1,fc=c) for c in [BLUE,TEAL,GOLD]],list(tab.columns)[:3],loc='lower center',ncol=3,fontsize=8);source_csv('S13',pd.concat(out));done(f,'S13','原策略类别的完整组成','三个任务全部保存策略标签',sum(len(x) for x in DATA.values()),'以分组计数条替代donut，让组别规模与策略组成同时可读。','直接计数strategy_cluster，未运行聚类、重命名分类或更换阈值。','这些类别来自现有探索性策略规则，不是实验适应性证据。',[m+'_sequence_features' for m in DATA])"
+    },
+    "target_design": "每组真实strategy_cluster的紧凑横向堆叠计数条，组规模与组成同时可见。",
+    "target_location": "deep.strategyOption原图卡。",
+    "specific_acceptance": "类别来自原strategy_cluster，不重聚类；各类别计数和为全部组记录，含unassigned。",
+    "revision_action": "为此语义显式使用横向组成条，不走generic竖柱默认；该必要组成条允许保留。",
+    "reference_sha256": "e6188fac4ed26d18cf1f5cc5462b46633cfe5968a88e534d6886b64ddda44a15",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S14",
+    "title": "带方向信息的完整耦合网络",
+    "scope": "原保存的全部16条耦合边",
+    "n": 16,
+    "change": "以带符号网络替代截取14条并取绝对值的柱图。",
+    "method": "使用原Spearman权重和全部边，不新增边，不重算相关性或FDR。",
+    "reading": "颜色表示正负，粗细只表示绝对权重；网络不代表因果调控。",
+    "sources": [
+      "seqP_analysis_payload"
+    ],
+    "section": "deep 的 couplingOption",
+    "graphical_implementation": "有符号完整耦合网络（节点/边有图例）",
+    "full_data_contract": "analysis_payload.coupling_edges 全部边；保留 source/target/weight，线型/颜色区分正负，粗细用abs(weight)，布局确定性",
+    "condition_and_interaction": "保存的相关/耦合定义按method标明；可点击边查看原值，不新增相关检验",
+    "regression_assertion": "参考16条边全保留；不得沿用abs后前14条；零边/孤点状态明确",
+    "word_paragraphs": [
+      {
+        "index": 214,
+        "text": [
+          "S14  带方向信息的完整耦合网络",
+          "数据范围：原保存的全部16条耦合边。本图记录或检验行口径 n = 16。",
+          "",
+          "优化调整  以带符号网络替代截取14条并取绝对值的柱图。",
+          "方法与完整性  使用原Spearman权重和全部边，不新增边，不重算相关性或FDR。",
+          "阅读边界  颜色表示正负，粗细只表示绝对权重；网络不代表因果调控。",
+          "来源标记：seqP_analysis_payload。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S14.png",
+    "reference_svg": "reference_figures/S14.svg",
+    "word_embedded_image": "media/image17.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 90,
+      "source_line": "head(f,'Signed coupling graph from all saved edges',f'{len(edges)} Spearman edges · blue positive · brown negative · width = |saved rho|');source_csv('S14',edges);mass('S14_edges',len(edges),len(edges));done(f,'S14','带方向信息的完整耦合网络','原保存的全部16条耦合边',len(edges),'以带符号网络替代截取14条并取绝对值的柱图。','使用原Spearman权重和全部边，不新增边，不重算相关性或FDR。','颜色表示正负，粗细只表示绝对权重；网络不代表因果调控。',['seqP_analysis_payload'])"
+    },
+    "target_design": "全部已保存Spearman边的有符号弧线网络，节点稳定布局，正蓝负棕，宽度编码abs(rho)。",
+    "target_location": "deep.couplingOption原卡。",
+    "specific_acceptance": "节点/边完整，边数与保存表一致；无边说明；不新增相关检验或PPI边。",
+    "revision_action": "完善网络图的节点长名、边tooltip和正负图例；不能用无符号粗线掩盖负相关。",
+    "reference_sha256": "80a27dd006e9f3b717788118ae72e27aee7606f8babac0e56c66713a515f2523",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S15",
+    "title": "样本比较全特征变化与无配对回退",
+    "scope": "全部216条比较结果及6612条转录序列",
+    "n": 216,
+    "change": "将全特征比较矩阵与真实无配对分布组合，替代空的配对散点。",
+    "method": "中位数差读取保存组中位数，仅按同一特征最大绝对差做显示缩放；matched_n=0仍保持无配对。",
+    "reading": "棕色为负，蓝色为正，共用显示范围−1至1。技术分桶不是独立生物重复；图形不创建原分析不存在的匹配或p值。",
+    "sources": [
+      "seqT_differential_features",
+      "seqT_sequence_features",
+      "seqT_sample_comparison_payload"
+    ],
+    "section": "sample_comparison 的 sampleDelta/pairedScatter图位",
+    "graphical_implementation": "完整比较×特征变化矩阵+真实配对或无配对分布",
+    "full_data_contract": "differential_features 全部比较；组median差按同字段max abs缩放仅显示；matched_n及匹配ID读原sample_comparison_payload",
+    "condition_and_interaction": "matched_n=0用无配对ECDF；有合法配对才画所有匹配点；技术桶不当重复",
+    "regression_assertion": "参考216比较，6,612记录；matched_n=0，不按行序强配；原p/q不改",
+    "word_paragraphs": [
+      {
+        "index": 221,
+        "text": [
+          "S15  样本比较全特征变化与无配对回退",
+          "数据范围：全部216条比较结果及6612条转录序列。本图记录或检验行口径 n = 216。",
+          "",
+          "优化调整  将全特征比较矩阵与真实无配对分布组合，替代空的配对散点。",
+          "方法与完整性  中位数差读取保存组中位数，仅按同一特征最大绝对差做显示缩放；matched_n=0仍保持无配对。",
+          "阅读边界  棕色为负，蓝色为正，共用显示范围−1至1。技术分桶不是独立生物重复；图形不创建原分析不存在的匹配或p值。",
+          "字段序号用于紧凑定位。配套CSV按相同顺序保留完整字段名称、原值或统计结果，未标注的字段仍完整参与绘图。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S15.png",
+    "reference_svg": "reference_figures/S15.svg",
+    "word_embedded_image": "media/image18.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 94,
+      "source_line": "axs[1].set(title='Unpaired fallback · matched n = 0',xlabel='RNA GC (%)',ylabel='Cumulative transcript fraction');legend(axs[1]);head(f,'Sample comparison keeps its original evidence boundary','Left: display-only within-feature median-delta scale. Right: all transcripts; no artificial record pairing.');source_csv('S15',q);done(f,'S15','样本比较全特征变化与无配对回退','全部216条比较结果及6612条转录序列',len(q),'将全特征比较矩阵与真实无配对分布组合，替代空的配对散点。','中位数差读取保存组中位数，仅按同一特征最大绝对差做显示缩放；matched_n=0仍保持无配对。','技术分桶不是独立生物重复；图形不创建原分析不存在的匹配或p值。',['seqT_differential_features','seqT_sequence_features','seqT_sample_comparison_payload'])"
+    },
+    "target_design": "全部保存比较的字段×comparison发散矩阵；另一原卡显示真实配对变化，matched_n=0时显示同字段全组ECDF。",
+    "target_location": "sample_comparison.sampleDelta与pairedScatter两个原图位，profile严格分开。",
+    "specific_acceptance": "同字段显示标准化不改原delta；无配对时标题明确unpaired，不能按行号造配对。",
+    "revision_action": "不要把同一完整packet重复塞入两个卡；保留matched_n与原comparison标签。",
+    "reference_sha256": "7a9ad10fa6a5386aea3fe8071e0cec7691c5e3c1cae134ebd2d34f6e2f6a0d1a",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S16",
+    "title": "训练拟合与交叉验证证据对照",
+    "scope": "全部10839条蛋白模型记录",
+    "n": 10839,
+    "change": "用训练与CV哑铃图揭示评价差异，混淆矩阵明确标为训练拟合。",
+    "method": "直接使用保存的balanced_accuracy和5折CV均值；没有新交叉验证、重训或置信区间估算。",
+    "reading": "物种标签可分性仍是探索性；按分子记录划分不证明跨物种外部泛化。",
+    "sources": [
+      "seqP_ml_discrimination_payload"
+    ],
+    "section": "ml 的 confusion 及模型概况图位",
+    "graphical_implementation": "训练/CV哑铃+保存混淆矩阵",
+    "full_data_contract": "ml_discrimination_payload.models/validation/confusion_matrix原样读取；多分类按保存标签顺序扩展；CV无方差时不造CI",
+    "condition_and_interaction": "有保存诊断；明确train/CV及方法；原用户ML操作保持，自动读图不调用POST/重新拟合",
+    "regression_assertion": "参考confusion总10,839；logistic train .8903324648/CV .8865849502；RF train1/CV .8997731914",
+    "word_paragraphs": [
+      {
+        "index": 88,
+        "text": [
+          "S16 至 S22",
+          "序列可分性诊断 自定义比较及完整实体结果池",
+          "S23 至 S25",
+          "三序列分支全部可数值解析字段的全量分位图谱",
+          "H01 至 H11",
+          "统一HVG概览 Core 原HVG标签 上下文和组间差异",
+          "H12 至 H18"
+        ]
+      },
+      {
+        "index": 229,
+        "text": [
+          "S16  训练拟合与交叉验证证据对照",
+          "数据范围：全部10839条蛋白模型记录。本图记录或检验行口径 n = 10,839。",
+          "",
+          "优化调整  用训练与CV哑铃图揭示评价差异，混淆矩阵明确标为训练拟合。",
+          "方法与完整性  直接使用保存的balanced_accuracy和5折CV均值；没有新交叉验证、重训或置信区间估算。",
+          "阅读边界  物种标签可分性仍是探索性；按分子记录划分不证明跨物种外部泛化。",
+          "来源标记：seqP_ml_discrimination_payload。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S16.png",
+    "reference_svg": "reference_figures/S16.svg",
+    "word_embedded_image": "media/image19.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 102,
+      "source_line": "head(f,'Training fit and cross-validation are different evidence','A perfect fitted confusion matrix does not replace the saved cross-validation result.');mass('S16_confusion',len(P),int(arr.sum()));source_csv('S16',pd.DataFrame({'model':modelnames,'training_balanced_accuracy':train,'cv_balanced_accuracy_mean':cv}));done(f,'S16','训练拟合与交叉验证证据对照','全部10839条蛋白模型记录',len(P),'用训练与CV哑铃图揭示评价差异，混淆矩阵明确标为训练拟合。','直接使用保存的balanced_accuracy和5折CV均值；没有新交叉验证、重训或置信区间估算。','物种标签可分性仍是探索性；按分子记录划分不证明跨物种外部泛化。',['seqP_ml_discrimination_payload'])"
+    },
+    "target_design": "训练与CV保存指标的点连接图，以及带绝对计数的训练混淆矩阵；拟合与验证标签醒目。",
+    "target_location": "ml.confusion原卡内组合，原模型概况保留。",
+    "specific_acceptance": "只读保存评估，不重训；混淆计数与预测行数一致；CV误差仅保存时绘制。",
+    "revision_action": "不同评估证据按图内分面排列；训练高分不能写作泛化验证通过。",
+    "reference_sha256": "733bd8e2b7865c3fa1fb87d8de5a1e08fb616dcc4152b620a017b6f8ce5b04e5",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S17",
+    "title": "全部模型特征的重要度秩比较",
+    "scope": "全部72个保存ML特征",
+    "n": 72,
+    "change": "以全秩连线展示模型间一致与分歧，替代只有前20项的柱图。",
+    "method": "每种保存重要度分别取秩，原数值在源表保留；按RF重要度前六条加深高亮，所有72个特征仍全部绘制。",
+    "reading": "不同量纲的重要度不相加；该ML RF分支与差异RF分支的参数和结果保持分开。",
+    "sources": [
+      "seqP_ml_feature_importance"
+    ],
+    "section": "ml 的 mlImportanceOption",
+    "graphical_implementation": "全部特征跨RF/Logistic/Permutation重要度秩连线",
+    "full_data_contract": "完整 ml_feature_importance.csv；每种不同指标各自降序min-rank，高亮原RF前6但所有特征仍绘；保留负置换值原数",
+    "condition_and_interaction": "按实际存在指标渲染，不把缺指标置0；点击特征查看原重要度和S20/S10",
+    "regression_assertion": "参考72条全保留；ML RF120树与差异RF300树结果不混用",
+    "word_paragraphs": [
+      {
+        "index": 236,
+        "text": [
+          "S17  全部模型特征的重要度秩比较",
+          "数据范围：全部72个保存ML特征。本图记录或检验行口径 n = 72。",
+          "",
+          "优化调整  以全秩连线展示模型间一致与分歧，替代只有前20项的柱图。",
+          "方法与完整性  每种保存重要度分别取秩，原数值在源表保留；按RF重要度前六条加深高亮，所有72个特征仍全部绘制。",
+          "阅读边界  不同量纲的重要度不相加；该ML RF分支与差异RF分支的参数和结果保持分开。",
+          "来源标记：seqP_ml_feature_importance。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S17.png",
+    "reference_svg": "reference_figures/S17.svg",
+    "word_embedded_image": "media/image20.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 106,
+      "source_line": "ax.set(xticks=range(len(metrics)),xticklabels=['RF rank','Logistic |coef| rank','Permutation rank'][:len(metrics)],ylabel='Rank among all 72 features',ylim=(len(imp)+2,-1));head(f,'Every feature across saved importance definitions','Ranks align different scales without summing coefficients, permutation scores and tree importance.');source_csv('S17',pd.concat([imp,ranks.add_suffix('_display_rank')],axis=1));mass('S17_all_importance',72,len(imp));done(f,'S17','全部模型特征的重要度秩比较','全部72个保存ML特征',len(imp),'以全秩连线展示模型间一致与分歧，替代只有前20项的柱图。','每种保存重要度分别取秩，原数值在源表保留；按RF重要度前六条加深高亮，所有72个特征仍全部绘制。','不同量纲的重要度不相加；该ML RF分支与差异RF分支的参数和结果保持分开。',['seqP_ml_feature_importance'])"
+    },
+    "target_design": "全部模型特征在RF/abs(logistic coefficient)/permutation重要性三个秩轴上的平行秩线；选择少数高亮，所有线保留。",
+    "target_location": "ml.mlImportanceOption原卡。",
+    "specific_acceptance": "rank方法与tie规则显式，升降序正确；原始三类值在tooltip，不能相加为新重要性。",
+    "revision_action": "确保保留平行秩线设计与方法轴，不降级成单方法重要性柱。",
+    "reference_sha256": "b594de65b0fab74234ff9c95a092c293f66843a212871f6c804a480abad18a07",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S18",
+    "title": "ROC与PR完整保存阈值曲线",
+    "scope": "全部保存ROC及PR阈值点",
+    "n": 195,
+    "change": "保留两种评价图，统一基线、坐标与训练口径标注。",
+    "method": "使用保存的全部fpr/tpr和precision/recall点；不将训练曲线改名为CV曲线。",
+    "reading": "PR虚线为该任务正类比例，不是0.5的通用基线。",
+    "sources": [
+      "seqP_ml_discrimination_payload"
+    ],
+    "section": "ml 的 ROC/PR 图位",
+    "graphical_implementation": "完整保存阈值阶梯曲线+正确基线",
+    "full_data_contract": "roc_pr完整roc_curve/pr_curve；positive_class和评分来源从原payload；PR基线该正类总体比例",
+    "condition_and_interaction": "仅有真实保存曲线的分类任务；多分类若原有曲线按原定义；不补跑未保存曲线",
+    "regression_assertion": "参考正类YEAST_R64；明确fitted/training RF，不标OOF；完整阈值点一致",
+    "word_paragraphs": [
+      {
+        "index": 243,
+        "text": [
+          "S18  ROC与PR完整保存阈值曲线",
+          "数据范围：全部保存ROC及PR阈值点。本图记录或检验行口径 n = 195。",
+          "",
+          "优化调整  保留两种评价图，统一基线、坐标与训练口径标注。",
+          "方法与完整性  使用保存的全部fpr/tpr和precision/recall点；不将训练曲线改名为CV曲线。",
+          "阅读边界  PR虚线为该任务正类比例，不是0.5的通用基线。",
+          "来源标记：seqP_ml_discrimination_payload。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S18.png",
+    "reference_svg": "reference_figures/S18.svg",
+    "word_embedded_image": "media/image21.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 108,
+      "source_line": "rp=ml['roc_pr'];roc=pd.DataFrame(rp['roc_curve']);pr=pd.DataFrame(rp['pr_curve']);f,axs=fig(1,2);axs[0].step(roc.fpr,roc.tpr,where='post',color=BLUE,lw=2);axs[0].plot([0,1],[0,1],color=GREY,ls='--',lw=.8);axs[0].set(xlabel='False positive rate',ylabel='True positive rate',xlim=(-.02,1.02),ylim=(-.02,1.02));axs[1].step(pr.recall,pr.precision,where='post',color=TEAL,lw=2);axs[1].axhline((P.group.eq(rp['positive_class'])).mean(),c=GREY,ls='--',lw=.8);axs[1].set(xlabel='Recall',ylabel='Precision',xlim=(-.02,1.02),ylim=(-.02,1.02));head(f,'Complete saved ROC and precision–recall curves',f'Positive class: {rp[\"positive_class\"]} · fitted RF scores · not out-of-fold curves.');source_csv('S18',pd.concat([roc.assign(curve='ROC'),pr.assign(curve='PR')],ignore_index=True));done(f,'S18','ROC与PR完整保存阈值曲线','全部保存ROC及PR阈值点',len(roc)+len(pr),'保留两种评价图，统一基线、坐标与训练口径标注。','使用保存的全部fpr/tpr和precision/recall点；不将训练曲线改名为CV曲线。','PR虚线为该任务正类比例，不是0.5的通用基线。',['seqP_ml_discrimination_payload'])"
+    },
+    "target_design": "完整保存ROC和PR阈值折线，各图保留自己的基线、正类及数据性质。",
+    "target_location": "ml.roc_curve与ml.pr_curve原两卡分别投影。",
+    "specific_acceptance": "所有保存阈值点保留，正类和fitted/OOF来源一致；PR基线来自当前保存正类比例。",
+    "revision_action": "不在两卡内重复画两条曲线；修正图注使训练曲线不冒称OOF。",
+    "reference_sha256": "5e2fcf2897fcb9a80837875a617ded51423fae9e72ea502c83cb5b1c8a08b604",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S19",
+    "title": "真实降维方法与全部预测置信度",
+    "scope": "全部10839个嵌入点及预测记录",
+    "n": 10839,
+    "change": "保留全量空间分布，同时用置信度ECDF补充信息，正确标为PCA fallback。",
+    "method": "读取实际method及保存坐标，不补跑UMAP；置信度来自训练拟合预测，不改变验证策略。",
+    "reading": "训练置信度不是外部准确率，降维方法的名称与真实执行结果一致。",
+    "sources": [
+      "seqP_ml_discrimination_payload",
+      "seqP_ml_predictions"
+    ],
+    "section": "ml 的 embeddingOption",
+    "graphical_implementation": "实际方法的全坐标图+预测置信度ECDF",
+    "full_data_contract": "class_separation_embedding.method/points，ml_predictions.csv真标签和rf_confidence；不能把pca_fallback重命名UMAP",
+    "condition_and_interaction": "保存坐标/预测存在；两panel各有完整n；预测仍是原训练口径",
+    "regression_assertion": "参考10,839嵌入和10,839预测；所有保存坐标一致，未触发降维计算",
+    "word_paragraphs": [
+      {
+        "index": 250,
+        "text": [
+          "S19  真实降维方法与全部预测置信度",
+          "数据范围：全部10839个嵌入点及预测记录。本图记录或检验行口径 n = 10,839。",
+          "",
+          "优化调整  保留全量空间分布，同时用置信度ECDF补充信息，正确标为PCA fallback。",
+          "方法与完整性  读取实际method及保存坐标，不补跑UMAP；置信度来自训练拟合预测，不改变验证策略。",
+          "阅读边界  训练置信度不是外部准确率，降维方法的名称与真实执行结果一致。",
+          "来源标记：seqP_ml_discrimination_payload  seqP_ml_predictions。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S19.png",
+    "reference_svg": "reference_figures/S19.svg",
+    "word_embedded_image": "media/image22.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 113,
+      "source_line": "axs[0].set(title=f'Saved method: {emb[\"method\"]}',xlabel='Saved dimension 1',ylabel='Saved dimension 2');axs[1].set(title='Fitted confidence distribution',xlabel='Saved RF confidence',ylabel='Cumulative record fraction');legend(axs[0]);legend(axs[1]);head(f,'The embedding is labeled by the method actually used','All saved points and all fitted confidences; PCA fallback is not presented as UMAP.');mass('S19_embedding',len(P),len(coords));mass('S19_predictions',len(P),len(pred));source_csv('S19',coords);done(f,'S19','真实降维方法与全部预测置信度','全部10839个嵌入点及预测记录',len(P),'保留全量空间分布，同时用置信度ECDF补充信息，正确标为PCA fallback。','读取实际method及保存坐标，不补跑UMAP；置信度来自训练拟合预测，不改变验证策略。','训练置信度不是外部准确率，降维方法的名称与真实执行结果一致。',['seqP_ml_discrimination_payload','seqP_ml_predictions'])"
+    },
+    "target_design": "实际保存embedding的全点图，与保存预测置信度ECDF组合；方法名称来自产物。",
+    "target_location": "ml.embedding原图卡内部组合。",
+    "specific_acceptance": "pca_fallback不得标成UMAP；记录与预测标签身份一致；无confidence时保留坐标并说明。",
+    "revision_action": "将embedding和confidence组织为两个主次明确的画面，避免独立全高重复状态图。",
+    "reference_sha256": "47481b82b5af5bd9f2072c5448722726b92b19531598649983aed350b6764355",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S20",
+    "title": "原选12特征的全记录分布小多图",
+    "scope": "原引擎选定12特征 每特征全蛋白记录",
+    "n": 10839,
+    "change": "以独立原单位的ECDF小多图取代重复箱图，避免不同特征共用数值尺度。",
+    "method": "特征集合沿用原ML选择；每特征使用完整10839记录中的有限值，无随机下采样。",
+    "reading": "12是该结果图原有选择范围，其他分析特征已在全特征图中完整覆盖。",
+    "sources": [
+      "seqP_ml_discrimination_payload",
+      "seqP_sequence_features"
+    ],
+    "section": "ml 的 topFeatureDistribution图位",
+    "graphical_implementation": "原选特征各自原单位的ECDF小多图",
+    "full_data_contract": "ml payload原定top_feature_distributions给字段集合，完整sequence_features给每字段全部值；不要用预览分布点",
+    "condition_and_interaction": "字段集合沿用原引擎选择或原用户选择；小图可图内滚动，不隐藏其余已选特征",
+    "regression_assertion": "原12字段全部，小图每个全10,839有限记录范围；其他字段由S01/S23覆盖",
+    "word_paragraphs": [
+      {
+        "index": 257,
+        "text": [
+          "S20  原选12特征的全记录分布小多图",
+          "数据范围：原引擎选定12特征 每特征全蛋白记录。本图记录或检验行口径 n = 10,839。",
+          "",
+          "优化调整  以独立原单位的ECDF小多图取代重复箱图，避免不同特征共用数值尺度。",
+          "方法与完整性  特征集合沿用原ML选择；每特征使用完整10839记录中的有限值，无随机下采样。",
+          "阅读边界  12是该结果图原有选择范围，其他分析特征已在全特征图中完整覆盖。",
+          "来源标记：seqP_ml_discrimination_payload  seqP_sequence_features。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S20.png",
+    "reference_svg": "reference_figures/S20.svg",
+    "word_embedded_image": "media/image23.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 121,
+      "source_line": "head(f,'All records behind the original selected feature distributions','The original 12-feature choice is preserved; each panel uses every valid protein record.');source_csv('S20',pd.DataFrame(out));done(f,'S20','原选12特征的全记录分布小多图','原引擎选定12特征 每特征全蛋白记录',len(P),'以独立原单位的ECDF小多图取代重复箱图，避免不同特征共用数值尺度。','特征集合沿用原ML选择；每特征使用完整10839记录中的有限值，无随机下采样。','12是该结果图原有选择范围，其他分析特征已在全特征图中完整覆盖。',['seqP_ml_discrimination_payload','seqP_sequence_features'])"
+    },
+    "target_design": "原业务选中12特征的ECDF小多图，全部实体参与各字段统计；特征各自原单位。",
+    "target_location": "ml.topFeatureDistribution原卡，局部可展开但非逐字段无限内滚动。",
+    "specific_acceptance": "12是原选择范围，不是只读12行；当前任务少于12照实，未保存选择不擅自重新排名。",
+    "revision_action": "以小多图一次展示原选集合，保留每格标题与有效n；不把12张大ECDF串成长页。",
+    "reference_sha256": "41021456c1363b974faec8a15317e68b608d2ab1e0621bde19f69cf6ef4c361b",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S21",
+    "title": "指定实体的全选特征比较",
+    "scope": "明确选定的两个真实实体与全部72分析字段",
+    "n": 2,
+    "change": "以明确参照总体的全字段矩阵替代不同量纲直接叠加的雷达图。",
+    "method": "选取保存表首末两个实体作为显式查询条件，展示72字段原值在全体蛋白分布中的位置；选择范围写在图中。",
+    "reading": "该图总体是所选两个实体，不声称两条记录代表全体；参考总体则是完整10839条记录。",
+    "sources": [
+      "seqP_sequence_features"
+    ],
+    "section": "compare 的 entityComparisonOption",
+    "graphical_implementation": "显式所选实体×全部所选特征的参考分位矩阵",
+    "full_data_contract": "当前用户ID集合、字段集合、完整参考表；原值与同字段pooled-ECDF位置并存；task/species/sample复合身份明确",
+    "condition_and_interaction": "初始不写死AAC76904/YBR024W；采用原输入选择，若空则提示选择；多重复身份要求明确范围",
+    "regression_assertion": "示例2实体×72字段可复现；不能声称两条记录代表全体；图例标明参照总体",
+    "word_paragraphs": [
+      {
+        "index": 264,
+        "text": [
+          "S21  指定实体的全选特征比较",
+          "数据范围：明确选定的两个真实实体与全部72分析字段。本图记录或检验行口径 n = 2。",
+          "",
+          "优化调整  以明确参照总体的全字段矩阵替代不同量纲直接叠加的雷达图。",
+          "方法与完整性  选取保存表首末两个实体作为显式查询条件，展示72字段原值在全体蛋白分布中的位置；选择范围写在图中。",
+          "阅读边界  该图总体是所选两个实体，不声称两条记录代表全体；参考总体则是完整10839条记录。",
+          "字段序号用于紧凑定位。配套CSV按相同顺序保留完整字段名称、原值或统计结果，未标注的字段仍完整参与绘图。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S21.png",
+    "reference_svg": "reference_figures/S21.svg",
+    "word_embedded_image": "media/image24.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 129,
+      "source_line": "f,ax=fig();im=ax.imshow(mat,cmap=CMAP,vmin=0,vmax=1,aspect='auto');ax.set(xticks=[0,1],xticklabels=chosen.entity_id.tolist(),yticks=np.arange(0,len(ff),12),yticklabels=[f'F{i+1:02}' for i in range(0,len(ff),12)],ylabel='All 72 selected analysis fields');f.colorbar(im,ax=ax,label='Percentile in all 10,839 records');head(f,'Custom entity comparison with a declared reference',f'Two explicitly selected records: {chosen.entity_id.iloc[0]} and {chosen.entity_id.iloc[1]}; all analysis fields.');source_csv('S21',pd.DataFrame(out));done(f,'S21','指定实体的全选特征比较','明确选定的两个真实实体与全部72分析字段',2,'以明确参照总体的全字段矩阵替代不同量纲直接叠加的雷达图。','选取保存表首末两个实体作为显式查询条件，展示72字段原值在全体蛋白分布中的位置；选择范围写在图中。','该图总体是所选两个实体，不声称两条记录代表全体；参考总体则是完整10839条记录。',['seqP_sequence_features'])"
+    },
+    "target_design": "显式选定实体×全部选定特征的参照分位矩阵，原值、单位和reference n可追溯。",
+    "target_location": "compare.entityComparison原卡和现有实体/字段输入。",
+    "specific_acceptance": "缺实体或歧义先提示；同任务同字段完整参考；原选择以外实体不混入。",
+    "revision_action": "保留所有被选字段，改进长实体ID；矩阵分位不是实体p值。",
+    "reference_sha256": "a6608534d85502aaf5cba088242a1afcac2dbc227134e29795b2633546a655b9",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S22",
+    "title": "完整差异实体结果池与贡献来源",
+    "scope": "保存定义的全部1000条候选实体结果",
+    "n": 1000,
+    "change": "用全结果池排名和来源构成替代前若干基因柱图。",
+    "method": "读取完整differential_entities.csv，保留原score top_feature及p/q空值；不扩充原候选池。",
+    "reading": "1000是原引擎保存的评分结果池，不是10839个输入实体均完成基因级显著性检验。",
+    "sources": [
+      "seqP_differential_entities"
+    ],
+    "section": "entities 的 entityComparison/排名图位",
+    "graphical_implementation": "完整保存候选排名+贡献特征来源计数",
+    "full_data_contract": "完整 differential_entities.csv；score/top_feature/species等字段原样，缺p/q保留",
+    "condition_and_interaction": "只画引擎实际保存池；空结果显示未生成/不适用；点击实体原明细",
+    "regression_assertion": "参考保存池1,000，不能改写为10,839均通过基因级显著性检验",
+    "word_paragraphs": [
+      {
+        "index": 272,
+        "text": [
+          "S22  完整差异实体结果池与贡献来源",
+          "数据范围：保存定义的全部1000条候选实体结果。本图记录或检验行口径 n = 1,000。",
+          "",
+          "优化调整  用全结果池排名和来源构成替代前若干基因柱图。",
+          "方法与完整性  读取完整differential_entities.csv，保留原score top_feature及p/q空值；不扩充原候选池。",
+          "阅读边界  1000是原引擎保存的评分结果池，不是10839个输入实体均完成基因级显著性检验。",
+          "来源标记：seqP_differential_entities。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S22.png",
+    "reference_svg": "reference_figures/S22.svg",
+    "word_embedded_image": "media/image25.png",
+    "reference_code": {
+      "file": "plot_sequence.py",
+      "line": 133,
+      "source_line": "counts=q.top_feature.fillna('unavailable').value_counts();axs[1].barh(range(len(counts)),counts.values,color=BLUE);axs[1].set(yticks=range(len(counts)),yticklabels=counts.index,xlabel='Scored records in saved pool');axs[1].tick_params(axis='y',labelsize=7.5);axs[0].set(xlabel='Rank among all 1,000 saved candidates',ylabel='Original entity score');legend(axs[0]);head(f,'Complete saved entity-ranking pool','All 1,000 saved candidates are shown; unscored input records are not assigned invented p values.');source_csv('S22',q);mass('S22_saved_candidates',1000,len(q));done(f,'S22','完整差异实体结果池与贡献来源','保存定义的全部1000条候选实体结果',len(q),'用全结果池排名和来源构成替代前若干基因柱图。','读取完整differential_entities.csv，保留原score top_feature及p/q空值；不扩充原候选池。','1000是原引擎保存的评分结果池，不是10839个输入实体均完成基因级显著性检验。',['seqP_differential_entities'])"
+    },
+    "target_design": "完整保存候选评分池的rank-score轮廓/点图，以及各primary_driver的紧凑横向贡献计数。",
+    "target_location": "entities原ResultBlock内、现有DataTable之前，增加一个内部组合画面。",
+    "specific_acceptance": "固定参考池1000条仅指保存评分池；未评分输入不被虚构p值；driver计数不冒称独立特征检验。",
+    "revision_action": "补上当前缺失的前端真实入口，并连接原实体明细；该图不能仅留后端注册。",
+    "reference_sha256": "24487560d15962f8f52cca535736ee101fd748a687bade027aad333f0662f2f3",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S23",
+    "title": "完整数值字段的分位图谱 seqP",
+    "scope": "全部原始记录的全部可数值解析字段",
+    "n": 10839,
+    "change": "补齐动态Core家族面板的数值分布覆盖，避免仅展示机器学习选中的字段。",
+    "method": "每个字段使用全部有效原值的精确分位；在本字段min–max范围中定位，不跨字段比较绝对量。",
+    "reading": "图中小字用于字段定位，全部字段名及原单位统计记录于本次核验底表；恒定字段保留，非数值及缺失审计见S01。",
+    "sources": [
+      "seqP_sequence_features"
+    ],
+    "section": "proteome catalog / Core 全字段补充",
+    "graphical_implementation": "每个数值列5分位的完整图谱+有效n条带",
+    "full_data_contract": "sequence_features所有语义数值字段，包含未入分析的Full字段；全表min/max线性归一化仅颜色；保留常数灰标及原值表",
+    "condition_and_interaction": "按当前proteome schema；图内搜索和滚动所有字段，不能前260上限",
+    "regression_assertion": "参考120数值字段；五分位/原minmax完整；非数值/全空在S01有去向",
+    "word_paragraphs": [
+      {
+        "index": 90,
+        "text": [
+          "S23 至 S25",
+          "三序列分支全部可数值解析字段的全量分位图谱",
+          "H01 至 H11",
+          "统一HVG概览 Core 原HVG标签 上下文和组间差异",
+          "H12 至 H18",
+          "完整富集 连续特征功能 GSEA与交互证据",
+          "H19 至 H23"
+        ]
+      },
+      {
+        "index": 279,
+        "text": [
+          "S23  完整数值字段的分位图谱 seqP",
+          "数据范围：全部原始记录的全部可数值解析字段。本图记录或检验行口径 n = 10,839。",
+          "",
+          "优化调整  补齐动态Core家族面板的数值分布覆盖，避免仅展示机器学习选中的字段。",
+          "方法与完整性  每个字段使用全部有效原值的精确分位；在本字段min–max范围中定位，不跨字段比较绝对量。",
+          "阅读边界  图中小字用于字段定位，全部字段名及原单位统计记录于本次核验底表；恒定字段保留，非数值及缺失审计见S01。",
+          "字段序号用于紧凑定位。配套CSV按相同顺序保留完整字段名称、原值或统计结果，未标注的字段仍完整参与绘图。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S23.png",
+    "reference_svg": "reference_figures/S23.svg",
+    "word_embedded_image": "media/image26.png",
+    "target_design": "蛋白全部可数值解析保存列的5/25/50/75/95%分位图谱，下方valid/N曲线；状态见S01。",
+    "target_location": "proteome catalog原图；Core家族内同构子图谱。",
+    "specific_acceptance": "使用全量行，按本字段min/max显示；常量保留约定0并说明；非数值与全空留在审计。",
+    "revision_action": "将矩阵和有效率曲线同时编排，不为每列产生独立大图。",
+    "reference_sha256": "4e438aa2f3371bfdb81e89d52eb60062e3716e3f629b636d70a79bb59c2d6665",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S24",
+    "title": "完整数值字段的分位图谱 seqG",
+    "scope": "全部原始记录的全部可数值解析字段",
+    "n": 11661,
+    "change": "补齐动态Core家族面板的数值分布覆盖，避免仅展示机器学习选中的字段。",
+    "method": "每个字段使用全部有效原值的精确分位；在本字段min–max范围中定位，不跨字段比较绝对量。",
+    "reading": "图中小字用于字段定位，全部字段名及原单位统计记录于本次核验底表；恒定字段保留，非数值及缺失审计见S01。",
+    "sources": [
+      "seqG_sequence_features"
+    ],
+    "section": "genome catalog / Core 全字段补充",
+    "graphical_implementation": "同S23、按Genome区域/类别分组",
+    "full_data_contract": "完整Genome原数值字段，原单位/区域/有效n不丢；缺alias不猜映射",
+    "condition_and_interaction": "所有genome已保存数值字段；坐标身份元数据按schema分类，不当科学特征混入",
+    "regression_assertion": "参考360数值字段；完整图谱覆盖未画专属图的字段；与S01联合无遗漏",
+    "word_paragraphs": [
+      {
+        "index": 287,
+        "text": [
+          "S24  完整数值字段的分位图谱 seqG",
+          "数据范围：全部原始记录的全部可数值解析字段。本图记录或检验行口径 n = 11,661。",
+          "",
+          "优化调整  补齐动态Core家族面板的数值分布覆盖，避免仅展示机器学习选中的字段。",
+          "方法与完整性  每个字段使用全部有效原值的精确分位；在本字段min–max范围中定位，不跨字段比较绝对量。",
+          "阅读边界  图中小字用于字段定位，全部字段名及原单位统计记录于本次核验底表；恒定字段保留，非数值及缺失审计见S01。",
+          "字段序号用于紧凑定位。配套CSV按相同顺序保留完整字段名称、原值或统计结果，未标注的字段仍完整参与绘图。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S24.png",
+    "reference_svg": "reference_figures/S24.svg",
+    "word_embedded_image": "media/image27.png",
+    "target_design": "基因组全部数值保存列的五分位图谱与有效率曲线，保留区域/编码家族分组。",
+    "target_location": "genome catalog原图与Core家族补充。",
+    "specific_acceptance": "与S23同规则，但不得把基因组列硬套蛋白字段；字段数由当前产物决定。",
+    "revision_action": "补齐所有区域/编码数值列，不截到分析模型使用的73列。",
+    "reference_sha256": "1b938d925570b606db3411dcfbf8dc0b63cb69d7221b07de5ea950d5d851b787",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "S25",
+    "title": "完整数值字段的分位图谱 seqT",
+    "scope": "全部原始记录的全部可数值解析字段",
+    "n": 6612,
+    "change": "补齐动态Core家族面板的数值分布覆盖，避免仅展示机器学习选中的字段。",
+    "method": "每个字段使用全部有效原值的精确分位；在本字段min–max范围中定位，不跨字段比较绝对量。",
+    "reading": "图中小字用于字段定位，全部字段名及原单位统计记录于本次核验底表；恒定字段保留，非数值及缺失审计见S01。",
+    "sources": [
+      "seqT_sequence_features"
+    ],
+    "section": "transcriptome catalog / Core 全字段补充",
+    "graphical_implementation": "同S23、按RNA/ORF/Full类别分组",
+    "full_data_contract": "完整transcriptome原数值字段；RNA与翻译代理各自单位",
+    "condition_and_interaction": "任何合法RNA结果schema；缺Full仍展示可用Core并列缺失来源",
+    "regression_assertion": "参考271数值字段；完整图谱与全部原列审计共同覆盖",
+    "word_paragraphs": [
+      {
+        "index": 295,
+        "text": [
+          "S25  完整数值字段的分位图谱 seqT",
+          "数据范围：全部原始记录的全部可数值解析字段。本图记录或检验行口径 n = 6,612。",
+          "",
+          "优化调整  补齐动态Core家族面板的数值分布覆盖，避免仅展示机器学习选中的字段。",
+          "方法与完整性  每个字段使用全部有效原值的精确分位；在本字段min–max范围中定位，不跨字段比较绝对量。",
+          "阅读边界  图中小字用于字段定位，全部字段名及原单位统计记录于本次核验底表；恒定字段保留，非数值及缺失审计见S01。",
+          "字段序号用于紧凑定位。配套CSV按相同顺序保留完整字段名称、原值或统计结果，未标注的字段仍完整参与绘图。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/S25.png",
+    "reference_svg": "reference_figures/S25.svg",
+    "word_embedded_image": "media/image28.png",
+    "target_design": "转录组全部数值保存列的五分位图谱与有效率曲线，RNA/ORF/Full家族可检索。",
+    "target_location": "transcriptome catalog原图与Core家族补充。",
+    "specific_acceptance": "RNA Full扩展可用才显示具体值；无ORF字段保留未生成原因；元数据不冒充数值分布。",
+    "revision_action": "完整字段目录与图谱互链，不由ML选中字段决定可见列。",
+    "reference_sha256": "0d2a08d12bda7c3a3e9d4c59e61bddbdfac89aa8af60df586e64c166254010c2",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H01",
+    "title": "真实分析总体与工作流证据概览",
+    "scope": "GSE154515三个完整上下文",
+    "n": 20442,
+    "change": "用总体计数 注释范围和模式状态组合替代重复全绿进度或100%环图。",
+    "method": "直接计数保存标签与唯一注释基因；三上下文基因集合重叠，不能把20442条上下文记录称为独立基因。",
+    "reading": "global6889 untreated6720 heat_shock6833各含1000 HVG；预测模型removed保持原流程。",
+    "sources": [
+      "Y_hvg_labels",
+      "Y_gene_term_membership",
+      "Y_modes",
+      "Y_summary"
+    ],
+    "section": "overview：universe / annotation / original_workflow",
+    "graphical_implementation": "真实总体规模、HVG组成、注释和模式状态组合",
+    "full_data_contract": "labels、gene_term_membership、workflow/modes、summary；注释基因按context去重，不累计多term次数作基因数",
+    "condition_and_interaction": "每个context；无注释仍显示未注释总体；原section状态不改",
+    "regression_assertion": "各context H+N=U；注释来源可重叠不强制加为100%；3context行不当独立基因",
+    "word_paragraphs": [
+      {
+        "index": 92,
+        "text": [
+          "H01 至 H11",
+          "统一HVG概览 Core 原HVG标签 上下文和组间差异",
+          "H12 至 H18",
+          "完整富集 连续特征功能 GSEA与交互证据",
+          "H19 至 H23",
+          "技术稳定性 候选 功能链接与完整基因档案",
+          "H26 至 H31"
+        ]
+      },
+      {
+        "index": 303,
+        "text": [
+          "H01  真实分析总体与工作流证据概览",
+          "数据范围：GSE154515三个完整上下文。本图记录或检验行口径 n = 20,442。",
+          "",
+          "优化调整  用总体计数 注释范围和模式状态组合替代重复全绿进度或100%环图。",
+          "方法与完整性  直接计数保存标签与唯一注释基因；三上下文基因集合重叠，不能把20442条上下文记录称为独立基因。",
+          "阅读边界  global6889 untreated6720 heat_shock6833各含1000 HVG；预测模型removed保持原流程。",
+          "来源标记：Y_hvg_labels  Y_gene_term_membership  Y_modes  Y_summary。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 613,
+        "text": [
+          "H01 H05",
+          "idMappingDonut",
+          "HvgCaseView.vue L150",
+          "H27 H31",
+          "phase1Scatter",
+          "HvgCaseView.vue L167",
+          "H03 H30"
+        ]
+      },
+      {
+        "index": 754,
+        "text": [
+          "H01 H05",
+          "context_effects",
+          "context_patterns",
+          "H06",
+          "original_pattern_counts",
+          "context_patterns",
+          "H05"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H01.png",
+    "reference_svg": "reference_figures/H01.svg",
+    "word_embedded_image": "media/image29.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 14,
+      "source_line": "modes=d('Y_modes');status=modes.status.value_counts();axs[2].bar(range(len(status)),status.values,color=[TEAL,GOLD]);axs[2].set(xticks=range(len(status)),xticklabels=status.index,ylabel='Saved metadata modes',title='Workflow mode availability');axs[2].tick_params(axis='x',rotation=35);head(f,'Real universes, annotation coverage and workflow availability','GSE154515 · separate global, untreated and heat-shock contexts · predictive model policy: removed.');source_csv('H01',c.reset_index());mass('H01_labels',20442,int(c.to_numpy().sum()));done(f,'H01','真实分析总体与工作流证据概览','GSE154515三个完整上下文',len(L),'用总体计数 注释范围和模式状态组合替代重复全绿进度或100%环图。','直接计数保存标签与唯一注释基因；三上下文基因集合重叠，不能把20442条上下文记录称为独立基因。','global6889 untreated6720 heat_shock6833各含1000 HVG；预测模型removed保持原流程。',['Y_hvg_labels','Y_gene_term_membership','Y_modes','Y_summary'])"
+    },
+    "target_design": "上下文的HVG/non-HVG横向组成、唯一注释基因量/比例和工作流模式摘要构成概览。",
+    "target_location": "Research overview的universe、annotation_coverage、context_coverage分别投影，不重复整幅图。",
+    "specific_acceptance": "各context H+N=U；注释按当前universe基因去重；不同来源可重叠；模式状态转紧凑条/表。",
+    "revision_action": "保留完整数据；模式completed/not_applicable不再单独两根大柱；注释需声明分母。",
+    "reference_sha256": "c794920a818a0d30cb6bea3908ec3ffb37368d95e52bf0c427a59151d41f09b3",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H02",
+    "title": "全部Core字段的真实分析去向",
+    "scope": "三个上下文各309字段 共927审计条目",
+    "n": 927,
+    "change": "以全字段状态条带替代泛化的完整率，展示实际可检验范围。",
+    "method": "严格沿用run的final_status和语义审计；别名 纯描述及元数据不伪装为独立假设。",
+    "reading": "该工作流的审计口径保留原定义，不能套用其他模块的数值列分母。",
+    "sources": [
+      "Y_core_feature_audit"
+    ],
+    "section": "overview / input_qc：core_disposition/core_omics",
+    "graphical_implementation": "全Core×context去向审计矩阵",
+    "full_data_contract": "core_feature_audit原final_status/reason；保留160G/86T/63P包括元数据/alias/描述列",
+    "condition_and_interaction": "schema驱动完整注册字段；可按去向打开完整审计表",
+    "regression_assertion": "酵母927行=3×309；714tested/120metadata/51descriptive/42alias；无字段被绘图删除",
+    "word_paragraphs": [
+      {
+        "index": 310,
+        "text": [
+          "H02  全部Core字段的真实分析去向",
+          "数据范围：三个上下文各309字段 共927审计条目。本图记录或检验行口径 n = 927。",
+          "",
+          "优化调整  以全字段状态条带替代泛化的完整率，展示实际可检验范围。",
+          "方法与完整性  严格沿用run的final_status和语义审计；别名 纯描述及元数据不伪装为独立假设。",
+          "阅读边界  该工作流的审计口径保留原定义，不能套用其他模块的数值列分母。",
+          "来源标记：Y_core_feature_audit。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H02.png",
+    "reference_svg": "reference_figures/H02.svg",
+    "word_embedded_image": "media/image30.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 19,
+      "source_line": "head(f,'Every Core field keeps its actual analysis disposition','309 fields in each of three contexts; metadata, descriptive fields and aliases remain visible.');f.legend([Rectangle((0,0),1,1,fc=x) for x in cols],['Metadata','Descriptive','Alias','Tested'],loc='lower center',ncol=4,fontsize=8);source_csv('H02',AUD);done(f,'H02','全部Core字段的真实分析去向','三个上下文各309字段 共927审计条目',len(AUD),'以全字段状态条带替代泛化的完整率，展示实际可检验范围。','严格沿用run的final_status和语义审计；别名 纯描述及元数据不伪装为独立假设。','该工作流的审计口径保留原定义，不能套用其他模块的数值列分母。',['Y_core_feature_audit'])"
+    },
+    "target_design": "按组学分面的Core字段×context离散状态条带，原注册顺序，完整状态图例。",
+    "target_location": "Research overview/input_qc的core_disposition与core_omics按职责投影。",
+    "specific_acceptance": "当前每context309字段，metadata/descriptive/alias/tested等原final_status保留；别名不是独立检验。",
+    "revision_action": "去除跟随条带的core_states大柱，按组学分面并提供紧凑统计与字段检索。",
+    "reference_sha256": "4d45edf485beac21d6c14f9edca6c65917293c47727fc9e1b814d5ab98a2821a",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H03",
+    "title": "全基因均值与原HVG评分",
+    "scope": "三个上下文的全部20442条标签记录",
+    "n": 20442,
+    "change": "用全量透明点云突出HVG分布，替代分页或前若干基因散点。",
+    "method": "直接使用保存评分与固定标签；log10(1+mean)只做坐标显示，零均值仍可表示。",
+    "reading": "不同上下文原评分和排序有自身定义，不将展示变换当新HVG算法。",
+    "sources": [
+      "Y_hvg_labels"
+    ],
+    "section": "phase1：hvg_scatter/original_mean_score",
+    "graphical_implementation": "全基因均值与原HVG分数散点/密度",
+    "full_data_contract": "labels的mean_expr/hvg_score/is_hvg/gene_id；保留原方法和尺度，必要log轴明确标明零值处理",
+    "condition_and_interaction": "有官方标签和分数；未保存某字段显示原因；点击真实点打开gene，bin只范围查表",
+    "regression_assertion": "3context共20,442行；不重算HVG、不重新选Top1000",
+    "word_paragraphs": [
+      {
+        "index": 317,
+        "text": [
+          "H03  全基因均值与原HVG评分",
+          "数据范围：三个上下文的全部20442条标签记录。本图记录或检验行口径 n = 20,442。",
+          "",
+          "优化调整  用全量透明点云突出HVG分布，替代分页或前若干基因散点。",
+          "方法与完整性  直接使用保存评分与固定标签；log10(1+mean)只做坐标显示，零均值仍可表示。",
+          "阅读边界  不同上下文原评分和排序有自身定义，不将展示变换当新HVG算法。",
+          "来源标记：Y_hvg_labels。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 619,
+        "text": [
+          "H03 H30",
+          "原行为保留  表格分页、控制、下载及无数据状态继续沿用。模型支线按用户要求轻量保留；不可用分支显示原原因，不生成替代性的假结果。",
+          "静态结果图位覆盖 3",
+          "所有原图位均有去向；重复图位可以复用相同完整结果，详情图按声明的选择条件呈现完整详情。",
+          "原图标识",
+          "所属内容",
+          "对应新图"
+        ]
+      },
+      {
+        "index": 733,
+        "text": [
+          "H03 H30",
+          "original_top_hvg",
+          "phase1",
+          "H04 H30",
+          "original_dropout",
+          "phase1",
+          "H26 H30"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H03.png",
+    "reference_svg": "reference_figures/H03.svg",
+    "word_embedded_image": "media/image31.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 27,
+      "source_line": "head(f,'Every saved gene in mean–variability space','Official algorithm labels are fixed; no HVG reclassification or random gene sample.');source_csv('H03',L[['context_id','gene_id','mean_expr','hvg_score','is_hvg']]);done(f,'H03','全基因均值与原HVG评分','三个上下文的全部20442条标签记录',len(L),'用全量透明点云突出HVG分布，替代分页或前若干基因散点。','直接使用保存评分与固定标签；log10(1+mean)只做坐标显示，零均值仍可表示。','不同上下文原评分和排序有自身定义，不将展示变换当新HVG算法。',['Y_hvg_labels'])"
+    },
+    "target_design": "全量gene mean-score坐标，log10(1+saved mean)轴，原HVG/非HVG两类颜色，按context分面或选择。",
+    "target_location": "Research phase1的hvg_scatter、original_mean_score；重复位置分别承担概览/细节。",
+    "specific_acceptance": "保持原mean、score、标签与有限值；无mean定义不反推；所有上下文动态列出。",
+    "revision_action": "不同时跨context混云而丢失背景；无意义重复同图通过同卡切换或明确不同视角处理。",
+    "reference_sha256": "bc4689a5a8ae90d3138cf45307a830f2e452d02ab00c3c41bb4e0c1d5d6bec03",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H04",
+    "title": "HVG排序的完整背景",
+    "scope": "全部上下文基因排序",
+    "n": 20442,
+    "change": "用完整排名轮廓替代Top30条形图，使截断边界与总体规模可见。",
+    "method": "保持原hvg_rank和is_hvg；未重新设n_top_genes或阈值。",
+    "reading": "高亮只是原HVG成员，曲线中其余基因没有被删除。",
+    "sources": [
+      "Y_hvg_labels"
+    ],
+    "section": "phase1：original_top_hvg/hvg_histogram",
+    "graphical_implementation": "完整保存排名背景曲线+原HVG高亮",
+    "full_data_contract": "labels.hvg_rank/hvg_score/is_hvg；排名缺失可按原评分稳定显示排序但标明display rank",
+    "condition_and_interaction": "完整context排序；所有非HVG背景仍保留；原Top列表继续作为详情",
+    "regression_assertion": "完整rank背景不只100；HVG边界对应原标签，不以绘图新阈值改标签",
+    "word_paragraphs": [
+      {
+        "index": 324,
+        "text": [
+          "H04  HVG排序的完整背景",
+          "数据范围：全部上下文基因排序。本图记录或检验行口径 n = 20,442。",
+          "",
+          "优化调整  用完整排名轮廓替代Top30条形图，使截断边界与总体规模可见。",
+          "方法与完整性  保持原hvg_rank和is_hvg；未重新设n_top_genes或阈值。",
+          "阅读边界  高亮只是原HVG成员，曲线中其余基因没有被删除。",
+          "来源标记：Y_hvg_labels。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 628,
+        "text": [
+          "H04 H30",
+          "dropoutScatter",
+          "HvgCaseView.vue L176",
+          "H26 H30",
+          "patternCountsOption",
+          "HvgCaseView.vue L191",
+          "H05"
+        ]
+      },
+      {
+        "index": 736,
+        "text": [
+          "H04 H30",
+          "original_dropout",
+          "phase1",
+          "H26 H30",
+          "原行为保留  表格分页、控制、下载及无数据状态继续沿用。模型支线按用户要求轻量保留；不可用分支显示原原因，不生成替代性的假结果。",
+          "动态HVG研究图位覆盖 2",
+          "所有原图位均有去向；重复图位可以复用相同完整结果，详情图按声明的选择条件呈现完整详情。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H04.png",
+    "reference_svg": "reference_figures/H04.svg",
+    "word_embedded_image": "media/image32.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 32,
+      "source_line": "head(f,'Top HVGs shown with their complete ranked background','Blue points use original HVG labels; the background includes every saved rank.');source_csv('H04',L[['context_id','gene_id','hvg_rank','hvg_score','is_hvg']]);done(f,'H04','HVG排序的完整背景','全部上下文基因排序',len(L),'用完整排名轮廓替代Top30条形图，使截断边界与总体规模可见。','保持原hvg_rank和is_hvg；未重新设n_top_genes或阈值。','高亮只是原HVG成员，曲线中其余基因没有被删除。',['Y_hvg_labels'])"
+    },
+    "target_design": "完整保存HVG排序曲线，原HVG成员高亮，显示排名背景和真实选择边界。",
+    "target_location": "Research phase1.original_top_hvg；native原top-HVG卡使用同语法的H30投影。",
+    "specific_acceptance": "沿用hvg_rank和is_hvg，不设新阈值；全部非HVG背景保留。",
+    "revision_action": "不回退Top30柱状图，保证高亮点与原标签一致。",
+    "reference_sha256": "894ef4466e5d9514535a27dbf8600fa0d2064e6ee82b502b685cd033cef67e7b",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H05",
+    "title": "元数据模式 子集和完整变化模式",
+    "scope": "全部六模式 子集及保存模式记录",
+    "n": 6877,
+    "change": "将模式状态 子集规模和变化模式组成放在同一证据链中，减少单一计数柱重复。",
+    "method": "完全读取workflow模式 子集及patterns表；不生成缺失的时间或轨迹信息。",
+    "reading": "not_applicable是原工作流真实状态，不是计算失败或被强行补齐的数据。",
+    "sources": [
+      "Y_modes",
+      "Y_subsets",
+      "Y_patterns"
+    ],
+    "section": "context_patterns：original_pattern_counts/subset_counts",
+    "graphical_implementation": "模式/子集/变化模式的完整规模与状态",
+    "full_data_contract": "workflow/modes、subsets、patterns；记录运行状态和not_applicable原因，不对相同gene跨模式去重为独立统计样本",
+    "condition_and_interaction": "元数据能力决定哪些模式适用；单context无高级模式时如实说明",
+    "regression_assertion": "参考6模式：3complete/3not_applicable；6887原pattern记录全部参与保存类别计数",
+    "word_paragraphs": [
+      {
+        "index": 331,
+        "text": [
+          "H05  元数据模式 子集和完整变化模式",
+          "数据范围：全部六模式 子集及保存模式记录。本图记录或检验行口径 n = 6,877。",
+          "",
+          "优化调整  将模式状态 子集规模和变化模式组成放在同一证据链中，减少单一计数柱重复。",
+          "方法与完整性  完全读取workflow模式 子集及patterns表；不生成缺失的时间或轨迹信息。",
+          "阅读边界  not_applicable是原工作流真实状态，不是计算失败或被强行补齐的数据。",
+          "来源标记：Y_modes  Y_subsets  Y_patterns。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H05.png",
+    "reference_svg": "reference_figures/H05.svg",
+    "word_embedded_image": "media/image33.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 37,
+      "source_line": "pc=patterns['condition_pattern'].fillna(patterns['pattern']).fillna('unavailable').value_counts();axs[2].barh(range(len(pc)),pc.values,color=BLUE);axs[2].set(yticks=range(len(pc)),yticklabels=[str(x).replace('_','\\n') for x in pc.index],xlabel='Saved gene-pattern records',title='All saved patterns');axs[2].tick_params(axis='y',labelsize=7.5);head(f,'Metadata modes and context patterns retain their original rules','Three completed and three inapplicable modes remain explicit; no synthetic time course or trajectory.');source_csv('H05',patterns);mass('H05_patterns',len(patterns),int(pc.sum()));done(f,'H05','元数据模式 子集和完整变化模式','全部六模式 子集及保存模式记录',len(patterns),'将模式状态 子集规模和变化模式组成放在同一证据链中，减少单一计数柱重复。','完全读取workflow模式 子集及patterns表；不生成缺失的时间或轨迹信息。','not_applicable是原工作流真实状态，不是计算失败或被强行补齐的数据。',['Y_modes','Y_subsets','Y_patterns'])"
+    },
+    "target_design": "模式可用性紧凑表、全部子集n_cells×n_hvgs散点、保存pattern的紧凑组成，按实际图位拆分。",
+    "target_location": "context_patterns.original_pattern_counts/subset_counts及overview.original_workflow。",
+    "specific_acceptance": "没有timecourse/trajectory元数据就展示not_applicable；不生成虚构轨迹；pattern全部记录计数守恒。",
+    "revision_action": "模式状态从大柱改行级标识；子集必须是双变量散点，不用三个单指标rank图代替。",
+    "reference_sha256": "206fe60b0e48d91860dcb1db22e105ee1d497993e179877fec95920adcf201cc",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H06",
+    "title": "全部原始特征效应跨上下文矩阵",
+    "scope": "756条保存效应 含42条别名复用",
+    "n": 756,
+    "change": "以完整有符号效应矩阵替代只列前若干特征的森林图。",
+    "method": "原Cliff效应和上下文逐格显示；字段顺序与Core审计可交叉定位，不重新做FDR。",
+    "reading": "颜色是效应方向和大小；别名仍是复用证据，不能当新的独立检验。",
+    "sources": [
+      "Y_feature_tests",
+      "Y_core_feature_audit"
+    ],
+    "section": "context_patterns / group_comparison：context_effects/family_heatmap",
+    "graphical_implementation": "全部特征×context原效应矩阵+统一发散色标",
+    "full_data_contract": "完整feature_tests及audit；按feature_key严格对齐；原Cliff effect单位，缺/alias灰，不按abs归一化每列",
+    "condition_and_interaction": "多context优先；单context仍可一列完整；筛选后色标声明新范围",
+    "regression_assertion": "参考756结果；3context各252准备特征；共享±max(abs(finite effect))，非固定±1挤压差异",
+    "word_paragraphs": [
+      {
+        "index": 338,
+        "text": [
+          "H06  全部原始特征效应跨上下文矩阵",
+          "数据范围：756条保存效应 含42条别名复用。本图记录或检验行口径 n = 756。",
+          "",
+          "优化调整  以完整有符号效应矩阵替代只列前若干特征的森林图。",
+          "方法与完整性  原Cliff效应和上下文逐格显示；字段顺序与Core审计可交叉定位，不重新做FDR。",
+          "阅读边界  颜色是效应方向和大小；别名仍是复用证据，不能当新的独立检验。",
+          "字段序号用于紧凑定位。配套CSV按相同顺序保留完整字段名称、原值或统计结果，未标注的字段仍完整参与绘图。"
+        ]
+      },
+      {
+        "index": 661,
+        "text": [
+          "H06 H28 H29",
+          "effectFdrOption",
+          "HvgGroupComparisonPanel.vue L59",
+          "H07 H29",
+          "原行为保留  表格分页、控制、下载及无数据状态继续沿用。模型支线按用户要求轻量保留；不可用分支显示原原因，不生成替代性的假结果。",
+          "静态结果图位覆盖 4",
+          "所有原图位均有去向；重复图位可以复用相同完整结果，详情图按声明的选择条件呈现完整详情。"
+        ]
+      },
+      {
+        "index": 673,
+        "text": [
+          "H06 H29",
+          "rawAdjustedOption",
+          "HvgGroupComparisonPanel.vue L67",
+          "H08 H28 H29",
+          "detailDistributionOption",
+          "HvgGroupComparisonPanel.vue L115",
+          "H10 H29"
+        ]
+      },
+      {
+        "index": 766,
+        "text": [
+          "H06 H28",
+          "feature_volcano",
+          "group_comparison",
+          "H07",
+          "adjusted_forest",
+          "group_comparison",
+          "H08 H28"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H06.png",
+    "reference_svg": "reference_figures/H06.svg",
+    "word_embedded_image": "media/image34.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 42,
+      "source_line": "head(f,'All saved raw feature effects across the three contexts','Signed Cliff’s delta retains its original scale; all 756 result rows, including aliases, are represented.');source_csv('H06',FT);mass('H06_cells',756,3*len(allkeys));done(f,'H06','全部原始特征效应跨上下文矩阵','756条保存效应 含42条别名复用',len(FT),'以完整有符号效应矩阵替代只列前若干特征的森林图。','原Cliff效应和上下文逐格显示；字段顺序与Core审计可交叉定位，不重新做FDR。','颜色是效应方向和大小；别名仍是复用证据，不能当新的独立检验。',['Y_feature_tests','Y_core_feature_audit'])"
+    },
+    "target_design": "按组学分面的完整feature×context原Cliff效应矩阵，零中心蓝棕发散色，所有context共享实际来源色域。",
+    "target_location": "context_patterns.context_effects；跨context比较明确不被单context选择器截成一列。",
+    "specific_acceptance": "保存效应不重估，含alias行；全run固定对称域，筛选不静默重新缩放；tooltip有q及原状态。",
+    "revision_action": "恢复组学分面和完整字段定位，保留统一色标；不使用全体值混成均值画像。",
+    "reference_sha256": "e71ec2bc01ad8d380704b75abd0de6371db326f6cc8efa78edd7c2797a48b034",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H07",
+    "title": "全部特征效应与原全局显著性",
+    "scope": "全部756条特征检验结果",
+    "n": 756,
+    "change": "保留全效应散点并用原strong_raw规则编码，避免TopN掩盖弱效应。",
+    "method": "使用保存Cliff效应 q_global和strong_raw；零q只在绘图时设1e-300下限，原数据不变。",
+    "reading": "图形不会创建新的显著性检验，也不把别名重复当独立证据。",
+    "sources": [
+      "Y_feature_tests"
+    ],
+    "section": "group_comparison：feature_volcano",
+    "graphical_implementation": "全有限原效应×原全局q点图+完整状态",
+    "full_data_contract": "feature_tests.effect/q_global/strong_raw/status，保留q_global_by可切原已保存值但不重算",
+    "condition_and_interaction": "所有结果，包括未显著点；无p/q时不可估计，不能重要度替换q",
+    "regression_assertion": "756保存行，714tested有限q；alias不能补q=0；阈值按原strong_raw定义",
+    "word_paragraphs": [
+      {
+        "index": 346,
+        "text": [
+          "H07  全部特征效应与原全局显著性",
+          "数据范围：全部756条特征检验结果。本图记录或检验行口径 n = 756。",
+          "",
+          "优化调整  保留全效应散点并用原strong_raw规则编码，避免TopN掩盖弱效应。",
+          "方法与完整性  使用保存Cliff效应 q_global和strong_raw；零q只在绘图时设1e-300下限，原数据不变。",
+          "阅读边界  图形不会创建新的显著性检验，也不把别名重复当独立证据。",
+          "来源标记：Y_feature_tests。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 664,
+        "text": [
+          "H07 H29",
+          "原行为保留  表格分页、控制、下载及无数据状态继续沿用。模型支线按用户要求轻量保留；不可用分支显示原原因，不生成替代性的假结果。",
+          "静态结果图位覆盖 4",
+          "所有原图位均有去向；重复图位可以复用相同完整结果，详情图按声明的选择条件呈现完整详情。",
+          "原图标识",
+          "所属内容",
+          "对应新图"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H07.png",
+    "reference_svg": "reference_figures/H07.svg",
+    "word_embedded_image": "media/image35.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 47,
+      "source_line": "head(f,'Complete feature effects and saved global significance','Blue: original strong_raw rule. q = 0 uses a display floor of 1e−300 only.');source_csv('H07',out);done(f,'H07','全部特征效应与原全局显著性','全部756条特征检验结果',len(FT),'保留全效应散点并用原strong_raw规则编码，避免TopN掩盖弱效应。','使用保存Cliff效应 q_global和strong_raw；零q只在绘图时设1e-300下限，原数据不变。','图形不会创建新的显著性检验，也不把别名重复当独立证据。',['Y_feature_tests'])"
+    },
+    "target_design": "全部原始effect×-log10(q_global)散点，按context分面；强证据按原strong_raw规则，非估计数在辅助栏。",
+    "target_location": "group_comparison.feature_volcano。",
+    "specific_acceptance": "0q仅显示floor；invalid q不裁剪；有数值但未tested的记录保持状态解释。",
+    "revision_action": "精简额外状态大图，补每分面finite/total及原校正族说明。",
+    "reference_sha256": "526bc7ae0afa79d7fce254b6d159427d926b4e999a235d961a38bcc140d85d6e",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H08",
+    "title": "全部协变量调整关联及不稳定拟合",
+    "scope": "1422条原调整模型结果",
+    "n": 1422,
+    "change": "将两个调整模型分面，用全部系数和全局q展示证据范围。",
+    "method": "保持expression_detection及加长度模型各自尺度；2条unstable_fit单列原状态。",
+    "reading": "调整系数与Cliff效应的估计对象不同，不能把两者直接相减。",
+    "sources": [
+      "Y_adjusted_feature_tests"
+    ],
+    "section": "group_comparison：adjusted_forest",
+    "graphical_implementation": "两原调整模型分面，全部beta/q和拟合状态",
+    "full_data_contract": "adjusted_feature_tests.model/beta/q_global/status/CI；不同模型分别呈现",
+    "condition_and_interaction": "无某模型不新拟合；失败点不可画0；点击特征看原调整结果",
+    "regression_assertion": "1422行：1420 estimated+2 unstable；两模型714和708；OR CI转ln与beta对齐",
+    "word_paragraphs": [
+      {
+        "index": 353,
+        "text": [
+          "H08  全部协变量调整关联及不稳定拟合",
+          "数据范围：1422条原调整模型结果。本图记录或检验行口径 n = 1,422。",
+          "",
+          "优化调整  将两个调整模型分面，用全部系数和全局q展示证据范围。",
+          "方法与完整性  保持expression_detection及加长度模型各自尺度；2条unstable_fit单列原状态。",
+          "阅读边界  调整系数与Cliff效应的估计对象不同，不能把两者直接相减。",
+          "来源标记：Y_adjusted_feature_tests。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 676,
+        "text": [
+          "H08 H28 H29",
+          "detailDistributionOption",
+          "HvgGroupComparisonPanel.vue L115",
+          "H10 H29",
+          "options[kind]",
+          "ResearchCharts.vue L8",
+          "动态研究图逐项映射"
+        ]
+      },
+      {
+        "index": 772,
+        "text": [
+          "H08 H28",
+          "matching",
+          "group_comparison",
+          "H09",
+          "distribution",
+          "group_comparison",
+          "H10"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H08.png",
+    "reference_svg": "reference_figures/H08.svg",
+    "word_embedded_image": "media/image36.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 55,
+      "source_line": "head(f,'Adjustment models remain distinct','All 1,422 saved tests; unstable fits remain in the audit and are not converted to zero estimates.');source_csv('H08',out);done(f,'H08','全部协变量调整关联及不稳定拟合','1422条原调整模型结果',len(AD),'将两个调整模型分面，用全部系数和全局q展示证据范围。','保持expression_detection及加长度模型各自尺度；2条unstable_fit单列原状态。','调整系数与Cliff效应的估计对象不同，不能把两者直接相减。',['Y_adjusted_feature_tests'])"
+    },
+    "target_design": "按原调整model分面的全部beta×-log10(q_global)证据图，context同色，失败/不稳定拟合列辅助摘要。",
+    "target_location": "group_comparison.adjusted_forest卡新增证据/CI内部切换，默认本图，CI为H28。",
+    "specific_acceptance": "两个模型各自轴域；beta与原Cliff不可相减；estimated/unstable_fit按照源schema。",
+    "revision_action": "补H08实际页面入口，不能只有可调用后端；保存CI与该证据图两种内容均可达。",
+    "reference_sha256": "3f721856dfa234c96893821087e30a973f799fdb23285fb1e868fd658599dc2c",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H09",
+    "title": "全部匹配敏感性与方向证据",
+    "scope": "714条匹配诊断",
+    "n": 714,
+    "change": "用方向对照与匹配覆盖ECDF替代孤立的配对效应柱。",
+    "method": "按context_id和feature_key连接已有结果；匹配对象和配对规则均保持原值。",
+    "reading": "两个轴是不同效应定义，接近对角线不是匹配有效性的正式检验。",
+    "sources": [
+      "Y_matching_diagnostics",
+      "Y_feature_tests"
+    ],
+    "section": "group_comparison：matching",
+    "graphical_implementation": "完整匹配覆盖/方向敏感性与raw对照",
+    "full_data_contract": "matching_diagnostics和原feature_tests，以context+feature_key合法匹配；保留paired_sign_effect、n等真实定义",
+    "condition_and_interaction": "有匹配产物才显示；raw Cliff和paired sign不同estimand，分面/独立轴",
+    "regression_assertion": "714匹配诊断全保留；无成员/失败状态明确，不能假定等效效应尺度",
+    "word_paragraphs": [
+      {
+        "index": 360,
+        "text": [
+          "H09  全部匹配敏感性与方向证据",
+          "数据范围：714条匹配诊断。本图记录或检验行口径 n = 714。",
+          "",
+          "优化调整  用方向对照与匹配覆盖ECDF替代孤立的配对效应柱。",
+          "方法与完整性  按context_id和feature_key连接已有结果；匹配对象和配对规则均保持原值。",
+          "阅读边界  两个轴是不同效应定义，接近对角线不是匹配有效性的正式检验。",
+          "来源标记：Y_matching_diagnostics  Y_feature_tests。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H09.png",
+    "reference_svg": "reference_figures/H09.svg",
+    "word_embedded_image": "media/image37.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 59,
+      "source_line": "axs[0].set(xlabel='Raw Cliff’s delta',ylabel='Saved paired sign effect',title='Two distinct estimands');axs[1].set(xlabel='Fraction of HVGs matched',ylabel='Cumulative feature fraction',title='Complete matching coverage');legend(axs[0]);legend(axs[1]);head(f,'Matching sensitivity with all directional results','All 714 matching diagnostics; no matched genes or pairs are regenerated for this figure.');source_csv('H09',merge);mass('H09_matching',714,len(merge));done(f,'H09','全部匹配敏感性与方向证据','714条匹配诊断',len(MATCH),'用方向对照与匹配覆盖ECDF替代孤立的配对效应柱。','按context_id和feature_key连接已有结果；匹配对象和配对规则均保持原值。','两个轴是不同效应定义，接近对角线不是匹配有效性的正式检验。',['Y_matching_diagnostics','Y_feature_tests'])"
+    },
+    "target_design": "raw Cliff×paired_sign_effect散点，旁边完整matched_H_fraction ECDF；两类估计对象明确。",
+    "target_location": "group_comparison.matching原图卡。",
+    "specific_acceptance": "context_id+feature_key一对一连接，不重新匹配；缺侧记录保持原因；n_pairs不混入fraction轴。",
+    "revision_action": "保留真实双变量对照与覆盖率，两幅组合而非散点后附多个全高分布。",
+    "reference_sha256": "b4f6ac4354fc6d1102bc72744d12807515d82ba9de76e3eb7a6b6cfb6b50a8b7",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H10",
+    "title": "单特征HVG与非HVG完整分布",
+    "scope": "global全部6889基因的明确选定特征",
+    "n": 6889,
+    "change": "用精确ECDF和分位带保留点质量与尾部，代替孤立均值或未经核验的平滑密度。",
+    "method": "特征按原效应绝对值最大且同值按key固定选定；读取全量prepared values和固定标签，不重算检验。",
+    "reading": "此图只查看指定特征，所有其他Core字段已在全字段审计和效应矩阵中覆盖。",
+    "sources": [
+      "Y_feature_values",
+      "Y_hvg_labels",
+      "Y_feature_tests"
+    ],
+    "section": "group_comparison：distribution/详情",
+    "graphical_implementation": "同尺度HVG/non-HVG全值ECDF+分位区间",
+    "full_data_contract": "feature_values prepared列与labels按context+gene_id一对一；原selected feature，有限值分组",
+    "condition_and_interaction": "默认沿用现有选择，未选可确定性选最大abs原效应并明示；不截断任一组",
+    "regression_assertion": "参考global6889行；H1000/N5889；单位/prepared变换注明，点区间不是CI",
+    "word_paragraphs": [
+      {
+        "index": 367,
+        "text": [
+          "H10  单特征HVG与非HVG完整分布",
+          "数据范围：global全部6889基因的明确选定特征。本图记录或检验行口径 n = 6,889。",
+          "",
+          "优化调整  用精确ECDF和分位带保留点质量与尾部，代替孤立均值或未经核验的平滑密度。",
+          "方法与完整性  特征按原效应绝对值最大且同值按key固定选定；读取全量prepared values和固定标签，不重算检验。",
+          "阅读边界  此图只查看指定特征，所有其他Core字段已在全字段审计和效应矩阵中覆盖。",
+          "来源标记：Y_feature_values  Y_hvg_labels  Y_feature_tests。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 679,
+        "text": [
+          "H10 H29",
+          "options[kind]",
+          "ResearchCharts.vue L8",
+          "动态研究图逐项映射",
+          "chart.option",
+          "ResearchOptionalModel.vue L11",
+          "H24 H25 低优先级轻量保留"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H10.png",
+    "reference_svg": "reference_figures/H10.svg",
+    "word_embedded_image": "media/image38.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 64,
+      "source_line": "axs[0].set(xlabel='Saved prepared feature value',ylabel='Cumulative gene fraction');axs[1].set(yticks=[0,1],yticklabels=['non-HVG','HVG'],xlabel='Same saved feature units',title='5–95% interval and IQR');legend(axs[0]);head(f,'Complete two-group feature distribution',field+' · global context · selected by largest absolute saved raw effect.');source_csv('H10',sub);mass('H10_global_genes',6889,len(sub));done(f,'H10','单特征HVG与非HVG完整分布','global全部6889基因的明确选定特征',len(sub),'用精确ECDF和分位带保留点质量与尾部，代替孤立均值或未经核验的平滑密度。','特征按原效应绝对值最大且同值按key固定选定；读取全量prepared values和固定标签，不重算检验。','此图只查看指定特征，所有其他Core字段已在全字段审计和效应矩阵中覆盖。',['Y_feature_values','Y_hvg_labels','Y_feature_tests'])"
+    },
+    "target_design": "当前选中特征HVG/non-HVG全值ECDF与同轴分位区间并列，引用prepared value及原单位。",
+    "target_location": "group_comparison.distribution及feature详情，选择器保留。",
+    "specific_acceptance": "先按当前context确定reference与特征，再按复合键join；默认选择规则写明；不能混合多个context。",
+    "revision_action": "当前read(unfiltered=True)实际保留context，维持这项正确行为并补独立参考断言；将两个画面组织为同源同n的组合。",
+    "reference_sha256": "8b47b642e6c824b4aa7bad43d638f2f5642009164e07ab878cfa08b02bd19dd8",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H11",
+    "title": "全部方向基因集的规模和对称性",
+    "scope": "1428条原方向集合定义",
+    "n": 1428,
+    "change": "以全集合大小分布和同字段方向对照显示差异，替代只展示几个最大集合。",
+    "method": "使用保存n_members及direction；不重新取分位阈值或修改集合成员。",
+    "reading": "集合之间可重叠，集合大小不能相加为独立基因数。",
+    "sources": [
+      "Y_gene_sets",
+      "Y_gene_set_members"
+    ],
+    "section": "group_comparison：sets",
+    "graphical_implementation": "全部方向集规模和高低方向配对图",
+    "full_data_contract": "gene_sets/set_members；所有set_id，不只最大30；按真实feature/context/direction/scope维度配对",
+    "condition_and_interaction": "无一侧集合显示未生成，不能硬配或填0；点击set打开完整成员表",
+    "regression_assertion": "1428保存集；成员核对按原计数定义去重，不能跨scope合并",
+    "word_paragraphs": [
+      {
+        "index": 374,
+        "text": [
+          "H11  全部方向基因集的规模和对称性",
+          "数据范围：1428条原方向集合定义。本图记录或检验行口径 n = 1,428。",
+          "",
+          "优化调整  以全集合大小分布和同字段方向对照显示差异，替代只展示几个最大集合。",
+          "方法与完整性  使用保存n_members及direction；不重新取分位阈值或修改集合成员。",
+          "阅读边界  集合之间可重叠，集合大小不能相加为独立基因数。",
+          "来源标记：Y_gene_sets  Y_gene_set_members。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H11.png",
+    "reference_svg": "reference_figures/H11.svg",
+    "word_embedded_image": "media/image39.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 70,
+      "source_line": "axs[0].set(xlabel='Saved set size',ylabel='Cumulative set fraction',title='Every directional set');axs[1].set(xlabel='First saved direction set size',ylabel='Second saved direction set size',title='Same-feature directional balance');legend(axs[0],loc='lower right');head(f,'All directional gene sets retain their saved membership rules','1,428 complete set definitions; thresholds, references and member hashes remain unchanged.');source_csv('H11',SETS);done(f,'H11','全部方向基因集的规模和对称性','1428条原方向集合定义',len(SETS),'以全集合大小分布和同字段方向对照显示差异，替代只展示几个最大集合。','使用保存n_members及direction；不重新取分位阈值或修改集合成员。','集合之间可重叠，集合大小不能相加为独立基因数。',['Y_gene_sets','Y_gene_set_members'])"
+    },
+    "target_design": "全部方向基因集n_members ECDF与同特征high/low规模散点，缺一侧明确不参与配对图。",
+    "target_location": "group_comparison.sets。",
+    "specific_acceptance": "保留scope/direction/context，成员和门槛不重算；不把不存在一侧补0。",
+    "revision_action": "按完整方向集合比较，不改成高低数量柱；全部成员由详情/导出可查。",
+    "reference_sha256": "c25990e1af5c8401ecb3168ab1e1533cb7ca8bbf4e71ca61e4560283c19c4edc",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H12",
+    "title": "基线富集的全部假设与证据轮廓",
+    "scope": "三个上下文共252条完整ORA",
+    "n": 252,
+    "change": "用全假设证据skyline替代只有最显著若干通路的气泡图。",
+    "method": "读取原背景N K n k p和q；完整global84个条目及所有上下文曲线参与绘图。",
+    "reading": "跨上下文q的高低不构成富集增强的正式差异检验。",
+    "sources": [
+      "Y_baseline_ora"
+    ],
+    "section": "phase1 / downstream：baseline",
+    "graphical_implementation": "所有基线ORA假设q轮廓+term全点skyline",
+    "full_data_contract": "baseline_ora：原N/K/n/k、fold_enrichment、q_global、source/scope；保留不满足条件原因",
+    "condition_and_interaction": "真实注释背景存在；可少量label但全点保留；点击term详情",
+    "regression_assertion": "252行=84/context，global全部84；图注不得把高fold当绝对富集基因多",
+    "word_paragraphs": [
+      {
+        "index": 94,
+        "text": [
+          "H12 至 H18",
+          "完整富集 连续特征功能 GSEA与交互证据",
+          "H19 至 H23",
+          "技术稳定性 候选 功能链接与完整基因档案",
+          "H26 至 H31",
+          "检出与脱落 缺失 区间 原生非模型比较与映射",
+          "H24 H25 H32"
+        ]
+      },
+      {
+        "index": 381,
+        "text": [
+          "H12  基线富集的全部假设与证据轮廓",
+          "数据范围：三个上下文共252条完整ORA。本图记录或检验行口径 n = 252。",
+          "",
+          "优化调整  用全假设证据skyline替代只有最显著若干通路的气泡图。",
+          "方法与完整性  读取原背景N K n k p和q；完整global84个条目及所有上下文曲线参与绘图。",
+          "阅读边界  跨上下文q的高低不构成富集增强的正式差异检验。",
+          "来源标记：Y_baseline_ora。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 658,
+        "text": [
+          "H12 H22 H25",
+          "forestOption",
+          "HvgGroupComparisonPanel.vue L55",
+          "H06 H28 H29",
+          "effectFdrOption",
+          "HvgGroupComparisonPanel.vue L59",
+          "H07 H29"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H12.png",
+    "reference_svg": "reference_figures/H12.svg",
+    "word_embedded_image": "media/image40.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 72,
+      "source_line": "BASE=d('Y_baseline_ora');f,axs=fig(1,2);all_q_curves(axs[0],BASE);legend(axs[0]);q=BASE[BASE.context_id.eq('global')].copy();q['plotq']=qlog(q.q_global);q=q.sort_values(['source','term_key']);q['display_index']=range(len(q));axs[1].scatter(range(len(q)),q.plotq,c=[{'GO_CC':BLUE,'GO_BP':TEAL,'GO_MF':PURPLE,'KEGG_pathway':GOLD}.get(s,GREY) for s in q.source],s=16);axs[1].set(xlabel='All 84 global terms in source/ID order',ylabel='−log10(saved global BH q)',title='Every global term');small_labels(axs[1],q,'display_index','plotq','term_key',3);head(f,'Baseline enrichment with its complete tested background','All 252 context–term results; labels and statistical backgrounds remain context specific.');source_csv('H12',BASE);mass('H12_results',252,len(BASE));done(f,'H12','基线富集的全部假设与证据轮廓','三个上下文共252条完整ORA',len(BASE),'用全假设证据skyline替代只有最显著若干通路的气泡图。','读取原背景N K n k p和q；完整global84个条目及所有上下文曲线参与绘图。','跨上下文q的高低不构成富集增强的正式差异检验。',['Y_baseline_ora'])"
+    },
+    "target_design": "全部baseline ORA的q证据排序轮廓与全term -log10(q) skyline，按实际source/term稳定定位。",
+    "target_location": "phase1或downstream的baseline原图位，各section保持原职责。",
+    "specific_acceptance": "不重新校正，不只取显著term；固定快照84term/context，未来由数据决定。",
+    "revision_action": "保留参考的证据轮廓+skyline，不用单一q ECDF声称实现了整个组合；加原q=.05参考。",
+    "reference_sha256": "55eff5750564654db1c822d011507cdd6bf9161fef03aad3ea816ff2020e9c2b",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H13",
+    "title": "方向子集与HVG内部富集的完整证据范围",
+    "scope": "三个保存ORA结果族的全部结果",
+    "n": 227888,
+    "change": "将完整q分布和未能估计的条目规模并列，避免只见显著通路。",
+    "method": "每个族沿用原background_id和q_global；无效或不足的假设保留状态，不补造q值。",
+    "reading": "不同背景的检验族分别展示，不能按最小q选择分析背景。",
+    "sources": [
+      "Y_feature_set_ora",
+      "Y_within_hvg_ora",
+      "Y_supplementary_ora"
+    ],
+    "section": "downstream：subset/within_hvg",
+    "graphical_implementation": "三个ORA家族分面完整q-ECDF+可估计状态",
+    "full_data_contract": "feature_set_ora、within_hvg_ora、supplementary_ora分别读全；背景各不相同，所有有限q进各自ECDF",
+    "condition_and_interaction": "保持当前筛选语义但完整默认scope；独立source/背景可查",
+    "regression_assertion": "参考107832+11972+108084=227888保存假设；不将缺q当不显著q=1",
+    "word_paragraphs": [
+      {
+        "index": 388,
+        "text": [
+          "H13  方向子集与HVG内部富集的完整证据范围",
+          "数据范围：三个保存ORA结果族的全部结果。本图记录或检验行口径 n = 227,888。",
+          "",
+          "优化调整  将完整q分布和未能估计的条目规模并列，避免只见显著通路。",
+          "方法与完整性  每个族沿用原background_id和q_global；无效或不足的假设保留状态，不补造q值。",
+          "阅读边界  不同背景的检验族分别展示，不能按最小q选择分析背景。",
+          "来源标记：Y_feature_set_ora  Y_within_hvg_ora  Y_supplementary_ora。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H13.png",
+    "reference_svg": "reference_figures/H13.svg",
+    "word_embedded_image": "media/image41.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 78,
+      "source_line": "head(f,'Complete subset-enrichment families, including ineligible tests','No Top-N filtering; source tables retain insufficient-query and no-contrast statuses.');source_csv('H13',pd.concat(out,ignore_index=True));done(f,'H13','方向子集与HVG内部富集的完整证据范围','三个保存ORA结果族的全部结果',sum(len(x[1]) for x in ora_tables),'将完整q分布和未能估计的条目规模并列，避免只见显著通路。','每个族沿用原background_id和q_global；无效或不足的假设保留状态，不补造q值。','不同背景的检验族分别展示，不能按最小q选择分析背景。',['Y_feature_set_ora','Y_within_hvg_ora','Y_supplementary_ora'])"
+    },
+    "target_design": "directional subset、within-HVG及supplementary/joint ORA分开的全q ECDF，非估计数写辅助行。",
+    "target_location": "downstream.subset与within_hvg各卡；扩展族在同卡有清楚scope局部入口。",
+    "specific_acceptance": "所有保存行都在统计/状态中，有限q才进ECDF；统计背景与校正族分别保留。",
+    "revision_action": "取消每族单独status柱；不能把三族混为同一个总体或共用q分母。",
+    "reference_sha256": "8e0d9142f8b699b35cc7892f8ef081a4560caa0b7905fc3efa9f3bc44a7c16b4",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H14",
+    "title": "完整连续特征与功能关联空间",
+    "scope": "107832条特征功能假设",
+    "n": 107832,
+    "change": "以分功能来源的全检验密度图替代只列最显著特征通路组合。",
+    "method": "所有有限effect/q进入格计数；insufficient_group_n及constant等原状态保留并核对有效与不可得之和。",
+    "reading": "密度代表保存的检验数，不是基因数或新通路富集结果。",
+    "sources": [
+      "Y_feature_pathway_tests"
+    ],
+    "section": "phase2：feature_function",
+    "graphical_implementation": "连续特征×功能完整效应/q密度与状态",
+    "full_data_contract": "feature_pathway_tests全量，按真实source/scope分面；全有限坐标hex计数，真实effect/globalq",
+    "condition_and_interaction": "按当前context请求；无注释显示状态；格点击范围查询所有tests",
+    "regression_assertion": "107832保存行，21559tested/86270insufficient/3constant；所有有限行计数守恒；色标与轴不碰撞",
+    "word_paragraphs": [
+      {
+        "index": 395,
+        "text": [
+          "H14  完整连续特征与功能关联空间",
+          "数据范围：107832条特征功能假设。本图记录或检验行口径 n = 107,832。",
+          "",
+          "优化调整  以分功能来源的全检验密度图替代只列最显著特征通路组合。",
+          "方法与完整性  所有有限effect/q进入格计数；insufficient_group_n及constant等原状态保留并核对有效与不可得之和。",
+          "阅读边界  密度代表保存的检验数，不是基因数或新通路富集结果。",
+          "来源标记：Y_feature_pathway_tests。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H14.png",
+    "reference_svg": "reference_figures/H14.svg",
+    "word_embedded_image": "media/image42.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 83,
+      "source_line": "head(f,'Complete continuous feature–function association space','All 107,832 saved hypotheses: inestimable rows remain explicit instead of disappearing.');mass('H14_hypotheses',len(FN),count);source_csv('H14',FN);done(f,'H14','完整连续特征与功能关联空间','107832条特征功能假设',len(FN),'以分功能来源的全检验密度图替代只列最显著特征通路组合。','所有有限effect/q进入格计数；insufficient_group_n及constant等原状态保留并核对有效与不可得之和。','密度代表保存的检验数，不是基因数或新通路富集结果。',['Y_feature_pathway_tests'])"
+    },
+    "target_design": "按GO_BP/GO_CC/GO_MF/KEGG等实际source分面的全效应/q hexbin密度空间，各面板真实测试计数色条。",
+    "target_location": "phase2.feature_function原卡，scope使用现有筛选。",
+    "specific_acceptance": "有限点全入格；source随实际注释库动态；原effect与q不重算，失败条目保留辅助计数。",
+    "revision_action": "参考核心是source分面密度图，不是恢复Top12×14热图，也不是为每scope/source串排大量大图。",
+    "reference_sha256": "75daf10c71c120db68719454d5d5195300c5087be8fb2b2ba2a8df111fb4212a",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H15",
+    "title": "全部特征排序GSEA结果与不可得状态",
+    "scope": "56131条保存GSEA结果",
+    "n": 56131,
+    "change": "用全量NES证据云和状态矩阵代替Top通路条形图。",
+    "method": "使用保存NES和全局q，28条NES不可得的保守上界状态单独报告，不将其绘为NES0。",
+    "reading": "原有限排列分辨率和保守名义p值仍保留，不夸大精度。",
+    "sources": [
+      "Y_gsea_results"
+    ],
+    "section": "phase2：gsea",
+    "graphical_implementation": "全部NES/q空间及不可估计状态",
+    "full_data_contract": "gsea_results保存nes/q_global/status/nes_status、source/scope/run_id；按定义分面",
+    "condition_and_interaction": "无same-sign null的NES不可补0；点击真实结果带run/term打开H16",
+    "regression_assertion": "56131结果，56103可计算+28 NES unavailable；保守p定义与NES可用性分开",
+    "word_paragraphs": [
+      {
+        "index": 402,
+        "text": [
+          "H15  全部特征排序GSEA结果与不可得状态",
+          "数据范围：56131条保存GSEA结果。本图记录或检验行口径 n = 56,131。",
+          "",
+          "优化调整  用全量NES证据云和状态矩阵代替Top通路条形图。",
+          "方法与完整性  使用保存NES和全局q，28条NES不可得的保守上界状态单独报告，不将其绘为NES0。",
+          "阅读边界  原有限排列分辨率和保守名义p值仍保留，不夸大精度。",
+          "来源标记：Y_gsea_results。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 793,
+        "text": [
+          "H15 H16",
+          "interactions",
+          "phase2",
+          "H17",
+          "replication",
+          "model_evidence",
+          "H19"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H15.png",
+    "reference_svg": "reference_figures/H15.svg",
+    "word_embedded_image": "media/image43.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 88,
+      "source_line": "axs[0].set(xlabel='Saved normalized enrichment score',ylabel='−log10(global BH q)',title='All finite NES and q');legend(axs[0]);status_matrix(axs[1],GS,'status',title='All GSEA statuses');head(f,'Full feature-ranked GSEA evidence','56,131 saved terms; unavailable NES and conservative p-value states are preserved.');source_csv('H15',GS);mass('H15_all_rows',56131,len(GS));done(f,'H15','全部特征排序GSEA结果与不可得状态','56131条保存GSEA结果',len(GS),'用全量NES证据云和状态矩阵代替Top通路条形图。','使用保存NES和全局q，28条NES不可得的保守上界状态单独报告，不将其绘为NES0。','原有限排列分辨率和保守名义p值仍保留，不夸大精度。',['Y_gsea_results'])"
+    },
+    "target_design": "全部有限NES×-log10(q)证据空间，旁边NES/计算状态×context的紧凑计数矩阵。",
+    "target_location": "phase2.gsea原卡。",
+    "specific_acceptance": "NES不可得不填0；conservative p状态与NES定义分开；不能因p可用便假称NES有效。",
+    "revision_action": "将nes_availability竖柱换成真实二维状态矩阵并控制辅助比例；主图保留全部有效证据。",
+    "reference_sha256": "4dab3b843b39cfccbf90a4a5477a28f1a7b37d10775b9516c80a8ec1a1c74df6",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H16",
+    "title": "完整保存基因排序的GSEA运行曲线",
+    "scope": "明确选定的一个真实GSEA项及其全部基因排序",
+    "n": 451,
+    "change": "展示选定项的全部保存排序与命中刻线；该真实项共451个秩，未触及原页面1000位置上限。",
+    "method": "严格复用原weighted ES公式和原rank_score 注释成员，不重跑排列检验或更改NES/q。",
+    "reading": "单项详情的选择条件写清；全部GSEA项已在H15完整覆盖。",
+    "sources": [
+      "Y_ranked_genes",
+      "Y_gene_term_membership",
+      "Y_gsea_results"
+    ],
+    "section": "GSEA详情：detailCurve",
+    "graphical_implementation": "完整排序曲线+所有命中位置",
+    "full_data_contract": "ranked_genes过滤context和run_id，annotations过滤同context+term；按第4.3节重建running ES，不采1000点预览",
+    "condition_and_interaction": "必须选定真实GSEA运行/term，zero denom not_estimable；全rank可缩放/导出",
+    "regression_assertion": "演示451全rank不是强行6889；ES与保存值<=1e-8；全hits范围一致",
+    "word_paragraphs": [
+      {
+        "index": 409,
+        "text": [
+          "H16  完整保存基因排序的GSEA运行曲线",
+          "数据范围：明确选定的一个真实GSEA项及其全部基因排序。本图记录或检验行口径 n = 451。",
+          "",
+          "优化调整  展示选定项的全部保存排序与命中刻线；该真实项共451个秩，未触及原页面1000位置上限。",
+          "方法与完整性  严格复用原weighted ES公式和原rank_score 注释成员，不重跑排列检验或更改NES/q。",
+          "阅读边界  单项详情的选择条件写清；全部GSEA项已在H15完整覆盖。",
+          "来源标记：Y_ranked_genes  Y_gene_term_membership  Y_gsea_results。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H16.png",
+    "reference_svg": "reference_figures/H16.svg",
+    "word_embedded_image": "media/image44.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 92,
+      "source_line": "chosen=GS[GS.context_id.eq('global')&GS.status.eq('computed')&np.isfinite(GS.nes)].sort_values(['q_global','run_id','term_key']).iloc[0];ranked=d('Y_ranked_genes');ranked=ranked[ranked.run_id.eq(chosen.run_id)&ranked.context_id.eq('global')].sort_values('rank');ann=AN[AN.context_id.eq('global')&AN.term_key.eq(chosen.term_key)];hit=np.isin(ranked.gene_id.astype(str),ann.gene_id.astype(str));score=vals(ranked,'rank_score');w=np.abs(score)*hit;miss=(~hit).sum();curve=np.cumsum(w/w.sum()-(~hit)/miss);f,axs=fig(2,1,figsize=(8,4.9),sharex=True,gridspec_kw={'height_ratios':[3,1]});f.subplots_adjust(hspace=.15);xx=np.arange(1,len(ranked)+1);axs[0].plot(xx,curve,c=TEAL,lw=1.5);axs[0].axhline(0,c=LIGHT,lw=.8);axs[0].set(ylabel='Complete running ES');axs[1].vlines(xx[hit],0,1,color=BLUE,lw=.45);axs[1].set(xlabel=f'All {len(ranked):,} saved gene ranks',yticks=[],ylabel='Members');head(f,'A complete saved GSEA enrichment curve',str(chosen.term_key)+' · '+str(chosen.feature_key)+' · weighted saved-rank reconstruction.');out=ranked.copy();out['running_es']=curve;out['term_hit']=hit;source_csv('H16',out);mass('H16_all_rank_positions',len(ranked),len(curve));CHECKS.append({'check':'H16_saved_ES_matches','expected':float(chosen.es),'represented':float(curve[np.argmax(np.abs(curve))]),'passed':bool(np.isclose(chosen.es,curve[np.argmax(np.abs(curve))],atol=1e-8))});done(f,'H16','完整保存基因排序的GSEA运行曲线','明确选定的一个真实GSEA项及其全部基因排序',len(ranked),'展示选定项的全部保存排序与命中刻线；该真实项共451个秩，未触及原页面1000位置上限。','严格复用原weighted ES公式和原rank_score 注释成员，不重跑排列检验或更改NES/q。','单项详情的选择条件写清；全部GSEA项已在H15完整覆盖。',['Y_ranked_genes','Y_gene_term_membership','Y_gsea_results'])"
+    },
+    "target_design": "完整保存排序的running ES主曲线，下方同rank轴命中刻线，标题明确feature、term、run与背景。",
+    "target_location": "ResearchSection现有GSEA详情，不新增通路首页。",
+    "specific_acceptance": "完整rank/hits重建ES误差<=1e-8；无保存排序无法绘曲线，不能从预览插值；不重算NES/p。",
+    "revision_action": "复用真实running_es但分离主曲线与成员刻线的高度，避免命中覆盖曲线。",
+    "reference_sha256": "f74f07726aad4588d808137a30263ecfe3f26fe69038e37a5b454f532d33bce3",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H17",
+    "title": "交互关联的全假设与可估计边界",
+    "scope": "53916条原交互假设",
+    "n": 53916,
+    "change": "将可估计系数和全状态矩阵并列，展示大量无法估计的真实原因。",
+    "method": "只对保存estimated结果绘系数；52928组不足 4秩不足及2不稳定拟合保留原状态。",
+    "reading": "未估计不等于无效应，更不能作为beta0或p1的人造结果。",
+    "sources": [
+      "Y_feature_pathway_interactions"
+    ],
+    "section": "phase2：interactions",
+    "graphical_implementation": "全部交互假设状态与完整可估计效应",
+    "full_data_contract": "feature_pathway_interactions.status/beta/q_global/CI；四格组数和失败原因可查",
+    "condition_and_interaction": "仅估计成功可画beta；其他状态独立计数；不补交互统计",
+    "regression_assertion": "53916总；982estimated、52928insufficient、4rank deficient、2unstable；不改原阈值",
+    "word_paragraphs": [
+      {
+        "index": 416,
+        "text": [
+          "H17  交互关联的全假设与可估计边界",
+          "数据范围：53916条原交互假设。本图记录或检验行口径 n = 53,916。",
+          "",
+          "优化调整  将可估计系数和全状态矩阵并列，展示大量无法估计的真实原因。",
+          "方法与完整性  只对保存estimated结果绘系数；52928组不足 4秩不足及2不稳定拟合保留原状态。",
+          "阅读边界  未估计不等于无效应，更不能作为beta0或p1的人造结果。",
+          "来源标记：Y_feature_pathway_interactions。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H17.png",
+    "reference_svg": "reference_figures/H17.svg",
+    "word_embedded_image": "media/image45.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 96,
+      "source_line": "axs[0].set(xlabel='Saved interaction log odds coefficient',ylabel='−log10(global BH q)',title=f'All {len(q):,} estimated interactions');legend(axs[0]);status_matrix(axs[1],INT,'status',title='All 53,916 hypotheses');head(f,'Interactions show the estimable boundary','Sparse four-cell groups, rank deficiency and unstable fits remain visible.');source_csv('H17',INT);done(f,'H17','交互关联的全假设与可估计边界','53916条原交互假设',len(INT),'将可估计系数和全状态矩阵并列，展示大量无法估计的真实原因。','只对保存estimated结果绘系数；52928组不足 4秩不足及2不稳定拟合保留原状态。','未估计不等于无效应，更不能作为beta0或p1的人造结果。',['Y_feature_pathway_interactions'])"
+    },
+    "target_design": "全部可估计interaction beta/q证据图与所有假设状态×context计数矩阵。",
+    "target_location": "phase2.interactions原卡。",
+    "specific_acceptance": "insufficient_four_cell_groups、rank_deficient、unstable_fit不填0；estimated-only主点与全状态分母对应。",
+    "revision_action": "辅助状态用矩阵而非多个柱，保留稀疏导致的不可估计边界。",
+    "reference_sha256": "868b62d512917006963199aad029c5f1d0e5f835c955ed519d6ad79e7807d9f1",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H18",
+    "title": "功能类别内部的全部原始与调整比较",
+    "scope": "两类within-function完整结果",
+    "n": 107832,
+    "change": "用不同估计对象的并列证据图替代只选择一个显著功能的森林图。",
+    "method": "原背景 功能成员 标签和全局校正全部沿用；不把两种系数合成统一分数。",
+    "reading": "功能内部比较与普通ORA是不同问题，不能互相替代。",
+    "sources": [
+      "Y_within_pathway_tests",
+      "Y_within_pathway_adjusted"
+    ],
+    "section": "downstream：within_raw/within_adjusted",
+    "graphical_implementation": "功能内部raw与adjusted独立panel、完整q/效应",
+    "full_data_contract": "within_pathway_tests及within_pathway_adjusted各53916；效应/CI定义按schema分开；不把两种estimand混在同一轴",
+    "condition_and_interaction": "当前term/source/context明确；所有失败及非有限状态保留",
+    "regression_assertion": "两个完整结果池均计数守恒；每个原检验族不重校正",
+    "word_paragraphs": [
+      {
+        "index": 423,
+        "text": [
+          "H18  功能类别内部的全部原始与调整比较",
+          "数据范围：两类within-function完整结果。本图记录或检验行口径 n = 107,832。",
+          "",
+          "优化调整  用不同估计对象的并列证据图替代只选择一个显著功能的森林图。",
+          "方法与完整性  原背景 功能成员 标签和全局校正全部沿用；不把两种系数合成统一分数。",
+          "阅读边界  功能内部比较与普通ORA是不同问题，不能互相替代。",
+          "来源标记：Y_within_pathway_tests  Y_within_pathway_adjusted。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H18.png",
+    "reference_svg": "reference_figures/H18.svg",
+    "word_embedded_image": "media/image46.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 103,
+      "source_line": "head(f,'Within-function questions keep their original universes','All saved raw and adjusted tests; the two coefficient definitions are not pooled.');source_csv('H18',pd.concat([RAW.assign(result_family='raw'),WAD.assign(result_family='adjusted')],ignore_index=True));done(f,'H18','功能类别内部的全部原始与调整比较','两类within-function完整结果',len(RAW)+len(WAD),'用不同估计对象的并列证据图替代只选择一个显著功能的森林图。','原背景 功能成员 标签和全局校正全部沿用；不把两种系数合成统一分数。','功能内部比较与普通ORA是不同问题，不能互相替代。',['Y_within_pathway_tests','Y_within_pathway_adjusted'])"
+    },
+    "target_design": "within-function原始Cliff与调整beta的证据图并列或投影到原两卡，各自轴与q族。",
+    "target_location": "downstream.within_raw与within_adjusted；不要将同一packet重复展示两族。",
+    "specific_acceptance": "原功能成员/背景/标签不变；raw与adjusted估计对象不同。",
+    "revision_action": "保持profile分发但补结构与注释，默认不出现跟随主图的大状态柱。",
+    "reference_sha256": "6cb3ed2218f87b331f63c6ffcd49f42b3a51bb7171b6cf8f33587d06ca485771",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H19",
+    "title": "完整技术稳定性与敏感性证据",
+    "scope": "全部44重跑 特征 集合 阈值和基因频率结果",
+    "n": 43572,
+    "change": "用多层精确分布替代若干平均稳定性柱，展示零值与长尾。",
+    "method": "直接读取原Jaccard 方向一致性和技术频率，不新增bootstrap或当作独立生物学重复。",
+    "reading": "这些结果支持技术敏感性描述，不等于外部队列复现。",
+    "sources": [
+      "Y_replication_runs",
+      "Y_feature_stability",
+      "Y_set_stability",
+      "Y_threshold_sensitivity",
+      "Y_gene_hvg_stability"
+    ],
+    "section": "model_evidence 的非模型技术稳定性",
+    "graphical_implementation": "所有重跑Jaccard/方向/集合/阈值/候选频率全景",
+    "full_data_contract": "replication_runs、feature_stability、set_stability、threshold_sensitivity、gene_hvg_stability；按context/run/kind分组",
+    "condition_and_interaction": "这是重点非模型敏感性，model removed仍保留；技术重采样不当生物重复",
+    "regression_assertion": "44重跑=30cell resampling+8library+6parameter；完整稳定性行都纳入各自面板",
+    "word_paragraphs": [
+      {
+        "index": 96,
+        "text": [
+          "H19 至 H23",
+          "技术稳定性 候选 功能链接与完整基因档案",
+          "H26 至 H31",
+          "检出与脱落 缺失 区间 原生非模型比较与映射",
+          "H24 H25 H32",
+          "历史模型支线及衍生结果的轻量完整保留",
+          "保持原有工作流程  创建输入、运行控制、分析步骤、研究上下文切换、下载、基因查询和表格分页均沿用原平台。模型removed的酵母统一流程保持removed，不因存在拟南芥历史模型而开放模型分析。"
+        ]
+      },
+      {
+        "index": 430,
+        "text": [
+          "H19  完整技术稳定性与敏感性证据",
+          "数据范围：全部44重跑 特征 集合 阈值和基因频率结果。本图记录或检验行口径 n = 43,572。",
+          "",
+          "优化调整  用多层精确分布替代若干平均稳定性柱，展示零值与长尾。",
+          "方法与完整性  直接读取原Jaccard 方向一致性和技术频率，不新增bootstrap或当作独立生物学重复。",
+          "阅读边界  这些结果支持技术敏感性描述，不等于外部队列复现。",
+          "来源标记：Y_replication_runs  Y_feature_stability  Y_set_stability  Y_threshold_sensitivity  Y_gene_hvg_stability。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 814,
+        "text": [
+          "H19 H21",
+          "baseline",
+          "downstream",
+          "H12",
+          "subset",
+          "downstream",
+          "H13"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H19.png",
+    "reference_svg": "reference_figures/H19.svg",
+    "word_embedded_image": "media/image47.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 113,
+      "source_line": "axs[1,1].set(title=f'All {len(ST):,} gene-context frequencies',xlabel='Technical HVG selection frequency',ylabel='Cumulative gene-context fraction');head(f,'Complete stability evidence without biological-replication claims','Official labels, parameter variants, cell resampling and donor/library sensitivity retain their saved identities.');source_csv('H19',R);done(f,'H19','完整技术稳定性与敏感性证据','全部44重跑 特征 集合 阈值和基因频率结果',len(R)+len(FS)+len(SS)+len(TH)+len(ST),'用多层精确分布替代若干平均稳定性柱，展示零值与长尾。','直接读取原Jaccard 方向一致性和技术频率，不新增bootstrap或当作独立生物学重复。','这些结果支持技术敏感性描述，不等于外部队列复现。',['Y_replication_runs','Y_feature_stability','Y_set_stability','Y_threshold_sensitivity','Y_gene_hvg_stability'])"
+    },
+    "target_design": "全部技术rerun的Jaccard按保存次序点线、方向一致性ECDF、集合/阈值ECDF、基因频率ECDF四类证据。",
+    "target_location": "model_evidence.replication/feature_stability/set_stability/threshold_stability及candidate_frequency相关原图位。",
+    "specific_acceptance": "技术重跑不是生物重复；不同run kind分别说明；全部频率记录参与。",
+    "revision_action": "replication恢复点线序列，不能仅将Jaccard做ECDF从而丢失rerun变化；四个kind只投影各自内容。",
+    "reference_sha256": "503643f1c2124965180e47becd2a9df647222fe8ca6a2084aa652a9661300c6f",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H20",
+    "title": "功能与特征的完整重跑敏感性",
+    "scope": "全部功能重跑与10472条特征敏感性记录",
+    "n": 14168,
+    "change": "以全功能通过频率和全重跑效应ECDF补充平均稳定性之外的信息。",
+    "method": "功能频率只描述原q_within_sensitivity_run<0.05的重复比例，特征效应读取保存值。",
+    "reading": "不将重复中的显著频率解释为新的全局显著性或后验概率。",
+    "sources": [
+      "Y_baseline_enrichment_stability",
+      "Y_feature_sensitivity"
+    ],
+    "section": "model_evidence：baseline_stability等",
+    "graphical_implementation": "完整功能通过频率与特征效应敏感性",
+    "full_data_contract": "baseline_enrichment_stability、feature_sensitivity；q_within_sensitivity_run原阈值，频率分母为对应原实际run数",
+    "condition_and_interaction": "kind分开，不把参数扰动与细胞重采样混分母；不产新全局q",
+    "regression_assertion": "3696基线重跑结果+10472特征敏感性；原通过频率可独立复核",
+    "word_paragraphs": [
+      {
+        "index": 437,
+        "text": [
+          "H20  功能与特征的完整重跑敏感性",
+          "数据范围：全部功能重跑与10472条特征敏感性记录。本图记录或检验行口径 n = 14,168。",
+          "",
+          "优化调整  以全功能通过频率和全重跑效应ECDF补充平均稳定性之外的信息。",
+          "方法与完整性  功能频率只描述原q_within_sensitivity_run<0.05的重复比例，特征效应读取保存值。",
+          "阅读边界  不将重复中的显著频率解释为新的全局显著性或后验概率。",
+          "来源标记：Y_baseline_enrichment_stability  Y_feature_sensitivity。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H20.png",
+    "reference_svg": "reference_figures/H20.svg",
+    "word_embedded_image": "media/image48.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 120,
+      "source_line": "axs[1].set(title=f'All {len(SEN):,} feature-rerun effects',xlabel='Saved technical-rerun effect',ylabel='Cumulative effect fraction');head(f,'Functional and feature sensitivity retain their correction levels','Within-run q is not relabeled as a new global p value; all saved rerun rows contribute.');source_csv('H20',BS);done(f,'H20','功能与特征的完整重跑敏感性','全部功能重跑与10472条特征敏感性记录',len(BS)+len(SEN),'以全功能通过频率和全重跑效应ECDF补充平均稳定性之外的信息。','功能频率只描述原q_within_sensitivity_run<0.05的重复比例，特征效应读取保存值。','不将重复中的显著频率解释为新的全局显著性或后验概率。',['Y_baseline_enrichment_stability','Y_feature_sensitivity'])"
+    },
+    "target_design": "按原q_within_sensitivity_run的通过频率ECDF与全部feature-rerun效应ECDF，技术类型可切换。",
+    "target_location": "model_evidence.baseline_stability原卡及现有敏感性区域。",
+    "specific_acceptance": "频率分母为该term真实对应rerun数；不是新全局q或后验概率；不创建额外bootstrap。",
+    "revision_action": "保留类型和实际run数，避免只给平均稳定性柱；两种证据都有入口。",
+    "reference_sha256": "c97e036d9e16ef5d44e69652ce2280afddf3d770e92d134393b59d431d04c6fb",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H21",
+    "title": "全部候选基因的优先级 稳定性和证据层级",
+    "scope": "1904条候选上下文记录",
+    "n": 1904,
+    "change": "用全候选散点及层级构成替代只列前20基因的气泡图。",
+    "method": "保留原priority_rank tier annotated及technical frequency，不重排业务优先级。",
+    "reading": "同一基因可出现在不同上下文；候选排序不是基因级显著性。",
+    "sources": [
+      "Y_candidate_genes"
+    ],
+    "section": "downstream：candidate_priority/tiers",
+    "graphical_implementation": "全部候选排名、频率、注释与tier",
+    "full_data_contract": "candidate_genes完整1904；保留原priority_rank/priority_tier、频率与注释字段；不额外计算综合分",
+    "condition_and_interaction": "按当前context显示全部实际候选，不能把无注释candidate丢掉；点击gene原详情",
+    "regression_assertion": "397global/735untreated/772heat；原优先级逐项一致，非候选不凭图补选",
+    "word_paragraphs": [
+      {
+        "index": 444,
+        "text": [
+          "H21  全部候选基因的优先级 稳定性和证据层级",
+          "数据范围：1904条候选上下文记录。本图记录或检验行口径 n = 1,904。",
+          "",
+          "优化调整  用全候选散点及层级构成替代只列前20基因的气泡图。",
+          "方法与完整性  保留原priority_rank tier annotated及technical frequency，不重排业务优先级。",
+          "阅读边界  同一基因可出现在不同上下文；候选排序不是基因级显著性。",
+          "来源标记：Y_candidate_genes。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 655,
+        "text": [
+          "H21 H32",
+          "functionalEnrichmentDotplot",
+          "HvgCaseView.vue L271",
+          "H12 H22 H25",
+          "forestOption",
+          "HvgGroupComparisonPanel.vue L55",
+          "H06 H28 H29"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H21.png",
+    "reference_svg": "reference_figures/H21.svg",
+    "word_embedded_image": "media/image49.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 125,
+      "source_line": "axs[0].set(xlabel='Saved candidate priority rank',ylabel='Technical HVG frequency',title='All 1,904 candidate-context rows');tiers=pd.crosstab(CAND.priority_tier,CAND.context_id).reindex(columns=CTX);tiers.index=[str(x).replace(' exploratory feature-supported HVG',' exploratory\\nfeature-supported HVG').replace(' feature and adjusted technical stability',' feature and adjusted\\ntechnical stability').replace(' feature-function and technical stability',' feature-function\\nand technical stability') for x in tiers.index];tiers.plot.barh(stacked=True,ax=axs[1],color=[CC[x] for x in CTX],legend=False);axs[1].set(xlabel='Saved candidate-context records',ylabel='',title='Complete evidence tiers');head(f,'Candidate priority, stability and annotation remain distinct','Every saved candidate is retained; ranking is not turned into a gene-level p value.');source_csv('H21',CAND);mass('H21_candidates',1904,len(CAND));done(f,'H21','全部候选基因的优先级 稳定性和证据层级','1904条候选上下文记录',len(CAND),'用全候选散点及层级构成替代只列前20基因的气泡图。','保留原priority_rank tier annotated及technical frequency，不重排业务优先级。','同一基因可出现在不同上下文；候选排序不是基因级显著性。',['Y_candidate_genes'])"
+    },
+    "target_design": "全部候选priority_rank×technical frequency散点，注释标识用形状，context同色；紧凑横向tier组成。",
+    "target_location": "downstream.candidate_priority、candidate_tiers，candidate_frequency按当前职责。",
+    "specific_acceptance": "保存rank/tier不重排；注释缺失非0频率；同gene不同context可多行。",
+    "revision_action": "补annotated形状编码，候选层级保留必要组成条；不额外生成annotated两根大柱。",
+    "reference_sha256": "65117d93539bf95d11947cc8099b5c399ad8516b7bbec47c4a6708a3798ea94b",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H22",
+    "title": "候选功能富集与全部证据链接",
+    "scope": "全部候选ORA及基因功能链接",
+    "n": 2000,
+    "change": "以全ORA证据轮廓和链接构成替代Top富集气泡及虚构网络。",
+    "method": "保留候选选择和注释背景；同一基因的多功能链接分别计数，PPI缺失仍保留原原因。",
+    "reading": "链接数量不是独立基因数，缺少网络数据不等于不存在生物互作。",
+    "sources": [
+      "Y_candidate_ora",
+      "Y_gene_pathway_links",
+      "Y_network_status"
+    ],
+    "section": "downstream：candidate_ora/功能链接",
+    "graphical_implementation": "全部候选富集q与真实gene-function连接计数",
+    "full_data_contract": "candidate_ora、gene_pathway_links、network_status；仅保存证据链接，不推断互作",
+    "condition_and_interaction": "无PPI明确no PPI；可查全部功能/基因链接，不能画伪PPI网络",
+    "regression_assertion": "252候选ORA、234有限q；所有链接统计不取前N当全部",
+    "word_paragraphs": [
+      {
+        "index": 451,
+        "text": [
+          "H22  候选功能富集与全部证据链接",
+          "数据范围：全部候选ORA及基因功能链接。本图记录或检验行口径 n = 2,000。",
+          "",
+          "优化调整  以全ORA证据轮廓和链接构成替代Top富集气泡及虚构网络。",
+          "方法与完整性  保留候选选择和注释背景；同一基因的多功能链接分别计数，PPI缺失仍保留原原因。",
+          "阅读边界  链接数量不是独立基因数，缺少网络数据不等于不存在生物互作。",
+          "来源标记：Y_candidate_ora  Y_gene_pathway_links  Y_network_status。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H22.png",
+    "reference_svg": "reference_figures/H22.svg",
+    "word_embedded_image": "media/image50.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 127,
+      "source_line": "CO=d('Y_candidate_ora');LINK=d('Y_gene_pathway_links');f,axs=fig(1,2);f.subplots_adjust(wspace=.70);all_q_curves(axs[0],CO);legend(axs[0]);tab=pd.crosstab(LINK.support_type,LINK.context_id).reindex(columns=CTX,fill_value=0);tab.plot.barh(stacked=True,ax=axs[1],color=[CC[x] for x in CTX],legend=False);axs[1].set(title='All saved candidate–function links',xlabel='Saved links, not unique genes',ylabel='');head(f,'Candidate functions with the actual annotation boundary','All candidate ORA and link rows; missing network data does not create a synthetic PPI graph.');source_csv('H22',CO);done(f,'H22','候选功能富集与全部证据链接','全部候选ORA及基因功能链接',len(CO)+len(LINK),'以全ORA证据轮廓和链接构成替代Top富集气泡及虚构网络。','保留候选选择和注释背景；同一基因的多功能链接分别计数，PPI缺失仍保留原原因。','链接数量不是独立基因数，缺少网络数据不等于不存在生物互作。',['Y_candidate_ora','Y_gene_pathway_links','Y_network_status'])"
+    },
+    "target_design": "完整候选ORA证据轮廓，以及真实gene–function链接support_type×context的紧凑组成。",
+    "target_location": "downstream.candidate_ora原卡及已有候选功能链接入口。",
+    "specific_acceptance": "链接计数不是独立基因数；无PPI数据保留原因，不虚构网络。",
+    "revision_action": "ORA保留全q轮廓；support_type构成条可保留为小辅图，不回退Top富集气泡。",
+    "reference_sha256": "187fcc78a7417243ea36bd4e811ce0f65df9dd0790bc9419dfd17299d0c85c2d",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H23",
+    "title": "指定真实候选基因的全部Core档案",
+    "scope": "明确选定一个候选基因的309字段",
+    "n": 309,
+    "change": "用全Core条带保留数值 纯描述 元数据和不可得状态，取消只绘48项的详情截取。",
+    "method": "按原gene_detail定义计算同一global non-HVG参考分位，原prepared values和字段状态不变。",
+    "reading": "蓝色由浅至深为0至1参考分位，灰色为无可用数值参考。分位是参照分布位置，不是该基因的p值；灰格提供不可得原因，不填0。",
+    "sources": [
+      "Y_candidate_genes",
+      "Y_core_feature_audit",
+      "Y_feature_values",
+      "Y_hvg_labels"
+    ],
+    "section": "genes：geneProfileOption",
+    "graphical_implementation": "全Core分组档案矩阵+原值/参照/去向明细",
+    "full_data_contract": "gene_detail全部core_feature_values，需完整prepared/reference数据时适配层生成；同context nonHVG ECDF",
+    "condition_and_interaction": "任一当前universe基因，无需候选/有注释；去掉原最多48字段限制；term/q筛选不缩Core",
+    "regression_assertion": "参考YKL164C全部309字段；不适用仍有位置；无gene级p暗示",
+    "word_paragraphs": [
+      {
+        "index": 458,
+        "text": [
+          "H23  指定真实候选基因的全部Core档案",
+          "数据范围：明确选定一个候选基因的309字段。本图记录或检验行口径 n = 309。",
+          "",
+          "优化调整  用全Core条带保留数值 纯描述 元数据和不可得状态，取消只绘48项的详情截取。",
+          "方法与完整性  按原gene_detail定义计算同一global non-HVG参考分位，原prepared values和字段状态不变。",
+          "阅读边界  蓝色由浅至深为0至1参考分位，灰色为无可用数值参考。分位是参照分布位置，不是该基因的p值；灰格提供不可得原因，不填0。",
+          "字段序号用于紧凑定位。配套CSV按相同顺序保留完整字段名称、原值或统计结果，未标注的字段仍完整参与绘图。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H23.png",
+    "reference_svg": "reference_figures/H23.svg",
+    "word_embedded_image": "media/image51.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 136,
+      "source_line": "head(f,'One gene, every Core field and every unavailable reason',f'{gene} · highest-priority saved global candidate · full 309-field audit, not the previous 48-field preview.');source_csv('H23',profile);done(f,'H23','指定真实候选基因的全部Core档案','明确选定一个候选基因的309字段',len(profile),'用全Core条带保留数值 纯描述 元数据和不可得状态，取消只绘48项的详情截取。','按原gene_detail定义计算同一global non-HVG参考分位，原prepared values和字段状态不变。','分位是参照分布位置，不是该基因的p值；灰格提供不可得原因，不填0。',['Y_candidate_genes','Y_core_feature_audit','Y_feature_values','Y_hvg_labels'])"
+    },
+    "target_design": "明确选定gene的全309原始Core字段按组学条带档案，非HVG同context参考分位；灰格保留不可用原因。",
+    "target_location": "genes详情内现有geneProfile位置，ResearchSection的H23入口。",
+    "specific_acceptance": "当前context/gene唯一；全Core包括metadata/descriptive/alias，不只48项；分位不是基因显著性。",
+    "revision_action": "保留全字段和原prepared value，增加组学分面及原状态图例；选择其他gene时不串前一响应。",
+    "reference_sha256": "a2afde5d97f87da347f98c74f8f48be6d5053d4245bee621e1e4cc4dc6609194",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H24",
+    "title": "历史预测分支的完整信号 残差和类别",
+    "scope": "拟南芥GSE123818全部22017基因",
+    "n": 22017,
+    "change": "用全量联合密度 残差ECDF及类别计数组合替代500点预览和独立环图。",
+    "method": "直接使用原模型保存expected observed excess和stoich_class；不重新训练或修改原类别。",
+    "reading": "该图仅属于历史预测流程，不能冒称酵母统一非模型流程的分析输出。",
+    "sources": [
+      "A_hvg_stoich_scores"
+    ],
+    "section": "legacy phase2：classes/expected_observed/residual",
+    "graphical_implementation": "全基因expected-observed密度、残差ECDF、原类别计数",
+    "full_data_contract": "analysis_phase2/hvg_stoich_scores.csv全读；原observed/expected/residual/stoich_class，模型策略允许才显示",
+    "condition_and_interaction": "历史低优先级；统一removed任务不出现；expected近常数如实保留",
+    "regression_assertion": "历史A22017完整；残差与类别不重算标签；无预测不补跑",
+    "word_paragraphs": [
+      {
+        "index": 100,
+        "text": [
+          "H24 H25 H32",
+          "历史模型支线及衍生结果的轻量完整保留",
+          "保持原有工作流程  创建输入、运行控制、分析步骤、研究上下文切换、下载、基因查询和表格分页均沿用原平台。模型removed的酵母统一流程保持removed，不因存在拟南芥历史模型而开放模型分析。",
+          "图位复用  重复图位可复用同一已核对数据的图形；不同上下文、来源、单位、校正背景或交互含义的图不强行合并。",
+          "序列概览原界面图位效果",
+          "使用现有frontend/dist静态构建和保存产物的只读离线响应加载原页面；Python真实图在浏览器会话中替换图卡内容。并未改动项目源文件或部署改版。",
+          ""
+        ]
+      },
+      {
+        "index": 510,
+        "text": [
+          "H24  历史预测分支的完整信号 残差和类别",
+          "历史支线轻量整理  数据范围：拟南芥GSE123818全部22017基因。本图记录或检验行口径 n = 22,017。",
+          "",
+          "优化调整  用全量联合密度 残差ECDF及类别计数组合替代500点预览和独立环图。",
+          "方法与完整性  直接使用原模型保存expected observed excess和stoich_class；不重新训练或修改原类别。",
+          "阅读边界  该图仅属于历史预测流程，不能冒称酵母统一非模型流程的分析输出。",
+          "来源标记：A_hvg_stoich_scores。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 685,
+        "text": [
+          "H24 H25 低优先级轻量保留",
+          "detailCurve",
+          "ResearchSection.vue L58",
+          "H16",
+          "detailDistribution",
+          "ResearchSection.vue L59",
+          "H10"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H24.png",
+    "reference_svg": "reference_figures/H24.svg",
+    "word_embedded_image": "media/image58.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 139,
+      "source_line": "A=d('A_hvg_stoich_scores');f,axs=fig(1,3);f.subplots_adjust(wspace=.80);h,n,bad=hexall(axs[0],vals(A,'stoich_expected_var'),vals(A,'observed_hvg_signal'),'H24_native_signal',gridsize=32);axs[0].set(xlabel='Saved expected HVG signal',ylabel='Saved observed signal',title=f'All {n:,} finite genes');ecdf(axs[1],vals(A,'stoich_excess_var'),'All original residuals',TEAL);axs[1].axvline(0,c=GREY,ls='--',lw=.8);axs[1].set(xlabel='Saved excess signal',ylabel='Cumulative gene fraction',title='Complete residual distribution');cl=A.stoich_class.fillna('unavailable').value_counts();axs[2].barh(range(len(cl)),cl.values,color=[GREY,BLUE,GOLD,TEAL][:len(cl)]);axs[2].set(yticks=range(len(cl)),yticklabels=[str(x).replace('_','\\n') for x in cl.index],xlabel='Saved gene count',title='Original class definitions');axs[2].tick_params(axis='y',labelsize=7);head(f,'Historical prediction branch keeps its own model and scope','Arabidopsis GSE123818 · all 22,017 genes · this model is not added to the model-removed yeast workflow.');source_csv('H24',A[['gene_id','observed_hvg_signal','stoich_expected_var','stoich_excess_var','stoich_class']]);mass('H24_native_classes',22017,int(cl.sum()));done(f,'H24','历史预测分支的完整信号 残差和类别','拟南芥GSE123818全部22017基因',len(A),'用全量联合密度 残差ECDF及类别计数组合替代500点预览和独立环图。','直接使用原模型保存expected observed excess和stoich_class；不重新训练或修改原类别。','该图仅属于历史预测流程，不能冒称酵母统一非模型流程的分析输出。',['A_hvg_stoich_scores'])"
+    },
+    "target_design": "历史已保存expected×observed全点密度，excess residual ECDF与紧凑原类别组成三证据。",
+    "target_location": "仅legacy有模型的phase2，分别投影expected_observed/residuals/classes三个原图位。",
+    "specific_acceptance": "不在model_policy=removed任务造预测；训练拟合不叫验证；类别原定义。",
+    "revision_action": "类别计数用紧凑横向条；三个kind分别返回各自证据，不重复整个H24。",
+    "reference_sha256": "0cdc2e49d5796698cbfbf8ea3d7bd967bf2f1504f8d4b8b73342470e277ed6e0",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H25",
+    "title": "历史分支完整模型证据与富集",
+    "scope": "全部8关联 8bootstrap 4模型 306ORA和360GSEA",
+    "n": 686,
+    "change": "将完整模型证据与富集结果汇总，保留与统一研究分支的边界。",
+    "method": "原效应 FDR bootstrap频率及模型R²各自使用原保存结果；ORA306及GSEA360均在完整数据中核验。",
+    "reading": "本图不把预测分支的候选score与统一流程priority_tier合并成新排名。",
+    "sources": [
+      "A_feature_associations_table",
+      "A_bootstrap",
+      "A_model_comparison_table",
+      "A_enrichment_ora",
+      "A_gsea"
+    ],
+    "section": "legacy model_evidence/downstream",
+    "graphical_implementation": "保存模型/关联/bootstrap/ORA/GSEA轻量组合",
+    "full_data_contract": "历史实际feature_associations、bootstrap、model_comparison、functional_enrichment_ora/gsea完整CSV，记录文件版本和方法",
+    "condition_and_interaction": "不追加训练/外部验证；无可选模型时整项不适用；保留指标单位和评估范围",
+    "regression_assertion": "8关联/8bootstrap/4models/306ORA/360GSEA原池；原R²等值不改",
+    "word_paragraphs": [
+      {
+        "index": 517,
+        "text": [
+          "H25  历史分支完整模型证据与富集",
+          "历史支线轻量整理  数据范围：全部8关联 8bootstrap 4模型 306ORA和360GSEA。本图记录或检验行口径 n = 686。",
+          "",
+          "优化调整  将完整模型证据与富集结果汇总，保留与统一研究分支的边界。",
+          "方法与完整性  原效应 FDR bootstrap频率及模型R²各自使用原保存结果；ORA306及GSEA360均在完整数据中核验。",
+          "阅读边界  本图不把预测分支的候选score与统一流程priority_tier合并成新排名。",
+          "来源标记：A_feature_associations_table  A_bootstrap  A_model_comparison_table  A_enrichment_ora  A_gsea。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H25.png",
+    "reference_svg": "reference_figures/H25.svg",
+    "word_embedded_image": "media/image59.png",
+    "reference_code": {
+      "file": "plot_hvg.py",
+      "line": 147,
+      "source_line": "axs[1,1].set(xlabel='Saved within-family BH q',ylabel='Cumulative tested-term fraction',title=f'Complete {len(ORA)} ORA / {len(AG)} GSEA rows');head(f,'Historical model evidence and enrichment retain all saved results','Independent Arabidopsis branch · no coefficient, bootstrap frequency, R² or enrichment q is refitted.');source_csv('H25',pd.concat([ORA.assign(result_kind='ORA'),AG.assign(result_kind='GSEA')],ignore_index=True));done(f,'H25','历史分支完整模型证据与富集','全部8关联 8bootstrap 4模型 306ORA和360GSEA',len(F)+len(BOOT)+len(MC)+len(ORA)+len(AG),'将完整模型证据与富集结果汇总，保留与统一研究分支的边界。','原效应 FDR bootstrap频率及模型R²各自使用原保存结果；ORA306及GSEA360均在完整数据中核验。','本图不把预测分支的候选score与统一流程priority_tier合并成新排名。',['A_feature_associations_table','A_bootstrap','A_model_comparison_table','A_enrichment_ora','A_gsea'])"
+    },
+    "target_design": "历史模型所有特征关联点线、selection_frequency×importance散点、全部模型R²点线、ORA/GSEA分族证据。",
+    "target_location": "legacy model_evidence及downstream的original_*图位分别投影。",
+    "specific_acceptance": "8特征/4模型仅参考快照；历史族不与Research混q；没有原GSEA不填造。",
+    "revision_action": "bootstrap必须二维散点，不只selection_frequency rank；model R²横轴为model_id，不按值重新排名。",
+    "reference_sha256": "623fa0e3d4583337214aa84b91c9d8a0c274700de1eaaeee84d15a807e93a399",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H26",
+    "title": "完整检出率 脱落率及HVG评分分布",
+    "scope": "全部20442条上下文基因",
+    "n": 20442,
+    "change": "以精确阶梯分布呈现边界点质量和整体差异，补齐原dropout与评分直方图。",
+    "method": "读取原保存dropout_rate pct_cells_detected和hvg_score，不从变换后mean逆推。",
+    "reading": "检出率和脱落率的保存尺度在原表中保留；各上下文可重叠。",
+    "sources": [
+      "Y_hvg_labels"
+    ],
+    "section": "phase1：original_dropout/hvg_histogram",
+    "graphical_implementation": "检出率、dropout、原score完整ECDF",
+    "full_data_contract": "labels.dropout_rate/pct_cells_detected/hvg_score原保存尺度，H/nonH按需分面；不从mean逆推",
+    "condition_and_interaction": "没有某字段则该panel有原因；不将百分比和fraction混名",
+    "regression_assertion": "3context20442行总体；每字段实际有限n，保留0和1边界点质量",
+    "word_paragraphs": [
+      {
+        "index": 98,
+        "text": [
+          "H26 至 H31",
+          "检出与脱落 缺失 区间 原生非模型比较与映射",
+          "H24 H25 H32",
+          "历史模型支线及衍生结果的轻量完整保留",
+          "保持原有工作流程  创建输入、运行控制、分析步骤、研究上下文切换、下载、基因查询和表格分页均沿用原平台。模型removed的酵母统一流程保持removed，不因存在拟南芥历史模型而开放模型分析。",
+          "图位复用  重复图位可复用同一已核对数据的图形；不同上下文、来源、单位、校正背景或交互含义的图不强行合并。",
+          "序列概览原界面图位效果"
+        ]
+      },
+      {
+        "index": 466,
+        "text": [
+          "H26  完整检出率 脱落率及HVG评分分布",
+          "数据范围：全部20442条上下文基因。本图记录或检验行口径 n = 20,442。",
+          "",
+          "优化调整  以精确阶梯分布呈现边界点质量和整体差异，补齐原dropout与评分直方图。",
+          "方法与完整性  读取原保存dropout_rate pct_cells_detected和hvg_score，不从变换后mean逆推。",
+          "阅读边界  检出率和脱落率的保存尺度在原表中保留；各上下文可重叠。",
+          "来源标记：Y_hvg_labels。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 631,
+        "text": [
+          "H26 H30",
+          "patternCountsOption",
+          "HvgCaseView.vue L191",
+          "H05",
+          "classBar",
+          "HvgCaseView.vue L215",
+          "H24"
+        ]
+      },
+      {
+        "index": 739,
+        "text": [
+          "H26 H30",
+          "原行为保留  表格分页、控制、下载及无数据状态继续沿用。模型支线按用户要求轻量保留；不可用分支显示原原因，不生成替代性的假结果。",
+          "动态HVG研究图位覆盖 2",
+          "所有原图位均有去向；重复图位可以复用相同完整结果，详情图按声明的选择条件呈现完整详情。",
+          "原图标识",
+          "所属内容",
+          "对应新图"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H26.png",
+    "reference_svg": "reference_figures/H26.svg",
+    "word_embedded_image": "media/image52.png",
+    "reference_code": {
+      "file": "plot_supplement.py",
+      "line": 19,
+      "source_line": "head(f,'Dropout, detection and variability retain all observations','All 20,442 saved context–gene rows · no histogram-bin or preview cutoff.');source_csv('H26',L);save(f,'H26','完整检出率 脱落率及HVG评分分布','全部20442条上下文基因',len(L),'以精确阶梯分布呈现边界点质量和整体差异，补齐原dropout与评分直方图。','读取原保存dropout_rate pct_cells_detected和hvg_score，不从变换后mean逆推。','检出率和脱落率的保存尺度在原表中保留；各上下文可重叠。',['Y_hvg_labels'])"
+    },
+    "target_design": "dropout、detected fraction、HVG score的三个独立原尺度ECDF，按context颜色。",
+    "target_location": "phase1.original_dropout与hvg_histogram分别投影到原卡。",
+    "specific_acceptance": "比例与百分比按源schema，不默认乘100；零边界和1边界完整；重叠context不合为独立基因。",
+    "revision_action": "显示当前kind需看的一个或两项，不把同样三幅分布塞入每一个原图卡。",
+    "reference_sha256": "fca4133e2aebe24aeafafdd0ad23d18649128305d4f0f0263d7f9a5f2f3ac0a7",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H27",
+    "title": "完整Core缺失与基因准入原因",
+    "scope": "927字段上下文审计和21381条准入记录",
+    "n": 22308,
+    "change": "将缺失分布和全部准入原因并列，替代全绿覆盖率。",
+    "method": "严格使用保存missing和n字段；NaN不填0，非适用不冒充测量缺失。",
+    "reading": "该图展示审计字段的保存定义，不能称所有字段都适合统计检验。",
+    "sources": [
+      "Y_core_feature_audit",
+      "Y_gene_eligibility"
+    ],
+    "section": "input_qc：eligibility/core_missingness",
+    "graphical_implementation": "缺失比例ECDF+全准入原因矩阵",
+    "full_data_contract": "audit.missing_hvg/n_hvg、missing_nonhvg/n_nonhvg按原字段定义相除，零den不可估计；eligibility原reason全计数",
+    "condition_and_interaction": "注意missing字段在该快照是计数，不直接当fraction；不同schema须明确定义",
+    "regression_assertion": "927审计+21381准入行；QCfailed global238/untreated407/heat294，与完整gene universe对得上",
+    "word_paragraphs": [
+      {
+        "index": 473,
+        "text": [
+          "H27  完整Core缺失与基因准入原因",
+          "数据范围：927字段上下文审计和21381条准入记录。本图记录或检验行口径 n = 22,308。",
+          "",
+          "优化调整  将缺失分布和全部准入原因并列，替代全绿覆盖率。",
+          "方法与完整性  严格使用保存missing和n字段；NaN不填0，非适用不冒充测量缺失。",
+          "阅读边界  该图展示审计字段的保存定义，不能称所有字段都适合统计检验。",
+          "来源标记：Y_core_feature_audit  Y_gene_eligibility。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      },
+      {
+        "index": 616,
+        "text": [
+          "H27 H31",
+          "phase1Scatter",
+          "HvgCaseView.vue L167",
+          "H03 H30",
+          "原行为保留  表格分页、控制、下载及无数据状态继续沿用。模型支线按用户要求轻量保留；不可用分支显示原原因，不生成替代性的假结果。",
+          "静态结果图位覆盖 3",
+          "所有原图位均有去向；重复图位可以复用相同完整结果，详情图按声明的选择条件呈现完整详情。"
+        ]
+      },
+      {
+        "index": 718,
+        "text": [
+          "H27 H31",
+          "core_omics",
+          "input_qc",
+          "H02",
+          "core_missingness",
+          "input_qc",
+          "H27"
+        ]
+      },
+      {
+        "index": 727,
+        "text": [
+          "H27 H31",
+          "hvg_scatter",
+          "phase1",
+          "H03",
+          "original_mean_score",
+          "phase1",
+          "H03 H30"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H27.png",
+    "reference_svg": "reference_figures/H27.svg",
+    "word_embedded_image": "media/image53.png",
+    "reference_code": {
+      "file": "plot_supplement.py",
+      "line": 24,
+      "source_line": "axs[0].set(xlabel='Saved missing count / saved group size',ylabel='Cumulative audited-field fraction',title='All 927 audit rows');legend(axs[0],loc='best');status_matrix(axs[1],EL,'reason',title='All 21,381 eligibility records');head(f,'Core missingness and gene eligibility show real boundaries','Metadata and non-numeric fields retain their original audit counts; excluded genes remain explicit.');source_csv('H27',AUD);save(f,'H27','完整Core缺失与基因准入原因','927字段上下文审计和21381条准入记录',len(AUD)+len(EL),'将缺失分布和全部准入原因并列，替代全绿覆盖率。','严格使用保存missing和n字段；NaN不填0，非适用不冒充测量缺失。','该图展示审计字段的保存定义，不能称所有字段都适合统计检验。',['Y_core_feature_audit','Y_gene_eligibility'])"
+    },
+    "target_design": "全Core的组内missing/n缺失比例ECDF，以及全部gene eligibility reason×context计数矩阵。",
+    "target_location": "input_qc的eligibility/core_missingness；mapping_coverage按原映射职责。",
+    "specific_acceptance": "n=0不除0；不适用非测量缺失；所有准入原因可见，来源分母不同。",
+    "revision_action": "eligibility_reasons从竖柱改矩阵；audit条带与H02去重，缺失主图保持可读。",
+    "reference_sha256": "cba37258fc985d93aac18663ab70f5f63a80b1db85872f10b8f402923984525b",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H28",
+    "title": "全部非模型关联效应的原始置信区间",
+    "scope": "714原始及1422调整结果",
+    "n": 2136,
+    "change": "补足完整效应矩阵之外的区间信息，保留每项估计的不确定性。",
+    "method": "原始效应直接绘区间；调整结果ci_low/high保存为OR区间，按平台原绘图规则取ln后与beta对齐。排序仅为阅读，原置信方法不变。",
+    "reading": "每条竖线对应一项保存区间，重叠密度不是额外统计检验。",
+    "sources": [
+      "Y_feature_tests",
+      "Y_adjusted_feature_tests"
+    ],
+    "section": "group_comparison：完整区间补充",
+    "graphical_implementation": "完整raw Cliff CI与两adjusted ln(OR) CI独立排序图",
+    "full_data_contract": "原始feature_tests已测试714；adjusted1422；显示有限区间完整n，缺区间在状态计数",
+    "condition_and_interaction": "原始/两模型各自坐标单位；大量CI线透明叠加但每条保留，不取前30",
+    "regression_assertion": "原raw CI不取log；AD OR CI取ln；714+1422范围，1420有效AD拟合与缺CI需分别数",
+    "word_paragraphs": [
+      {
+        "index": 480,
+        "text": [
+          "H28  全部非模型关联效应的原始置信区间",
+          "数据范围：714原始及1422调整结果。本图记录或检验行口径 n = 2,136。",
+          "",
+          "优化调整  补足完整效应矩阵之外的区间信息，保留每项估计的不确定性。",
+          "方法与完整性  原始效应直接绘区间；调整结果ci_low/high保存为OR区间，按平台原绘图规则取ln后与beta对齐。排序仅为阅读，原置信方法不变。",
+          "阅读边界  每条竖线对应一项保存区间，重叠密度不是额外统计检验。",
+          "与平台research_visuals.py一致：调整表ci_low/high为OR尺度；先取ln再与beta比较。所有有限区间均通过包围对应beta的核对。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H28.png",
+    "reference_svg": "reference_figures/H28.svg",
+    "word_embedded_image": "media/image54.png",
+    "reference_code": {
+      "file": "plot_supplement.py",
+      "line": 32,
+      "source_line": "head(f,'Every saved effect interval remains available','Raw effect intervals and log(OR) adjusted intervals use separate axes; saved fit states remain explicit.');source_csv('H28',pd.concat(records,ignore_index=True));save(f,'H28','全部非模型关联效应的原始置信区间','714原始及1422调整结果',sum(len(q) for _,q,_ in families),'补足完整效应矩阵之外的区间信息，保留每项估计的不确定性。','原始效应直接绘区间；调整结果ci_low/high保存为OR区间，按平台原绘图规则取ln后与beta对齐。排序仅为阅读，原置信方法不变。','每条竖线对应一项保存区间，重叠密度不是额外统计检验。',['Y_feature_tests','Y_adjusted_feature_tests'])"
+    },
+    "target_design": "原始Cliff CI、每个调整model beta与ln(OR) CI分别在独立面板按效应排序绘制全量区间密度。",
+    "target_location": "group_comparison.feature_forest主图及adjusted_forest卡的CI子视图。",
+    "specific_acceptance": "取ln只针对声明为OR的正区间；原Cliff CI不变；估计与上下界对齐，失败仍可审计。",
+    "revision_action": "保留真实区间构建，但按model投影、明确排序和scale；不能让此图替代H08全部beta/q证据。",
+    "reference_sha256": "cf562a53944fd7cb4e4a3da74258fdbebfd3d55b04a974c68574b2a362accae0",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H29",
+    "title": "原生HVG非模型组间比较的完整结果",
+    "scope": "248原始 248调整 30家族 496分布记录",
+    "n": 1022,
+    "change": "完整保留原生组间比较组件的效应 全局校正 家族与分布证据。",
+    "method": "沿用原生v2保存结果，绝不与酵母统一流程q_global或调整模型合并。",
+    "reading": "该页是非模型组间比较。248项调整均为failed，按原failure_reason计数，不绘造缺失系数。",
+    "sources": [
+      "A_hvg_nonhvg_feature_comparison",
+      "A_hvg_nonhvg_adjusted_comparison",
+      "A_hvg_nonhvg_family_summary",
+      "A_hvg_nonhvg_distribution_quantiles"
+    ],
+    "section": "HvgGroupComparisonPanel 全部五图位",
+    "graphical_implementation": "原生比较全结果多面板：rawq、失败、family、分位",
+    "full_data_contract": "legacy hvg_nonhvg_feature_comparison、adjusted_comparison、family_summary、distribution_quantiles；原生字段effect_value/global_fdr/adjusted_status等按schema映射；统一任务original-comparison仍走其自己的原结果",
+    "condition_and_interaction": "这是非模型原比较，必须完成；与Research feature_tests不同版本/族，不混q；详情/原表保留",
+    "regression_assertion": "历史A248raw/248adjusted全failed/30family/496quantile；逐条failure_reason完整计数",
+    "word_paragraphs": [
+      {
+        "index": 488,
+        "text": [
+          "H29  原生HVG非模型组间比较的完整结果",
+          "数据范围：248原始 248调整 30家族 496分布记录。本图记录或检验行口径 n = 1,022。",
+          "",
+          "优化调整  完整保留原生组间比较组件的效应 全局校正 家族与分布证据。",
+          "方法与完整性  沿用原生v2保存结果，绝不与酵母统一流程q_global或调整模型合并。",
+          "阅读边界  该页是非模型组间比较。248项调整均为failed，按原failure_reason计数，不绘造缺失系数。",
+          "248项原生协变量调整全部为failed。图中按convergence_failed与non_finite_odds_ratio展示保存失败原因，未将缺失估计解释为零效应。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H29.png",
+    "reference_svg": "reference_figures/H29.svg",
+    "word_embedded_image": "media/image55.png",
+    "reference_code": {
+      "file": "plot_supplement.py",
+      "line": 42,
+      "source_line": "axs[1,1].set(xlabel='(q95−q05) / (max−min), within same field',ylabel='Cumulative finite field fraction',title='All 496 saved group quantile rows');legend(axs[1,1]);head(f,'Original non-model group comparisons are fully retained','Arabidopsis GSE123818 · 248 raw, 248 adjusted, 30 family and 496 distribution records.');source_csv('H29',pd.concat([RAW.assign(result_family='raw'),ADJ.assign(result_family='adjusted'),FS.assign(result_family='family'),Q.assign(result_family='quantiles')],ignore_index=True));save(f,'H29','原生HVG非模型组间比较的完整结果','248原始 248调整 30家族 496分布记录',len(RAW)+len(ADJ)+len(FS)+len(Q),'完整保留原生组间比较组件的效应 全局校正 家族与分布证据。','沿用原生v2保存结果，绝不与酵母统一流程q_global或调整模型合并。','该页是非模型组间比较。248项调整均为failed，按原failure_reason计数，不绘造缺失系数。',['A_hvg_nonhvg_feature_comparison','A_hvg_nonhvg_adjusted_comparison','A_hvg_nonhvg_family_summary','A_hvg_nonhvg_distribution_quantiles'])"
+    },
+    "target_design": "完整原生非模型比较：raw效应/q、调整失败原因或有效调整证据、family tested×significant、全部组分位范围ECDF。",
+    "target_location": "HvgGroupComparisonPanel五个原图位，见正文五图位表；Research历史original_*按profile同构投影。",
+    "specific_acceptance": "raw/adjusted/family/quantile各自独立分母；248全failed快照只显示失败证据，不造系数。",
+    "revision_action": "恢复family散点和分位范围ECDF；单特征详情用原保存分位区间；状态不再占一整卡。",
+    "reference_sha256": "f3b3a05b7250db999fd7d7a7097b0dc398438c3fd77f70abee2952e90d49d2f5",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H30",
+    "title": "原生HVG基线的全部基因分布",
+    "scope": "拟南芥GSE123818全部22017基因",
+    "n": 22017,
+    "change": "统一处理原生均值评分 TopHVG和脱落问题，保留全基因背景。",
+    "method": "保存标签与评分不变；脱落率仅按原始检出比例的补数显示。",
+    "reading": "这是拟南芥原生Phase1，独立于酵母三个研究上下文。",
+    "sources": [
+      "A_hvg_baseline"
+    ],
+    "section": "native phase1：phase1Scatter/topHvg/dropout",
+    "graphical_implementation": "全原生基线mean-score图+score/dropout ECDF",
+    "full_data_contract": "analysis_phase1/hvg_baseline.csv完整读取，沿用真实score、HVG标签与方法，不依赖plots500点预览",
+    "condition_and_interaction": "仅legacy/native路径；Research可复用H03/H04/H26但来源标识不假同",
+    "regression_assertion": "历史A22017行，3000HVG；不与新增Research case的2000HVG混接",
+    "word_paragraphs": [
+      {
+        "index": 496,
+        "text": [
+          "H30  原生HVG基线的全部基因分布",
+          "数据范围：拟南芥GSE123818全部22017基因。本图记录或检验行口径 n = 22,017。",
+          "",
+          "优化调整  统一处理原生均值评分 TopHVG和脱落问题，保留全基因背景。",
+          "方法与完整性  保存标签与评分不变；脱落率仅按原始检出比例的补数显示。",
+          "阅读边界  这是拟南芥原生Phase1，独立于酵母三个研究上下文。",
+          "来源标记：A_hvg_baseline。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H30.png",
+    "reference_svg": "reference_figures/H30.svg",
+    "word_embedded_image": "media/image56.png",
+    "reference_code": {
+      "file": "plot_native.py",
+      "line": 5,
+      "source_line": "axs[0].set(xlabel='log10(1 + saved mean)',ylabel='Saved HVG score');axs[1].set(xlabel='Saved HVG score',ylabel='Cumulative gene fraction');axs[2].set(xlabel='1 − saved detected-cell fraction',ylabel='Cumulative gene fraction');legend(axs[0]);head(f,'Native Phase 1 retains the complete real expression baseline','Arabidopsis GSE123818 · 22,017 saved genes · 3,000 fixed HVGs · no gene subsampling.');source_csv('H30',A);mass('H30_all_genes',22017,len(A));save(f,'H30','原生HVG基线的全部基因分布','拟南芥GSE123818全部22017基因',len(A),'统一处理原生均值评分 TopHVG和脱落问题，保留全基因背景。','保存标签与评分不变；脱落率仅按原始检出比例的补数显示。','这是拟南芥原生Phase1，独立于酵母三个研究上下文。',['A_hvg_baseline'])"
+    },
+    "target_design": "原生全部gene mean-score图、完整score或rank背景、dropout ECDF，按原三个phase1图位分别投影。",
+    "target_location": "HvgCaseView native phase1Scatter、topHvgOption、dropoutScatter。",
+    "specific_acceptance": "原22017基因/3000HVG仅固定快照；pct_cells_detected范围先核对再计算1-pct。",
+    "revision_action": "不混入Research labels源；top-HVG卡显示全排名背景，其他卡不重复。",
+    "reference_sha256": "e21638a8fb8d99d3d293443cf65ca81df1d7f34b00eb7d37f79fb4be796a35c1",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H31",
+    "title": "原生HVG映射与完整Core审计",
+    "scope": "拟南芥保存的全部309注册字段",
+    "n": 309,
+    "change": "将原生映射完整率扩充为全字段可分析状态与真实缺失分布。",
+    "method": "直接使用原生analysis_status和missing_rate；1条未匹配基因与条件不适用定义沿用保存审计。",
+    "reading": "309字段并非309项独立检验；已保存的248原始和调整结果见H29。",
+    "sources": [
+      "A_hvg_nonhvg_feature_audit"
+    ],
+    "section": "native input_qc：mapping/Core审计",
+    "graphical_implementation": "全Core审计去向+完整缺失比例",
+    "full_data_contract": "hvg_nonhvg_feature_audit.csv与原mapping_summary/validation读全；元数据/恒定/alias保留，不以映射存在当质量100%",
+    "condition_and_interaction": "实际Core注册schema；原生缺失字段定义与Research各自适配",
+    "regression_assertion": "历史A309审计行完整；所有被排除列有原原因，数值零不是未映射",
+    "word_paragraphs": [
+      {
+        "index": 503,
+        "text": [
+          "H31  原生HVG映射与完整Core审计",
+          "数据范围：拟南芥保存的全部309注册字段。本图记录或检验行口径 n = 309。",
+          "",
+          "优化调整  将原生映射完整率扩充为全字段可分析状态与真实缺失分布。",
+          "方法与完整性  直接使用原生analysis_status和missing_rate；1条未匹配基因与条件不适用定义沿用保存审计。",
+          "阅读边界  309字段并非309项独立检验；已保存的248原始和调整结果见H29。",
+          "来源标记：A_hvg_nonhvg_feature_audit。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H31.png",
+    "reference_svg": "reference_figures/H31.svg",
+    "word_embedded_image": "media/image57.png",
+    "reference_code": {
+      "file": "plot_native.py",
+      "line": 8,
+      "source_line": "axs[1].set(xlabel='Saved missing rate',ylabel='Cumulative registered-field fraction');legend(axs[1]);head(f,'Native mapping and all Core fields retain their original audit','309 registered fields · group-valid counts, conditional applicability and missing reasons remain separate.');source_csv('H31',AUD);mass('H31_core_fields',309,len(AUD));save(f,'H31','原生HVG映射与完整Core审计','拟南芥保存的全部309注册字段',len(AUD),'将原生映射完整率扩充为全字段可分析状态与真实缺失分布。','直接使用原生analysis_status和missing_rate；1条未匹配基因与条件不适用定义沿用保存审计。','309字段并非309项独立检验；已保存的248原始和调整结果见H29。',['A_hvg_nonhvg_feature_audit'])"
+    },
+    "target_design": "原生全Core audit状态×组学的紧凑横向组成/状态矩阵，旁边完整missing rate ECDF。",
+    "target_location": "native input_qc映射卡；mapping质量与Core审计分开局部视图。",
+    "specific_acceptance": "309原字段及缺失原因保留；gene映射率用实际映射表，不能用Core tested比例替代。",
+    "revision_action": "修正mapping profile不能只返回Core状态；没有真实映射统计就明确原因，保留原映射表入口。",
+    "reference_sha256": "12acad847b18c8dbe3c8da4157a637ca5ecc1e692f676f774fd9b7b99495cc2b",
+    "implementation_state": "planned_not_implemented"
+  },
+  {
+    "code": "H32",
+    "title": "原生候选结果的完整得分与背景",
+    "scope": "全部22017条已保存基因得分",
+    "n": 22017,
+    "change": "将原候选气泡预览整理为全部得分密度与完整排序轮廓。",
+    "method": "直接使用保存candidate_score和stoich_excess_var，不创建新的模型或候选评分。",
+    "reading": "按用户要求仅对该历史模型衍生结果做轻量完整展示，不扩展模型研究。",
+    "sources": [
+      "A_candidate_score_components_table",
+      "A_hvg_stoich_scores"
+    ],
+    "section": "native downstream：candidateBubble",
+    "graphical_implementation": "保存候选背景完整密度+全优先级/得分曲线",
+    "full_data_contract": "完整candidate_score_components_table对应原CSV与hvg_stoich_scores，按合法gene键关联；沿用原scores/ranks",
+    "condition_and_interaction": "历史低优先级、无模型则不补；已有候选过滤仍保留其原科学范围",
+    "regression_assertion": "历史A22017完整背景；不从重新加权的score挑新候选，不误用500点预览",
+    "word_paragraphs": [
+      {
+        "index": 524,
+        "text": [
+          "H32  原生候选结果的完整得分与背景",
+          "历史支线轻量整理  数据范围：全部22017条已保存基因得分。本图记录或检验行口径 n = 22,017。",
+          "",
+          "优化调整  将原候选气泡预览整理为全部得分密度与完整排序轮廓。",
+          "方法与完整性  直接使用保存candidate_score和stoich_excess_var，不创建新的模型或候选评分。",
+          "阅读边界  按用户要求仅对该历史模型衍生结果做轻量完整展示，不扩展模型研究。",
+          "来源标记：A_candidate_score_components_table  A_hvg_stoich_scores。完整文件与SHA256见配套source_manifest.json。"
+        ]
+      }
+    ],
+    "reference_plot": "reference_figures/H32.png",
+    "reference_svg": "reference_figures/H32.svg",
+    "word_embedded_image": "media/image60.png",
+    "reference_code": {
+      "file": "plot_native.py",
+      "line": 9,
+      "source_line": "C=d('A_candidate_score_components_table').merge(d('A_hvg_stoich_scores')[['gene_id','stoich_excess_var']],on='gene_id',validate='one_to_one');f,axs=fig(1,2);h,n,bad=hexall(axs[0],vals(C,'stoich_excess_var'),vals(C,'candidate_score'),'H32_all_candidates');axs[0].set(xlabel='Saved excess signal',ylabel='Saved candidate score',title='Every finite candidate record');rank=C.sort_values(['candidate_score','gene_id'],ascending=[False,True]);axs[1].plot(range(1,len(rank)+1),rank.candidate_score,c=TEAL);axs[1].set(xlabel='All 22,017 scored genes in saved-score order',ylabel='Saved candidate score',title='Complete priority background');head(f,'Native candidate evidence keeps every scored record','Historical source results only · no model retraining, new score formula or new candidate selection.');source_csv('H32',C);mass('H32_candidate_records',22017,len(C));save(f,'H32','原生候选结果的完整得分与背景','全部22017条已保存基因得分',len(C),'将原候选气泡预览整理为全部得分密度与完整排序轮廓。','直接使用保存candidate_score和stoich_excess_var，不创建新的模型或候选评分。','按用户要求仅对该历史模型衍生结果做轻量完整展示，不扩展模型研究。',['A_candidate_score_components_table','A_hvg_stoich_scores'])"
+    },
+    "target_design": "全部真实candidate excess×score密度空间，以及完整已评分gene的保存score背景轮廓。",
+    "target_location": "native/legacy downstream.candidateBubble或original_candidate_bubble。",
+    "specific_acceptance": "候选表与全基因scores按gene身份连接；score原定义，不新训练、不新候选选择。",
+    "revision_action": "保留全候选与22017已评分背景两种分母，不能只显示候选前N点。",
+    "reference_sha256": "6e0a0fe360be9a733ba6befa218c23e2d76cdd17328b26ead997e7aad2464869",
+    "implementation_state": "planned_not_implemented"
+  }
+]

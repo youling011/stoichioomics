@@ -1,0 +1,2168 @@
+{
+  "version": "home-atlas-original-fields-v1",
+  "fields": [
+    {
+      "omics": "genome",
+      "field_id": "G001",
+      "field": "start_1",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G002",
+      "field": "end_1",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G003",
+      "field": "transcript_count",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G004",
+      "field": "upstream_intergenic_bp",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G005",
+      "field": "downstream_intergenic_bp",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G006",
+      "field": "locus_length_bp",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G007",
+      "field": "locus_length_acgt_bp",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G008",
+      "field": "locus_n_percent",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G009",
+      "field": "locus_gc_percent",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G010",
+      "field": "exon_length_bp",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G011",
+      "field": "exon_length_acgt_bp",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G012",
+      "field": "exon_n_percent",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G013",
+      "field": "exon_gc_percent",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G014",
+      "field": "exon_shannon_entropy_acgt",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G015",
+      "field": "exon_atoms_C_per_base",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G016",
+      "field": "exon_atoms_H_per_base",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G017",
+      "field": "exon_atoms_O_per_base",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G018",
+      "field": "exon_atoms_N_per_base",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G019",
+      "field": "exon_atoms_P_per_base",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G020",
+      "field": "exon_ratio_C_N",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G021",
+      "field": "exon_ratio_C_P",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G022",
+      "field": "exon_ratio_N_P",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G023",
+      "field": "promoter_length_bp",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G024",
+      "field": "promoter_length_acgt_bp",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G025",
+      "field": "promoter_n_percent",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G026",
+      "field": "promoter_gc_percent",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G027",
+      "field": "promoter_shannon_entropy_acgt",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G028",
+      "field": "promoter_atoms_C_per_base",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G029",
+      "field": "promoter_atoms_H_per_base",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G030",
+      "field": "promoter_atoms_O_per_base",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G031",
+      "field": "promoter_atoms_N_per_base",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G032",
+      "field": "promoter_atoms_P_per_base",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G033",
+      "field": "promoter_ratio_C_N",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G034",
+      "field": "promoter_ratio_C_P",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G035",
+      "field": "promoter_ratio_N_P",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G036",
+      "field": "locus_dinuc_AA_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G037",
+      "field": "locus_dinuc_AC_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G038",
+      "field": "locus_dinuc_AG_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G039",
+      "field": "locus_dinuc_AT_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G040",
+      "field": "locus_dinuc_CA_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G041",
+      "field": "locus_dinuc_CC_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G042",
+      "field": "locus_dinuc_CG_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G043",
+      "field": "locus_dinuc_CT_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G044",
+      "field": "locus_dinuc_GA_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G045",
+      "field": "locus_dinuc_GC_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G046",
+      "field": "locus_dinuc_GG_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G047",
+      "field": "locus_dinuc_GT_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G048",
+      "field": "locus_dinuc_TA_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G049",
+      "field": "locus_dinuc_TC_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G050",
+      "field": "locus_dinuc_TG_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G051",
+      "field": "locus_dinuc_TT_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G052",
+      "field": "locus_dinuc_total_valid",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G053",
+      "field": "cds_length_bp",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G054",
+      "field": "cds_gc_percent",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G055",
+      "field": "gc1_percent",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G056",
+      "field": "gc2_percent",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G057",
+      "field": "gc3_percent",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G058",
+      "field": "codon_total_valid",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G059",
+      "field": "codon_entropy_bits",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G060",
+      "field": "aa_total_20",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G061",
+      "field": "aa_entropy_bits",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G062",
+      "field": "aa_stop_count",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G063",
+      "field": "codon_AAA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G064",
+      "field": "codon_AAC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G065",
+      "field": "codon_AAG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G066",
+      "field": "codon_AAT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G067",
+      "field": "codon_ACA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G068",
+      "field": "codon_ACC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G069",
+      "field": "codon_ACG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G070",
+      "field": "codon_ACT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G071",
+      "field": "codon_AGA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G072",
+      "field": "codon_AGC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G073",
+      "field": "codon_AGG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G074",
+      "field": "codon_AGT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G075",
+      "field": "codon_ATA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G076",
+      "field": "codon_ATC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G077",
+      "field": "codon_ATG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G078",
+      "field": "codon_ATT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G079",
+      "field": "codon_CAA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G080",
+      "field": "codon_CAC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G081",
+      "field": "codon_CAG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G082",
+      "field": "codon_CAT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G083",
+      "field": "codon_CCA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G084",
+      "field": "codon_CCC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G085",
+      "field": "codon_CCG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G086",
+      "field": "codon_CCT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G087",
+      "field": "codon_CGA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G088",
+      "field": "codon_CGC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G089",
+      "field": "codon_CGG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G090",
+      "field": "codon_CGT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G091",
+      "field": "codon_CTA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G092",
+      "field": "codon_CTC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G093",
+      "field": "codon_CTG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G094",
+      "field": "codon_CTT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G095",
+      "field": "codon_GAA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G096",
+      "field": "codon_GAC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G097",
+      "field": "codon_GAG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G098",
+      "field": "codon_GAT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G099",
+      "field": "codon_GCA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G100",
+      "field": "codon_GCC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G101",
+      "field": "codon_GCG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G102",
+      "field": "codon_GCT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G103",
+      "field": "codon_GGA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G104",
+      "field": "codon_GGC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G105",
+      "field": "codon_GGG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G106",
+      "field": "codon_GGT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G107",
+      "field": "codon_GTA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G108",
+      "field": "codon_GTC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G109",
+      "field": "codon_GTG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G110",
+      "field": "codon_GTT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G111",
+      "field": "codon_TAA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G112",
+      "field": "codon_TAC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G113",
+      "field": "codon_TAG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G114",
+      "field": "codon_TAT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G115",
+      "field": "codon_TCA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G116",
+      "field": "codon_TCC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G117",
+      "field": "codon_TCG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G118",
+      "field": "codon_TCT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G119",
+      "field": "codon_TGA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G120",
+      "field": "codon_TGC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G121",
+      "field": "codon_TGG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G122",
+      "field": "codon_TGT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G123",
+      "field": "codon_TTA_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G124",
+      "field": "codon_TTC_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G125",
+      "field": "codon_TTG_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G126",
+      "field": "codon_TTT_freq",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G127",
+      "field": "aa_A_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G128",
+      "field": "aa_C_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G129",
+      "field": "aa_D_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G130",
+      "field": "aa_E_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G131",
+      "field": "aa_F_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G132",
+      "field": "aa_G_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G133",
+      "field": "aa_H_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G134",
+      "field": "aa_I_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G135",
+      "field": "aa_K_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G136",
+      "field": "aa_L_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G137",
+      "field": "aa_M_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G138",
+      "field": "aa_N_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G139",
+      "field": "aa_P_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G140",
+      "field": "aa_Q_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G141",
+      "field": "aa_R_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G142",
+      "field": "aa_S_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G143",
+      "field": "aa_T_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G144",
+      "field": "aa_V_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G145",
+      "field": "aa_W_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "G146",
+      "field": "aa_Y_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T001",
+      "field": "start",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T002",
+      "field": "end",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T003",
+      "field": "length_nt_total",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T004",
+      "field": "length_nt_acgu",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T005",
+      "field": "n_N",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T006",
+      "field": "frac_A",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T007",
+      "field": "frac_C",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T008",
+      "field": "frac_G",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T009",
+      "field": "frac_U",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T010",
+      "field": "gc_content",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T011",
+      "field": "at_skew",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T012",
+      "field": "gc_skew",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T013",
+      "field": "purine_frac",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T014",
+      "field": "nt_entropy",
+      "display_family": "Base / sequence composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T015",
+      "field": "C_atoms",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T016",
+      "field": "N_atoms",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T017",
+      "field": "P_atoms",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T018",
+      "field": "C_N_ratio",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T019",
+      "field": "C_P_ratio",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T020",
+      "field": "N_P_ratio",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T021",
+      "field": "atoms_per_nt_C",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T022",
+      "field": "atoms_per_nt_N",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T023",
+      "field": "atoms_per_nt_P",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T024",
+      "field": "mw_rna_nmp_per_nt_Da",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T025",
+      "field": "dinuc_AA_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T026",
+      "field": "dinuc_AC_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T027",
+      "field": "dinuc_AG_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T028",
+      "field": "dinuc_AU_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T029",
+      "field": "dinuc_CA_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T030",
+      "field": "dinuc_CC_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T031",
+      "field": "dinuc_CG_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T032",
+      "field": "dinuc_CU_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T033",
+      "field": "dinuc_GA_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T034",
+      "field": "dinuc_GC_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T035",
+      "field": "dinuc_GG_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T036",
+      "field": "dinuc_GU_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T037",
+      "field": "dinuc_UA_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T038",
+      "field": "dinuc_UC_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T039",
+      "field": "dinuc_UG_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T040",
+      "field": "dinuc_UU_freq",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T041",
+      "field": "dinuc_valid_pairs",
+      "display_family": "Dinucleotide patterns",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T042",
+      "field": "clean_rna_len",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T043",
+      "field": "avg_spacing_A",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T044",
+      "field": "avg_spacing_U",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T045",
+      "field": "max_run_A",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T046",
+      "field": "max_run_any",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T047",
+      "field": "orf_len_nt",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T048",
+      "field": "orf_len_aa",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T049",
+      "field": "protein_mw_Da",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T050",
+      "field": "protein_isoelectric_point",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T051",
+      "field": "protein_gravy",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T052",
+      "field": "protein_instability_index",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T053",
+      "field": "aa_len",
+      "display_family": "Sequence / annotation",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T054",
+      "field": "aa_A_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T055",
+      "field": "aa_C_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T056",
+      "field": "aa_D_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T057",
+      "field": "aa_E_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T058",
+      "field": "aa_F_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T059",
+      "field": "aa_G_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T060",
+      "field": "aa_H_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T061",
+      "field": "aa_I_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T062",
+      "field": "aa_K_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T063",
+      "field": "aa_L_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T064",
+      "field": "aa_M_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T065",
+      "field": "aa_N_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T066",
+      "field": "aa_P_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T067",
+      "field": "aa_Q_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T068",
+      "field": "aa_R_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T069",
+      "field": "aa_S_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T070",
+      "field": "aa_T_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T071",
+      "field": "aa_V_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T072",
+      "field": "aa_W_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T073",
+      "field": "aa_Y_freq",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "T074",
+      "field": "codon_valid_codons",
+      "display_family": "Codon usage",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P001",
+      "field": "length_aa",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P002",
+      "field": "mw_da",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P003",
+      "field": "pI",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P004",
+      "field": "net_charge_pH7",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P005",
+      "field": "gravy",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P006",
+      "field": "aromaticity",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P007",
+      "field": "instability_index",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P008",
+      "field": "aliphatic_index",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P009",
+      "field": "aa_entropy_bits",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P010",
+      "field": "aa_hydrophobic_frac",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P011",
+      "field": "aa_polar_frac",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P012",
+      "field": "aa_pos_frac",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P013",
+      "field": "aa_neg_frac",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P014",
+      "field": "aa_aromatic_frac",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P015",
+      "field": "cys_count",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P016",
+      "field": "met_count",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P017",
+      "field": "sulfur_aa_frac",
+      "display_family": "Protein descriptors",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P018",
+      "field": "C_atoms",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P019",
+      "field": "H_atoms",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P020",
+      "field": "N_atoms",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P021",
+      "field": "O_atoms",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P022",
+      "field": "S_atoms",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P023",
+      "field": "Se_atoms",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P024",
+      "field": "C_atoms_per_aa",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P025",
+      "field": "N_atoms_per_aa",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P026",
+      "field": "S_atoms_per_aa",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P027",
+      "field": "avg_oxidation_state_C",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P028",
+      "field": "C_N_ratio",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P029",
+      "field": "N_S_ratio",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P030",
+      "field": "O_C_ratio",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P031",
+      "field": "H_C_ratio",
+      "display_family": "Elemental / stoichiometric",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P032",
+      "field": "AA_A_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P033",
+      "field": "AA_C_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P034",
+      "field": "AA_D_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P035",
+      "field": "AA_E_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P036",
+      "field": "AA_F_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P037",
+      "field": "AA_G_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P038",
+      "field": "AA_H_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P039",
+      "field": "AA_I_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P040",
+      "field": "AA_K_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P041",
+      "field": "AA_L_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P042",
+      "field": "AA_M_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P043",
+      "field": "AA_N_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P044",
+      "field": "AA_P_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P045",
+      "field": "AA_Q_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P046",
+      "field": "AA_R_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P047",
+      "field": "AA_S_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P048",
+      "field": "AA_T_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P049",
+      "field": "AA_V_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P050",
+      "field": "AA_W_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P051",
+      "field": "AA_Y_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "P052",
+      "field": "AA_other_pct",
+      "display_family": "Amino-acid composition",
+      "role": "numeric"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM01",
+      "field": "species_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM02",
+      "field": "gene_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM03",
+      "field": "source_gene_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM04",
+      "field": "gene_name",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM05",
+      "field": "locus_tag",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM06",
+      "field": "biotype",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM07",
+      "field": "seqid",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM08",
+      "field": "strand",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM09",
+      "field": "is_coding",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM10",
+      "field": "chosen_transcript_source_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM11",
+      "field": "chosen_transcript_reason",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM12",
+      "field": "exon_seq_strategy",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM13",
+      "field": "transl_table_used",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "genome",
+      "field_id": "GM14",
+      "field": "coding_valid",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM01",
+      "field": "species_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM02",
+      "field": "omics",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM03",
+      "field": "element_rule",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM04",
+      "field": "transcript_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM05",
+      "field": "gene_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM06",
+      "field": "gene_symbol",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM07",
+      "field": "gene_biotype",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM08",
+      "field": "transcript_biotype",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM09",
+      "field": "assembly",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM10",
+      "field": "seq_region",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM11",
+      "field": "strand",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "transcriptome",
+      "field_id": "TM12",
+      "field": "orf_has_stop",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "PM01",
+      "field": "species_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "PM02",
+      "field": "protein_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "PM03",
+      "field": "gene_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "PM04",
+      "field": "gene_symbol",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "PM05",
+      "field": "transcript_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "PM06",
+      "field": "source_db",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "PM07",
+      "field": "source_protein_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "PM08",
+      "field": "ensembl_gene_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "PM09",
+      "field": "ensembl_transcript_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "PM10",
+      "field": "ensembl_protein_id",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    },
+    {
+      "omics": "proteome",
+      "field_id": "PM11",
+      "field": "description",
+      "display_family": "Identifiers / metadata",
+      "role": "metadata"
+    }
+  ]
+}

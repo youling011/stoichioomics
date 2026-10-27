@@ -18,6 +18,7 @@
         :clades="home.clade_distribution"
         :coverage="home.omics_coverage"
         :readiness="home.readiness_heatmap"
+        :payload="visuals" :loading="visualsLoading" :error="visualsError" :retry="loadVisuals"
       />
       <HomeFeatureHubSpotlight
         :spotlight="home.feature_hub_spotlight"
@@ -33,7 +34,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import HomeFeaturedAnalyses from '../components/home/HomeFeaturedAnalyses.vue'
 import HomeFeatureHubSpotlight from '../components/home/HomeFeatureHubSpotlight.vue'
 import HomeFooter from '../components/home/HomeFooter.vue'
@@ -43,8 +44,19 @@ import HomeKpiStrip from '../components/home/HomeKpiStrip.vue'
 import HomeModuleGrid from '../components/home/HomeModuleGrid.vue'
 import HomeSpeciesStrip from '../components/home/HomeSpeciesStrip.vue'
 import HomeValueChain from '../components/home/HomeValueChain.vue'
-import { getPlatformHome } from '../api/stoichdb'
+import { getPlatformHome, getHomeVisuals } from '../api/stoichdb'
 
+const visuals = ref(null), visualsLoading = ref(true), visualsError = ref('')
+let visualsEpoch = 0, visualsController
+async function loadVisuals() {
+  const epoch = ++visualsEpoch
+  visualsController?.abort(); visualsController = new AbortController()
+  visualsLoading.value = true; visualsError.value = ''
+  try { const result = await getHomeVisuals({}, { signal: visualsController.signal }); if (epoch === visualsEpoch) visuals.value = result }
+  catch (error) { if (epoch === visualsEpoch && error.code !== 'ERR_CANCELED') visualsError.value = error?.response?.data?.error?.message || error.message }
+  finally { if (epoch === visualsEpoch) visualsLoading.value = false }
+}
+onBeforeUnmount(() => { ++visualsEpoch; visualsController?.abort() })
 const home = ref(null)
 const loading = ref(true)
 const loadError = ref('')
@@ -62,5 +74,5 @@ async function loadPage() {
   }
 }
 
-onMounted(loadPage)
+onMounted(() => { loadPage(); loadVisuals() })
 </script>

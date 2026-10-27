@@ -1,0 +1,126 @@
+{
+  "version": "home-atlas-reference-cohort-v1",
+  "scope_kind": "named_reference_cohort",
+  "species": [
+    {
+      "sid": "S01",
+      "species_id": "alteromonas_macleodii_str_deep_ecotype_gca_000020585",
+      "group": "Bacteria"
+    },
+    {
+      "sid": "S02",
+      "species_id": "bacillus_subtilis_gca_004328845",
+      "group": "Bacteria"
+    },
+    {
+      "sid": "S03",
+      "species_id": "bradyrhizobium_sp_g22_gca_900011265",
+      "group": "Bacteria"
+    },
+    {
+      "sid": "S04",
+      "species_id": "buchnera_aphidicola_str_bp_baizongia_pistaciae_gca_000007725",
+      "group": "Bacteria"
+    },
+    {
+      "sid": "S05",
+      "species_id": "escherichia_coli_str_k_12_substr_mg1655_gca_000005845",
+      "group": "Bacteria"
+    },
+    {
+      "sid": "S06",
+      "species_id": "solibacillus_silvestris_stlb046_gca_000271325",
+      "group": "Bacteria"
+    },
+    {
+      "sid": "S07",
+      "species_id": "coprinopsis_cinerea_okayama7_130_gca_000182895",
+      "group": "Fungi"
+    },
+    {
+      "sid": "S08",
+      "species_id": "pichia_membranifaciens_gca_001950575",
+      "group": "Fungi"
+    },
+    {
+      "sid": "S09",
+      "species_id": "saccharomyces_cerevisiae",
+      "group": "Fungi"
+    },
+    {
+      "sid": "S10",
+      "species_id": "plasmodium_malariae_gca_900090045",
+      "group": "Protists"
+    },
+    {
+      "sid": "S11",
+      "species_id": "symbiodinium_microadriaticum_gca_001939145",
+      "group": "Protists"
+    },
+    {
+      "sid": "S12",
+      "species_id": "arabidopsis_thaliana",
+      "group": "Plants"
+    },
+    {
+      "sid": "S13",
+      "species_id": "capsicum_annuum",
+      "group": "Plants"
+    },
+    {
+      "sid": "S14",
+      "species_id": "oryza_sativa",
+      "group": "Plants"
+    },
+    {
+      "sid": "S15",
+      "species_id": "sphenostylis_stenocarpa",
+      "group": "Plants"
+    },
+    {
+      "sid": "S16",
+      "species_id": "triticum_dicoccoides",
+      "group": "Plants"
+    },
+    {
+      "sid": "S17",
+      "species_id": "triticum_spelta",
+      "group": "Plants"
+    },
+    {
+      "sid": "S18",
+      "species_id": "cataglyphis_hispanica_gca021464435v1rs",
+      "group": "Metazoa"
+    },
+    {
+      "sid": "S19",
+      "species_id": "drosophila_melanogaster",
+      "group": "Metazoa"
+    },
+    {
+      "sid": "S20",
+      "species_id": "varroa_destructor_gca002443255",
+      "group": "Metazoa"
+    },
+    {
+      "sid": "S21",
+      "species_id": "callorhinchus_milii",
+      "group": "Vertebrates"
+    },
+    {
+      "sid": "S22",
+      "species_id": "danio_rerio",
+      "group": "Vertebrates"
+    },
+    {
+      "sid": "S23",
+      "species_id": "esox_lucius",
+      "group": "Vertebrates"
+    },
+    {
+      "sid": "S24",
+      "species_id": "mus_musculus_casteij",
+      "group": "Vertebrates"
+    }
+  ]
+}

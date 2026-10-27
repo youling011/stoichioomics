@@ -1,0 +1,126 @@
+name: stoichioomics-reproduction
+
+services:
+  postgres:
+    profiles: [database]
+    image: ${POSTGRES_IMAGE:-postgres:16}
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Set POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a private database password}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - type: bind
+        source: ./var/downloads
+        target: /releases
+        read_only: true
+        bind: {create_host_path: false}
+      - ./deploy/tools/restore_database.sh:/usr/local/bin/stoich-restore:ro
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile
+      target: app
+    env_file: ${STOICH_ENV_FILE:-.env}
+    environment:
+      DJANGO_SETTINGS_MODULE: deploy.local_settings
+      DJANGO_ENV_FILE: ""
+      STATIC_ROOT: /opt/local/static
+      MEDIA_ROOT: /opt/local/state/uploads
+      WORKSPACE_ROOT: /opt/local/state/workspace/jobs
+      CASE_REGISTRY_FILE: /opt/local/state/workspace/case_registry.json
+      SEQUENCE_ANALYSIS_WORKSPACE_ROOT: /opt/local/state/runtime/sequence_analysis
+      SEQUENCE_ANALYSIS_LEGACY_WORKSPACE_ROOT: /opt/local/state/workspace/sequence_analysis
+      COMPARE_CORE_ROOT: /opt/local/state/runtime/compare_core
+      PROTEOME_VIZ_ROOT: /opt/local/state/runtime/proteome_visuals_v3
+      SEQUENCE_VIZ_ROOT: /opt/local/state/runtime/sequence_visuals_v1
+      INTEGRATION_VIZ_ROOT: /opt/local/state/runtime/integration_visuals_v1
+      STOICH_WINDOWS_DATA_MOUNT: /srv/stoichioomics
+      STOICH_FEATURE_EXTRACTOR_ROOT: /opt/local/project/tools/feature_extractors
+      STOICH_FEATURE_ROOT: /srv/stoichioomics/全组学特征数据
+      STOICHIOOMICS_ROOT: /srv/stoichioomics
+      STOICH_PROJECT_ROOT: /opt/local/project
+      STOICH_RUNTIME_ROOT: /opt/local/state/runtime
+      STOICH_DATA_ROOT: /opt/local/project/data
+      STOICH_PROJECT_DATA_ROOT: /opt/local/project/data
+      STOICHDB_DATA_ROOT: /opt/local/project/data/stoichdb_demo
+      STOICHDB_PRECOMPUTED_ROOT: /srv/stoichioomics/项目平台数据/stoich_platform_postgres_open_search_v6_2_perf_fix/proj/workspace
+      FUNCTION_ANNOTATION_SOURCE: /srv/stoichioomics/项目平台数据/功能注释下载
+      HOME: /opt/local/state/home
+      XDG_CACHE_HOME: /opt/local/state/cache
+      MPLCONFIGDIR: /opt/local/state/matplotlib
+      NUMBA_CACHE_DIR: /opt/local/state/numba
+      TMPDIR: /opt/local/state/tmp
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - app-state:/opt/local/state
+      - uwsgi-run:/opt/local/run
+      - django-static:/opt/local/static
+      - type: bind
+        source: ${STOICH_DATA_HOST_ROOT:?Set an absolute external data root}
+        target: /srv/stoichioomics
+        read_only: true
+        bind: {create_host_path: false}
+    healthcheck:
+      test: [CMD, python, -B, deploy/docker/health.py]
+      interval: 20s
+      timeout: 15s
+      start_period: 120s
+      retries: 12
+    init: true
+    stop_grace_period: 120s
+    mem_limit: ${STOICH_APP_MEMORY:-4g}
+    cpus: ${STOICH_APP_CPUS:-2}
+    restart: "no"
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: "2"}
+
+  nginx:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile
+      target: gateway
+    depends_on:
+      app: {condition: service_healthy}
+    ports:
+      - "${STOICH_HTTP_BIND:-127.0.0.1}:${STOICH_PUBLIC_PORT:-18080}:${STOICH_NGINX_PORT:-18080}"
+    volumes:
+      - uwsgi-run:/opt/local/run:ro
+      - django-static:/opt/local/static:ro
+      - nginx-cache:/var/cache/nginx
+      - type: bind
+        source: ${STOICH_NGINX_SITE:-./deploy/docker/nginx-http.conf}
+        target: /etc/nginx/conf.d/default.conf
+        read_only: true
+        bind: {create_host_path: false}
+      - type: bind
+        source: ./var/certificates
+        target: /etc/stoichioomics/certs
+        read_only: true
+        bind: {create_host_path: false}
+    mem_limit: 256m
+    restart: "no"
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: "2"}
+
+volumes:
+  postgres-data:
+  app-state:
+  uwsgi-run:
+  django-static:
+  nginx-cache:
+
+networks:
+  default:
+    name: ${STOICH_NETWORK_NAME:-stoichioomics-reproduction}
+    external: ${STOICH_NETWORK_EXTERNAL:-false}

@@ -1,4 +1,4 @@
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 import csv,hashlib,json
 import numpy as np
 import pandas as pd
@@ -28,7 +28,7 @@ def header(p):
 def read(p,m,columns=None):
     # Literal text protects NA, leading-zero IDs, and version suffixes. Numeric
     # conversion occurs separately; it never modifies a retained source export.
-    f=pd.read_csv(p,dtype={k:str for k in META[m]},keep_default_na=False,usecols=columns,low_memory=False)
+    f=pd.read_csv(Path(p),dtype={k:str for k in META[m]},keep_default_na=False,usecols=columns,low_memory=False)
     k=KEY[m]
     if k not in f or f[k].str.strip().eq('').any():raise ValueError('empty_primary_id:'+k)
     if f[k].duplicated().any():raise ValueError('duplicate_primary_id:'+k)

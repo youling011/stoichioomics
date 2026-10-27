@@ -2,7 +2,9 @@ from django.urls import path
 
 from . import views
 
+from .visuals_views import urlpatterns as workflow_visuals_urls
 urlpatterns = [
+    *workflow_visuals_urls,
     path('jobs/', views.jobs_view),
     path('prevalidate/', views.prevalidate_view),
     path('sample-sheet-template/', views.sample_sheet_template_view),

@@ -26,9 +26,9 @@
     </section>
     <section v-if="isUnified && section==='group_comparison'" class="stack-lg" data-original-comparison>
       <div class="card"><h3>Original multi-omics comparison</h3><p class="muted">Calculated in this run from the same global standard HVG labels. Original v2 statistics and correction remain separate from the extended research tests below. Download the complete original outputs in Downloads.</p><p v-if="comparisonBusy">Loading original comparison…</p><p v-if="comparisonError" role="alert">{{comparisonError}}</p></div>
-      <HvgGroupComparisonPanel v-if="originalComparison" :identifier="identifier" :embedded-comparison="originalComparison" />
+      <HvgGroupComparisonPanel v-if="originalComparison" :identifier="identifier" :embedded-comparison="originalComparison" :visual-params="{analysis_run_id:state.run,context_id:state.context}" />
     </section>
-    <ResearchCharts v-if="definition.plots?.length" :state="state" :kinds="definition.plots" @table="selectTable" @inspect="inspect" />
+    <ResearchCharts v-if="definition.plots?.length" :section="section" :identifier="identifier" :state="state" :kinds="definition.plots" @table="selectTable" @inspect="inspect" />
     <ResearchOptionalModel v-if="!isUnified && ['phase2','model_evidence'].includes(section)" :state="state" :section="section" @inspect="inspect" />
     <div v-if="section==='genes'" class="card">
       <div class="section-header compact"><div><h3>Gene evidence lookup</h3><p class="muted">Look up any gene in the current universe, including genes with feature evidence but no functional annotation.</p></div></div>
@@ -55,9 +55,12 @@
       <template v-if="detail">
         <p class="muted">Evidence uses the selected run and context. Feature, function and set-level q values are not independent p values for individual genes.</p>
         <button class="btn secondary" @click="downloadDetail">Download complete evidence (JSON)</button>
-        <EChart v-if="detailCurve" :option="detailCurve" :data-rows="detailCurveRows" :auto-loading="false" caption="Reconstructed from saved gene ranks and members. The preview samples up to 1,000 regular positions and retains the peak. Full ranks and members are downloadable." />
-        <EChart v-if="detailDistribution" :option="detailDistribution" :data-rows="detail.distribution || []" :auto-loading="false" caption="Quantiles use a shared reference and scale for HVGs and non-HVGs." />
-        <EChart v-if="geneProfile" :option="geneProfile" :height="550" :data-rows="detail.core_feature_values" :auto-loading="false" caption="Up to 48 features with the largest deviation from the non-HVG reference median. Scroll the plot to explore; complete Core values, units and exclusions are available below and in JSON. Percentiles are not gene-level significance." />
+        <WorkflowChart slot-id="hvg.detail.gsea" v-if="workflowVisualsEnabled && detailCurveSelection" resource="hvg" :identifier="identifier" chart-id="H16" :params="state.params(detailCurveSelection,false)" :height="400" />
+        <EChart v-else-if="detailCurve" :option="detailCurve" :data-rows="detailCurveRows" :auto-loading="false" caption="Reconstructed from saved gene ranks and members. The preview samples up to 1,000 regular positions and retains the peak. Full ranks and members are downloadable." />
+        <WorkflowChart slot-id="hvg.detail.feature" v-if="workflowVisualsEnabled && detailFeature && detailDistribution" resource="hvg" :identifier="identifier" chart-id="H10" :params="state.params({feature_key:detailFeature},false)" :height="400" />
+        <EChart v-else-if="detailDistribution" :option="detailDistribution" :data-rows="detail.distribution || []" :auto-loading="false" caption="Quantiles use a shared reference and scale for HVGs and non-HVGs." />
+        <WorkflowChart slot-id="hvg.detail.gene" v-if="workflowVisualsEnabled && detail?.core_feature_values" resource="hvg" :identifier="identifier" chart-id="H23" :params="state.params({gene_id:state.gene},false)" :height="550" />
+        <EChart v-else-if="geneProfile" :option="geneProfile" :height="550" :data-rows="detail.core_feature_values" :auto-loading="false" caption="Up to 48 features with the largest deviation from the non-HVG reference median. Scroll the plot to explore; complete Core values, units and exclusions are available below and in JSON. Percentiles are not gene-level significance." />
         <template v-for="(v,k) in detail" :key="k"><details v-if="Array.isArray(v)"><summary @click="expanded[k]=!expanded[k]">{{fieldLabel(k)}} ({{v.length}} total; preview up to 50 rows)</summary><div v-if="expanded[k]" class="table-wrap"><table v-if="v.length" class="table compact-table"><thead><tr><th v-for="c in Object.keys(v[0] || {})" :key="c">{{fieldLabel(c)}}</th></tr></thead><tbody><tr v-for="(r,i) in v.slice(0,50)" :key="i"><td v-for="c in Object.keys(v[0] || {})" :key="c">{{formatValue(r[c])}}</td></tr></tbody></table><p v-else>No evidence of this type is available.</p></div></details></template>
       </template>
     </div>
@@ -66,6 +69,8 @@
 <script setup>
 import {computed,reactive,ref,watch,onBeforeUnmount} from 'vue'
 import EChart from '../EChart.vue'
+import WorkflowChart from '../workflow/WorkflowChart.vue'
+import {workflowVisualsEnabled} from '../../api/workflowVisuals'
 import ResearchCharts from './ResearchCharts.vue'
 import ResearchOptionalModel from './ResearchOptionalModel.vue'
 import HvgGroupComparisonPanel from '../HvgGroupComparisonPanel.vue'
@@ -101,6 +106,8 @@ watch(()=>[props.state.feature,props.state.term,props.state.source,props.state.d
 function apply(){if(draft.qmax!==''&&(!Number.isFinite(Number(draft.qmax))||Number(draft.qmax)<0||Number(draft.qmax)>1)){tableError.value='q must be a number between 0 and 1.';return}Object.assign(props.state,draft);props.state.version++;props.state.persist()}
 function clear(){props.state.clear();query.value='';tier.value='';props.state.set=''}
 const table=ref(''),query=ref(''),tier=ref(''),rows=ref([]),total=ref(0),page=ref(1),pageSize=ref(50),sort=ref(''),order=ref('asc'),tableBusy=ref(false),tableError=ref(''),artifacts=ref([]),artifactQuery=ref(''),artifactError=ref('')
+const detailCurveSelection=ref(null)
+const detailFeature=ref(null)
 const detail=ref(null),detailTitle=ref(''),detailBusy=ref(false),detailError=ref(''),detailCurve=ref(null),detailCurveRows=ref([]),expanded=reactive({})
 const sortable=['feature_key','gene_id','gene_name','term_key','term_name','q_global','effect','beta','priority_rank','hvg_score','n_members','source','final_status','omics','family','status','nes','fold_enrichment','context_id','priority_tier','n1','n0','rank','hvg_rank','direction']
 const columns=computed(()=>{const present=[...new Set(rows.value.flatMap(Object.keys))],first=['gene_id','gene_name','feature_key','term_key','term_name','direction','scope','source','priority_tier','priority_rank','status','n1','n0','N','K','n','k','effect','ci_low','ci_high','beta','nes','fold_enrichment','p_value','q_global'];return first.filter(k=>present.includes(k)).concat(present.filter(k=>!first.includes(k)))})
@@ -115,13 +122,13 @@ async function loadArtifacts(){artifactError.value='';try{const p=await props.st
 const visibleArtifacts=computed(()=>artifacts.value.filter(a=>(a.relative_path+' '+a.name+' '+a.format).toLowerCase().includes(artifactQuery.value.toLowerCase())))
 async function download(a){try{await researchDownload(props.identifier,a,props.state.params({},false))}catch(e){artifactError.value=e.message}}
 async function exportTable(){try{await researchSafeExport(props.identifier,table.value,props.state.params(tableParams(),!table.value.startsWith('original_')))}catch(e){tableError.value=e.message}}
-function closeDetail(){detailGeneration++;detail.value=null;detailCurve.value=null;detailCurveRows.value=[];detailError.value='';detailBusy.value=false}
-async function fetchDetail(title,endpoint,extra={}){const id=++detailGeneration;detail.value=null;detailCurve.value=null;detailTitle.value=title;detailError.value='';detailBusy.value=true;try{const r=await props.state.get(endpoint,extra,false);if(id===detailGeneration)detail.value=r;return id===detailGeneration?r:null}catch(e){if(id===detailGeneration)detailError.value=e.response?.data?.error?.message||e.message}finally{if(id===detailGeneration)detailBusy.value=false}}
-function openFeature(key){return fetchDetail(key,'features/'+encodeURIComponent(key),{feature_key:key})}
+function closeDetail(){detailFeature.value=null;detailCurveSelection.value=null;detailGeneration++;detail.value=null;detailCurve.value=null;detailCurveRows.value=[];detailError.value='';detailBusy.value=false}
+async function fetchDetail(title,endpoint,extra={}){const id=++detailGeneration;detail.value=null;detailCurveSelection.value=null;detailCurve.value=null;detailTitle.value=title;detailError.value='';detailBusy.value=true;try{const r=await props.state.get(endpoint,extra,false);if(id===detailGeneration)detail.value=r;return id===detailGeneration?r:null}catch(e){if(id===detailGeneration)detailError.value=e.response?.data?.error?.message||e.message}finally{if(id===detailGeneration)detailBusy.value=false}}
+async function openFeature(key){const saved=await fetchDetail(key,'features/'+encodeURIComponent(key),{feature_key:key});if(saved)detailFeature.value=key}
 async function openGene(g){if(!g)return;props.state.gene=g;props.state.persist();await fetchDetail(g,'genes/'+encodeURIComponent(g))}
 function openSet(id){props.state.set=id;table.value='set_members';query.value='';refreshTable();return fetchDetail('Set'+id,'gene-sets/'+encodeURIComponent(id),{set_id:id,page:1,page_size:200})}
 function openTerm(t){props.state.term=t;props.state.feature='';props.state.set='';emit('navigate','downstream')}
-async function openCurve(row){const r=await fetchDetail('GSEA: '+(row.term_name||row.term_key),'plots/gsea_curve',{run_id:row.run_id,term_key:row.term_key});if(r){detail.value={test:[row],curve_metadata:[{total_ranked_genes:r.total_ranked_genes,method:r.method}]};detailCurveRows.value=r.rows||[];detailCurve.value=r.rows?.length?curveOption(r,props.state.compact):null}}
+async function openCurve(row){if(workflowVisualsEnabled){detailCurveSelection.value={run_id:row.run_id,term_key:row.term_key,source:row.source,scope:row.scope,feature_key:row.feature_key};detail.value={test:[row]};detailTitle.value='GSEA: '+(row.term_name||row.term_key);return}const r=await fetchDetail('GSEA: '+(row.term_name||row.term_key),'plots/gsea_curve',{run_id:row.run_id,term_key:row.term_key});if(r){detail.value={test:[row],curve_metadata:[{total_ranked_genes:r.total_ranked_genes,method:r.method}]};detailCurveRows.value=r.rows||[];detailCurve.value=r.rows?.length?curveOption(r,props.state.compact):null}}
 function inspect({kind,row}){if(kind==='original_classes'&&row.stoich_class){props.state.modelClass=row.stoich_class;emit('navigate','genes');return}if(kind==='gsea'&&row.run_id)return openCurve(row);if(row.gene_id)return openGene(row.gene_id);if(row.feature_key)return openFeature(row.feature_key);if(row.term_key)return openTerm(row.term_key)}
 function navigateObservation(p){if(p.feature_key){props.state.feature=p.feature_key;emit('navigate','group_comparison')}else if(p.term_key)openTerm(p.term_key)}
 const geneProfile=computed(()=>detail.value?.core_feature_values?.some(r=>typeof r.nonhvg_reference_percentile==='number')?geneProfileOption(detail.value.core_feature_values,props.state.compact):null)
@@ -137,3 +144,4 @@ onBeforeUnmount(()=>{comparisonGeneration++;generation++;detailGeneration++;cont
 .hvg-integrated-section :deep(.chart-export-row){position:static;justify-content:flex-end;flex-wrap:wrap;min-height:32px;margin:8px 0}.hvg-integrated-section :deep(.chart-caption){border-top:1px solid var(--line-soft);padding-top:12px;color:var(--text-soft);font-size:.85rem;line-height:1.6}.hvg-integrated-section :deep(.chart-caption p){margin:0}.hvg-integrated-section :deep(.chart-export-btn):focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media(max-width:760px){.hvg-integrated-section :deep(.chart-export-btn){min-height:44px}.hvg-integrated-section :deep(.chart-caption){font-size:14px}}
 </style>
+

@@ -165,24 +165,24 @@
         <div class="grid grid-2">
           <div class="card">
             <h3>Stoichiometric feature profile</h3>
-            <EChart :option="featureProfileOption" :height="360" />
+            <WorkflowChart slot-id="seq.overview.1" resource="sequence" :identifier="jobId" chart-id="S02" :params="{}" :height="360"><EChart :option="featureProfileOption" :height="360" /></WorkflowChart>
           </div>
           <div class="card">
-            <h3>True group boxplot for selected features</h3>
-            <EChart :option="boxplotMedianOption" :height="360" />
+            <h3>Complete selected-feature distribution</h3>
+            <WorkflowChart slot-id="seq.overview.2" resource="sequence" :identifier="jobId" chart-id="S10" :params="{field:selectedField || undefined}" :height="360"><EChart :option="boxplotMedianOption" :height="360" /></WorkflowChart>
             <MethodBadge
-              method="true boxplot from feature_boxplots payload"
+              method="saved-result distribution; complete ECDF in v2"
               normalization="raw feature units"
-              missing-policy="groups without p05/p25/p50/p75/p95 are blank"
-              :n="summary.sample_count || summary.record_count || ''"
-              note="Box values use the payload five-number summary where available."
+              missing-policy="non-finite values excluded with explicit counts"
+              :n="summary.record_count || ''"
+              note="V2 shows exact ECDF and linear Q05/Q25/Q50/Q75/Q95; legacy previews are explicitly labelled."
             />
           </div>
         </div>
         <div class="grid grid-2">
           <div class="card">
             <h3>PCA on stoichiometric features</h3>
-            <EChart :option="pcaOption" :height="360" />
+            <WorkflowChart slot-id="seq.overview.3" resource="sequence" :identifier="jobId" chart-id="S03" :params="{}" :height="360"><EChart :option="pcaOption" :height="360" /></WorkflowChart>
             <MethodBadge
               method="PCA"
               normalization="feature matrix from sequence job payload"
@@ -193,8 +193,8 @@
             />
           </div>
           <div class="card">
-            <h3>Top differential features</h3>
-            <EChart :option="topDiffOption" :height="360" />
+            <h3>Complete differential-feature ranking</h3>
+            <WorkflowChart slot-id="seq.overview.4" resource="sequence" :identifier="jobId" chart-id="S04" :params="{}" :height="360"><EChart :option="topDiffOption" :height="360" /></WorkflowChart>
           </div>
         </div>
         <div class="grid grid-2">
@@ -226,14 +226,14 @@
       <section v-if="tab === 'catalog'" class="stack-lg">
         <div class="grid grid-2">
           <div class="card">
-            <h3>Feature family coverage</h3>
-            <EChart :option="featureFamilyOption" :height="340" />
+            <h3>Complete numeric-feature quantile atlas</h3>
+            <WorkflowChart slot-id="seq.catalog.5" resource="sequence" :identifier="jobId" :chart-id="summary.omics_type==='genome'?'S24':summary.omics_type==='transcriptome'?'S25':'S23'" :params="{}" :height="340"><EChart :option="featureFamilyOption" :height="340" /></WorkflowChart>
             <MethodBadge
-              method="automatic feature-family catalog"
-              normalization="field-name and omics-type rules"
-              missing-policy="catalog includes observed numeric fields only"
-              :n="featureCatalog.feature_count || 0"
-              note="Families are used for field selection, help text, Top/Low ranking, and modeling eligibility."
+              method="all saved numeric fields; five linear quantiles in v2"
+              normalization="within-field min–max color; original-value tooltips"
+              missing-policy="metadata, empty and nonnumeric fields retained in the audit"
+              :n="fullSavedFields.filter(r=>r.numeric).length || featureCatalog.feature_count || 0"
+              note="All saved fields remain available for selection; this display does not change modeling eligibility."
             />
           </div>
           <div class="card">
@@ -310,7 +310,7 @@
             <div>
               <h3>{{ panel.title }}</h3>
               <p class="muted">
-                {{ panel.module }} / {{ panel.default_chart }} / {{ panel.unit }} / {{ panel.aggregation }}
+                {{ panel.module }} / {{ workflowVisualsEnabled ? 'complete saved-field presentation' : panel.default_chart }} / {{ panel.unit }}
               </p>
             </div>
             <span class="badge">{{ panel.field_coverage?.field_present || 0 }} / {{ panel.field_coverage?.field_total || 0 }} fields</span>
@@ -323,9 +323,9 @@
           <div v-if="panel.warnings?.length" class="muted core-warning">{{ panel.warnings.join(' ') }}</div>
           <div class="grid grid-2">
             <div>
-              <EChart :option="corePanelChartOption(panel)" :height="340" />
+              <WorkflowChart :slot-id="'seq.core.'+panel.panel_id" resource="sequence" :identifier="jobId" :chart-id="coreDesigns[panel.panel_id] || 'S01'" :params="{...corePanelFilters,panel_id_core:panel.panel_id}" :height="340"><EChart :option="corePanelChartOption(panel)" :height="340" /></WorkflowChart>
               <MethodBadge
-                :method="panel.default_chart"
+                :method="workflowVisualsEnabled ? 'complete ECDF, quantile, composition or coordinate panel as labelled' : panel.default_chart"
                 :normalization="panel.unit"
                 missing-policy="missing and non-finite values excluded"
                 :n="corePanels.row_count || ''"
@@ -376,7 +376,7 @@
           </div>
           <div class="card">
             <h3>Family coverage from uploaded features</h3>
-            <EChart :option="featureFamilyOption" :height="300" />
+            <WorkflowChart slot-id="seq.basic.7" resource="sequence" :identifier="jobId" chart-id="S01" :params="{}" :height="300"><EChart :option="featureFamilyOption" :height="300" /></WorkflowChart>
           </div>
         </div>
         <div class="grid grid-2">
@@ -388,7 +388,7 @@
               </select>
               <button class="btn secondary" @click="loadFieldSummary">Apply</button>
             </div>
-            <EChart :option="fieldSummaryOption" :height="340" />
+            <WorkflowChart slot-id="seq.basic.8" resource="sequence" :identifier="jobId" chart-id="S10" :params="{field:selectedField || undefined}" :height="340"><EChart :option="fieldSummaryOption" :height="340" /></WorkflowChart>
           </div>
           <div class="card">
             <h3>Pairwise feature scatter</h3>
@@ -397,7 +397,7 @@
               <select class="input" v-model="yField"><option v-for="field in fieldOptions" :key="field" :value="field">{{ field }}</option></select>
               <button class="btn secondary" @click="loadScatter">Apply</button>
             </div>
-            <EChart :option="scatterOption" :height="340" />
+            <WorkflowChart slot-id="seq.basic.9" resource="sequence" :identifier="jobId" chart-id="S11" :params="{x_field:xField || undefined,y_field:yField || undefined}" :height="340"><EChart :option="scatterOption" :height="340" /></WorkflowChart>
           </div>
         </div>
         <div class="card">
@@ -416,7 +416,7 @@
               </select>
               <button class="btn secondary" @click="loadFieldSummary">Apply</button>
             </div>
-            <EChart :option="fieldSummaryOption" :height="340" />
+            <WorkflowChart slot-id="seq.explorer.10" resource="sequence" :identifier="jobId" chart-id="S10" :params="{field:selectedField || undefined}" :height="340"><EChart :option="fieldSummaryOption" :height="340" /></WorkflowChart>
             <MethodBadge
               method="field-summary histogram"
               normalization="raw feature units"
@@ -457,7 +457,7 @@
               <button class="btn secondary" @click="loadTopLow">Apply</button>
             </div>
           </div>
-          <EChart :option="topLowOption" :height="420" />
+          <WorkflowChart slot-id="seq.top_low.11" resource="sequence" :identifier="jobId" chart-id="S12" :params="{field:topLowFeature || undefined}" :height="420"><EChart :option="topLowOption" :height="420" /></WorkflowChart>
           <MethodBadge
             method="numeric feature ranking"
             normalization="raw feature value"
@@ -475,18 +475,18 @@
         <div class="grid grid-2">
           <div class="card">
             <h3>Strategy clusters</h3>
-            <EChart :option="strategyOption" :height="320" />
+            <WorkflowChart slot-id="seq.deep.12" resource="sequence" :identifier="jobId" chart-id="S13" :params="{}" :height="320"><EChart :option="strategyOption" :height="320" /></WorkflowChart>
           </div>
           <div class="card">
-            <h3>Feature coupling ranking</h3>
-            <EChart :option="couplingOption" :height="320" />
+            <h3>Saved signed feature coupling</h3>
+            <WorkflowChart slot-id="seq.deep.13" resource="sequence" :identifier="jobId" chart-id="S14" :params="{}" :height="320"><EChart :option="couplingOption" :height="320" /></WorkflowChart>
             <MethodBadge
-              method="absolute coupling edge ranking"
-              normalization="absolute weight"
+              method="complete saved signed coupling graph in v2"
+              normalization="saved signed edge weight"
               missing-policy="edges emitted by analysis payload only"
               :n="(analysisPayload?.coupling_edges || []).length"
               exploratory
-              note="This chart is a ranked bar view, not a force-directed network."
+              note="V2 uses a deterministic circular layout; legacy previews retain their original ranking."
             />
           </div>
         </div>
@@ -511,15 +511,15 @@
           <div class="grid grid-2">
             <div class="card">
               <h3>Feature delta heatmap</h3>
-              <EChart :option="sampleDeltaOption" :height="360" />
+              <WorkflowChart slot-id="seq.sample_comparison.14" resource="sequence" :identifier="jobId" chart-id="S15" :params="{panel_profile:'sample_deltas'}" :height="360"><EChart :option="sampleDeltaOption" :height="360" /></WorkflowChart>
             </div>
             <div class="card">
-              <h3>Paired entity scatter</h3>
-              <EChart :option="pairedScatterOption" :height="360" />
+              <h3>Complete group comparison</h3>
+              <WorkflowChart slot-id="seq.sample_comparison.15" resource="sequence" :identifier="jobId" chart-id="S15" :params="{panel_profile:sampleComparison.matched_n>0?'paired':'unpaired'}" :height="360"><EChart :option="pairedScatterOption" :height="360" /></WorkflowChart>
               <MethodBadge
                 method="matched gene_key paired comparison"
                 normalization="reference vs case raw feature values"
-                missing-policy="unmatched entities excluded"
+                missing-policy="paired only when identities match; otherwise complete unpaired ECDF"
                 :n="sampleComparison.matched_n || 0"
                 note="If no matched entities exist, the module falls back to unpaired distribution comparison."
               />
@@ -553,7 +553,7 @@
               <button class="btn secondary" @click="loadMlDiscrimination">Run selected label view</button>
             </div>
           </div>
-          <DataTable :payload="mlLabelViewTable" :max-cols="8" />
+          <p v-if="mlLabelField!==mlDiscrimination.label_field" class="muted">The figures show the saved {{mlDiscrimination.label_field || 'group'}} labels. Run the selected label view explicitly to update the analysis.</p><DataTable :payload="mlLabelViewTable" :max-cols="8" />
         </div>
         <div class="card muted">
           {{ WORKFLOW_TERMS.mlDiagnostics.warning }} Treat these outputs as descriptive separability checks, not as validated prediction evidence.
@@ -599,17 +599,17 @@
           <div class="grid grid-2">
             <div class="card">
               <h3>Confusion matrix</h3>
-              <EChart :option="mlConfusionOption" :height="340" />
+              <WorkflowChart slot-id="seq.ml.16" resource="sequence" :identifier="jobId" chart-id="S16" :params="{label_field:mlDiscrimination.label_field}" :height="340"><EChart :option="mlConfusionOption" :height="340" /></WorkflowChart>
             </div>
             <div class="card">
               <h3>Important separating features</h3>
-              <EChart :option="mlImportanceOption" :height="340" />
+              <WorkflowChart slot-id="seq.ml.17" resource="sequence" :identifier="jobId" chart-id="S17" :params="{label_field:mlDiscrimination.label_field}" :height="340"><EChart :option="mlImportanceOption" :height="340" /></WorkflowChart>
             </div>
           </div>
           <div class="grid grid-2">
             <div class="card">
               <h3>Exploratory class separation embedding</h3>
-              <EChart :option="mlEmbeddingOption" :height="340" />
+              <WorkflowChart slot-id="seq.ml.18" resource="sequence" :identifier="jobId" chart-id="S19" :params="{label_field:mlDiscrimination.label_field}" :height="340"><EChart :option="mlEmbeddingOption" :height="340" /></WorkflowChart>
               <MethodBadge
                 :method="mlDiscrimination.class_separation_embedding?.method || 'embedding unavailable'"
                 normalization="StandardScaler before embedding"
@@ -620,17 +620,17 @@
             </div>
             <div class="card">
               <h3>ROC curve</h3>
-              <EChart :option="mlRocOption" :height="340" />
+              <WorkflowChart slot-id="seq.ml.19" resource="sequence" :identifier="jobId" chart-id="S18" :params="{label_field:mlDiscrimination.label_field,panel_profile:'roc_curve'}" :height="340"><EChart :option="mlRocOption" :height="340" /></WorkflowChart>
             </div>
             <div class="card">
               <h3>Precision-recall curve</h3>
-              <EChart :option="mlPrOption" :height="340" />
+              <WorkflowChart slot-id="seq.ml.20" resource="sequence" :identifier="jobId" chart-id="S18" :params="{label_field:mlDiscrimination.label_field,panel_profile:'pr_curve'}" :height="340"><EChart :option="mlPrOption" :height="340" /></WorkflowChart>
             </div>
           </div>
           <div class="grid grid-2">
             <div class="card">
               <h3>Top feature distribution</h3>
-              <EChart :option="mlTopFeatureDistributionOption" :height="320" />
+              <WorkflowChart slot-id="seq.ml.21" resource="sequence" :identifier="jobId" chart-id="S20" :params="{label_field:mlDiscrimination.label_field}" :height="320"><EChart :option="mlTopFeatureDistributionOption" :height="320" /></WorkflowChart>
             </div>
             <div class="card">
               <h3>Redundant feature groups</h3>
@@ -672,7 +672,7 @@
               </select>
               <button class="btn secondary" @click="loadFeatureComparison">Plot</button>
             </div>
-            <EChart :option="featureComparisonOption" :height="360" />
+            <WorkflowChart slot-id="seq.compare.22" resource="sequence" :identifier="jobId" chart-id="S10" :params="{field:comparisonFeature || undefined}" :height="360"><EChart :option="featureComparisonOption" :height="360" /></WorkflowChart>
           </div>
           <div class="card">
             <h3>Any two or more genes: comparison plot</h3>
@@ -690,7 +690,7 @@
             <input class="input" v-model="entityInput" placeholder="geneA,geneB,geneC" />
             <input class="input" style="margin-top:10px" v-model="entityFeatureInput" placeholder="feature1,feature2 or leave blank for selected feature" />
             <button class="btn secondary" style="margin-top:10px" @click="loadEntityComparison">Plot genes</button>
-            <EChart :option="entityComparisonOption" :height="360" />
+            <WorkflowChart slot-id="seq.compare.23" resource="sequence" :identifier="jobId" chart-id="S21" :params="{entities:entityInput,fields:entityFeatureInput || comparisonFeature || undefined}" :height="360"><EChart :option="entityComparisonOption" :height="360" /></WorkflowChart>
           </div>
         </div>
       </section>
@@ -759,6 +759,7 @@
         :downloads="differentialEntityDownloads"
         :empty-reason="differentialEntities.total ? '' : 'No differential entity rows are available for this job.'"
       >
+        <WorkflowChart resource="sequence" :identifier="jobId" chart-id="S22" slot-id="seq.entities.ranking" :params="{}" :height="360" />
         <DataTable :payload="differentialEntities" :max-cols="12" />
       </ResultBlock>
 
@@ -776,6 +777,9 @@
 import { computed, defineComponent, h, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import EChart from '../components/EChart.vue'
+import WorkflowChart from '../components/workflow/WorkflowChart.vue'
+import {coreDesigns} from '../utils/workflowVisuals/slotManifest'
+import {getWorkflowCapabilities,workflowVisualsEnabled} from '../api/workflowVisuals'
 import MethodBadge from '../components/MethodBadge.vue'
 import ResultBlock from '../components/result/ResultBlock.vue'
 import { WORKFLOW_TERMS } from '../constants/platformTerminology'
@@ -964,11 +968,13 @@ const summaryKpiCards = computed(() => {
     { label: 'FDR-ranked features', value: summary.value.significant_feature_count ?? 0 },
   ]
 })
+const fullSavedFields = ref([])
+onMounted(async()=>{try{const p=await getWorkflowCapabilities('sequence',props.jobId);fullSavedFields.value=p.fields||[]}catch{/* Existing legacy field catalog remains usable. */}})
 const fieldOptions = computed(() => {
   const fromCatalog = (featureCatalog.value?.features || []).map(row => row.feature_name).filter(Boolean)
   const fromPlots = plots.value?.comparison_capabilities?.features || []
   const fromMeta = (platform.value?.summary?.field_meta || []).map(row => row.field).filter(Boolean)
-  return [...new Set([...fromCatalog, ...fromPlots, ...fromMeta])].slice(0, 260)
+  return [...new Set([...fromCatalog, ...fromPlots, ...fromMeta, ...fullSavedFields.value.filter(r=>r.numeric).map(r=>r.field)])]
 })
 
 const selectedFeatureMeta = computed(() => {
@@ -976,7 +982,7 @@ const selectedFeatureMeta = computed(() => {
 })
 
 const featureCatalogTable = computed(() => {
-  const rows = featureCatalog.value?.features || []
+  const rows = fullSavedFields.value.length ? fullSavedFields.value : featureCatalog.value?.features || []
   return { columns: rows.length ? Object.keys(rows[0]) : [], rows, total: rows.length }
 })
 
@@ -2888,3 +2894,4 @@ onMounted(load)
   }
 }
 </style>
+

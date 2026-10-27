@@ -1,9 +1,12 @@
+from backend.apps.common.process_liveness import linux_process_has_exited,linux_pid_matches_record
 import os,time,uuid,subprocess,sys,ctypes
 from pathlib import Path
 from contextlib import contextmanager
 from django.conf import settings
 from . import artifacts as a
-def alive(pid):
+def alive(pid,recorded_at=None):
+    if int(pid)<=0:return False
+    if recorded_at is not None and not linux_pid_matches_record(pid,recorded_at):return False
     if os.name=='nt':
         from ctypes import wintypes
         kernel=ctypes.WinDLL('kernel32',use_last_error=True)
@@ -16,6 +19,7 @@ def alive(pid):
             code=wintypes.DWORD()
             return bool(kernel.GetExitCodeProcess(h,ctypes.byref(code))) and code.value==259
         finally:kernel.CloseHandle(h)
+    if linux_process_has_exited(pid):return False
     try:os.kill(int(pid),0);return True
     except OSError:return False
 def unlink_retry(p):
@@ -111,14 +115,16 @@ def start_consumer():
     p=a.root()/'locks'/'consumer.json'
     if p.is_file():
         try:
-            if alive(int(p.read_text())):return
+            if alive(int(p.read_text()),p.stat().st_mtime):return
         except (ValueError,OSError):pass
     log=a.root()/'reports'/'consumer.log';log.parent.mkdir(parents=True,exist_ok=True)
     env=os.environ.copy();env.update({k:'1' for k in ['OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','NUMEXPR_NUM_THREADS']})
     cmd=[sys.executable,str(settings.BASE_DIR/'manage.py'),'materialize_integration_visuals','--consume-requests','--idle-exit-seconds','45','--output-root',str(a.root())]
     with waiting_lock('launch'):
         state=a.root()/'locks'/'consumer_launch_state.json'
-        if state.exists() and alive(a.read(state).get('pid',0)):return
+        if state.exists():
+            recorded=a.read(state)
+            if alive(recorded.get('pid',0),recorded.get('launched',state.stat().st_mtime)):return
         with log.open('ab') as f:child=subprocess.Popen(cmd,cwd=settings.BASE_DIR,env=env,stdin=subprocess.DEVNULL,stdout=f,stderr=f,creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
         a.write(state,{'pid':child.pid,'launched':time.time()})
 def execute(sid,publish=True,resume=True,on_progress=None):

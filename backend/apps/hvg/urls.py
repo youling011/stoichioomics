@@ -5,7 +5,9 @@ from .views import (
     hvg_group_comparison_features, hvg_group_comparison_feature_detail,
 )
 from .research_views import research_endpoint
+from .visuals_views import urlpatterns as workflow_visuals_urls
 urlpatterns = [
+    *workflow_visuals_urls,
     path('<str:identifier>/research/<str:endpoint>/', research_endpoint),
     path('<str:identifier>/research/<str:endpoint>/<path:object_id>/', research_endpoint),
     path('<str:identifier>/summary/', hvg_summary),

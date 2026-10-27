@@ -1,8 +1,0 @@
-arabidopsis_thaliana
-bacillus_subtilis_gca_004328845
-danio_rerio
-drosophila_melanogaster
-escherichia_coli_str_k_12_substr_mg1655_gca_000005845
-mus_musculus_casteij
-oryza_sativa
-saccharomyces_cerevisiae

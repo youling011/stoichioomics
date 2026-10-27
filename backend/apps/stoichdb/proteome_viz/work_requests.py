@@ -1,3 +1,4 @@
+from backend.apps.common.process_liveness import linux_process_has_exited,linux_pid_matches_record
 import hashlib,json,os,time,uuid
 from .artifacts import root,read_json,write_json
 from . import METHOD_VERSION
@@ -6,7 +7,7 @@ def request_key(species_id,scope,chart_id,parameters):
     from .artifacts import implementation_hash
     from .source import release_id
     from backend.apps.stoichdb.models import OmicsDataset
-    from pathlib import Path
+    from backend.apps.common.host_paths import Path
     ds=OmicsDataset.objects.get(species__species_id=species_id,omics_type='proteome');signatures=[]
     for value in [ds.core_csv_path,ds.full_csv_path]:
         p=Path(value) if value else None;signatures.append([p.stat().st_size,p.stat().st_mtime_ns] if p and p.is_file() else None)
@@ -25,10 +26,11 @@ def consumer_alive():
     p=root()/'consumer.json'
     if not p.is_file():return False
     state=read_json(p)
-    try:return process_alive(int(state['pid']))
+    try:return state.get('state')!='stopped' and process_alive(int(state['pid']),state.get('heartbeat',p.stat().st_mtime))
     except (OSError,KeyError,ValueError):return False
-def process_alive(pid):
+def process_alive(pid,recorded_at=None):
     if pid<=0:return False
+    if recorded_at is not None and not linux_pid_matches_record(pid,recorded_at):return False
     if os.name=='nt':
         import ctypes
         from ctypes import wintypes
@@ -42,6 +44,7 @@ def process_alive(pid):
             status=wintypes.DWORD()
             return bool(kernel.GetExitCodeProcess(handle,ctypes.byref(status))) and status.value==259
         finally:kernel.CloseHandle(handle)
+    if linux_process_has_exited(pid):return False
     try:os.kill(pid,0);return True
     except ProcessLookupError:return False
     except PermissionError:return True

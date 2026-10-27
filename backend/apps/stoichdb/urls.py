@@ -6,7 +6,10 @@ from .proteome_viz import api as proteome_viz_api
 from .sequence_viz import api as sequence_viz_api
 from .compare_core import api as compare_core_api
 
+from .home_atlas_viz import api as home_atlas_viz_api
+
 urlpatterns = [
+    *home_atlas_viz_api.urlpatterns,
     *integration_viz_api.urlpatterns,
     *proteome_viz_api.urlpatterns,
     *sequence_viz_api.urlpatterns,

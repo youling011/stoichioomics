@@ -4,7 +4,7 @@ import csv
 import gzip
 import hashlib
 from dataclasses import dataclass
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any, Iterator
 
 from django.db.models import Q

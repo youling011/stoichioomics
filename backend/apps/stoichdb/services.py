@@ -8,7 +8,7 @@ import json
 import math
 import os
 from functools import lru_cache
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 from django.conf import settings
@@ -2580,7 +2580,8 @@ def list_species(query: str = '', domain: str = '', omics: str = '', clade: str 
             total_pages = max(1, math.ceil(total / size)) if total else 1
             page_num = min(page_num, total_pages)
             start = (page_num - 1) * size
-            items = [_species_to_light_summary(r) for r in qs[start:start + size]]
+            # These cards use Species fields only; avoid deserializing unused dataset blobs.
+            items = [_species_to_light_summary(r) for r in qs.prefetch_related(None)[start:start + size]]
             aggregate = _species_queryset_aggregate(qs) if aggregate_enabled else None
             payload = {
                 'items': items,

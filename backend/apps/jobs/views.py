@@ -1,4 +1,4 @@
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework import status

@@ -4,7 +4,7 @@ import os
 import subprocess
 import sys
 from datetime import timedelta
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 
 from django.conf import settings
 from django.db import transaction, connection

@@ -24,7 +24,9 @@ def status(key,sid,m):
 def ensure_consumer():
     if not getattr(settings,'SEQUENCE_VIZ_ON_DEMAND',True):return False
     folder=store.root();folder.mkdir(parents=True,exist_ok=True);state=folder/'consumer.json';lock=folder/'consumer_launch.lock'
-    if state.is_file() and process_alive(store.read_json(state).get('pid',0)):return True
+    if state.is_file():
+        recorded=store.read_json(state)
+        if recorded.get('state')!='stopped' and process_alive(recorded.get('pid',0),recorded.get('heartbeat',state.stat().st_mtime)):return True
     try:fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
     except FileExistsError:
         if time.time()-lock.stat().st_mtime>30:lock.unlink(missing_ok=True)

@@ -12,7 +12,7 @@ def comparison_payload(run,m,params):
     def csv(name):
         p=root/name
         if not p.exists():return []
-        try:return clean(pd.read_csv(p).to_dict('records'))
+        try:return clean(pd.read_csv(p,engine='python').to_dict('records'))
         except pd.errors.EmptyDataError:return []
     return clean({**js('hvg_nonhvg_summary.json'),'analysis_run_id':m['analysis_run_id'],
         'audit':csv('hvg_nonhvg_feature_audit.csv'),'features':csv('hvg_nonhvg_feature_comparison.csv'),

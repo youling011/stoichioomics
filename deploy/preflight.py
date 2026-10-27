@@ -3,7 +3,8 @@ import argparse
 import importlib.metadata
 import json
 import os
-from pathlib import Path, PureWindowsPath
+from pathlib import PureWindowsPath
+from backend.apps.common.host_paths import Path
 import platform
 
 
@@ -22,8 +23,8 @@ def main():
     django.setup()
     from django.conf import settings
     from django.db import connection, transaction
-    if settings.SETTINGS_MODULE != 'backend.config.settings_production':
-        parser.error('Select backend.config.settings_production explicitly')
+    if settings.SETTINGS_MODULE not in {'backend.config.settings_production', 'deploy.local_settings'}:
+        parser.error('Select the production settings or its explicit local overlay')
     report = {'environment': {'os': platform.system(), 'python': platform.python_version(), 'django': django.get_version()},
               'settings': settings.SETTINGS_MODULE, 'roots': [], 'path_samples': [],
               'database_checked': args.database,
@@ -39,7 +40,7 @@ def main():
         if connection.vendor != 'postgresql':
             parser.error('PostgreSQL required for read-only database inventory')
         from django.db.migrations.executor import MigrationExecutor
-        from backend.apps.stoichdb.models import OmicsDataset, FeatureFile, AnalysisArtifact, DataRelease, StorageObject
+        from backend.apps.stoichdb.models import OmicsDataset, FeatureFile, AnalysisArtifact, DataRelease, StorageObject, FunctionalAnnotationRelease
         with transaction.atomic():
             with connection.cursor() as cursor:
                 cursor.execute('SET TRANSACTION READ ONLY')
@@ -53,8 +54,11 @@ def main():
             for model, fields in [(OmicsDataset, ['core_csv_path', 'full_csv_path']),
                                   (FeatureFile, ['path']), (AnalysisArtifact, ['path']),
                                   (DataRelease, ['source_root', 'pipeline_root', 'platform_registry_path']),
-                                  (StorageObject, ['object_uri'])]:
-                for record in model.objects.order_by('pk').values('pk', *fields)[:args.sample_limit]:
+                                  (StorageObject, ['object_uri']), (FunctionalAnnotationRelease, ['source_dir'])]:
+                query = model.objects.order_by('pk')
+                if model is FunctionalAnnotationRelease:
+                    query = query.filter(is_active=True)
+                for record in query.values('pk', *fields)[:args.sample_limit]:
                     for field in fields:
                         raw = record[field]
                         if not raw:
@@ -62,11 +66,13 @@ def main():
                         path = Path(raw)
                         report['path_samples'].append({'model': model._meta.label, 'pk': record['pk'], 'field': field,
                             'path': raw, 'windows_absolute': PureWindowsPath(raw).is_absolute(),
-                            'exists_on_target': path.exists()})
+                            'exists_on_target': path.exists() if model is not DataRelease else None,
+                            'filesystem_checked': model is not DataRelease, 'required_runtime': model is not DataRelease})
         report['database_ready'] = report['pg_trgm'] and not report['pending_migrations']
     report['ok'] = all(row['ok'] for row in report['roots']) and report.get('database_ready', True)
     if args.database:
-        report['ok'] = report['ok'] and all(row['exists_on_target'] for row in report['path_samples'])
+        report['historical_path_warnings'] = [row for row in report['path_samples'] if not row['required_runtime'] and PureWindowsPath(row['path']).drive.casefold() == 'f:']
+        report['ok'] = report['ok'] and all(row['exists_on_target'] for row in report['path_samples'] if row['required_runtime'])
     with target.open('x', encoding='utf-8') as handle:
         json.dump(report, handle, ensure_ascii=False, indent=2)
     print('Read-only inventory written; ready=' + str(report['ok']))

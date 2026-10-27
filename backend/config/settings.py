@@ -184,3 +184,6 @@ INTEGRATION_VIZ_ROOT = Path(os.getenv('INTEGRATION_VIZ_ROOT', str(BASE_DIR / 'ru
 INTEGRATION_VIZ_COHORT_LIMIT = 32
 
 MIDDLEWARE = ['backend.apps.stoichdb.integration_viz.middleware.IntegrationCompressionMiddleware'] + MIDDLEWARE
+
+# Presentation-only local rollout flag; no analysis behavior changes.
+WORKFLOW_VISUALS_V2_ENABLED = os.getenv('WORKFLOW_VISUALS_V2_ENABLED', '1').lower() in {'1', 'true', 'yes'}

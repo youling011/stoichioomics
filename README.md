@@ -1,142 +1,45 @@
 # Stoichioomics
 
-Source-only snapshot of the active Stoichioomics platform: Django/DRF backend,
-Vue 3/Vite frontend, PostgreSQL schema migrations, analysis engines, feature
-extractors, data-ingestion utilities, and platform release builders.
+当前 Stoichioomics 平台的 Django/DRF、Vue 和科学计算源码，以及 **Nginx → Unix socket → uWSGI → Django → PostgreSQL/组学文件** 部署入口。发布快照：2026-10-27。
 
-本仓库保存当前平台所需的代码、算法、数据库迁移和配置模板。
-不包含生产数据库、大型组学文件、用户上传、已计算结果或探索性案例数据。
-这是代码归档版本，不是开箱即用的完整数据平台分发包。
+**科学数据库和数据文件尚未公开发布。** 已提供外置数据清单、下载/哈希校验/安全解包工具与数据库恢复入口；仓库目前不能仅凭一次 `git clone` 还原现有平台的全部真实数据、历史任务和所有页面内容。数据状态以 [`data-releases/release.example.json`](data-releases/release.example.json) 为准，未填写任何虚构下载地址或校验值。
 
-## Layout
+## 仓库内容
 
-| Path | Contents |
+| 目录/文件 | 内容 |
 | --- | --- |
-| `backend/` | API, models/migrations, analysis engines, validation, existing tests |
-| `frontend/` | Vue pages/components, SVG assets, Vite config and npm lockfile |
-| `scripts/` | Platform ingestion, analysis, indexing, release and validation utilities |
-| `tools/feature_extractors/` | Genome, transcriptome and proteome extraction algorithms |
-| `tools/phylo-tools.Dockerfile` | Optional phylogenetic tool environment |
-| `shared/schemas/` | Runtime feature registries and display contracts |
-| `configs/templates/` | Input sample-sheet format templates |
-| `docs/`, `shared/docs/` | Selected technical and release contracts |
-| `SOURCE_MANIFEST.json` | Exported file hashes, original locations, and sanitization reasons |
+| `backend/` | 实际 API、模型和迁移、HVG、序列分析、比较、可视化、文件下载等；`backend/validation` 是运行期输入校验功能 |
+| `frontend/` | 实际 Vue 页面、组件、样式与构建依赖锁文件 |
+| `tools/feature_extractors/` | 平台实际调用的 genome/transcriptome/proteome 三个外部提取器源码 |
+| `shared/schemas/` | 实际特征注册表、语义和展示契约 |
+| `scripts/` | 平台数据导入/发布/构建工具；包含直接被业务模块引用的正式案例构建代码 |
+| `compose.yaml`、`deploy/docker/` | 不依赖原电脑 C/G 盘控制目录的容器部署入口 |
+| `deploy/templates/` | 原有 Linux Nginx/uWSGI/systemd 参数化模板 |
+| `data-releases/` | 外置科学数据发布约定及状态，当前为 `not_published` |
+| `SOURCE_MANIFEST.json` | 文件来源、SHA256 及仅在导出副本中进行的配置适配 |
 
-## Configuration
+原始唯一主体 `proj` 的业务代码和算法按原文件复制；不在原目录修改代码或部署。导出副本中仅做凭据脱敏、依赖/仓库配置整理和部署适配。测试、浏览器 E2E、日志、验收/讨论文档、Word 生成工具、探索性数据、虚拟环境与构建产物不随本发布分发。
 
-Use Python 3.11 and Node.js with npm. Copy `.env.example` to `.env` in the project
-root, set your own PostgreSQL connection values and Django secret, and install
-the dependencies declared in the unified `requirements.txt`. The legacy HVG
-entry points and `environment-hvg.yml` refer to that same manifest.
+## 依赖
 
-Run commands from the repository root. The root environment template sets
-`STOICH_FEATURE_EXTRACTOR_ROOT=tools/feature_extractors` so the unchanged backend
-can locate the three bundled extractor modules. Use an absolute local path if
-starting the backend from a different working directory. Django reads the root
-`.env`; `backend/.env.example` is retained only as an existing module template.
+- 当前平台使用 Python 3.11；本机 Linux 已运行版本为 **3.11.17**、Django **5.2.18**、uWSGI **2.0.31**、Nginx **1.30.6**、Node **22.23.4**、PostgreSQL **16.14**。
+- `requirements.txt` 为最小应用依赖闭包：Windows 59 项、Linux 58 项；`deploy/requirements-production.txt` 在 Linux 额外安装固定版本 uWSGI。旧 Uvicorn 启动专用依赖已从发布清单移除，原项目依赖文件未被替换。
+- 三个旧 requirements 入口及 Conda 配置均指向同一主清单。Python 精确版本和容器基础镜像固定信息见构建文件。
+- 前端保留实际 5 项运行依赖、2 项构建依赖与 npm 锁文件；Playwright 及测试命令不在发行清单。
+- 数据重建/离线建树属于单独的维护工作；必要的额外工具见 `requirements-data-tools.txt` 和 `tools/phylo-tools.Dockerfile`。不需要为 Web 日常运行安装所有候选工具。
 
-`docker-compose.postgres.yml` describes PostgreSQL 16 using a named volume and
-reads its password from your local environment. The `.docker.yml` and
-`.gdrive.yml` variants retain the original deployment-specific storage choices;
-they are alternatives, not files to run together. The `.docker.yml` variant
-expects an existing external volume; the `.gdrive.yml` variant requires editing
-the host data-directory mount for another machine. No volume data is included.
+原 `hvg_optional.py` 的候选工具探测表仍按原业务源码保留：最小环境可能显示 `degraded`，不等于真实算法缺包，现有 Run 入口不依赖这些候选全部存在。发布没有通过删除业务功能来规避依赖。
 
-## Code setup reference
+## 首次部署
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-Copy-Item .env.example .env
-# Edit .env with private values before starting services.
-docker compose -f docker-compose.postgres.yml up -d
-.\.venv\Scripts\python.exe manage.py migrate
-.\.venv\Scripts\python.exe manage.py runserver
-```
+1. 阅读 [`deploy/README.md`](deploy/README.md)，复制 `.env.example` 为私有 `.env`，填写新密钥、数据库连接及外部数据根目录。
+2. 阅读 [`data-releases/README.md`](data-releases/README.md)。当前公共数据尚未发布；已有合法数据副本的部署者可按相同目录布局自行配置。
+3. 数据就位后构建并启动 Nginx/uWSGI。启动不自动下载数据、恢复数据库、运行迁移、重建科学结果或生成演示数据。
 
-In a separate terminal:
+完整命令、独立新数据库恢复、使用已有 PostgreSQL、TLS 和停机任务保护均见部署文档。当前所有容器和原业务数据库不会因本次 GitHub 上传被启动、停止或迁移。
 
-```powershell
-Set-Location frontend
-npm ci
-npm run dev
-```
+## 复现范围
 
-These are setup references, not a claim that the production platform can be
-recreated from code alone. Database-backed pages and analysis/download workflows
-need separately provisioned data. Many ingestion and release scripts retain
-their original local paths and require review before execution elsewhere.
-In particular, do not run database migration/flush or release-generation scripts
-against an existing deployment without inspecting their arguments.
+仓库保留当前已经实现的程序功能与算法；科学内容还要求相同版本的数据库、Core/Full 特征、注释、发布产物和公开案例。只有数据库备份而没有文件，或只有文件而没有匹配数据库，均不足以复现全部内容。数据库中的 G 盘路径通过现有 `host_paths` 适配到外部只读挂载，不做全库字符串替换。
 
-## Snapshot scope
-
-The original `proj` is the sole platform source. The three extractor modules
-were copied from the adjacent feature-extractor code directory because the
-backend loads them at runtime. Core application and algorithm code was copied
-byte-for-byte, except for removal of hardcoded credential defaults. Changes and
-file origins are recorded in `SOURCE_MANIFEST.json`.
-
-Excluded: PostgreSQL and SQLite databases/backups, raw/feature datasets, generated
-case artifacts, toy configuration bundles, uploaded files, runtime/workspace
-outputs, dependency environments, build output, report-writing scripts, Word
-documents, discussion/optimization reports, and the old README's bundled-demo
-instructions. Formal case/release **builder code** remains because current API
-modules and tests reference it; the corresponding case **data** is excluded.
-
-No license was inferred or added by this source export.
-
-## Optimization snapshot — 2026-10-23
-
-This update preserves the unified HVG research workflow, Core comparison runs,
-and proteome/genome/transcriptome/cross-omics visualizations from the active
-platform. It includes the new database migration, runtime figure/field contracts,
-frontend test scripts and end-to-end test configuration, optional requirement
-files, and the corresponding operational documentation. No production data or
-precomputed visualization payloads are shipped.
-
-`HVG_RESEARCH_ENABLED=1` in the environment templates preserves the active
-platform's non-secret feature switch. Existing source and algorithms are not
-refactored by this export. Local paths in documented case configurations remain
-as authored and refer to datasets that are not included.
-
-The previous dependency conflict was resolved in the 2026-10-24 snapshot.
-`requirements.txt` is now the single authoritative exact-pin manifest, including
-Django 5.2.18. The three legacy requirement entry points include that same file.
-`scripts/verify_dependencies.py` checks the installed interpreter against it;
-`deploy/requirements-production.txt` additionally pins uWSGI on Linux.
-
-The existing frontend scientific tests refer to two real-data `.json.gz` fixtures
-under `frontend/tests/{proteome,integration}/fixtures/`. Those computed data
-artifacts are excluded from this code-only release; tests requiring them need
-separately supplied local fixtures. The 12-row backend CSV and short test-selection
-lists are retained as small regression-test inputs. Browser tests also require a
-separately configured backend and the relevant data; generated reports and browser
-artifacts are excluded.
-
-## Dependency and deployment snapshot — 2026-10-24
-
-This optimization commit archives the authored dependency unification and
-deployment adaptation. It includes the opt-in production settings/URL overlay,
-readiness endpoint, explicit environment-file loading, Nginx/uWSGI/systemd
-templates, configuration renderer, read-only preflight tool, isolated validation
-helpers, and their regression tests. Lifecycle, atomic JSON/cache, portable path
-checks and adjacent-float histogram fixes are copied from the active source.
-
-See [`deploy/README.md`](deploy/README.md). The templates require target-specific
-Linux paths, a domain, certificates and a private environment file outside the
-repository. `deploy/production.env.example` contains placeholders only. The
-renderer writes configuration files; this archive operation does not install,
-start or restart services, provision certificates, or migrate any database.
-
-`DJANGO_SETTINGS_MODULE=backend.config.settings_production` explicitly selects
-the production overlay. `DJANGO_ENV_FILE` selects a private environment file;
-production defaults prevent accidental loading of the development `.env`.
-Set `STOICH_FEATURE_EXTRACTOR_ROOT` to the absolute installed location of this
-repository's `tools/feature_extractors` directory when using production settings.
-
-Deployment evidence/logs, local environment manifests, upgrade audit reports,
-private configurations, generated service files, database contents and real
-data fixtures are excluded. The included validation helper code is synthetic
-test infrastructure. No Linux service deployment or full production-data
-reproduction is implied by this source archive.
+私有用户、令牌、上传和个人历史任务不属于公共数据发布；不得直接把含这些内容的在线业务库当公共数据包。后台线程的跨崩溃恢复、任意规模数据的容量与性能，不由容器模板自动保证。没有自行添加原项目未明确授予的开源许可证，也没有替外部数据声明未经确认的许可。

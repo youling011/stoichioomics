@@ -2,6 +2,7 @@
 strict = true
 chdir = @PROJECT_ROOT@
 home = @VENV_ROOT@
+py-executable = @VENV_ROOT@/bin/python
 module = backend.config.wsgi:application
 env = DJANGO_SETTINGS_MODULE=backend.config.settings_production
 env = DJANGO_ENV_FILE=
@@ -21,3 +22,6 @@ worker-reload-mercy = @STOP_TIMEOUT_SECONDS@
 # No harakiri, max-requests, reload-on-rss, or development autoreload:
 # current background threads must not be silently killed by request recycling.
 # This does not make in-process tasks durable across crashes/restarts.
+
+# Drain application tasks before stopping; avoid scientific-library interpreter teardown faults.
+skip-atexit-teardown = true

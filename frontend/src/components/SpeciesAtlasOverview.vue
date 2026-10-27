@@ -12,14 +12,12 @@
       title="Atlas summary unavailable"
       :message="error"
       suggestion="Retry the atlas summary request. The species filters and registry list remain available."
-    >
-      <template #actions>
-        <button class="btn subtle" type="button" @click="$emit('retry')">Retry</button>
-      </template>
-    </ModuleState>
+      :retry="() => emit('retry')"
+    />
     <template v-else-if="payload">
       <div class="atlas-main-grid">
-        <article class="panel atlas-large-card">
+        <article class="panel atlas-large-card"><div class="atlas-card-frame">
+<div class="atlas-size-budget" aria-hidden="true" inert>
           <div class="atlas-card-header">
             <div>
               <h3>Domain x Omics Coverage Overview <span class="atlas-info">i</span></h3>
@@ -77,12 +75,15 @@
               <small>{{ coverageMode === 'pct' ? '75' : '' }}</small>
               <small>{{ coverageMode === 'pct' ? '100' : formatInt(maxCoverageCount) }}</small>
             </div>
-            <div class="atlas-updated">Last updated: {{ formatDate(payload.meta?.generated_at) }} <span>-</span></div>
+            <div class="atlas-updated">Last updated: {{ formatDate(budgetPayload.meta?.generated_at) }} <span>-</span></div>
           </div>
           <div class="atlas-info-strip">Coverage (%) = Species with available core features / Total species in domain. Click a cell to view species list.</div>
-        </article>
+        </div>
+<HomeAtlasCard id="D1" :card="payload.cards.D1" :meta="payload.meta" v-model:coverageMode="visualCoverageMode" v-model:genomeMode="visualGenomeMode" :retry="() => emit('retry')" @coverage-cell-click="emit('coverage-cell-click', $event)" />
+</div></article>
 
-        <article class="panel atlas-large-card">
+        <article class="panel atlas-large-card"><div class="atlas-card-frame">
+<div class="atlas-size-budget" aria-hidden="true" inert>
           <div class="atlas-card-header">
             <div>
               <h3>Genome Size Distribution by Domain <span class="atlas-info">i</span></h3>
@@ -95,7 +96,7 @@
           </div>
           <div class="atlas-genome-layout">
             <div class="atlas-genome-chart">
-              <EChart :option="genomeOption" :height="300" export-name="species_atlas_genome_distribution" />
+              <div class="echart-shell"><div class="chart-host" style="height:320px"></div></div>
             </div>
             <div class="atlas-species-counts">
               <strong>Species<br>Count</strong>
@@ -126,15 +127,18 @@
             </div>
           </div>
           <div class="atlas-info-strip">Genome sizes depend on assembly quality and annotation completeness.</div>
-        </article>
+        </div>
+<HomeAtlasCard id="D2" :card="payload.cards.D2" :meta="payload.meta" v-model:coverageMode="visualCoverageMode" v-model:genomeMode="visualGenomeMode" :retry="() => emit('retry')" @coverage-cell-click="emit('coverage-cell-click', $event)" />
+</div></article>
       </div>
 
       <div class="atlas-secondary-grid">
-        <article class="panel atlas-secondary-card">
+        <article class="panel atlas-secondary-card"><div class="atlas-card-frame">
+<div class="atlas-size-budget" aria-hidden="true" inert>
           <h3>Omics Data Availability (All Domains)</h3>
           <div class="atlas-donut-layout">
             <div class="atlas-donut-wrap">
-              <EChart :option="availabilityOption" :height="220" export-name="species_atlas_omics_availability" :show-exports="false" />
+              <div class="echart-shell"><div class="chart-host" style="height:320px"></div></div>
               <div class="atlas-donut-center"><strong>Total<br>{{ formatInt(totalSpecies) }}</strong><span>species</span></div>
             </div>
             <div class="atlas-availability-legend">
@@ -145,12 +149,15 @@
               </button>
             </div>
           </div>
-        </article>
+        </div>
+<HomeAtlasCard id="D3" :card="payload.cards.D3" :meta="payload.meta" v-model:coverageMode="visualCoverageMode" v-model:genomeMode="visualGenomeMode" :retry="() => emit('retry')" @coverage-cell-click="emit('coverage-cell-click', $event)" />
+</div></article>
 
-        <article class="panel atlas-secondary-card">
+        <article class="panel atlas-secondary-card"><div class="atlas-card-frame">
+<div class="atlas-size-budget" aria-hidden="true" inert>
           <h3>Average Core Feature Completeness</h3>
           <div class="atlas-rings-wrap">
-            <EChart :option="ringsOption" :height="140" export-name="species_atlas_core_completeness" :show-exports="false" />
+            <div class="echart-shell"><div class="chart-host" style="height:320px"></div></div>
             <div class="atlas-ring-labels">
               <div v-for="omicsKey in omicsKeys" :key="omicsKey">
                 <strong>{{ formatPct(completeness[omicsKey]?.pct) }}</strong>
@@ -159,43 +166,17 @@
               </div>
             </div>
           </div>
-        </article>
+        </div>
+<HomeAtlasCard id="D4" :card="payload.cards.D4" :meta="payload.meta" v-model:coverageMode="visualCoverageMode" v-model:genomeMode="visualGenomeMode" :retry="() => emit('retry')" @coverage-cell-click="emit('coverage-cell-click', $event)" />
+</div></article>
 
-        <article class="panel atlas-secondary-card atlas-top-table-card">
+        <article class="panel atlas-secondary-card atlas-top-table-card"><div class="atlas-card-frame">
+<div class="atlas-size-budget" aria-hidden="true" inert>
           <h3>Model Species Data Completeness (All 3 Omics)</h3>
-          <div class="table-wrap atlas-table-wrap">
-            <table class="table atlas-table">
-              <thead>
-                <tr>
-                  <th>Species</th>
-                  <th>Domain</th>
-                  <th>Genome</th>
-                  <th>Transcriptome</th>
-                  <th>Proteome</th>
-                  <th>Completeness</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="row in topSpecies" :key="row.species_id">
-                  <td><router-link :to="`/species/${row.species_id}`">{{ row.display_name }}</router-link></td>
-                  <td>{{ row.domain }}</td>
-                  <td>{{ formatPct(row.genome_pct) }}</td>
-                  <td>{{ formatPct(row.transcriptome_pct) }}</td>
-                  <td>{{ formatPct(row.proteome_pct) }}</td>
-                  <td>
-                    <div class="atlas-complete-cell">
-                      <strong>{{ formatPct(row.overall_pct) }}</strong>
-                      <span class="atlas-progress"><i :style="{ width: progressWidth(row.overall_pct) }"></i></span>
-                    </div>
-                  </td>
-                </tr>
-                <tr v-if="!topSpecies.length">
-                  <td colspan="6">No precomputed Core completeness rows are available for all three omics.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </article>
+          <div class="table-wrap atlas-table-wrap" style="height:300px"></div>
+</div>
+<HomeAtlasCard id="D5" :card="payload.cards.D5" :meta="payload.meta" v-model:coverageMode="visualCoverageMode" v-model:genomeMode="visualGenomeMode" :retry="() => emit('retry')" @coverage-cell-click="emit('coverage-cell-click', $event)" />
+</div></article>
       </div>
 
       <div class="atlas-tip-strip">
@@ -211,19 +192,37 @@
 import { computed, ref } from 'vue'
 import EChart from './EChart.vue'
 import ModuleState from './ModuleState.vue'
-import { coreCompletenessRingsOption, genomeSizeBoxOption, genomeSizeViolinOption, omicsAvailabilityOption } from '../utils/charts'
+import HomeAtlasCard from './HomeAtlasCard.vue'
 
 const props = defineProps({
   payload: { type: Object, default: null },
   loading: { type: Boolean, default: false },
   error: { type: String, default: '' },
 })
-defineEmits(['coverage-cell-click', 'retry'])
+const emit = defineEmits(['coverage-cell-click', 'retry'])
 
+const visualCoverageMode = ref('count'), visualGenomeMode = ref('violin')
 const coverageMode = ref('pct')
 const genomeMode = ref('box')
 const highlightAvailability = ref('')
 const omicsKeys = ['genome', 'transcriptome', 'proteome']
+
+// These values size the old responsive typography only. They are inert/aria-hidden,
+// never exported, and are not used in any new scientific calculation.
+const budgetPayload = computed(() => {
+  const p = props.payload, cards = p?.cards || {}, d1 = cards.D1?.data, d3 = cards.D3?.data
+  const make = r => ({ domain: r.group || 'All Domains', species_count: r.species_count,
+    ...Object.fromEntries(omicsKeys.map(m => [m, { available:r.layers[m].ready_species, coverage_pct:r.layers[m].coverage_pct, core_feature_count:p?.meta?.legacy_layout_field_counts?.[m] || 0 }])),
+    all_three: { available:0, coverage_pct:100 } })
+  const counts = Object.fromEntries((d3?.core_ready_counts || []).map(x => [x.n_ready_layers,x.n_species]))
+  return { meta:{...p?.meta,species_total:cards.D1?.n_source || 0},
+    domain_omics_coverage:{rows:(d1?.rows || []).map(make),all_domains:d1 ? make(d1.all_groups) : null},
+    genome_size_distribution:(cards.D2?.data.groups || []).map(r => ({domain:r.group,n:r.n_valid,median:r.median_mb})),
+    omics_availability:{all_3:counts[3] || 0,two_omics:counts[2] || 0,one_omic:counts[1] || 0,no_omics:counts[0] || 0},
+    core_feature_completeness:Object.fromEntries(omicsKeys.map(m => [m,{pct:100,field_count:p?.meta?.legacy_layout_field_counts?.[m] || 0}])),
+    top_species_completeness:[] }
+})
+
 const domainPalette = {
   Bacteria: '#2FBF9B',
   Fungi: '#F39A18',
@@ -236,20 +235,17 @@ const domainPalette = {
 }
 
 const coverageRows = computed(() => {
-  const rows = props.payload?.domain_omics_coverage?.rows || []
-  const all = props.payload?.domain_omics_coverage?.all_domains
+  const rows = budgetPayload.value?.domain_omics_coverage?.rows || []
+  const all = budgetPayload.value?.domain_omics_coverage?.all_domains
   return all ? [...rows, all] : rows
 })
-const genomeRows = computed(() => props.payload?.genome_size_distribution || [])
-const totalSpecies = computed(() => Number(props.payload?.meta?.species_total || props.payload?.domain_omics_coverage?.all_domains?.species_count || 0))
-const completeness = computed(() => props.payload?.core_feature_completeness || {})
-const topSpecies = computed(() => props.payload?.top_species_completeness || [])
+const genomeRows = computed(() => budgetPayload.value?.genome_size_distribution || [])
+const totalSpecies = computed(() => Number(budgetPayload.value?.meta?.species_total || budgetPayload.value?.domain_omics_coverage?.all_domains?.species_count || 0))
+const completeness = computed(() => budgetPayload.value?.core_feature_completeness || {})
+const topSpecies = computed(() => budgetPayload.value?.top_species_completeness || [])
 const maxCoverageCount = computed(() => Math.max(1, ...coverageRows.value.flatMap((row) => omicsKeys.map((key) => Number(row?.[key]?.available || 0)))))
-const genomeOption = computed(() => genomeMode.value === 'violin' ? genomeSizeViolinOption(genomeRows.value) : genomeSizeBoxOption(genomeRows.value))
-const availabilityOption = computed(() => omicsAvailabilityOption(props.payload?.omics_availability || {}, totalSpecies.value))
-const ringsOption = computed(() => coreCompletenessRingsOption(completeness.value))
 const availabilityRows = computed(() => {
-  const data = props.payload?.omics_availability || {}
+  const data = budgetPayload.value?.omics_availability || {}
   const rows = [
     { key: 'all_3', label: 'All 3 omics', value: Number(data.all_3 || 0), color: '#48C9A5' },
     { key: 'two_omics', label: '2 omics', value: Number(data.two_omics || 0), color: '#3D8AF5' },
@@ -264,7 +260,7 @@ function omicsLabel(key) {
 }
 
 function coreFieldCount(key) {
-  const all = props.payload?.domain_omics_coverage?.all_domains || {}
+  const all = budgetPayload.value?.domain_omics_coverage?.all_domains || {}
   return Number(all?.[key]?.core_feature_count || completeness.value?.[key]?.field_count || 0)
 }
 
@@ -337,3 +333,8 @@ function formatDate(value) {
 </script>
 
 
+
+<style scoped>
+.atlas-card-frame { position:relative; }
+.atlas-size-budget { visibility:hidden;pointer-events:none;user-select:none; }
+</style>

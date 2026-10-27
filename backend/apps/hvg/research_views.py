@@ -1,4 +1,4 @@
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 import json,io,csv
 from datetime import timedelta
 from django.http import FileResponse
@@ -34,13 +34,28 @@ def research_endpoint(request,identifier,endpoint='summary',object_id=None):
     if p.exists():
      import pandas as pd
      from backend.analysis_engine.hvg_research.artifacts import clean
-     try:data['tables'][name]=clean(pd.read_csv(p).to_dict('records'))
+     try:data['tables'][name]=clean(pd.read_csv(p,engine='python').to_dict('records'))
      except pd.errors.EmptyDataError:data['tables'][name]=[]
    return ok(data)
   if endpoint=='contexts':return ok({'rows':[{k:v for k,v in c.items() if k!='directory'} for c in m.get('contexts',[])],'total':len(m.get('contexts',[])),'analysis_run_id':m['analysis_run_id'],'schema_version':m['schema_version']})
   if endpoint=='features' and object_id:return ok(service.feature_detail(run,m,object_id,params))
   if endpoint=='genes':return ok(service.gene_detail(run,m,object_id,params))
   if endpoint=='visuals':
+   if params.get('presentation')=='workflow_viz_v2':
+    from django.conf import settings
+    from backend.apps.common.workflow_visuals.contracts import parameters
+    from .visuals_v2 import KINDS,Source,build
+    if not getattr(settings,'WORKFLOW_VISUALS_V2_ENABLED',True):raise FileNotFoundError('workflow_visuals_v2_disabled')
+    parameters(request.query_params)
+    if object_id not in KINDS:raise ValueError('Unknown workflow visual kind')
+    bundle=build(Source(run,m,True),KINDS[object_id],{**params,'panel_profile':object_id})
+    bundle.packet['legacy_kind']=object_id
+    prefix='/api/hvg/'+identifier+'/visuals/'+KINDS[object_id]+'/'
+    bundle.packet['exports']={'plot':prefix+'export/?export_scope=plot','source':prefix+'export/?export_scope=source','records':prefix+'records/'}
+    from .visuals_geometry import original_geometry
+    result=bundle.public()
+    result['geometry_profile']=original_geometry(run,m,object_id,{**params,'context_id':bundle.packet['context_id']},bundle.packet['source_signature'])
+    return ok(result)
    from .research_visuals import visuals
    return ok(visuals(run,m,object_id,params))
   if endpoint=='plots':return ok(service.plots(run,m,object_id,params))

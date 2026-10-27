@@ -53,7 +53,7 @@ def original_table(run,key,params=None):
  path=run/ORIGINAL_TABLES[key]
  if not path.exists():return pd.DataFrame([{'status':'not_generated','reason':'This run did not save '+ORIGINAL_TABLES[key]}])
  if path.suffix=='.csv':
-  try:f=pd.read_csv(path)
+  try:f=pd.read_csv(path,engine='python')
   except pd.errors.EmptyDataError:f=pd.DataFrame()
  else:
   data=json.loads(path.read_text(encoding='utf-8'))
@@ -70,7 +70,7 @@ def _json(run,rel):
 def _csv(run,rel):
  p=run/rel
  if not p.is_file():return pd.DataFrame()
- try:return pd.read_csv(p)
+ try:return pd.read_csv(p,engine='python')
  except pd.errors.EmptyDataError:return pd.DataFrame()
 
 def _finite(f,*cols):

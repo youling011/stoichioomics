@@ -3,7 +3,7 @@ from __future__ import annotations
 import csv
 import json
 from functools import lru_cache
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 from django.conf import settings
@@ -40,6 +40,12 @@ def _registry_path(release_id: str = "") -> Path:
 
 def _p2_registry_path(release_id: str = "") -> Path:
     return _release_root(release_id) / "stage6_platform_registry" / "phylogeny_p2_registry.json"
+
+
+def _artifact_path(value: str) -> Path:
+    # Registries retain Windows separators; normalize only while opening a file.
+    artifact = Path(str(value).replace("\\", "/"))
+    return Path(settings.BASE_DIR) / artifact
 
 
 def _read_json(path: Path, default: Any | None = None) -> Any:
@@ -150,8 +156,8 @@ def tree_payload(release_id: str = "") -> dict[str, Any]:
     if not registry.get("available"):
         raise PhylogenyNotFound(f"Unknown phylogeny release: {release_id or DEFAULT_RELEASE_ID}")
     tree_info = registry.get("tree") or {}
-    tree_path = Path(settings.BASE_DIR) / str(tree_info.get("newick_path", ""))
-    tip_map_path = Path(settings.BASE_DIR) / str(tree_info.get("tip_map_path", ""))
+    tree_path = _artifact_path(tree_info.get("newick_path", ""))
+    tip_map_path = _artifact_path(tree_info.get("tip_map_path", ""))
     newick = tree_path.read_text(encoding="utf-8") if tree_path.exists() else ""
     return {
         "release_id": registry.get("release_id"),
@@ -169,9 +175,9 @@ def validation_payload(release_id: str = "") -> dict[str, Any]:
     if not registry.get("available"):
         raise PhylogenyNotFound(f"Unknown phylogeny release: {release_id or DEFAULT_RELEASE_ID}")
     qc = registry.get("qc") or {}
-    report_path = Path(settings.BASE_DIR) / str(qc.get("validation_report_path", ""))
-    metrics_path = Path(settings.BASE_DIR) / str(qc.get("qc_metrics_path", ""))
-    rank_path = Path(settings.BASE_DIR) / str(qc.get("rank_completeness_path", ""))
+    report_path = _artifact_path(qc.get("validation_report_path", ""))
+    metrics_path = _artifact_path(qc.get("qc_metrics_path", ""))
+    rank_path = _artifact_path(qc.get("rank_completeness_path", ""))
     report = _read_json(report_path)
     return {
         "release_id": registry.get("release_id"),
@@ -195,7 +201,7 @@ def p2_payload(release_id: str = "") -> dict[str, Any]:
 
 def trait_matrix(release_id: str = "") -> list[dict[str, str]]:
     p2 = p2_payload(release_id)
-    path = Path(settings.BASE_DIR) / str((p2.get("trait_matrix") or {}).get("path", ""))
+    path = _artifact_path((p2.get("trait_matrix") or {}).get("path", ""))
     return _read_csv(path)
 
 
@@ -203,10 +209,10 @@ def _active_tree_newick(release_id: str = "") -> str:
     registry = registry_payload(release_id)
     p2 = registry.get("p2") or _read_json(_p2_registry_path(release_id))
     analysis_tree = p2.get("analysis_grade_tree") or {}
-    analysis_path = Path(settings.BASE_DIR) / str(analysis_tree.get("newick_path", ""))
+    analysis_path = _artifact_path(analysis_tree.get("newick_path", ""))
     if analysis_path.exists():
         return analysis_path.read_text(encoding="utf-8")
-    tree_path = Path(settings.BASE_DIR) / str((registry.get("tree") or {}).get("newick_path", ""))
+    tree_path = _artifact_path((registry.get("tree") or {}).get("newick_path", ""))
     return tree_path.read_text(encoding="utf-8") if tree_path.exists() else ""
 
 
@@ -222,7 +228,7 @@ def signal_payload(payload: dict[str, Any] | None = None) -> dict[str, Any]:
     if not features:
         raise PhylogenyNotFound("No supported feature was requested.")
     if not readiness.get("pgls_eligible"):
-        path = Path(settings.BASE_DIR) / str(readiness.get("signal_readiness_path", ""))
+        path = _artifact_path(readiness.get("signal_readiness_path", ""))
         rows = [row for row in _read_csv(path) if row.get("feature") in features]
         return {
             "release_id": release_id,
@@ -255,7 +261,7 @@ def pgls_payload(payload: dict[str, Any] | None = None) -> dict[str, Any]:
     p2 = p2_payload(release_id)
     readiness = p2.get("analysis_readiness") or {}
     if not readiness.get("pgls_eligible"):
-        path = Path(settings.BASE_DIR) / str(readiness.get("pgls_readiness_path", ""))
+        path = _artifact_path(readiness.get("pgls_readiness_path", ""))
         rows = [row for row in _read_csv(path) if row.get("formula") == formula]
         return {
             "release_id": release_id,
@@ -283,7 +289,7 @@ def pgls_payload(payload: dict[str, Any] | None = None) -> dict[str, Any]:
 
 def case1_phylogeny_payload(release_id: str = "") -> dict[str, Any]:
     p2 = p2_payload(release_id)
-    path = Path(settings.BASE_DIR) / str((p2.get("case1_phylogeny") or {}).get("path", ""))
+    path = _artifact_path((p2.get("case1_phylogeny") or {}).get("path", ""))
     payload = _read_json(path)
     if not payload:
         raise PhylogenyNotFound("Case 1 phylogeny readiness artifact is missing.")
@@ -294,7 +300,7 @@ def species_context(species_id: str, release_id: str = "") -> dict[str, Any]:
     registry = registry_payload(release_id)
     if not registry.get("available"):
         raise PhylogenyNotFound(f"Unknown phylogeny release: {release_id or DEFAULT_RELEASE_ID}")
-    tip_map_path = Path(settings.BASE_DIR) / str((registry.get("tree") or {}).get("tip_map_path", ""))
+    tip_map_path = _artifact_path((registry.get("tree") or {}).get("tip_map_path", ""))
     p2 = registry.get("p2") or _read_json(_p2_registry_path(release_id))
     p2_ready = bool((p2.get("analysis_readiness") or {}).get("pgls_eligible"))
     p2_species = {row.get("species_id") for row in trait_matrix(release_id)} if p2_ready else set()

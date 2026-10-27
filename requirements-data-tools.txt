@@ -1,0 +1,3 @@
+# Explicit offline data-building utilities only; not required for Web serving.
+-r requirements.txt
+duckdb==1.5.4

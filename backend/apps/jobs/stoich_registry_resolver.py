@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import re
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any, Dict, Iterable
 
 import pandas as pd

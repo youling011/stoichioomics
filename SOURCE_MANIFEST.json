@@ -1,51 +1,58 @@
 {
-  "snapshot_date": "2026-10-24",
-  "previous_commit": "c02fb77c281ed97d3aefd4595870b47abee9e5d9",
-  "scope": "platform source only; no datasets or databases",
+  "snapshot_date": "2026-10-27",
+  "previous_commit": "91202d7896bee705d85c624e384c6f7d8aa03e7b",
   "source_identity": "stoich_platform_postgres_open_search_v6_2_perf_fix/proj",
+  "data_release_status": "not_published",
   "manifest_excludes_itself": true,
   "files": [
     {
-      "path": ".env.example",
-      "origin": "export metadata",
-      "sha256": "a818c6187d98db0205fe5cfa5a658ea0c7e4dd0ffb498ae4501a9360dc3fd840",
-      "size_bytes": 472,
-      "change": "repository configuration/documentation"
+      "path": ".dockerignore",
+      "origin": "release/deployment packaging",
+      "sha256": "d5682a169d638d886903d9a90a9e47d80aac2e3db055a0e996a93b59cef24bcd",
+      "size_bytes": 238,
+      "change": "portable deployment/data interface/documentation"
     },
     {
-      "path": ".env.postgres.example",
-      "origin": "proj/.env.postgres.example",
-      "sha256": "c622e6ec67e6004da9f380fee405f1362337f473e1056be2ed64f40b2a47fd6e",
-      "size_bytes": 291,
-      "change": "credential sanitization/configuration template"
+      "path": ".env.example",
+      "origin": "release/deployment packaging",
+      "sha256": "b2059c15380667b9a8c73ea3612a5ad0d7a5581d384752f5391f84b680b3fa96",
+      "size_bytes": 1001,
+      "change": "portable deployment/data interface/documentation"
     },
     {
       "path": ".gitattributes",
-      "origin": "export metadata",
-      "sha256": "1d1291a896ab0a21869621ad68e2345ceca4997c6beb013d2ed773b4eeaea28a",
-      "size_bytes": 63,
-      "change": "repository configuration/documentation"
+      "origin": "release/deployment packaging",
+      "sha256": "677167107918fd3da9f665d2e3a4ec1cb77dd84635b0b794f318c0a6a06a9f53",
+      "size_bytes": 93,
+      "change": "portable deployment/data interface/documentation"
     },
     {
       "path": ".gitignore",
-      "origin": "export metadata",
-      "sha256": "7ab52e93cfd9e96ae83dc0216a99def9ab3dfa7ac99bc0a24130590813c1c28f",
-      "size_bytes": 934,
-      "change": "repository configuration/documentation"
+      "origin": "release/deployment packaging",
+      "sha256": "10c71bd2ecf2cad9816eb1bb5a8c1b08f93701e2333a9ff652aee0f17920b262",
+      "size_bytes": 824,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
+      "path": ".python-version",
+      "origin": "release/deployment packaging",
+      "sha256": "ed3f67b5e7f8b3d718499650318086c2f60b06202192d707b2d24b77dd45cff6",
+      "size_bytes": 9,
+      "change": "portable deployment/data interface/documentation"
     },
     {
       "path": "README.md",
-      "origin": "export metadata",
-      "sha256": "a787c6a022352a8e6875730db2e0f08acf06bf73ac1d2c4e5c2b96058e53239b",
-      "size_bytes": 7613,
-      "change": "repository configuration/documentation"
+      "origin": "release/deployment packaging",
+      "sha256": "b687466388c00d388871cf1c1e1568dfde0db5a4a692f2361e240a556dab4145",
+      "size_bytes": 4613,
+      "change": "portable deployment/data interface/documentation"
     },
     {
       "path": "backend/.env.example",
-      "origin": "proj/backend/.env.example",
-      "sha256": "299adb04950fc2eef9b56e1fe16b7d940d0f657d3636185d57aca5ef5d33750b",
-      "size_bytes": 38,
-      "change": "unchanged"
+      "origin": "release/deployment packaging",
+      "sha256": "ef4ae134926f796e370f87d05573af3a0aa7c15640d9f0f5d79b04b793900f03",
+      "size_bytes": 99,
+      "change": "portable deployment/data interface/documentation"
     },
     {
       "path": "backend/__init__.py",
@@ -272,34 +279,6 @@
       "change": "unchanged"
     },
     {
-      "path": "backend/analysis_engine/hvg_research/tests/__init__.py",
-      "origin": "proj/backend/analysis_engine/hvg_research/tests/__init__.py",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "size_bytes": 0,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/analysis_engine/hvg_research/tests/test_lifecycle.py",
-      "origin": "proj/backend/analysis_engine/hvg_research/tests/test_lifecycle.py",
-      "sha256": "05b2c68c564b36e79371e39c855e7d1fa05c493804e3be4d5b481ce4e4a975bc",
-      "size_bytes": 2933,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/analysis_engine/hvg_research/tests/test_release_contracts.py",
-      "origin": "proj/backend/analysis_engine/hvg_research/tests/test_release_contracts.py",
-      "sha256": "4fcd22f7ee40bad5b886b6924c59286b0da84d45d043dbe2ad65114bafc7a0cd",
-      "size_bytes": 4474,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/analysis_engine/hvg_research/tests/test_research.py",
-      "origin": "proj/backend/analysis_engine/hvg_research/tests/test_research.py",
-      "sha256": "862e220ce83adb92846157e5a9ffefb956b095dd25694eeb30f5850cdbc074a9",
-      "size_bytes": 10803,
-      "change": "unchanged"
-    },
-    {
       "path": "backend/analysis_engine/hvg_research/unified_downstream.py",
       "origin": "proj/backend/analysis_engine/hvg_research/unified_downstream.py",
       "sha256": "190a41af4e6358a935671618424446efb0031ca337ed54e164caa99689871406",
@@ -423,20 +402,6 @@
       "origin": "proj/backend/analysis_engine/phase1/sample_consensus_hvg.py",
       "sha256": "6c8d360e5805bda7594ce92f9d8a18337078e54136236c2e73fb5e1161477e1e",
       "size_bytes": 3645,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/analysis_engine/phase1/tests/__init__.py",
-      "origin": "proj/backend/analysis_engine/phase1/tests/__init__.py",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "size_bytes": 0,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/analysis_engine/phase1/tests/test_primary_hvg.py",
-      "origin": "proj/backend/analysis_engine/phase1/tests/test_primary_hvg.py",
-      "sha256": "05719a51028f911dc51ccb2639d717e3904a4576f1e01dc4a46fce60f9a5c030",
-      "size_bytes": 186,
       "change": "unchanged"
     },
     {
@@ -594,20 +559,6 @@
       "change": "unchanged"
     },
     {
-      "path": "backend/analysis_engine/phase2/tests/__init__.py",
-      "origin": "proj/backend/analysis_engine/phase2/tests/__init__.py",
-      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
-      "size_bytes": 1,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/analysis_engine/phase2/tests/test_group_comparison.py",
-      "origin": "proj/backend/analysis_engine/phase2/tests/test_group_comparison.py",
-      "sha256": "5d3dda2bd851b002c1b678e10708bed88b391730f960616b655adadf910d8b56",
-      "size_bytes": 21038,
-      "change": "unchanged"
-    },
-    {
       "path": "backend/analysis_engine/phase2/validate.py",
       "origin": "proj/backend/analysis_engine/phase2/validate.py",
       "sha256": "abe0b0079c149ddd36b49f888f3e0258a88945bd29b8a8e6ff30ad466d0d9f6c",
@@ -657,10 +608,24 @@
       "change": "unchanged"
     },
     {
+      "path": "backend/apps/common/host_paths.py",
+      "origin": "proj/backend/apps/common/host_paths.py",
+      "sha256": "17269f3d354cdee8f02f51e128c04f2a21a9f78f51b1a2134db64694f5bd927c",
+      "size_bytes": 2008,
+      "change": "unchanged"
+    },
+    {
       "path": "backend/apps/common/json_safe.py",
       "origin": "proj/backend/apps/common/json_safe.py",
       "sha256": "129046468223be81c5749fb2afe1c154f926c695eb5be1f8914a762ec93e57f1",
       "size_bytes": 1542,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/process_liveness.py",
+      "origin": "proj/backend/apps/common/process_liveness.py",
+      "sha256": "d7ecf467f184b60f35e629e286dcda56b50c9fa9109ee998ce38b464cfcb118f",
+      "size_bytes": 1180,
       "change": "unchanged"
     },
     {
@@ -685,6 +650,76 @@
       "change": "unchanged"
     },
     {
+      "path": "backend/apps/common/workflow_visuals/__init__.py",
+      "origin": "proj/backend/apps/common/workflow_visuals/__init__.py",
+      "sha256": "b4a1bca93a75f9c00522220d3e3ee12da558da6292d08c4b2f8b03c12992197d",
+      "size_bytes": 78,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/workflow_visuals/cache.py",
+      "origin": "proj/backend/apps/common/workflow_visuals/cache.py",
+      "sha256": "f1c6c49be3a5a7d6ab029b9a31bd8cc74ece71c371722382a906f55ff66de2af",
+      "size_bytes": 2851,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/workflow_visuals/contracts.py",
+      "origin": "proj/backend/apps/common/workflow_visuals/contracts.py",
+      "sha256": "d15f15b57def89aaaa22fe27c12d5752eaf043c0451a3ab92813745b631482d4",
+      "size_bytes": 5477,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/workflow_visuals/design_registry.json",
+      "origin": "proj/backend/apps/common/workflow_visuals/design_registry.json",
+      "sha256": "596f9c6261fe82a3919c737e393c31853c3c524fa8dca9ed6b6d1c765284bf64",
+      "size_bytes": 229854,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/workflow_visuals/exports.py",
+      "origin": "proj/backend/apps/common/workflow_visuals/exports.py",
+      "sha256": "50738694adc1eb755ce055a5a9b7d3cb527ad03c0bb830441c86b570b93ac210",
+      "size_bytes": 2690,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/workflow_visuals/panels.py",
+      "origin": "proj/backend/apps/common/workflow_visuals/panels.py",
+      "sha256": "c340a346462fae8a1f2daefc3984eb0a5932ea949410777f79b1db9c15cfb686",
+      "size_bytes": 8464,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/workflow_visuals/presentation.py",
+      "origin": "proj/backend/apps/common/workflow_visuals/presentation.py",
+      "sha256": "b2bbf763d5a6c0bffa0f838e2e6672d484023ceaa28d5cb6069b1bdf6e3797ba",
+      "size_bytes": 19371,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/workflow_visuals/presentation_specs.py",
+      "origin": "proj/backend/apps/common/workflow_visuals/presentation_specs.py",
+      "sha256": "860f079d83d78a588dc6f13233e08eb392a8a0a2caff06a8e5295e73c3a29dc4",
+      "size_bytes": 2309,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/workflow_visuals/records.py",
+      "origin": "proj/backend/apps/common/workflow_visuals/records.py",
+      "sha256": "54ddac5aecdfca35f15f1a69100a43e27f6d8339677f6e57642cfce327beef61",
+      "size_bytes": 1584,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/common/workflow_visuals/statistics.py",
+      "origin": "proj/backend/apps/common/workflow_visuals/statistics.py",
+      "sha256": "eb03468b05a22769a9333e45a32e70984ef5903e17fbafa0c6ec95c3d0f64f04",
+      "size_bytes": 3642,
+      "change": "unchanged"
+    },
+    {
       "path": "backend/apps/core/__init__.py",
       "origin": "proj/backend/apps/core/__init__.py",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -703,13 +738,6 @@
       "origin": "proj/backend/apps/core/deployment.py",
       "sha256": "d03c1173acc62dfb593e7cddaeb592de8f61640e602bf1c88cd40eae12afa9c3",
       "size_bytes": 1175,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/core/test_deployment.py",
-      "origin": "proj/backend/apps/core/test_deployment.py",
-      "sha256": "b57398fb628cd7b6c100ae2cbc1a3107e2efaf003499a5fdb6e4f7814f72d156",
-      "size_bytes": 6998,
       "change": "unchanged"
     },
     {
@@ -806,8 +834,8 @@
     {
       "path": "backend/apps/hvg/research_originals.py",
       "origin": "proj/backend/apps/hvg/research_originals.py",
-      "sha256": "5df2fbe1e6362a47429fead25a6a4bc34ce51a4c689b15cda7b6b100440ee1c5",
-      "size_bytes": 16876,
+      "sha256": "ff89467196031fbbfe10be057bec39d1c81590aa5dea8d0b6eeea90d8a8d37eb",
+      "size_bytes": 16908,
       "change": "unchanged"
     },
     {
@@ -820,15 +848,15 @@
     {
       "path": "backend/apps/hvg/research_services.py",
       "origin": "proj/backend/apps/hvg/research_services.py",
-      "sha256": "a8ba9018d95fe7e7719c918d710f9f8972c4e8dce827467d587874be187324e7",
-      "size_bytes": 13776,
+      "sha256": "6628f791f46d98bf7fa87021aefef11f11938db8ba464df16f92a750440e65ff",
+      "size_bytes": 13831,
       "change": "unchanged"
     },
     {
       "path": "backend/apps/hvg/research_views.py",
       "origin": "proj/backend/apps/hvg/research_views.py",
-      "sha256": "26c5dcd0f00d4a42ff3f8bd49eda1058feb6fcb891c640aa1da1369700a1ad10",
-      "size_bytes": 7808,
+      "sha256": "8d50c856ed383eca6ad1e912d0a079a10dc1e9d61757b33f6501816a10078b85",
+      "size_bytes": 8910,
       "change": "unchanged"
     },
     {
@@ -841,64 +869,22 @@
     {
       "path": "backend/apps/hvg/services.py",
       "origin": "proj/backend/apps/hvg/services.py",
-      "sha256": "3b17ec0aa9baff2bc3e3748e793b6b8a8141363645e97214c9f519a472834365",
-      "size_bytes": 23375,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/hvg/tests/__init__.py",
-      "origin": "proj/backend/apps/hvg/tests/__init__.py",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "size_bytes": 0,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/hvg/tests/test_integrated_visuals.py",
-      "origin": "proj/backend/apps/hvg/tests/test_integrated_visuals.py",
-      "sha256": "46caa3a6020d2ee2ff1e6ccc566644b190c304ab711e1134faef142ada54ce04",
-      "size_bytes": 5475,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/hvg/tests/test_original_fusion.py",
-      "origin": "proj/backend/apps/hvg/tests/test_original_fusion.py",
-      "sha256": "01338c814d4d6e4c8de0d05806d4a2d78d33930dc222b81f2b417ed530db02f3",
-      "size_bytes": 5593,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/hvg/tests/test_research_api.py",
-      "origin": "proj/backend/apps/hvg/tests/test_research_api.py",
-      "sha256": "89db3bb29ff944cab1164d0b6ff8e3b2aa48621f6c896cd175076d3b5ea7c4eb",
-      "size_bytes": 87,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/hvg/tests/test_research_repository.py",
-      "origin": "proj/backend/apps/hvg/tests/test_research_repository.py",
-      "sha256": "d0c2bf3af66634c4a098cbeb714213313df4b6381c50661e74b876c14afb8583",
-      "size_bytes": 93,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/hvg/tests/test_unified_workflow.py",
-      "origin": "proj/backend/apps/hvg/tests/test_unified_workflow.py",
-      "sha256": "e7674f91b7c32b2a1c07d2bf0f90aa3ddf1374fd1b472e1d0c758d32f393e0a1",
-      "size_bytes": 6831,
+      "sha256": "8599330675461c5ba5f76194f9be56bd5b990805cb8b5708dd612d52fc9d5703",
+      "size_bytes": 23398,
       "change": "unchanged"
     },
     {
       "path": "backend/apps/hvg/unified_presentation.py",
       "origin": "proj/backend/apps/hvg/unified_presentation.py",
-      "sha256": "177e61ffc61c9a8c620ec2e7ee9ee7ef01b1426f9347138c2713ddca94ec7a32",
-      "size_bytes": 1427,
+      "sha256": "bad848553dba471244d0e1d23963f4dfc40ea9aaa4054923f7ba994053540246",
+      "size_bytes": 1443,
       "change": "unchanged"
     },
     {
       "path": "backend/apps/hvg/urls.py",
       "origin": "proj/backend/apps/hvg/urls.py",
-      "sha256": "c54b62617e856f5eb55145d56a1b7510e1fd7c391e12b27da2db66c568c3c4c1",
-      "size_bytes": 1298,
+      "sha256": "654517d4595e2ab5e3cad3deb42b04aa15d54db6df6d7c2f5a4fa9e0059388fd",
+      "size_bytes": 1392,
       "change": "unchanged"
     },
     {
@@ -906,6 +892,27 @@
       "origin": "proj/backend/apps/hvg/views.py",
       "sha256": "4f249ab16bee70dc8063ea8667deb3bee9ff1acf282963453551031516c22041",
       "size_bytes": 5391,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/visuals_geometry.py",
+      "origin": "proj/backend/apps/hvg/visuals_geometry.py",
+      "sha256": "d00257c182ed462cfc89ac8bad42a2ba989d539dc93e4bff31e7aa5dc27b4e3f",
+      "size_bytes": 911,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/visuals_v2.py",
+      "origin": "proj/backend/apps/hvg/visuals_v2.py",
+      "sha256": "5b74439d2728ef98e2888926d1645d0a8c49caa2cf379ffb12e7292854ba2ddd",
+      "size_bytes": 35453,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/hvg/visuals_views.py",
+      "origin": "proj/backend/apps/hvg/visuals_views.py",
+      "sha256": "d2da56edf7df3fe13a4672ea7251dc8d16402668ce60690567b0f016059c1822",
+      "size_bytes": 2021,
       "change": "unchanged"
     },
     {
@@ -1009,36 +1016,15 @@
     {
       "path": "backend/apps/jobs/services.py",
       "origin": "proj/backend/apps/jobs/services.py",
-      "sha256": "ebc118b3a8a3ac3cd2434d59f1dd09e4fb0fc1b6233f2e338b28c498a218ea1b",
-      "size_bytes": 21890,
+      "sha256": "ad3756c663a8e745977ce02b3d43dd6757a35a48a81cb21144cb1e4073df3b2c",
+      "size_bytes": 21913,
       "change": "unchanged"
     },
     {
       "path": "backend/apps/jobs/stoich_registry_resolver.py",
       "origin": "proj/backend/apps/jobs/stoich_registry_resolver.py",
-      "sha256": "cf938dac7c8fcf9f98b3d3feab18040db35b28dc140addefa391abc92c9c7e79",
-      "size_bytes": 10769,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/jobs/tests/__init__.py",
-      "origin": "proj/backend/apps/jobs/tests/__init__.py",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "size_bytes": 0,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/jobs/tests/test_autoconfig_h5ad_semantics.py",
-      "origin": "proj/backend/apps/jobs/tests/test_autoconfig_h5ad_semantics.py",
-      "sha256": "3d731529a6d6a2931c33465fbee77e3cf445e83dd1ed4ac0e5af6de30ac44ea4",
-      "size_bytes": 1044,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/jobs/tests/test_hvg_research_workflow.py",
-      "origin": "proj/backend/apps/jobs/tests/test_hvg_research_workflow.py",
-      "sha256": "f59b67c191dd0fbd04875bba4fc0c6345d32d54a288fa14ebca1be06929a0965",
-      "size_bytes": 2343,
+      "sha256": "83f327a8e36ddf733be0d0553f66282bc054d163271e94b3d61888797b797803",
+      "size_bytes": 10792,
       "change": "unchanged"
     },
     {
@@ -1051,8 +1037,8 @@
     {
       "path": "backend/apps/jobs/views.py",
       "origin": "proj/backend/apps/jobs/views.py",
-      "sha256": "7f6b385175c4019a08184cc114e21a5a3beff0cc5645dee0c6d6fb4951f8ead7",
-      "size_bytes": 7919,
+      "sha256": "19af1e0951afa553d3c41ebd178e790994c218178cddeb4bd6ff735f1040669f",
+      "size_bytes": 7942,
       "change": "unchanged"
     },
     {
@@ -1072,8 +1058,8 @@
     {
       "path": "backend/apps/registry/services.py",
       "origin": "proj/backend/apps/registry/services.py",
-      "sha256": "4bdb0384dd2ed8b7ef10397f8c479b9c003418d2da4737b52fb1c23ed847fdeb",
-      "size_bytes": 4205,
+      "sha256": "7b4f20e5e40bededcd995962931ad26571e422df62b7d9467956ac2d1cb882b5",
+      "size_bytes": 4228,
       "change": "unchanged"
     },
     {
@@ -1142,29 +1128,15 @@
     {
       "path": "backend/apps/sequence_analysis/services.py",
       "origin": "proj/backend/apps/sequence_analysis/services.py",
-      "sha256": "da996a47cf23e0329d9affb2bf44c0ba2393f87f64e3b0a4602bf20a983764c1",
-      "size_bytes": 30203,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/sequence_analysis/test_deployment_lifecycle.py",
-      "origin": "proj/backend/apps/sequence_analysis/test_deployment_lifecycle.py",
-      "sha256": "0e07b6be6146531295c83dca288a2605da6dcf4be7886b12688bc7e186ee901d",
-      "size_bytes": 5444,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/sequence_analysis/test_model8_elemental.py",
-      "origin": "proj/backend/apps/sequence_analysis/test_model8_elemental.py",
-      "sha256": "24da580de61dda0e5385df6ca4e38a6ba38a8ae34c6c358ca3ea84d205a7a264",
-      "size_bytes": 3987,
+      "sha256": "9938e96d0c081aca97ee13b804de9bc1bb7c800958d4a99f2e27de73810b3368",
+      "size_bytes": 30423,
       "change": "unchanged"
     },
     {
       "path": "backend/apps/sequence_analysis/urls.py",
       "origin": "proj/backend/apps/sequence_analysis/urls.py",
-      "sha256": "f4b02b2d00af60eefc71bae93b3c75c7f34e5811fd7dc7d68adc7a5991b794ef",
-      "size_bytes": 2217,
+      "sha256": "9e660a12a553f2db965a370c11b17f1c036db449f06db00dac89c9b7d639f5ef",
+      "size_bytes": 2347,
       "change": "unchanged"
     },
     {
@@ -1172,6 +1144,20 @@
       "origin": "proj/backend/apps/sequence_analysis/views.py",
       "sha256": "29c170f845336127fa72386f994bf9d6c2d58e28394671e5092f235611ba765b",
       "size_bytes": 14535,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/visuals_v2.py",
+      "origin": "proj/backend/apps/sequence_analysis/visuals_v2.py",
+      "sha256": "a37f893042a0d9ba193f05a2a6739c02571a2d483cdd41d7b3bf237fa55a5281",
+      "size_bytes": 26617,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/sequence_analysis/visuals_views.py",
+      "origin": "proj/backend/apps/sequence_analysis/visuals_views.py",
+      "sha256": "83a7009d783956e2f286ce457208e3d4ab30bf878ff530bbac0d46246dbe23ba",
+      "size_bytes": 1995,
       "change": "unchanged"
     },
     {
@@ -1254,8 +1240,8 @@
     {
       "path": "backend/apps/stoichdb/compare_core/runs.py",
       "origin": "proj/backend/apps/stoichdb/compare_core/runs.py",
-      "sha256": "290f065667ae7f4ca50b589f4c1463f556acbba5ef1f6987e2a8fcf6486c8cef",
-      "size_bytes": 11896,
+      "sha256": "754b74561ef483e524053827e8fda7958017417ef051acc01ad71a5431a19be6",
+      "size_bytes": 11919,
       "change": "unchanged"
     },
     {
@@ -1310,8 +1296,8 @@
     {
       "path": "backend/apps/stoichdb/complete_core/datasource.py",
       "origin": "proj/backend/apps/stoichdb/complete_core/datasource.py",
-      "sha256": "e2bfb425325f35288aab69fadf5f93edeff75e626a944c36c44b54295ebb0037",
-      "size_bytes": 7001,
+      "sha256": "197167b1fac9aeb5ebb330b5f46874cb3a117606b51b5ed3ffd99ce1c9164350",
+      "size_bytes": 7024,
       "change": "unchanged"
     },
     {
@@ -1394,8 +1380,8 @@
     {
       "path": "backend/apps/stoichdb/feature_hub/registry.py",
       "origin": "proj/backend/apps/stoichdb/feature_hub/registry.py",
-      "sha256": "369e89622337f2c5cb87c113b2b2f10a4affb1f61a7849bcb51a91677b2a775e",
-      "size_bytes": 13907,
+      "sha256": "f3fe9afd6481f7deb0157b4f630bb77c0e0dc5801c76a62c48d648701be4368d",
+      "size_bytes": 13930,
       "change": "unchanged"
     },
     {
@@ -1408,15 +1394,71 @@
     {
       "path": "backend/apps/stoichdb/feature_hub/sources.py",
       "origin": "proj/backend/apps/stoichdb/feature_hub/sources.py",
-      "sha256": "87acaac3d5d542a84d9ef86f18cbdbe3b93f31a206f0a1542841d2ca1988440b",
-      "size_bytes": 9673,
+      "sha256": "aa4acd37af863ede75adf23cfdbff15499c2acd309c829a4bae251585a17fb08",
+      "size_bytes": 9696,
       "change": "unchanged"
     },
     {
       "path": "backend/apps/stoichdb/function_annotations.py",
       "origin": "proj/backend/apps/stoichdb/function_annotations.py",
-      "sha256": "c10a8c4afe6939bac87f48856d5a853a7449fee9d9f64495041e4a4e5f5ac54d",
-      "size_bytes": 41142,
+      "sha256": "47232d47bf96b5c9230a613a7c049cb0c5e4040b29734691468131166dbc946f",
+      "size_bytes": 41188,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/home_atlas_viz/__init__.py",
+      "origin": "proj/backend/apps/stoichdb/home_atlas_viz/__init__.py",
+      "sha256": "ffcec1b99193b21e44cbb28cfe76ffb2b40a7894c5bae370bf827cf6897301be",
+      "size_bytes": 84,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/home_atlas_viz/aggregates.py",
+      "origin": "proj/backend/apps/stoichdb/home_atlas_viz/aggregates.py",
+      "sha256": "dbd550a412068a626eb0f8bfe1d10cf7c65c65611007ee6b34990a21dca1dfd0",
+      "size_bytes": 15262,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/home_atlas_viz/api.py",
+      "origin": "proj/backend/apps/stoichdb/home_atlas_viz/api.py",
+      "sha256": "1591489aa666ea5a85aadd1d5c5bc01b2f517ed0a9b1e8f225ec2f28bd6a9b5b",
+      "size_bytes": 6512,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/home_atlas_viz/artifacts.py",
+      "origin": "proj/backend/apps/stoichdb/home_atlas_viz/artifacts.py",
+      "sha256": "448424913004871a850eb7e0e40393b28e69f0450698940d89463d7acc7537fc",
+      "size_bytes": 3560,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/home_atlas_viz/contracts.py",
+      "origin": "proj/backend/apps/stoichdb/home_atlas_viz/contracts.py",
+      "sha256": "ecd938d824a15a3b04500d011b302203f105cddec7af83d637693bd064916993",
+      "size_bytes": 5461,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/home_atlas_viz/core_diagnostics.py",
+      "origin": "proj/backend/apps/stoichdb/home_atlas_viz/core_diagnostics.py",
+      "sha256": "65b43d7ef3be1b97434292bbe242dab1a0a66d886a7cd9a821b8b0ac684b9718",
+      "size_bytes": 4273,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/home_atlas_viz/distribution.py",
+      "origin": "proj/backend/apps/stoichdb/home_atlas_viz/distribution.py",
+      "sha256": "5119ac3057ad03f81129e000dfe1161bca7f55ed5d02e47f5cb888a62a28c277",
+      "size_bytes": 2548,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/home_atlas_viz/scope.py",
+      "origin": "proj/backend/apps/stoichdb/home_atlas_viz/scope.py",
+      "sha256": "eab6dc195bff695b39eea3d57e5a0da040b30a99dc228c8b489605f630a5242b",
+      "size_bytes": 2404,
       "change": "unchanged"
     },
     {
@@ -1424,13 +1466,6 @@
       "origin": "proj/backend/apps/stoichdb/id_mapping.py",
       "sha256": "fc2edac1cc3003027c011d635f349bd2575b9ae79e97149bc3295205f03985aa",
       "size_bytes": 45560,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/integration_viz/README.md",
-      "origin": "proj/backend/apps/stoichdb/integration_viz/README.md",
-      "sha256": "35cb8f47cc401bdec765bd6a0c816c4badc13b3643a0be1cb162a974d8e41a5d",
-      "size_bytes": 5181,
       "change": "unchanged"
     },
     {
@@ -1604,8 +1639,8 @@
     {
       "path": "backend/apps/stoichdb/integration_viz/source.py",
       "origin": "proj/backend/apps/stoichdb/integration_viz/source.py",
-      "sha256": "9b3aee7e69b3a9c7af33863a1e7ac42ed61bc625ade69cff62e068aa7e5c484d",
-      "size_bytes": 4821,
+      "sha256": "4232a95d4ed87bc44166ca4a04c769dcb3b48d1d3deaa2ede7a3feeb217660a8",
+      "size_bytes": 4850,
       "change": "unchanged"
     },
     {
@@ -1625,8 +1660,8 @@
     {
       "path": "backend/apps/stoichdb/integration_viz/work_requests.py",
       "origin": "proj/backend/apps/stoichdb/integration_viz/work_requests.py",
-      "sha256": "cbce4151e63e5821d40a5ce493facd57038f7e4acf9e146ee0b326ff15ef935b",
-      "size_bytes": 10336,
+      "sha256": "b07b79a088533b53add9a9a77989ce771c919a65e0a31330bf55a95d55ceb33a",
+      "size_bytes": 10552,
       "change": "unchanged"
     },
     {
@@ -1809,6 +1844,13 @@
       "origin": "proj/backend/apps/stoichdb/management/commands/precompute_feature_profiles.py",
       "sha256": "d32916e052cf8ddd7be6cfc2a5457dfbc1de0754ddf54f27d24d0979fdf4ec04",
       "size_bytes": 6236,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/management/commands/precompute_home_atlas_visuals.py",
+      "origin": "proj/backend/apps/stoichdb/management/commands/precompute_home_atlas_visuals.py",
+      "sha256": "3ff44336bb60a86b69d70161fd526eda89476a707ba5babb09d0dbafb5297fef",
+      "size_bytes": 8362,
       "change": "unchanged"
     },
     {
@@ -2031,8 +2073,8 @@
     {
       "path": "backend/apps/stoichdb/phylogeny.py",
       "origin": "proj/backend/apps/stoichdb/phylogeny.py",
-      "sha256": "8914c0ae609a6dd5f0f1b0ddc9ca6a86ca58b8b5f647494a02aa68aa2af1aa55",
-      "size_bytes": 21011,
+      "sha256": "0e65dba09b131304c810087fc192da44bb91697743e020a5e7df7313cf9dd1af",
+      "size_bytes": 21074,
       "change": "unchanged"
     },
     {
@@ -2052,8 +2094,8 @@
     {
       "path": "backend/apps/stoichdb/proteome_viz/api.py",
       "origin": "proj/backend/apps/stoichdb/proteome_viz/api.py",
-      "sha256": "69edd79da6c119464062f1ea761a211940868c57b6214dcf6a0cb249a889fcba",
-      "size_bytes": 17247,
+      "sha256": "e155362744be525271f4ca5cfe580db1431642a4702aa1def5a135ef18a38ad5",
+      "size_bytes": 17270,
       "change": "unchanged"
     },
     {
@@ -2129,8 +2171,8 @@
     {
       "path": "backend/apps/stoichdb/proteome_viz/work_requests.py",
       "origin": "proj/backend/apps/stoichdb/proteome_viz/work_requests.py",
-      "sha256": "dec935c78b8a74024e521bc281e0478deffcafb9a111dd6b6451c5e7a5063114",
-      "size_bytes": 4947,
+      "sha256": "bcb771e4fcab0b05a1fb4bad79d74131ff84e69c58ffdb4d23e27ec439a02ca6",
+      "size_bytes": 5305,
       "change": "unchanged"
     },
     {
@@ -2138,6 +2180,20 @@
       "origin": "proj/backend/apps/stoichdb/resources/feature_dictionary.json",
       "sha256": "cf304ab98524ee740c0e90db185574300cc0b861fe1ca4286bc8e5869ab20561",
       "size_bytes": 5709,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/resources/home_atlas_cohort_v1.json",
+      "origin": "proj/backend/apps/stoichdb/resources/home_atlas_cohort_v1.json",
+      "sha256": "96e57353d005102fb274d86e462446889e6fc60da08a8c58e4c5ba9fcab2b9d7",
+      "size_bytes": 2929,
+      "change": "unchanged"
+    },
+    {
+      "path": "backend/apps/stoichdb/resources/home_atlas_fields_v1.json",
+      "origin": "proj/backend/apps/stoichdb/resources/home_atlas_fields_v1.json",
+      "sha256": "c9d95cd69ea72a3aa2f886b763574095c617a43a47797f6aee69c13e42b070b9",
+      "size_bytes": 54862,
       "change": "unchanged"
     },
     {
@@ -2325,169 +2381,29 @@
     {
       "path": "backend/apps/stoichdb/sequence_viz/work_requests.py",
       "origin": "proj/backend/apps/stoichdb/sequence_viz/work_requests.py",
-      "sha256": "bc09cc4b12973bbcf5ad3ed9c29a289b11556658cf48fc3ca8446859c76f0ce6",
-      "size_bytes": 4685,
+      "sha256": "9d2b03cba5d635a4298d785ca18276b153b8223bc0eb0e4d1c1289cab844e6f4",
+      "size_bytes": 4804,
       "change": "unchanged"
     },
     {
       "path": "backend/apps/stoichdb/services.py",
       "origin": "proj/backend/apps/stoichdb/services.py",
-      "sha256": "64d80d7716f2447637a473afb26bd2639d0c92402f57b1ea7fbae963001850b6",
-      "size_bytes": 747036,
+      "sha256": "696bdff1da01b3bf5e67ffb300c87d1703f555f3766c219d0dd98ceeabe2aef9",
+      "size_bytes": 747175,
       "change": "unchanged"
     },
     {
       "path": "backend/apps/stoichdb/storage_objects.py",
       "origin": "proj/backend/apps/stoichdb/storage_objects.py",
-      "sha256": "eedcb6bec1336c429ff9007ff07e6d7dbf0201e63ff0fcb3b7e0796c317bc742",
-      "size_bytes": 2007,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/__init__.py",
-      "origin": "proj/backend/apps/stoichdb/tests/__init__.py",
-      "sha256": "f3ee891ab983c9c96bc383965c9adeaf07d1edaa59894719a3a0efe88f785ac9",
-      "size_bytes": 54,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/fixtures/proteome_viz_core12.csv",
-      "origin": "proj/backend/apps/stoichdb/tests/fixtures/proteome_viz_core12.csv",
-      "sha256": "ae33a061b6c411199e04f3ab2a84c0bffd08b656114544b56c70ce1660e73ff1",
-      "size_bytes": 12236,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_artifact_registry_api.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_artifact_registry_api.py",
-      "sha256": "2e9326d6c4678da17e933e2a8dff8758999e7650d6d75bbbf9da22f85456e14d",
-      "size_bytes": 1679,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_compare_core.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_compare_core.py",
-      "sha256": "9f64b1b456ae2697c4bf4477c3f7c30954209564698c9ab0eedc308e5d78ecc4",
-      "size_bytes": 17817,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_feature_hub_export.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_feature_hub_export.py",
-      "sha256": "19570aa8126e6cebd82dbba8c372d4cd8f67d7a16701bc9b77aa1155f3b4cef0",
-      "size_bytes": 4591,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_integration_viz_contracts.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_integration_viz_contracts.py",
-      "sha256": "8d179a2a9e8393ecadfa129163eb776ea2b04653857c99529e2fbda5cfb60e3d",
-      "size_bytes": 15893,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_proteome_viz_api.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_proteome_viz_api.py",
-      "sha256": "e626d87f879be4a81cddcd5c5e6fc0af9bce9226aa709c887724ca0e340519a0",
-      "size_bytes": 6136,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_proteome_viz_contracts.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_proteome_viz_contracts.py",
-      "sha256": "ed9d86a4c49643125139141d5e690b2e33524da3521c40bb0dc6f3a9f2ddbaae",
-      "size_bytes": 472,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_proteome_viz_sources.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_proteome_viz_sources.py",
-      "sha256": "844a289e8de13bf597a4a23224c9e8dec84b5f6c057cbd026078673a8762b42d",
-      "size_bytes": 4123,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_proteome_viz_statistics.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_proteome_viz_statistics.py",
-      "sha256": "22c8f180000071f9f73b018571fb471b2a7009070f7190e863d79391423562d5",
-      "size_bytes": 3690,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_sequence_viz_api.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_sequence_viz_api.py",
-      "sha256": "302d052510e6ca7a9d35209afdba3b53396226d0b48bc38d63d6fb85b2a15b72",
-      "size_bytes": 1113,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_sequence_viz_builders.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_sequence_viz_builders.py",
-      "sha256": "eb8b6c50e6bd668e72e06eac23beea39c4e1d797ca11a1154a8de528bdd4a00e",
-      "size_bytes": 1578,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_sequence_viz_candidates.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_sequence_viz_candidates.py",
-      "sha256": "82ae1d51eba0ccd8be516ec560def38101478883835ac44aa4a99efb18f122e8",
-      "size_bytes": 1948,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_sequence_viz_coordinates.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_sequence_viz_coordinates.py",
-      "sha256": "9b0627850a2ffe81b83c5e9efd0f04b07f1d63f6721bae217f0187a0df3a3677",
-      "size_bytes": 1512,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_sequence_viz_exports.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_sequence_viz_exports.py",
-      "sha256": "1d65b5098fc8f90e552411e1c7435e5e1f46fcec5ecb658d28037a670ed3664f",
-      "size_bytes": 919,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_sequence_viz_full_scope.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_sequence_viz_full_scope.py",
-      "sha256": "efad7659472c8e77c0d0e84f7fd727973853cd3b00fd9d7c3f640d91e976ce38",
-      "size_bytes": 1111,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_sequence_viz_presentation.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_sequence_viz_presentation.py",
-      "sha256": "ff39d6fa99596e5f32edba694ab0660ec6c64a64cc752d5dc8620a5cc1ec15ee",
-      "size_bytes": 1999,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_sequence_viz_sources.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_sequence_viz_sources.py",
-      "sha256": "b95892f321acd2c0692914b582d12b8c899452c352d33d48de89665c62c80aa3",
-      "size_bytes": 3097,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_sequence_viz_statistics.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_sequence_viz_statistics.py",
-      "sha256": "6d36bac2f8c04c8a75b819484cfeae648f1784ee6b241719320d3210fee83c6d",
-      "size_bytes": 4910,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/apps/stoichdb/tests/test_species_atlas.py",
-      "origin": "proj/backend/apps/stoichdb/tests/test_species_atlas.py",
-      "sha256": "55d2e9899bcff0dab22811257549d74dc8a0da054049280490a1083fbb43532a",
-      "size_bytes": 4333,
+      "sha256": "c964106723a5476ad3aedc1ba1aa0c358ce18047820b5ae932af7912ff7dbc61",
+      "size_bytes": 2030,
       "change": "unchanged"
     },
     {
       "path": "backend/apps/stoichdb/urls.py",
       "origin": "proj/backend/apps/stoichdb/urls.py",
-      "sha256": "f694cb78512726c636ff2d167a85b31a518b0605e1d4377328ed9351896a69a7",
-      "size_bytes": 8397,
+      "sha256": "b585a9a4ea209d29665e0947be9952e8edde6144637197e416592665e23de6ad",
+      "size_bytes": 8492,
       "change": "unchanged"
     },
     {
@@ -2521,71 +2437,15 @@
     {
       "path": "backend/config/settings.py",
       "origin": "proj/backend/config/settings.py",
-      "sha256": "5cccef9c42e08c35d0c80af1cf29c98fc51e5ec3a5a6c49340e92319c02f102c",
-      "size_bytes": 7552,
-      "change": "credential sanitization/configuration template"
-    },
-    {
-      "path": "backend/config/settings_compare_test.py",
-      "origin": "proj/backend/config/settings_compare_test.py",
-      "sha256": "9af9b837d345cd9a0e55f9bf11d02b196556edba2d0a0bccad417167a3b6ba77",
-      "size_bytes": 532,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/config/settings_hvg_test.py",
-      "origin": "proj/backend/config/settings_hvg_test.py",
-      "sha256": "a9bcfec868ff2aa16d724ccded2a4f1380efe8acb27063aebc80adebbcc2e6ff",
-      "size_bytes": 573,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/config/settings_integration_viz_browser.py",
-      "origin": "proj/backend/config/settings_integration_viz_browser.py",
-      "sha256": "74f1a307ae59b70ffb3ddf2931c3036cd7c98ca24339967ce13c22e262ea8113",
-      "size_bytes": 224,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/config/settings_integration_viz_test.py",
-      "origin": "proj/backend/config/settings_integration_viz_test.py",
-      "sha256": "ea41393fdee30e507ca02095be394cf2097f946e1c6baf2f550bdce42601cc42",
-      "size_bytes": 477,
-      "change": "unchanged"
+      "sha256": "de3317a0f11b207eb0583ea4ed50b34a722a9ab7055531160be93b702eb3ce71",
+      "size_bytes": 7734,
+      "change": "credential/configuration sanitization"
     },
     {
       "path": "backend/config/settings_production.py",
       "origin": "proj/backend/config/settings_production.py",
       "sha256": "4837366b61d60e620a83025a343af663359302438d69794090a195edeadb0134",
       "size_bytes": 4754,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/config/settings_proteome_viz_browser.py",
-      "origin": "proj/backend/config/settings_proteome_viz_browser.py",
-      "sha256": "df9ab4ae19f6c48bcd65dd2cf501e5007eabb580d15a2611e4b33b39e54f8125",
-      "size_bytes": 572,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/config/settings_proteome_viz_test.py",
-      "origin": "proj/backend/config/settings_proteome_viz_test.py",
-      "sha256": "1647c18d09c4f644d72f15b0607183d487b541a8823cb0f17e9f21b2cd8681c1",
-      "size_bytes": 937,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/config/settings_sequence_viz_browser.py",
-      "origin": "proj/backend/config/settings_sequence_viz_browser.py",
-      "sha256": "2ed36a6fb674474437835d5ed564000f909440543c4cbfc770344683b862f3cc",
-      "size_bytes": 393,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/config/settings_sequence_viz_test.py",
-      "origin": "proj/backend/config/settings_sequence_viz_test.py",
-      "sha256": "11cce5882b0ad8b35afde7315cdd2e84d5bc86b398e7c98a1aadd560ffaee8cf",
-      "size_bytes": 678,
       "change": "unchanged"
     },
     {
@@ -2722,20 +2582,6 @@
       "change": "unchanged"
     },
     {
-      "path": "backend/input_adapter/tests/__init__.py",
-      "origin": "proj/backend/input_adapter/tests/__init__.py",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "size_bytes": 0,
-      "change": "unchanged"
-    },
-    {
-      "path": "backend/input_adapter/tests/test_merge_metadata.py",
-      "origin": "proj/backend/input_adapter/tests/test_merge_metadata.py",
-      "sha256": "2ddb5df3c1149d3830ecd24db2d98519b9b312a8620a5d68a84e1e7b1d940fdf",
-      "size_bytes": 1636,
-      "change": "unchanged"
-    },
-    {
       "path": "backend/mode_resolver/__init__.py",
       "origin": "proj/backend/mode_resolver/__init__.py",
       "sha256": "6133263aab6a179c8787ee158dc8e1bb3350da3f48938e435cb1c24ea51acba8",
@@ -2801,15 +2647,15 @@
     {
       "path": "backend/portal/cache.py",
       "origin": "proj/backend/portal/cache.py",
-      "sha256": "8d6cdd46a1445cee98797fc74187147759b026ce27c2848b7a84577f17739773",
-      "size_bytes": 4385,
+      "sha256": "5af02ccee2720117073fc5ebc6b68a559a89a59f6e2a5076862ea311bef8a36b",
+      "size_bytes": 4408,
       "change": "unchanged"
     },
     {
       "path": "backend/portal/compare.py",
       "origin": "proj/backend/portal/compare.py",
-      "sha256": "6141a23932a65ccd7f0fafd407316adfc2557f579e964a5e70587b96ca98ce5e",
-      "size_bytes": 2745,
+      "sha256": "43b777863ee0f8c4b6ee76f9eafb30501f5a131c4396a58a06b6d7bec9eedd3f",
+      "size_bytes": 2768,
       "change": "unchanged"
     },
     {
@@ -2829,8 +2675,8 @@
     {
       "path": "backend/portal/library.py",
       "origin": "proj/backend/portal/library.py",
-      "sha256": "0e9d6816c9ae402b618d0658ad3d280bff7edec6459f993ac98b8bda7f0b39dd",
-      "size_bytes": 2363,
+      "sha256": "b3a46982216db16536d4acef4aa481fabac553ca8a0a7240eada50669102da56",
+      "size_bytes": 2386,
       "change": "unchanged"
     },
     {
@@ -2843,8 +2689,8 @@
     {
       "path": "backend/portal/registry.py",
       "origin": "proj/backend/portal/registry.py",
-      "sha256": "f90b77084541fac039b4cbb3c41c627200c67e02e7cf23bbb1de5f5987a1ac0f",
-      "size_bytes": 2506,
+      "sha256": "6ce004a217a0ad85fc64f5c2764bab7217f7f62a39977c51f398459effa541ab",
+      "size_bytes": 2529,
       "change": "unchanged"
     },
     {
@@ -2981,53 +2827,39 @@
       "change": "unchanged"
     },
     {
-      "path": "configs/examples/hvg_research_GSE123818_complete.yaml",
-      "origin": "proj/configs/examples/hvg_research_GSE123818_complete.yaml",
-      "sha256": "5a0b2bfe93ff6dcef4aa21a5022e42822c29a9db9abc7440ca4d4fbd5e0d18dd",
-      "size_bytes": 7827,
-      "change": "unchanged"
+      "path": "compose.yaml",
+      "origin": "release/deployment packaging",
+      "sha256": "436ec4294ba183aa6e77c0acb3bff4d0ef78d7c23dddead81a1bd850da7d53e9",
+      "size_bytes": 4468,
+      "change": "portable deployment/data interface/documentation"
     },
     {
-      "path": "configs/examples/hvg_research_cancel_resume.yaml",
-      "origin": "proj/configs/examples/hvg_research_cancel_resume.yaml",
-      "sha256": "6977c20f662a6c19bb22023b8ec4b92fee0335f2f9f3b752d345fd0894bc9d80",
-      "size_bytes": 7717,
-      "change": "unchanged"
+      "path": "data-releases/README.md",
+      "origin": "release/deployment packaging",
+      "sha256": "df56159cada6ff6e157b6ee9fdf73d65fcb9174b8a088ffa97b1c762e37c6e14",
+      "size_bytes": 5642,
+      "change": "portable deployment/data interface/documentation"
     },
     {
-      "path": "configs/examples/hvg_research_smoke.yaml",
-      "origin": "proj/configs/examples/hvg_research_smoke.yaml",
-      "sha256": "4cb615035f31d906ac7e8abf94d11830bc81a77b0785356cb0ca3f7e6a054bbf",
-      "size_bytes": 7562,
-      "change": "unchanged"
+      "path": "data-releases/manifest.schema.json",
+      "origin": "release/deployment packaging",
+      "sha256": "136a4da0bb90243777eced4d76b95c04dc2b0b48fa974384a685e8d7f5580994",
+      "size_bytes": 1373,
+      "change": "portable deployment/data interface/documentation"
     },
     {
-      "path": "configs/examples/hvg_research_source_missing.yaml",
-      "origin": "proj/configs/examples/hvg_research_source_missing.yaml",
-      "sha256": "0750612a7029f8427f34bbfa088bfb942da55b8678dd1495c585af47f952e1fc",
-      "size_bytes": 7710,
-      "change": "unchanged"
-    },
-    {
-      "path": "configs/templates/sample_sheet_h5ad_multi.csv",
-      "origin": "proj/configs/templates/sample_sheet_h5ad_multi.csv",
-      "sha256": "ce7d8d125cf774f7cfed0bed36172131e7721240015d7e7e64396372225d4047",
-      "size_bytes": 164,
-      "change": "unchanged"
-    },
-    {
-      "path": "configs/templates/sample_sheet_tenx_multi.csv",
-      "origin": "proj/configs/templates/sample_sheet_tenx_multi.csv",
-      "sha256": "c3d384db6d5e8b32feade268ebc930e3b3fb1624f9f5849f6057a13fa263ed56",
-      "size_bytes": 266,
-      "change": "unchanged"
+      "path": "data-releases/release.example.json",
+      "origin": "release/deployment packaging",
+      "sha256": "9252a21d2d2f8027b2d54212d6b6dd30ba8e80de21f734c4b2754d131ce5b3f6",
+      "size_bytes": 919,
+      "change": "portable deployment/data interface/documentation"
     },
     {
       "path": "deploy/README.md",
-      "origin": "proj/deploy/README.md",
-      "sha256": "fe8dbec9fc349eec8e44ffbb29deb2085500310581185e8e0340044732914e38",
-      "size_bytes": 12800,
-      "change": "archive documentation note"
+      "origin": "release/deployment packaging",
+      "sha256": "a102e78ca47cfaa47ad836aa5a68197090327a684952d08976f57b7894409982",
+      "size_bytes": 6642,
+      "change": "portable deployment/data interface/documentation"
     },
     {
       "path": "deploy/__init__.py",
@@ -3044,18 +2876,109 @@
       "change": "unchanged"
     },
     {
+      "path": "deploy/docker/Dockerfile",
+      "origin": "release/deployment packaging",
+      "sha256": "3f7afcd29ba4406638e4d0ed7efa76d21daf045deaa353c0548b18c35db67d5a",
+      "size_bytes": 2253,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
+      "path": "deploy/docker/entrypoint.py",
+      "origin": "release/deployment packaging",
+      "sha256": "2920135c78953248a3404c992aebeab9dc1321cdb51be23f2b08842f0d4033dd",
+      "size_bytes": 1423,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
+      "path": "deploy/docker/health.py",
+      "origin": "release/deployment packaging",
+      "sha256": "d8a7ad66d797b687838da434150c71c46397e76cb683075fe7b32f056516083c",
+      "size_bytes": 1155,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
+      "path": "deploy/docker/install_node.py",
+      "origin": "release/deployment packaging",
+      "sha256": "832b193b9354ec9eebcfea81b3fb1f37ddaae28e388634f3426e184345c7250d",
+      "size_bytes": 1319,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
+      "path": "deploy/docker/nginx-http.conf",
+      "origin": "release/deployment packaging",
+      "sha256": "8f3b81bab931ef2bafe2c49a8213129778aa707ac7786df255cf1ceb9e7a03d9",
+      "size_bytes": 160,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
+      "path": "deploy/docker/nginx-https.conf",
+      "origin": "release/deployment packaging",
+      "sha256": "0b4ec5623166555706de26bacfbcbcc254d07951b46a2c9e13ba90fb18ee6a57",
+      "size_bytes": 250,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
+      "path": "deploy/docker/nginx-routes.conf",
+      "origin": "release/deployment packaging",
+      "sha256": "1c02418ec74a9c9e01c0364a376cf4b74207565683a65f8d5d1fe674a0ce52a1",
+      "size_bytes": 1812,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
+      "path": "deploy/docker/nginx.conf",
+      "origin": "release/deployment packaging",
+      "sha256": "3b4c1443fb008ce027ca76a5f2e417a233c257697685e1a8e42b90f51f2bb14d",
+      "size_bytes": 404,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
+      "path": "deploy/docker/uwsgi.ini",
+      "origin": "release/deployment packaging",
+      "sha256": "e6751b448b610e3dc9676fb40cd0c0cb66e60e24d338751e406bac7cc6427b3e",
+      "size_bytes": 620,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
+      "path": "deploy/local/nginx-quality-cache.conf.in",
+      "origin": "proj/deploy/local/nginx-quality-cache.conf.in",
+      "sha256": "1efc4d02605222389948cc73408be306c55c5e8fac50abbf6dce97918e1da3ad",
+      "size_bytes": 923,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/local/platform.ps1",
+      "origin": "release/deployment packaging",
+      "sha256": "425a3979b864b56fdae34db7786468ac51946c84ab748b64140df812f473a20c",
+      "size_bytes": 2099,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
+      "path": "deploy/local_readonly.py",
+      "origin": "proj/deploy/local_readonly.py",
+      "sha256": "41debf8195573ccaaffac19bca34b8b3190c4c71a8875af8d9ebb473ea56ba82",
+      "size_bytes": 577,
+      "change": "unchanged"
+    },
+    {
+      "path": "deploy/local_settings.py",
+      "origin": "proj/deploy/local_settings.py",
+      "sha256": "eb2a4a8ced08957c237788331a91272073ce87d310ce2905d7efb291ebeb68ac",
+      "size_bytes": 613,
+      "change": "unchanged"
+    },
+    {
       "path": "deploy/preflight.py",
       "origin": "proj/deploy/preflight.py",
-      "sha256": "3cba43c7e47e1914ad1a0514a5284e177164d6f2cc57c87e692372b456719a83",
-      "size_bytes": 4481,
+      "sha256": "eb742b89d4391082f519012311ffa416dbe2a9348ca1847099a6461178aaf826",
+      "size_bytes": 5226,
       "change": "unchanged"
     },
     {
       "path": "deploy/production.env.example",
       "origin": "proj/deploy/production.env.example",
-      "sha256": "b09fef002e1fbbc6279e7a3b92706e0117d215953c13606502a33cd17583f8be",
-      "size_bytes": 1304,
-      "change": "unchanged"
+      "sha256": "654442ba4b173f570b16dea107119c52c9720c81e35dc15f9ed646046d64b159",
+      "size_bytes": 1252,
+      "change": "credential/configuration sanitization"
     },
     {
       "path": "deploy/render.py",
@@ -3069,13 +2992,6 @@
       "origin": "proj/deploy/requirements-production.txt",
       "sha256": "212d5d507ce4a37c65a965a52a8a052a6a7c2885a767a169415e99dfbdfb2aad",
       "size_bytes": 141,
-      "change": "unchanged"
-    },
-    {
-      "path": "deploy/run_regression.py",
-      "origin": "proj/deploy/run_regression.py",
-      "sha256": "b5057340d640017f8447078089733bad66da6696bf0c690e3e7e107844250e28",
-      "size_bytes": 2908,
       "change": "unchanged"
     },
     {
@@ -3102,128 +3018,23 @@
     {
       "path": "deploy/templates/uwsgi.ini.in",
       "origin": "proj/deploy/templates/uwsgi.ini.in",
-      "sha256": "71d28c2ade85bc4484ae08ef5e5faee024f88f9e12edfddebf913860b6e40655",
-      "size_bytes": 709,
+      "sha256": "a759d56081fe2d5798a6f52e22ab5a1e3ca1dea06207f782ed1dec96c44ae184",
+      "size_bytes": 874,
       "change": "unchanged"
     },
     {
-      "path": "deploy/validation/README.md",
-      "origin": "proj/deploy/validation/README.md",
-      "sha256": "84116d7d87dd33e1dc1ca91d1bd763d3f1084821fee001b8d9ca2ce28cd93b55",
-      "size_bytes": 1025,
-      "change": "unchanged"
+      "path": "deploy/tools/restore_database.sh",
+      "origin": "release/deployment packaging",
+      "sha256": "5b2df58d9ab4bb6feaf3a04f6a15d11c0c28161a44a96e635ce0a21e9b1454fb",
+      "size_bytes": 1033,
+      "change": "portable deployment/data interface/documentation"
     },
     {
-      "path": "deploy/validation/__init__.py",
-      "origin": "proj/deploy/validation/__init__.py",
-      "sha256": "a59225917a259186683260a045909ba3f0e7a7d461778c14e6d4f3cca48174d6",
-      "size_bytes": 68,
-      "change": "unchanged"
-    },
-    {
-      "path": "deploy/validation/fixture.py",
-      "origin": "proj/deploy/validation/fixture.py",
-      "sha256": "212913f996a89f6c7ec756c963aa21b0f870d26d6c9a842b5af5828f072b9786",
-      "size_bytes": 2699,
-      "change": "unchanged"
-    },
-    {
-      "path": "deploy/validation/smoke.py",
-      "origin": "proj/deploy/validation/smoke.py",
-      "sha256": "7435d2acaee85b043460afae2a0c311469c06a8210ad50eb4cd44d8eb1e2ad7d",
-      "size_bytes": 8506,
-      "change": "unchanged"
-    },
-    {
-      "path": "deploy/validation_settings.py",
-      "origin": "proj/deploy/validation_settings.py",
-      "sha256": "24ca51b526ba717a5d274993fd6bbc996e1fc0f8406ec89379965e78339d3e80",
-      "size_bytes": 1991,
-      "change": "unchanged"
-    },
-    {
-      "path": "docker-compose.postgres.docker.yml",
-      "origin": "proj/docker-compose.postgres.docker.yml",
-      "sha256": "324a2f7c914c6ed707d3b69d7773c4613fb92fc412372b300db455d8cb395133",
-      "size_bytes": 670,
-      "change": "credential sanitization/configuration template"
-    },
-    {
-      "path": "docker-compose.postgres.gdrive.yml",
-      "origin": "proj/docker-compose.postgres.gdrive.yml",
-      "sha256": "de15c62ec5bceeb471894d499c99a87face10b2ba0800bda6e993394cc226015",
-      "size_bytes": 429,
-      "change": "credential sanitization/configuration template"
-    },
-    {
-      "path": "docker-compose.postgres.yml",
-      "origin": "proj/docker-compose.postgres.yml",
-      "sha256": "cb5b7ff3c5190e6d07c0c8e4ab16d0e3c8e2285732d7b7d08a4fdcc197da4cd5",
-      "size_bytes": 388,
-      "change": "credential sanitization/configuration template"
-    },
-    {
-      "path": "docs/FEATURE_TABLE_CASE_PIPELINE.md",
-      "origin": "proj/docs/FEATURE_TABLE_CASE_PIPELINE.md",
-      "sha256": "4ba46f24f5d449b8132f163e36e38da0c350399568ab50a7b0824cd439749985",
-      "size_bytes": 5315,
-      "change": "unchanged"
-    },
-    {
-      "path": "docs/HVG_NONHVG_COMPARISON_V1.md",
-      "origin": "proj/docs/HVG_NONHVG_COMPARISON_V1.md",
-      "sha256": "202b75806fecc0e41ea4183eda33625f4fe9085ab1054858293114185a256a43",
-      "size_bytes": 1994,
-      "change": "unchanged"
-    },
-    {
-      "path": "docs/HVG_RESEARCH_WORKFLOW_V1.md",
-      "origin": "proj/docs/HVG_RESEARCH_WORKFLOW_V1.md",
-      "sha256": "632f5e6d275892763c697a8d3eeca88db2f151fcab6bde0b7513837b33b708bd",
-      "size_bytes": 9946,
-      "change": "unchanged"
-    },
-    {
-      "path": "docs/HVG_UNIFIED_NONMODEL_WORKFLOW.md",
-      "origin": "proj/docs/HVG_UNIFIED_NONMODEL_WORKFLOW.md",
-      "sha256": "89c8a4e9464d7344681680bb8b8a690430b5ae1907a14bfe54506838e7be0f02",
-      "size_bytes": 5302,
-      "change": "unchanged"
-    },
-    {
-      "path": "docs/POSTGRESQL_IMPORT_AND_SEARCH.md",
-      "origin": "proj/docs/POSTGRESQL_IMPORT_AND_SEARCH.md",
-      "sha256": "a64239fb1b56d4232042c4f837cac63693eb913566307efa2320ebb94a1ef6a4",
-      "size_bytes": 2258,
-      "change": "unchanged"
-    },
-    {
-      "path": "docs/REAL_DATA_INTEGRATION.md",
-      "origin": "proj/docs/REAL_DATA_INTEGRATION.md",
-      "sha256": "1e03df05b3efdbe566b453c097d0f202f4185b5adcbc3a4de4d9ca7671e046d9",
-      "size_bytes": 6868,
-      "change": "unchanged"
-    },
-    {
-      "path": "docs/proteome_visuals_v3_operations.md",
-      "origin": "proj/docs/proteome_visuals_v3_operations.md",
-      "sha256": "e4b5702540c7a96786eaa8f8d668ac09169a30173dfa5ca5fae8ab3402502f59",
-      "size_bytes": 5343,
-      "change": "unchanged"
-    },
-    {
-      "path": "docs/sequence_visuals_v1_operations.md",
-      "origin": "proj/docs/sequence_visuals_v1_operations.md",
-      "sha256": "2117c3a69cce681116a21ffd440c2c59bfc811f79d844c34ac48b2666f61257a",
-      "size_bytes": 6496,
-      "change": "unchanged"
-    },
-    {
-      "path": "docs/visualization_data_contract.md",
-      "origin": "proj/docs/visualization_data_contract.md",
-      "sha256": "e9541ca3de921295a7c3d74d373b6dfe053ee9483c52d641ad507df82363d55f",
-      "size_bytes": 1071,
-      "change": "unchanged"
+      "path": "deploy/tools/task_guard.py",
+      "origin": "release/deployment packaging",
+      "sha256": "27aab63b9962634e374cb4bf5363ef93d7d4d38ac2894df286a0d9ad0452f35b",
+      "size_bytes": 1319,
+      "change": "portable deployment/data interface/documentation"
     },
     {
       "path": "environment-hvg.yml",
@@ -3240,67 +3051,11 @@
       "change": "unchanged"
     },
     {
-      "path": "frontend/e2e/proteome.interactions.spec.mjs",
-      "origin": "proj/frontend/e2e/proteome.interactions.spec.mjs",
-      "sha256": "a6da0d2452aaf3e9aaf933bd580b2e79950b4544248f8800ce911d6e5bc411e4",
-      "size_bytes": 5184,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/e2e/proteome.setup.mjs",
-      "origin": "proj/frontend/e2e/proteome.setup.mjs",
-      "sha256": "63acbec8b8ffc2c12cd2cc5fac90ee7706cf41642a7dd94cb62b8a6ce58a30ba",
-      "size_bytes": 726,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/e2e/proteome.visuals.spec.mjs",
-      "origin": "proj/frontend/e2e/proteome.visuals.spec.mjs",
-      "sha256": "385e58737507508a3edf2131776094a2f55210f1071aafa97b0474b024eee7fa",
-      "size_bytes": 13404,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/e2e/sequence-viz/playwright.config.mjs",
-      "origin": "proj/frontend/e2e/sequence-viz/playwright.config.mjs",
-      "sha256": "ad785c5df2ebabf436a6a9181034e87a733e8c16b09b302d8bba7dca217d0d2b",
-      "size_bytes": 728,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/e2e/sequence-viz/sequence.edges.spec.mjs",
-      "origin": "proj/frontend/e2e/sequence-viz/sequence.edges.spec.mjs",
-      "sha256": "9d670045cc1f4b1d9a0495cd2147e50a339ebf02b1c57b29e9daac65c8d7a746",
-      "size_bytes": 3533,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/e2e/sequence-viz/sequence.setup.mjs",
-      "origin": "proj/frontend/e2e/sequence-viz/sequence.setup.mjs",
-      "sha256": "a8e7a48bef8631406629660a868e5f752e30f96e4b68c5935232d21b167eeec0",
-      "size_bytes": 623,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/e2e/sequence-viz/sequence.visuals.spec.mjs",
-      "origin": "proj/frontend/e2e/sequence-viz/sequence.visuals.spec.mjs",
-      "sha256": "a053c175517bb942c4353584efe645f5612dae3ac80dcaa4d69ac8c778929124",
-      "size_bytes": 12022,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/e2e/sequence-viz/vite.config.mjs",
-      "origin": "proj/frontend/e2e/sequence-viz/vite.config.mjs",
-      "sha256": "02fe2e7664315493294fe7e00ba4516a9d5ba30365f4acf6a1c3bfb1ba589430",
-      "size_bytes": 340,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/e2e/sequence-viz/word_default_cohort_species.txt",
-      "origin": "proj/frontend/e2e/sequence-viz/word_default_cohort_species.txt",
-      "sha256": "ff5f7262b687427e3457e87aa683d7ee667f4d66f1c57008a840ad83f12b1d1c",
-      "size_bytes": 210,
-      "change": "unchanged"
+      "path": "frontend/.nvmrc",
+      "origin": "release/deployment packaging",
+      "sha256": "5bdc4059b44f3c5b3f9ed0e999dfc6f776381d3b477cd5300bd6ba01cc848311",
+      "size_bytes": 9,
+      "change": "portable deployment/data interface/documentation"
     },
     {
       "path": "frontend/index.html",
@@ -3312,23 +3067,16 @@
     {
       "path": "frontend/package-lock.json",
       "origin": "proj/frontend/package-lock.json",
-      "sha256": "b3149dfaf532e79c7ef9dc57a278b3b04e0e91d9d8dfe68757610c2d08a87719",
-      "size_bytes": 57777,
-      "change": "unchanged"
+      "sha256": "467af27dd1db9f3da583f89896ded2d0cea0c4808233d088b19f5b9378f8456e",
+      "size_bytes": 56310,
+      "change": "credential/configuration sanitization"
     },
     {
       "path": "frontend/package.json",
       "origin": "proj/frontend/package.json",
-      "sha256": "ccbfaa214065bf143d492aba24b7022dbf4ec45a8d105e959544702599a3e899",
-      "size_bytes": 1072,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/playwright.proteome.config.mjs",
-      "origin": "proj/frontend/playwright.proteome.config.mjs",
-      "sha256": "584b56e55780651dbae385e7e89de85fabd0610650ce7c95463dc0b09c00cf5d",
-      "size_bytes": 739,
-      "change": "unchanged"
+      "sha256": "ff2e91e98bf31fb66783135343736bc1c66e11a90ffe24e5bd48844d48f31a06",
+      "size_bytes": 522,
+      "change": "credential/configuration sanitization"
     },
     {
       "path": "frontend/src/App.vue",
@@ -3417,8 +3165,15 @@
     {
       "path": "frontend/src/api/stoichdb.js",
       "origin": "proj/frontend/src/api/stoichdb.js",
-      "sha256": "294c1600a8c825fef4972f4c7abc44cf23a3a44dd8ebf85b8a25a78ce4df8349",
-      "size_bytes": 16014,
+      "sha256": "ef252190f41c963e525251fb6a96a375de71fe11f88adc953b5fa2ed2ea712d2",
+      "size_bytes": 16347,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/api/workflowVisuals.js",
+      "origin": "proj/frontend/src/api/workflowVisuals.js",
+      "sha256": "b75e2a8453f551de780c631c577e41de3aee3329be6b0733a6fb0339affa7aa8",
+      "size_bytes": 1377,
       "change": "unchanged"
     },
     {
@@ -3772,10 +3527,24 @@
       "change": "unchanged"
     },
     {
+      "path": "frontend/src/components/HomeAtlasCard.vue",
+      "origin": "proj/frontend/src/components/HomeAtlasCard.vue",
+      "sha256": "1b83cdc19a6915edf60fe932168f88fb267d79ad47ac997c3b87c4dec65c6afa",
+      "size_bytes": 7960,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/HomeAtlasPlot.vue",
+      "origin": "proj/frontend/src/components/HomeAtlasPlot.vue",
+      "sha256": "653f501289fa5f120f26027c917d720cd9d0be973fc10e7ce2e976949688fb4f",
+      "size_bytes": 2341,
+      "change": "unchanged"
+    },
+    {
       "path": "frontend/src/components/HvgGroupComparisonPanel.vue",
       "origin": "proj/frontend/src/components/HvgGroupComparisonPanel.vue",
-      "sha256": "d507831499fa6376628c3138132671638e18600b30e79dc1bb821bc6c3040953",
-      "size_bytes": 37059,
+      "sha256": "6788b520954f89ba440c79cdc49dbef9b58bc13bc80c82402e4d99968bc6be62",
+      "size_bytes": 39017,
       "change": "unchanged"
     },
     {
@@ -3823,8 +3592,8 @@
     {
       "path": "frontend/src/components/SpeciesAtlasOverview.vue",
       "origin": "proj/frontend/src/components/SpeciesAtlasOverview.vue",
-      "sha256": "f9f19bf4a478ae421160d6102b6a686624b886be50a3cb9cf816eaf2944d16f4",
-      "size_bytes": 16101,
+      "sha256": "ed2926e61edb298e7fc385b256b8f5aca0ecb9a9d7d62e6cc7f7ec6b629169e8",
+      "size_bytes": 17439,
       "change": "unchanged"
     },
     {
@@ -3886,8 +3655,8 @@
     {
       "path": "frontend/src/components/home/HomeGlanceSection.vue",
       "origin": "proj/frontend/src/components/home/HomeGlanceSection.vue",
-      "sha256": "9c3475b396447f2f5965de1cb7328336331b2481bd75316394023c1f9ecc5d13",
-      "size_bytes": 2409,
+      "sha256": "a28d98ac5799696bdda49a3c6218c7efea95aa589f549fdd17db4fa14c292a4c",
+      "size_bytes": 2710,
       "change": "unchanged"
     },
     {
@@ -3935,15 +3704,15 @@
     {
       "path": "frontend/src/components/hvg-research/ResearchCharts.vue",
       "origin": "proj/frontend/src/components/hvg-research/ResearchCharts.vue",
-      "sha256": "0b37f6dc716b84290e13083e213179a021d34605f144e17d9ac01141abae1176",
-      "size_bytes": 8356,
+      "sha256": "d6e25c1833ab458b4257ed7b0a221b9f7a37a8742672ac73cf8e6ac7c6b2fef5",
+      "size_bytes": 10174,
       "change": "unchanged"
     },
     {
       "path": "frontend/src/components/hvg-research/ResearchOptionalModel.vue",
       "origin": "proj/frontend/src/components/hvg-research/ResearchOptionalModel.vue",
-      "sha256": "d5ed4aac515964e3d6f95aa4d8c3018a9ba320dc506e459f10ce7a33c79de9d6",
-      "size_bytes": 4721,
+      "sha256": "6993d5273985b140ab1d0d2c4d5aabc63abaf8736fe02fa29c1c72a219f02f2c",
+      "size_bytes": 5011,
       "change": "unchanged"
     },
     {
@@ -3956,8 +3725,8 @@
     {
       "path": "frontend/src/components/hvg-research/ResearchSection.vue",
       "origin": "proj/frontend/src/components/hvg-research/ResearchSection.vue",
-      "sha256": "6bb158e6a5add8f71ab22f22d16a447e75593383e157e182bf14b85b458a1949",
-      "size_bytes": 29901,
+      "sha256": "76f20dd410c529a7324696f52e0c741d11535a1c4ad92b6efb327484469360e9",
+      "size_bytes": 31326,
       "change": "unchanged"
     },
     {
@@ -3970,8 +3739,8 @@
     {
       "path": "frontend/src/components/hvg-research/modelPreviewPackets.js",
       "origin": "proj/frontend/src/components/hvg-research/modelPreviewPackets.js",
-      "sha256": "29bf3126a4bc2600bc1e20df0c5d84f5ec68ac6fab9696f401d9a5aa884ca6bd",
-      "size_bytes": 3189,
+      "sha256": "434596bde42998fcb004dd90ff66756f0af7183a5d7fcb0c8ef1a11d6d1b5d11",
+      "size_bytes": 4614,
       "change": "unchanged"
     },
     {
@@ -3991,8 +3760,8 @@
     {
       "path": "frontend/src/components/hvg-research/useHvgResearch.js",
       "origin": "proj/frontend/src/components/hvg-research/useHvgResearch.js",
-      "sha256": "43b81432055e08d2f3b7f69673d46214145069e76bc45229e5898a6de3914843",
-      "size_bytes": 3483,
+      "sha256": "776183c44beb1e9c57075bfe0d3100640a695ae91dddb855f98793d39ba15d43",
+      "size_bytes": 3868,
       "change": "unchanged"
     },
     {
@@ -4185,6 +3954,34 @@
       "change": "unchanged"
     },
     {
+      "path": "frontend/src/components/workflow/WorkflowChart.vue",
+      "origin": "proj/frontend/src/components/workflow/WorkflowChart.vue",
+      "sha256": "2c6103071f8d98817bc835ac0340b5869489e3f1060d67307e2edecfb05c84e9",
+      "size_bytes": 11434,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/workflow/WorkflowFigure.vue",
+      "origin": "proj/frontend/src/components/workflow/WorkflowFigure.vue",
+      "sha256": "33740cb03be8d47d36f0ea602ab9b6c198b7499a6f0cb65fd917445373a70ea1",
+      "size_bytes": 3744,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/workflow/WorkflowPanel.vue",
+      "origin": "proj/frontend/src/components/workflow/WorkflowPanel.vue",
+      "sha256": "349a94986c751e15cb62912b2907882ccd44a2ce6d07f2ab7453f9628ed2ced6",
+      "size_bytes": 3312,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/components/workflow/WorkflowStatusSummary.vue",
+      "origin": "proj/frontend/src/components/workflow/WorkflowStatusSummary.vue",
+      "sha256": "72c7c5b5897bb5ddfd4775f2bb72be433dd65dd2db9dda3f30807c9ad5e258e9",
+      "size_bytes": 1595,
+      "change": "unchanged"
+    },
+    {
       "path": "frontend/src/composables/useIntegrationVisuals.js",
       "origin": "proj/frontend/src/composables/useIntegrationVisuals.js",
       "sha256": "f46d1b74d671f4c33f568785cef1ce71d1018843a4ee394c2c019bc79cc8a1f4",
@@ -4203,6 +4000,13 @@
       "origin": "proj/frontend/src/composables/useSequenceVisuals.js",
       "sha256": "9cfa66f30ce24469a7421f34024848621e6f7bab1f18341d72deb5bafdb0f216",
       "size_bytes": 2908,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/composables/useWorkflowVisuals.js",
+      "origin": "proj/frontend/src/composables/useWorkflowVisuals.js",
+      "sha256": "c101d8966272effc541a964650087348b37da262aab0effdecdb0eefb57c5cfd",
+      "size_bytes": 1795,
       "change": "unchanged"
     },
     {
@@ -4238,6 +4042,13 @@
       "origin": "proj/frontend/src/utils/charts.js",
       "sha256": "7bc240325d82ea0e794d587b289d3b70b149dac199b9a7b1aa64da6164e34a32",
       "size_bytes": 62960,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/utils/homeAtlasCharts.js",
+      "origin": "proj/frontend/src/utils/homeAtlasCharts.js",
+      "sha256": "2cb6fc718e897a17130a512e407158ed72a39b9d72cf0982246b1f92279575a5",
+      "size_bytes": 20717,
       "change": "unchanged"
     },
     {
@@ -4311,6 +4122,55 @@
       "change": "unchanged"
     },
     {
+      "path": "frontend/src/utils/workflowVisuals/designManifest.js",
+      "origin": "proj/frontend/src/utils/workflowVisuals/designManifest.js",
+      "sha256": "8ed752aab011b393fd27190910e8e17e9a60a0f7e5d76f24f268b10910de674a",
+      "size_bytes": 31502,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/utils/workflowVisuals/figure.js",
+      "origin": "proj/frontend/src/utils/workflowVisuals/figure.js",
+      "sha256": "21f92a65f1acc07dd4c6717483f21f0225957d813a5bd1ab521dcff3833a8a99",
+      "size_bytes": 6058,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/utils/workflowVisuals/hvg.js",
+      "origin": "proj/frontend/src/utils/workflowVisuals/hvg.js",
+      "sha256": "a1eadbee4e6e7924de860000564734b46b09e7f14c8d20175ba7cee995c01fb3",
+      "size_bytes": 1510,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/utils/workflowVisuals/renderers/semantic.js",
+      "origin": "proj/frontend/src/utils/workflowVisuals/renderers/semantic.js",
+      "sha256": "6b080df397e51bb8131ead5e8f6e0fdc8851a6b672a94a0d5c01d2076e819b1f",
+      "size_bytes": 4758,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/utils/workflowVisuals/sequence.js",
+      "origin": "proj/frontend/src/utils/workflowVisuals/sequence.js",
+      "sha256": "6c618c2350e39f4017b75e28a4c0893245ec12fbee403bf657d58879293f91ca",
+      "size_bytes": 305,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/utils/workflowVisuals/shared.js",
+      "origin": "proj/frontend/src/utils/workflowVisuals/shared.js",
+      "sha256": "d540adc09bc168007ec60ab36a4a1ef1f21c9192686c386b710af3e0dfee0e57",
+      "size_bytes": 17709,
+      "change": "unchanged"
+    },
+    {
+      "path": "frontend/src/utils/workflowVisuals/slotManifest.js",
+      "origin": "proj/frontend/src/utils/workflowVisuals/slotManifest.js",
+      "sha256": "b435e82e1c1277dbf5bd1d3c9c6b9a48497a26135206e4f3b285086a6ab330e0",
+      "size_bytes": 78646,
+      "change": "unchanged"
+    },
+    {
       "path": "frontend/src/views/AnalysisHubView.vue",
       "origin": "proj/frontend/src/views/AnalysisHubView.vue",
       "sha256": "164a236d6828870b1207befe8a672fd4b3e5cd1d413c5c1af4819e748e618c41",
@@ -4362,8 +4222,8 @@
     {
       "path": "frontend/src/views/DatabaseView.vue",
       "origin": "proj/frontend/src/views/DatabaseView.vue",
-      "sha256": "9f0858ad61257510ce12e9529b82373e241a7acfa7dfa31cb7dc32757920184a",
-      "size_bytes": 14474,
+      "sha256": "c663418fa475600cb09caa35bcae9c48c254f0cf0be42dfe617220ec390d9b16",
+      "size_bytes": 15126,
       "change": "unchanged"
     },
     {
@@ -4453,8 +4313,8 @@
     {
       "path": "frontend/src/views/HvgCaseView.vue",
       "origin": "proj/frontend/src/views/HvgCaseView.vue",
-      "sha256": "3ea89c62e042896ce69bfec8d532cc287251c3c318d7c75b4d280d4bb6ed7066",
-      "size_bytes": 74220,
+      "sha256": "33b60805c10964cc8908d96cc3cc80cee179bf8c66028114534c5d76aeb8ce47",
+      "size_bytes": 77000,
       "change": "unchanged"
     },
     {
@@ -4481,8 +4341,8 @@
     {
       "path": "frontend/src/views/LandingView.vue",
       "origin": "proj/frontend/src/views/LandingView.vue",
-      "sha256": "6663a32dc809d0892041693da02008ba9a10329efc23c32f6e46623dc3a30479",
-      "size_bytes": 2214,
+      "sha256": "f0a65398095598248cdbd9f0c33cab7ed5ccf5e495c5832057ea2180ed1ac305",
+      "size_bytes": 3195,
       "change": "unchanged"
     },
     {
@@ -4523,8 +4383,8 @@
     {
       "path": "frontend/src/views/SequenceAnalysisResultView.vue",
       "origin": "proj/frontend/src/views/SequenceAnalysisResultView.vue",
-      "sha256": "df6afbcdb1a19de2c6f83369d9be910a008dfecaacb9994994daceae54d1647a",
-      "size_bytes": 134273,
+      "sha256": "f12f8b356ed35da888d418f10fbfc991fc3258b8cbc6661c50f82365085282d0",
+      "size_bytes": 140218,
       "change": "unchanged"
     },
     {
@@ -4549,41 +4409,6 @@
       "change": "unchanged"
     },
     {
-      "path": "frontend/tests/integration/integrationCharts.test.mjs",
-      "origin": "proj/frontend/tests/integration/integrationCharts.test.mjs",
-      "sha256": "d2c716a5f3547be3067f2905961cd11990b027e0eb075b5453fb5773de282bc7",
-      "size_bytes": 4573,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/tests/proteome/fixtures/acceptance_species.txt",
-      "origin": "proj/frontend/tests/proteome/fixtures/acceptance_species.txt",
-      "sha256": "59004c79569acae4ed1a239646416422ef64d8a7dbd9e60a94a5a1b25521b65d",
-      "size_bytes": 724,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/tests/proteome/proteomeCharts.test.mjs",
-      "origin": "proj/frontend/tests/proteome/proteomeCharts.test.mjs",
-      "sha256": "13f6b7ccfa0b1a1e4629ede0aa7cc6ef244f70dc2f74ff37312e1c593320c2d8",
-      "size_bytes": 1868,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/tests/proteome/proteomeContracts.test.mjs",
-      "origin": "proj/frontend/tests/proteome/proteomeContracts.test.mjs",
-      "sha256": "92c75ec47471cac2574e07eb3684dbc8b9f0de36b8dc33f7525b96fd1dc474cd",
-      "size_bytes": 3217,
-      "change": "unchanged"
-    },
-    {
-      "path": "frontend/tests/sequence/sequenceCharts.test.mjs",
-      "origin": "proj/frontend/tests/sequence/sequenceCharts.test.mjs",
-      "sha256": "9946000d8ac854d4743b678c3505d091c7a1f9742b656e0a7399a7d0b08591ce",
-      "size_bytes": 2535,
-      "change": "unchanged"
-    },
-    {
       "path": "frontend/vite.config.js",
       "origin": "proj/frontend/vite.config.js",
       "sha256": "b368f59457b11f16ac9c6083968f459030c5cd185152e2aa144c3631693652ef",
@@ -4596,6 +4421,13 @@
       "sha256": "9053f5ad8beffbe906764b2d053410a8bd4a80f8e569168e3badc6fa1540d0d6",
       "size_bytes": 763,
       "change": "unchanged"
+    },
+    {
+      "path": "requirements-data-tools.txt",
+      "origin": "release/deployment packaging",
+      "sha256": "d62fe6623361b06ad5c9b658d7fce4ec5f9dd418a0eb5cf2a91236591c4ed72e",
+      "size_bytes": 116,
+      "change": "portable deployment/data interface/documentation"
     },
     {
       "path": "requirements-hvg-research-lock.txt",
@@ -4620,10 +4452,10 @@
     },
     {
       "path": "requirements.txt",
-      "origin": "proj/requirements.txt",
-      "sha256": "e6947aa38582c17291b50499e7fbb3092192b9a7830ab388ed3e6178fcec7146",
-      "size_bytes": 1730,
-      "change": "unchanged"
+      "origin": "release/deployment packaging",
+      "sha256": "2d53b283bb38cda68db441773f894ab7437c27d603978cb70765e02e0de3a19a",
+      "size_bytes": 1469,
+      "change": "portable deployment/data interface/documentation"
     },
     {
       "path": "scripts/__init__.py",
@@ -4644,20 +4476,6 @@
       "origin": "proj/scripts/analyze_final_whitelist_id_mapping_gaps.py",
       "sha256": "b66b4f51a8432a3a4471c689372af81b0ade80778552ce590053c5b3ff76383d",
       "size_bytes": 23468,
-      "change": "unchanged"
-    },
-    {
-      "path": "scripts/audit_hvg_research_environment.py",
-      "origin": "proj/scripts/audit_hvg_research_environment.py",
-      "sha256": "293fb99723bab4f82312280d363f42c22ec0c5ba6853e970cb54b441d5064f6e",
-      "size_bytes": 1816,
-      "change": "unchanged"
-    },
-    {
-      "path": "scripts/audit_model_release_state.py",
-      "origin": "proj/scripts/audit_model_release_state.py",
-      "sha256": "29e912e15dc2f711731ec1e08e1db2e98006914532a8961241283f6b01a2504f",
-      "size_bytes": 2927,
       "change": "unchanged"
     },
     {
@@ -4850,11 +4668,18 @@
       "change": "unchanged"
     },
     {
+      "path": "scripts/data_release.py",
+      "origin": "release/deployment packaging",
+      "sha256": "09b29c936ef23c04c4545704c9780f3d68d85ca0f008c18314d96bf0a0c5fc67",
+      "size_bytes": 8866,
+      "change": "portable deployment/data interface/documentation"
+    },
+    {
       "path": "scripts/db_migrate_to_named_volume.ps1",
       "origin": "proj/scripts/db_migrate_to_named_volume.ps1",
       "sha256": "57a4f7f23992e1ce00db905c7db0d72bc5d4435f50ab55969eb02d60e14d00b3",
       "size_bytes": 12621,
-      "change": "credential sanitization/configuration template"
+      "change": "credential/configuration sanitization"
     },
     {
       "path": "scripts/enhance_standard_external_id_overlay.py",
@@ -5011,31 +4836,10 @@
       "change": "unchanged"
     },
     {
-      "path": "scripts/start_backend.sh",
-      "origin": "proj/scripts/start_backend.sh",
-      "sha256": "a12a86d56aff89dc218238d2c3a1ece85a1b46b3ae5a83aa246279cb3cbb15cf",
-      "size_bytes": 343,
-      "change": "unchanged"
-    },
-    {
-      "path": "scripts/start_backend_dev.sh",
-      "origin": "proj/scripts/start_backend_dev.sh",
-      "sha256": "d2e32ab0d0ee9b600a294cb760939966fe954ebb122edfb25792eb5429c2cf24",
-      "size_bytes": 188,
-      "change": "unchanged"
-    },
-    {
-      "path": "scripts/start_frontend.sh",
-      "origin": "proj/scripts/start_frontend.sh",
-      "sha256": "d87d5e088dc8642f7c0515805751eb5e6966a80ddaee469462b10b2f01ce53b7",
-      "size_bytes": 287,
-      "change": "unchanged"
-    },
-    {
-      "path": "scripts/start_frontend_dev.sh",
-      "origin": "proj/scripts/start_frontend_dev.sh",
-      "sha256": "ea099e5601fef58a7ebfd7897b0004f14f74ac6602feaa0bc5a4b6b7a769746b",
-      "size_bytes": 220,
+      "path": "scripts/run_workflow_design_tests.py",
+      "origin": "proj/scripts/run_workflow_design_tests.py",
+      "sha256": "5288f7cfa845de8cef2dfa44e7414f0cef57edd7035250dd27c1554e9db87930",
+      "size_bytes": 3379,
       "change": "unchanged"
     },
     {
@@ -5071,20 +4875,6 @@
       "origin": "proj/scripts/verify_dependencies.py",
       "sha256": "a59b7ea0cd96fefc776c43c9f6be8b4f603968f87f2541b4c61261b3c4205553",
       "size_bytes": 2012,
-      "change": "unchanged"
-    },
-    {
-      "path": "scripts/verify_proteome_viz_real.py",
-      "origin": "proj/scripts/verify_proteome_viz_real.py",
-      "sha256": "9dc717ce022c85d41efb5a3b83d690590bd57c2b141637e886f12d2712faa47e",
-      "size_bytes": 5667,
-      "change": "unchanged"
-    },
-    {
-      "path": "shared/docs/MODEL8_PLATFORM_RELEASE.md",
-      "origin": "proj/shared/docs/MODEL8_PLATFORM_RELEASE.md",
-      "sha256": "3ac0eab7d03f4e5fbdd7652bcbabd149561c7a91d6f5f1fa44fb17f9b56ce2d7",
-      "size_bytes": 3598,
       "change": "unchanged"
     },
     {

@@ -55,7 +55,7 @@ export const getQuality = () => client.get('/stoichdb/quality/').then(r => r.dat
 export const getSpeciesQuality = (speciesId) => client.get(`/stoichdb/quality/${encodeURIComponent(speciesId)}/`).then(r => r.data.data)
 export const getGuide = () => client.get('/stoichdb/guide/').then(r => r.data.data)
 export const getContact = () => client.get('/stoichdb/contact/').then(r => r.data.data)
-export const listSpecies = (params = {}) => client.get('/stoichdb/species/', { params }).then(r => r.data.data)
+export const listSpecies = (params = {}, config = {}) => client.get('/stoichdb/species/', { ...config, params }).then(r => r.data.data)
 export const getSpeciesAtlasSummary = (params = {}, config = {}) => client.get('/stoichdb/species/atlas-summary/', { ...config, params }).then(r => r.data.data)
 export const getSpecies = (speciesId, params = {}, config = {}) => client.get(`/stoichdb/species/${encodeURIComponent(speciesId)}/`, { ...config, params }).then(r => r.data.data)
 export const getSpeciesEnhanced = (speciesId, params = {}, config = {}) => client.get(`/stoichdb/species/${encodeURIComponent(speciesId)}/enhanced/`, { ...config, params }).then(r => r.data.data)
@@ -117,3 +117,6 @@ export const model8PlatformBundleDownloadUrl = () => '/api/stoichdb/case-studies
 export const model8PlatformFileDownloadUrl = (relativePath) => `/api/stoichdb/case-studies/model8/download/${String(relativePath || '').split('/').map(encodeURIComponent).join('/')}`
 export const idMappingDownloadUrl = (kind = 'external', speciesId = '', division = '') => `/api/stoichdb/downloads/id-mapping/?kind=${encodeURIComponent(kind)}${speciesId ? `&species_id=${encodeURIComponent(speciesId)}` : ''}${division ? `&division=${encodeURIComponent(division)}` : ''}`
 export const annotationDownloadUrl = (kind) => `/api/stoichdb/downloads/annotations/${encodeURIComponent(kind)}/`
+
+export const getHomeVisuals = (params = {}, config = {}) => client.get('/stoichdb/home/visuals/', { ...config, params }).then(r => r.data.data)
+export const getSpeciesAtlasVisuals = (params = {}, config = {}) => client.get('/stoichdb/species/atlas-visuals/', { ...config, params }).then(r => r.data.data)

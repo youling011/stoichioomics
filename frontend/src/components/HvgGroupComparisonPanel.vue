@@ -13,7 +13,7 @@
       <p>{{ summary.reason || 'No reliable gene-level Genome, Transcriptome or Proteome Core feature block was available.' }}</p>
       <small>Status: {{ comparisonStatus }}<template v-if="summary.error_id"> · Error ID: {{ summary.error_id }}</template></small>
     </div>
-      <div class="comparison-grid"><article v-for="title in ['Largest distribution differences','Effect and global FDR','Feature-family pattern','Raw and adjusted evidence']" :key="title" class="card"><h3>{{title}}</h3><p class="muted">{{summary.reason || 'No finite saved comparison data for this original chart.'}}</p><small>Status: {{comparisonStatus}}</small></article></div>
+      <div class="comparison-grid"><article v-for="(title,index) in ['Largest distribution differences','Effect and global FDR','Feature-family evidence','Raw and adjusted evidence']" :key="title" class="card"><h3>{{title}}</h3><WorkflowChart :slot-id="'hvg.native.empty.'+['original_forest','original_omics_effect','original_family_heatmap','original_raw_adjusted'][index]" resource="hvg" :identifier="identifier" chart-id="H29" :params="{...visualParams,panel_profile:['original_forest','original_omics_effect','original_family_heatmap','original_raw_adjusted'][index]}" :height="420"><p class="muted">{{summary.reason || 'No finite saved comparison data for this original chart.'}}</p><small>Status: {{comparisonStatus}}</small></WorkflowChart></article></div>
     </div>
     <template v-else>
       <div class="comparison-note">
@@ -52,19 +52,19 @@
       <section class="comparison-grid">
         <article class="comparison-panel">
           <header><h3>Largest distribution differences</h3><p>Cliff’s delta with 95% confidence intervals. Select a point to inspect its audit trail.</p></header>
-          <EChart :option="forestOption" :height="390" @chart-click="showFeatureByChart" />
+          <WorkflowChart slot-id="hvg.native.HvgGroupComparisonPanel.2" resource="hvg" :identifier="identifier" chart-id="H29" :params="{...visualParams,panel_profile:'original_forest'}" :height="390" @inspect="({row})=>row.feature_key && showFeature(row)"><EChart :option="forestOption" :height="390" @chart-click="showFeatureByChart" /></WorkflowChart>
         </article>
         <article class="comparison-panel">
           <header><h3>Effect and global FDR</h3><p>All tested numeric Core features; color identifies the resolved omics layer.</p></header>
-          <EChart :option="effectFdrOption" :height="390" @chart-click="showFeatureByChart" />
+          <WorkflowChart slot-id="hvg.native.HvgGroupComparisonPanel.3" resource="hvg" :identifier="identifier" chart-id="H29" :params="{...visualParams,panel_profile:'original_omics_effect'}" :height="390" @inspect="({row})=>row.feature_key && showFeature(row)"><EChart :option="effectFdrOption" :height="390" @chart-click="showFeatureByChart" /></WorkflowChart>
         </article>
         <article class="comparison-panel">
-          <header><h3>Feature-family pattern</h3><p>Median effect by family and omics; counts remain available in the table.</p></header>
-          <EChart :option="familyHeatmapOption" :height="390" />
+          <header><h3>Feature-family evidence</h3><p>Each point is a saved omics family: tested fields on x, significant fields on y.</p></header>
+          <WorkflowChart slot-id="hvg.native.HvgGroupComparisonPanel.4" resource="hvg" :identifier="identifier" chart-id="H29" :params="{...visualParams,panel_profile:'original_family_heatmap'}" :height="390" @inspect="({row})=>row.feature_key && showFeature(row)"><EChart :option="familyHeatmapOption" :height="390" /></WorkflowChart>
         </article>
         <article class="comparison-panel">
-          <header><h3>Raw and adjusted evidence</h3><p>Raw Cliff’s delta versus the gene-level adjusted feature coefficient.</p></header>
-          <EChart :option="rawAdjustedOption" :height="390" @chart-click="showFeatureByChart" />
+          <header><h3>Raw and adjusted evidence</h3><p>Raw and adjusted estimands remain distinct. When adjusted fits are unavailable, saved quantile-range evidence and the actual fit reasons are shown.</p></header>
+          <WorkflowChart slot-id="hvg.native.HvgGroupComparisonPanel.5" resource="hvg" :identifier="identifier" chart-id="H29" :params="{...visualParams,panel_profile:'original_raw_adjusted'}" :height="390" @inspect="({row})=>row.feature_key && showFeature(row)"><EChart :option="rawAdjustedOption" :height="390" @chart-click="showFeatureByChart" /></WorkflowChart>
         </article>
       </section>
 
@@ -112,7 +112,7 @@
       <section v-if="detail" class="comparison-panel feature-detail" aria-live="polite">
         <header class="comparison-table-header"><div><h3>{{ detail.feature?.display_name || detail.feature?.feature_name }}</h3><p>{{ detail.feature?.feature_key }} · {{ detail.feature?.unit || 'unit not specified' }}</p></div><button type="button" class="btn secondary" @click="detail = null">Close detail</button></header>
         <div class="feature-detail-grid">
-          <EChart :option="detailDistributionOption" :height="330" />
+          <WorkflowChart slot-id="hvg.native.HvgGroupComparisonPanel.6" resource="hvg" :identifier="identifier" chart-id="H29" :params="{...visualParams,panel_profile:'original_quantiles',feature_key:detail?.feature?.feature_key}" :height="330" @inspect="({row})=>row.feature_key && showFeature(row)"><EChart :option="detailDistributionOption" :height="330" /></WorkflowChart>
           <dl>
             <template v-for="item in detailMetadata" :key="item.label"><dt>{{ item.label }}</dt><dd>{{ item.value }}</dd></template>
           </dl>
@@ -130,6 +130,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import EChart from './EChart.vue'
+import WorkflowChart from './workflow/WorkflowChart.vue'
 import {
   buildHvgDownloadUrl,
   getHvgGroupComparisonFeature,
@@ -139,6 +140,7 @@ import {
 
 const props = defineProps({
   identifier: { type: String, required: true },
+  visualParams: { type:Object, default:()=>({}) },
   isCase5: { type: Boolean, default: false },
   embeddedComparison: { type: Object, default: null },
   case5Comparison: { type: Object, default: null },

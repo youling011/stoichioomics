@@ -3,7 +3,7 @@ from __future__ import annotations
 import csv
 import hashlib
 from dataclasses import dataclass
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any, Iterable
 
 from backend.apps.stoichdb.models import OmicsDataset

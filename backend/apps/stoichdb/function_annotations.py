@@ -7,7 +7,7 @@ import json
 import math
 import os
 from functools import lru_cache
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 from django.conf import settings
@@ -72,7 +72,7 @@ def annotation_data_dir() -> Path:
         base / 'data' / 'function_annotations',
         base / 'data' / 'external_annotations',
         workspace_root / 'gpt优化方案' / '项目平台完整归纳整理' / '功能注释下载',
-        Path('F:/codex工作目录/gpt优化方案/项目平台完整归纳整理/功能注释下载'),
+        Path(getattr(settings, 'STOICHIOOMICS_ROOT', '') or 'G:/stoichioomics') / '项目平台数据' / '功能注释下载',
     ])
     for candidate in candidates:
         if candidate and (candidate / FILE_NAMES['status']).exists():

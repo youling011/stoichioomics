@@ -8,7 +8,7 @@ import threading
 import uuid
 from datetime import datetime, timedelta, timezone
 from functools import lru_cache
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 import pandas as pd
@@ -784,7 +784,9 @@ def read_ml_discrimination(job_id: str, label_field: str = 'group') -> dict[str,
 
 @lru_cache(maxsize=128)
 def _read_table_df(job_id: str, kind: str) -> pd.DataFrame:
-    return pd.read_csv(output_path(job_id, kind))
+    # Saved-result HTTP reads share the deployment-compatible CSV parser used
+    # by the scientific figures. Keep this legacy reader's original NA policy.
+    return pd.read_csv(output_path(job_id, kind), engine='python', dtype={'seq_md5':str})
 
 
 def _rows_df(job_id: str) -> pd.DataFrame:

@@ -1,2 +1,2 @@
-# Preserve the source snapshot bytes on all platforms.
+# Preserve authored source bytes, including original line endings, on all platforms.
 * -text

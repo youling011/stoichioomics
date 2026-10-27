@@ -7,9 +7,10 @@
     <p v-if="error" role="alert">{{error}}</p>
     <template v-if="payload">
       <p v-if="merged.length" class="muted">Identical saved views are combined with the chart above: {{merged.map(k=>originalTitles[k]).join('; ')}}. Data, units and interactions were checked per chart.</p>
-      <div class="grid grid-2" v-if="previewCharts.length">
+      <details v-if="previewCharts.length" class="hvg-saved-previews"><summary>Original saved previews and their declared limits</summary><p class="muted">Complete saved evidence is presented in the figures above. These original previews retain their original scopes and are not full-population charts.</p><div class="grid grid-2">
         <div v-for="chart in previewCharts" :key="chart.kind" class="hvg-model-plot" :data-model-preview="chart.kind"><h4>Saved model preview · {{originalTitles[chart.kind]}}</h4><p class="muted">This saved preview differs from the complete original view in its rows or evidence fields and is retained separately.</p><EChart :option="chart.option" :data-rows="chart.rows" :auto-loading="false" :height="440" :export-name="'saved_preview_'+chart.kind" @chart-click="inspect(chart.kind,$event)" /></div>
       </div>
+      </details>
       <details><summary>Model parameters, status and saved evidence</summary><button class="btn secondary" @click="download">Download model evidence (JSON)</button><pre>{{JSON.stringify(payload,null,2)}}</pre></details>
     </template>
   </div>

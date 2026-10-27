@@ -159,9 +159,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import SpeciesAtlasOverview from '../components/SpeciesAtlasOverview.vue'
-import { getSpeciesAtlasSummary, getSpeciesFacets, listSpecies } from '../api/stoichdb'
+import { getSpeciesAtlasVisuals, getSpeciesFacets, listSpecies } from '../api/stoichdb'
 
 const speciesRows = ref([])
 const facets = ref({ source_databases: [], domains: [], clades: [], habitats: [], omics_breakdown: [], ranges: {}, fingerprint_keys: [] })
@@ -192,7 +192,7 @@ const registryAggregate = ref(null)
 
 const buildFingerprintFilters = () => {
   if (!fingerprintKey.value) return ''
-  return JSON.stringify([{ key: fingerprintKey.value, min: fingerprintMin.value || undefined, max: fingerprintMax.value || undefined }])
+  return JSON.stringify([{ key: fingerprintKey.value, min: fingerprintMin.value === '' ? undefined : fingerprintMin.value, max: fingerprintMax.value === '' ? undefined : fingerprintMax.value }])
 }
 
 const buildSpeciesParams = () => ({
@@ -220,6 +220,12 @@ const buildAtlasParams = () => ({
   genome_size_max: genomeSizeMax.value,
   fingerprint_filters: buildFingerprintFilters(),
 })
+
+const buildAtlasVisualsParams = () => ({ ...buildAtlasParams(), omics: omics.value, has_all_omics: hasAllOmics.value ? 1 : '' })
+let listEpoch = 0, atlasEpoch = 0, listController, atlasController
+const canceled = error => error?.code === 'ERR_CANCELED' || error?.name === 'AbortError'
+const errorMessage = (error, fallback) => error?.response?.data?.error?.message || error?.response?.data?.message || error?.message || fallback
+onBeforeUnmount(() => { ++listEpoch; ++atlasEpoch; listController?.abort(); atlasController?.abort() })
 
 const applySpeciesPayload = (payload) => {
   if (Array.isArray(payload)) {
@@ -256,36 +262,30 @@ const applySpeciesPayload = (payload) => {
   }
 }
 
-const loadAtlas = async () => {
-  atlasLoading.value = true
-  atlasError.value = ''
-  try {
-    atlasPayload.value = await getSpeciesAtlasSummary(buildAtlasParams())
-  } catch (error) {
-    atlasError.value = error?.response?.data?.message || error?.message || 'Atlas summary request failed.'
-  } finally {
-    atlasLoading.value = false
-  }
+const loadAtlas = async (params = buildAtlasVisualsParams()) => {
+  const epoch = ++atlasEpoch
+  atlasController?.abort(); atlasController = new AbortController()
+  atlasLoading.value = true; atlasError.value = ''
+  try { const result = await getSpeciesAtlasVisuals(params, { signal: atlasController.signal }); if (epoch === atlasEpoch) atlasPayload.value = result }
+  catch (error) { if (epoch === atlasEpoch && !canceled(error)) atlasError.value = errorMessage(error, 'Atlas summary request failed.') }
+  finally { if (epoch === atlasEpoch) atlasLoading.value = false }
 }
 
 const load = async (options = {}) => {
-  const resetPage = options?.resetPage !== false
-  const refreshAtlas = options?.refreshAtlas !== false
-  if (resetPage) page.value = 1
-  loading.value = true
-  loadError.value = ''
+  if (options?.resetPage !== false) page.value = 1
+  const epoch = ++listEpoch, params = buildSpeciesParams(), atlasParams = buildAtlasVisualsParams()
+  listController?.abort(); listController = new AbortController()
+  loading.value = true; loadError.value = ''
   try {
-    const speciesRequest = listSpecies(buildSpeciesParams())
-    const atlasRequest = refreshAtlas ? loadAtlas() : Promise.resolve()
-    const [speciesPayload] = await Promise.all([speciesRequest, atlasRequest])
-    applySpeciesPayload(speciesPayload)
+    const [result] = await Promise.all([listSpecies(params, { signal: listController.signal }), options?.refreshAtlas === false ? Promise.resolve() : loadAtlas(atlasParams)])
+    if (epoch === listEpoch) applySpeciesPayload(result)
   } catch (error) {
-    speciesRows.value = []
-    pageMeta.value = { page: 1, page_size: pageSize.value, total: 0, total_pages: 1, has_next: false, has_previous: false, page_start: 0, page_end: 0 }
-    loadError.value = error?.response?.data?.message || error?.message || 'Species list request failed.'
-  } finally {
-    loading.value = false
-  }
+    if (epoch === listEpoch && !canceled(error)) {
+      speciesRows.value = []
+      pageMeta.value = { page: 1, page_size: pageSize.value, total: 0, total_pages: 1, has_next: false, has_previous: false, page_start: 0, page_end: 0 }
+      loadError.value = errorMessage(error, 'Species list request failed.')
+    }
+  } finally { if (epoch === listEpoch) loading.value = false }
 }
 
 const reset = async () => {
@@ -324,7 +324,7 @@ const applyCoverageDrilldown = async ({ domain: nextDomain = '', omics: nextOmic
   domain.value = nextDomain
   omics.value = nextOmics
   hasAllOmics.value = Boolean(allThree)
-  await load({ resetPage: true, refreshAtlas: false })
+  await load({ resetPage: true, refreshAtlas: true })
 }
 
 const formatKey = (key) => String(key || '').replaceAll('_', ' ')
@@ -335,23 +335,8 @@ const formatCompleteness = (value) => {
 }
 
 async function initialize() {
-  loading.value = true
-  loadError.value = ''
-  try {
-    const [facetPayload, speciesPayload] = await Promise.all([
-      getSpeciesFacets(),
-      listSpecies(buildSpeciesParams()),
-      loadAtlas(),
-    ])
-    facets.value = facetPayload
-    applySpeciesPayload(speciesPayload)
-  } catch (error) {
-    facets.value = { source_databases: [], domains: [], clades: [], habitats: [], omics_breakdown: [], ranges: {}, fingerprint_keys: [] }
-    speciesRows.value = []
-    loadError.value = error?.response?.data?.message || error?.message || 'Database registry request failed.'
-  } finally {
-    loading.value = false
-  }
+  try { const [result] = await Promise.all([getSpeciesFacets(), load({ resetPage: false, refreshAtlas: true })]); facets.value = result }
+  catch (error) { loadError.value = errorMessage(error, 'Registry facets request failed.') }
 }
 
 onMounted(initialize)

@@ -132,7 +132,7 @@
         </div>
         <div class="grid grid-2">
           <Panel title="Workflow status" note="Input, QC, Phase 1, Phase 2, and downstream availability are shown as task states.">
-            <EChart :option="workflowOption" :height="340" />
+            <WorkflowChart slot-id="hvg.native.HvgCaseView.1" resource="hvg" :identifier="identifier" chart-id="H05" :params="{panel_profile:'original_workflow'}" :height="340"><EChart :option="workflowOption" :height="340" /></WorkflowChart>
             <Interpretation :items="overview?.interpretation_text || ['Use this panel to verify which result layers are available before interpreting model outputs.']" />
           </Panel>
           <Panel title="Analysis overview table" note="One-row audit summary for the current case.">
@@ -147,7 +147,7 @@
             <DataTable :rows="matrixQcRows" />
           </Panel>
           <Panel title="ID mapping quality" note="Matched, unmatched, and conflicted gene IDs determine Phase 2 reliability.">
-            <EChart :option="idMappingDonut" :height="330" />
+            <WorkflowChart slot-id="hvg.native.HvgCaseView.2" resource="hvg" :identifier="identifier" chart-id="H31" :params="{panel_profile:'mapping'}" :height="330"><EChart :option="idMappingDonut" :height="330" /></WorkflowChart>
             <DataTable :rows="tableRows('id_mapping_summary_table')" />
           </Panel>
         </div>
@@ -164,16 +164,16 @@
       <section v-if="tab==='phase1'" class="stack-lg">
         <div class="grid grid-2">
           <Panel title="Mean expression vs normalized HVG score" note="HVGs are highlighted in the primary Phase 1 scatter.">
-            <EChart :option="phase1Scatter" :height="420" />
+            <WorkflowChart slot-id="hvg.native.HvgCaseView.3" resource="hvg" :identifier="identifier" chart-id="H30" :params="{panel_profile:'original_mean_score'}" :height="420"><EChart :option="phase1Scatter" :height="420" /></WorkflowChart>
             <Interpretation :items="['Genes with higher method-specific HVG scores and low rank are prioritized as HVGs.', 'The current method and n_top_genes are recorded in Phase 1 summary.']" />
           </Panel>
           <Panel title="Top HVG ranking" note="Top genes are sorted by hvg_rank.">
-            <EChart :option="topHvgOption" :height="420" />
+            <WorkflowChart slot-id="hvg.native.HvgCaseView.4" resource="hvg" :identifier="identifier" chart-id="H30" :params="{panel_profile:'original_top_hvg'}" :height="420"><EChart :option="topHvgOption" :height="420" /></WorkflowChart>
           </Panel>
         </div>
         <div class="grid grid-2">
           <Panel title="Detection vs dropout" note="Detection-rate diagnostics help separate biological variability from sparse observation.">
-            <EChart :option="dropoutScatter" :height="360" />
+            <WorkflowChart slot-id="hvg.native.HvgCaseView.5" resource="hvg" :identifier="identifier" chart-id="H30" :params="{panel_profile:'original_dropout'}" :height="360"><EChart :option="dropoutScatter" :height="360" /></WorkflowChart>
           </Panel>
           <Panel title="Backend and method status" note="Single-backend runs still show unavailable or disabled backends explicitly.">
             <DataTable :rows="tableRows('backend_status_table')" />
@@ -188,7 +188,7 @@
         <SkippedPanel v-if="!hasContextPatterns" title="No context-specific pattern panel available" reason="No usable condition, timepoint, group, sample, or trajectory field was available, or only global_hvg was run." />
         <div v-else class="grid grid-2">
           <Panel title="Pattern count summary" note="Context mode counts are shown when metadata unlocks condition, timecourse, group, sample, or trajectory analyses.">
-            <EChart :option="patternCountsOption" :height="360" />
+            <WorkflowChart slot-id="hvg.native.HvgCaseView.6" resource="hvg" :identifier="identifier" chart-id="H05" :params="{panel_profile:'original_pattern_counts'}" :height="360"><EChart :option="patternCountsOption" :height="360" /></WorkflowChart>
           </Panel>
           <Panel title="Subset HVG counts" note="Each subset reports n_cells, n_genes, and n_hvgs.">
             <DataTable :rows="phase1.subset_summaries || []" />
@@ -209,22 +209,22 @@
 
       <section v-if="tab==='phase2' && !isUnifiedWorkflow" class="stack-lg">
         <SkippedPanel v-if="phase2.phase2_status === 'skipped'" title="Phase 2 was skipped" :reason="phase2.phase2_skip_reason?.reason_message || phase2.phase2_skip_reason?.message || 'Stoich inputs were not sufficient for Phase 2.'" />
-        <template>
+        <template v-if="true">
           <div class="grid grid-2">
             <Panel title="Stoich class distribution" note="Class colors and order are fixed across the HVG module.">
-              <EChart :option="classBar" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" @chart-click="filterByClass" />
+              <WorkflowChart slot-id="hvg.native.HvgCaseView.7" resource="hvg" :identifier="identifier" chart-id="H24" @inspect="({row})=>filterByClass({data:{raw:{...row,stoich_class:row.stoich_class || row.category}}})" :params="{panel_profile:'original_classes'}" :height="360"><EChart :option="classBar" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" @chart-click="filterByClass" /></WorkflowChart>
               <DataTable :rows="tableRows('hvg_stoich_class_table')" />
             </Panel>
             <Panel title="Observed vs expected HVG signal" note="The identity line marks agreement between observed HVG signal and stoich expectation.">
-              <EChart :option="expObs" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" />
+              <WorkflowChart slot-id="hvg.native.HvgCaseView.8" resource="hvg" :identifier="identifier" chart-id="H24" :params="{panel_profile:'original_expected_observed'}" :height="360"><EChart :option="expObs" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" /></WorkflowChart>
             </Panel>
           </div>
           <div class="grid grid-2">
             <Panel title="Residual distribution" note="Positive residuals identify genes with higher-than-expected HVG signal.">
-              <EChart :option="residualHistogram" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" />
+              <WorkflowChart slot-id="hvg.native.HvgCaseView.9" resource="hvg" :identifier="identifier" chart-id="H24" :params="{panel_profile:'original_residuals'}" :height="360"><EChart :option="residualHistogram" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" /></WorkflowChart>
             </Panel>
             <Panel title="Feature association forest" note="Effect direction, FDR, and evidence level are shown together.">
-              <EChart :option="featureForest" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" />
+              <WorkflowChart slot-id="hvg.native.HvgCaseView.10" resource="hvg" :identifier="identifier" chart-id="H25" :params="{panel_profile:'original_model_associations'}" :height="360"><EChart :option="featureForest" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" /></WorkflowChart>
             </Panel>
           </div>
           <Panel title="Signal and residual table" note="Download source: signal_residual_table.csv.">
@@ -235,14 +235,14 @@
 
       <section v-if="tab==='model_evidence' && !isUnifiedWorkflow" class="stack-lg">
         <SkippedPanel v-if="phase2.phase2_status === 'skipped'" title="Model evidence unavailable" :reason="phase2.phase2_skip_reason?.reason_message || 'Phase 2 did not run.'" />
-        <template>
+        <template v-if="true">
           <div class="grid grid-2">
             <Panel title="Generic-M0/M1/M2/M3 comparison" note="Generic workflow models compare intercept-only, confounders, stoich-augmented, and interaction or nonlinear features.">
-              <EChart :option="modelComparisonOption" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" />
+              <WorkflowChart slot-id="hvg.native.HvgCaseView.11" resource="hvg" :identifier="identifier" chart-id="H25" :params="{panel_profile:'original_model_comparison'}" :height="360"><EChart :option="modelComparisonOption" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" /></WorkflowChart>
               <DataTable :rows="tableRows('model_comparison_table')" />
             </Panel>
             <Panel title="Bootstrap feature stability" note="Stable features are more reliable candidates than single-fit coefficients.">
-              <EChart :option="bootstrapOption" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" />
+              <WorkflowChart slot-id="hvg.native.HvgCaseView.12" resource="hvg" :identifier="identifier" chart-id="H25" :params="{panel_profile:'original_bootstrap'}" :height="360"><EChart :option="bootstrapOption" :empty-reason="phase2.phase2_skip_reason?.reason_message || 'No finite saved values for this original chart. Inspect model status and the supporting table.'" :height="360" /></WorkflowChart>
               <DataTable :rows="tableRows('bootstrap_feature_stability_table')" />
             </Panel>
           </div>
@@ -260,7 +260,7 @@
       <section v-if="tab==='downstream' && !isUnifiedWorkflow" class="stack-lg">
         <div class="grid grid-2">
           <Panel title="Candidate priority bubble plot" note="Score size combines HVG rank, residual, explained fraction, and class components.">
-            <EChart :option="candidateBubble" :height="380" />
+            <WorkflowChart slot-id="hvg.native.HvgCaseView.13" resource="hvg" :identifier="identifier" chart-id="H32" :params="{panel_profile:'original_candidate_bubble'}" :height="380"><EChart :option="candidateBubble" :height="380" /></WorkflowChart>
           </Panel>
           <Panel title="Candidate score components" note="The score is decomposed to avoid black-box candidate ranking.">
             <DataTable :rows="tableRows('candidate_score_components_table')" />
@@ -268,7 +268,7 @@
         </div>
         <div class="grid grid-2">
           <Panel title="GO/KEGG enrichment dotplot" note="Dot position encodes FDR significance; size encodes candidate overlap and color encodes annotation source.">
-            <EChart :option="functionalEnrichmentDotplot" :height="420" />
+            <WorkflowChart slot-id="hvg.native.HvgCaseView.14" resource="hvg" :identifier="identifier" chart-id="H25" :params="{panel_profile:'original_candidate_enrichment'}" :height="420"><EChart :option="functionalEnrichmentDotplot" :height="420" /></WorkflowChart>
           </Panel>
           <Panel title="Functional enrichment summary" note="Annotation coverage and method metadata are recorded for reproducible interpretation.">
             <DataTable :rows="tableRows('functional_enrichment_summary_table')" />
@@ -329,6 +329,7 @@
 <script setup>
 import { computed, defineComponent, h, onMounted, ref } from 'vue'
 import EChart from '../components/EChart.vue'
+import WorkflowChart from '../components/workflow/WorkflowChart.vue'
 import ResearchScope from '../components/hvg-research/ResearchScope.vue'
 import ResearchSection from '../components/hvg-research/ResearchSection.vue'
 import { useHvgResearch } from '../components/hvg-research/useHvgResearch'

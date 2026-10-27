@@ -1,6 +1,6 @@
 from __future__ import annotations
 import json
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import List, Dict, Any
 from datetime import datetime, timezone
 from django.conf import settings
