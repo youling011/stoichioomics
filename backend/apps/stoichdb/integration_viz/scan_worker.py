@@ -1,4 +1,5 @@
 """Spawn-safe entry points; no model imports before Django initialization."""
+from backend.apps.stoichdb.feature_sources import io as feature_io
 def initialize():
     import os
     for k in ['OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','NUMEXPR_NUM_THREADS']:os.environ[k]='1'

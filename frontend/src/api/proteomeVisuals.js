@@ -1,6 +1,7 @@
 import client from './client'
+import {sharedManifest} from './sharedManifest'
 const root=id=>`/stoichdb/species/${encodeURIComponent(id)}/proteome/visualizations/`
-export const getProteomeManifest=(id,params={},config={})=>client.get(root(id),{...config,params}).then(r=>r.data.data)
+export const getProteomeManifest=(id,params={},config={})=>sharedManifest(root(id),params,config).then(r=>r.data.data)
 export const ensureProteomeVisuals=(id,data={},config={})=>client.post(`${root(id)}ensure/`,data,config).then(r=>r.data.data)
 export const getProteomeRequest=(id,key,config={})=>client.get(`${root(id)}requests/${key}/`,config).then(r=>r.data.data)
 export const getProteomeChart=(id,chart,params={},config={})=>client.get(`${root(id)}charts/${chart}/`,{...config,params}).then(r=>r.data.data)

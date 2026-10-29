@@ -7,6 +7,10 @@ QC batches and their proteome feature tables are stored per species.
 """
 
 from __future__ import annotations
+import sys as _corefull_sys
+from pathlib import Path as _CoreFullPath
+_corefull_sys.path.insert(0, str(_CoreFullPath(__file__).resolve().parents[1]))
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import argparse
 import csv
@@ -14,7 +18,7 @@ import json
 import re
 import time
 from collections import Counter
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 
@@ -134,9 +138,9 @@ def load_whitelist() -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     seen: set[str] = set()
     for batch_no, path in enumerate(WHITELIST_BATCHES, start=1):
-        if not path.exists():
+        if not feature_io.source_exists(path):
             raise FileNotFoundError(f"missing whitelist batch: {path}")
-        with path.open("r", encoding="utf-8-sig", newline="") as fh:
+        with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as fh:
             for row in csv.DictReader(fh):
                 species_id = clean(row.get("species"))
                 if not species_id or clean(row.get("hard_fail")).lower() == "true":
@@ -163,12 +167,12 @@ def feature_files(species_id: str) -> dict[str, Path | None]:
     transcript = FEATURE_ROOT / "\u8f6c\u5f55\u7ec4" / f"{species_id}.transcriptome.core.v5.csv"
     proteome_dir = FEATURE_ROOT / "\u86cb\u767d\u8d28\u7ec4" / species_id
     proteome = proteome_dir / f"{species_id}.proteome_features.core.csv"
-    if not proteome.exists():
+    if not feature_io.source_available(proteome):
         proteome = proteome_dir / f"{species_id}.proteome_features.full.csv"
     return {
-        "genome": genome if genome.exists() else None,
-        "transcriptome": transcript if transcript.exists() else None,
-        "proteome": proteome if proteome.exists() else None,
+        "genome": genome if feature_io.source_available(genome) else None,
+        "transcriptome": transcript if feature_io.source_available(transcript) else None,
+        "proteome": proteome if feature_io.source_available(proteome) else None,
     }
 
 
@@ -230,7 +234,7 @@ def extract_external_ids(row: dict[str, str]) -> dict[str, str]:
 
 
 def iter_protein_id_rows(path: Path):
-    with path.open("rb") as fh:
+    with feature_io.open_source(path, "rb") as fh:
         header_line = fh.readline().decode("utf-8-sig", "replace").rstrip("\r\n")
         header = header_line.split(",")
         index = {name: idx for idx, name in enumerate(header)}
@@ -404,7 +408,7 @@ def build_species(
 
 def update_manifest(summary: dict[str, Any]) -> None:
     manifest_path = OUT_ROOT / "final_whitelist_id_mapping_manifest.json"
-    if manifest_path.exists():
+    if feature_io.source_exists(manifest_path):
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     else:
         manifest = {

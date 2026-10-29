@@ -1,3 +1,4 @@
+from backend.apps.stoichdb.feature_sources import io as feature_io
 import csv,io,json,re
 from django.http import StreamingHttpResponse,JsonResponse
 import numpy as np
@@ -24,7 +25,7 @@ def download(request,target,manifest,kind,chart_id='',selection=None):
         if variant_id:
             if len(variant_id)!=64 or any(c not in '0123456789abcdef' for c in variant_id):raise ValueError('invalid_variant_id')
             path=store.variant_path(target,variant_id,'.json.gz')
-            if not path.is_file():raise ValueError('variant_not_available')
+            if not feature_io.source_available(path):raise ValueError('variant_not_available')
             data=store.read_json(path)
             if data.get('_variant_id')!=variant_id:raise ValueError('variant_identity_mismatch')
             figure={**figure,'variant_id':variant_id,'data':data}
@@ -85,7 +86,7 @@ def download(request,target,manifest,kind,chart_id='',selection=None):
             if content_hash(p)!=manifest['source']['hashes'][manifest['primary_scope']]:raise ValueError('source_hash_mismatch')
             def rows():
                 numeric={c['key'] for c in manifest['catalog'] if c['primary'] and c['role']=='numeric'}
-                with p.open(encoding='utf-8-sig',newline='') as f:
+                with feature_io.open_source(p, encoding='utf-8-sig',newline='') as f:
                     reader=csv.reader(f);header=next(reader);yield header
                     for cells in reader:yield [NumericToken(value) if key in numeric and re.fullmatch(r'[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?',value) else value for key,value in zip(header,cells)]
         else:

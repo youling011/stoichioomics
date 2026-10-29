@@ -1,3 +1,4 @@
+from backend.apps.stoichdb.feature_sources.compatibility import implementation_digest
 from pathlib import Path
 from copy import deepcopy
 from datetime import datetime,timezone
@@ -27,7 +28,7 @@ def _locked_pipeline(cfg,r,jobdir,parent):
  if not species or species=='unknown':raise ValueError('Research requires an authoritative species_id')
  source=freeze_sources(species,r['enrichment']['annotation_release_id'])
  registry=Path(settings.BASE_DIR)/'shared/schemas/stoich_ml_feature_registry_v1.json'
- code={p.relative_to(Path(settings.BASE_DIR)).as_posix():digest(p) for folder in [Path(__file__).parent,Path(settings.BASE_DIR)/'backend/apps/hvg'] for p in folder.glob('*.py')}
+ code={p.relative_to(Path(settings.BASE_DIR)).as_posix():implementation_digest(p) for folder in [Path(__file__).parent,Path(settings.BASE_DIR)/'backend/apps/hvg'] for p in folder.glob('*.py')}
  inputs={}
  raw=Path(cfg['input_adapter']['input_dir'])
  for section in ['expression','metadata','stoich']:

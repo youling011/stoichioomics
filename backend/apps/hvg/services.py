@@ -6,7 +6,7 @@ from typing import Dict, Any, Optional
 import numpy as np
 import pandas as pd
 
-from backend.portal.results import load_case_outputs
+from backend.portal.results import load_case_outputs_lazy as load_case_outputs
 from backend.apps.jobs.models import AnalysisJob
 from backend.apps.registry.services import list_cases
 from backend.apps.common.json_safe import sanitize_for_json

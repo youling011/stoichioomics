@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.common.artifact_locations import source_root
 
 import io
 import os
@@ -7,9 +8,10 @@ import sqlite3
 import time
 import uuid
 import zipfile
+from functools import lru_cache
 from collections import Counter
 from datetime import timedelta
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 
 import numpy as np
 import pandas as pd
@@ -25,8 +27,8 @@ MISSING = {'', 'na', 'n/a', 'null', 'none'}
 
 
 def artifact_valid(profile, strict=False):
-    folder = Path(profile.artifact_path)
     try:
+        folder = profile_location(profile.artifact_path)
         checks = load_json(folder / 'checksums.json')
         for name, expected in checks.items():
             path = folder / name
@@ -42,16 +44,29 @@ def artifact_valid(profile, strict=False):
 
 
 def read_profile(profile, current_signature=None):
-    data = load_json(Path(profile.artifact_path) / 'profile.json')
+    data = load_json(profile_location(profile.artifact_path) / 'profile.json')
     if current_signature is not None:
         data['signature'] = current_signature
     return data
 
 
 def values(profile, field):
-    path = Path(profile['artifact_path']) / 'values.npz'
+    path = profile_location(profile['artifact_path']) / 'values.npz'
+    checks_path = path.parent / 'checksums.json'
+    checks = load_json(checks_path)
+    expected = checks['values.npz']['sha256']
+    from backend.apps.stoichdb.feature_sources.asset_state import change_token
+    stat = path.stat()
+    _verified_frozen_file(str(path), expected, stat.st_size, stat.st_mtime_ns, change_token(path)['change_ns'])
     with np.load(path, allow_pickle=False) as arrays:
         return arrays[field].copy() if field in arrays else np.array([], dtype=float)
+
+
+@lru_cache(maxsize=512)
+def _verified_frozen_file(path, expected, size, mtime, change):
+    if file_sha(Path(path)) != expected:
+        raise CompareError('Frozen profile checksum does not match.', 'artifact_unavailable', 409)
+    return True
 
 
 def _claim(dataset, sig, semantic_hash):
@@ -75,6 +90,11 @@ def _claim(dataset, sig, semantic_hash):
 
 def get_profile(species_id, omics, catalog, checkpoint=lambda: None, force=False):
     source, dataset, header, sig = resolve(species_id, omics)
+    if not force:
+        from backend.apps.stoichdb.feature_hub.cache_identity import source_content_identity
+        expected=source_content_identity(source)
+        for saved in CompareCoreProfile.objects.filter(dataset=dataset,status='completed',semantic_hash=catalog['semantic_hash'],method_version=VERSION,content_sha256=expected):
+            if artifact_valid(saved,strict=True):return read_profile(saved,sig)
     while True:
         checkpoint()
         item, owned = _claim(dataset, sig, catalog['semantic_hash'])
@@ -347,3 +367,6 @@ def build_profile(source, dataset, header, sig, catalog, checkpoint, profile_pk=
             if not temp.resolve().is_relative_to((root() / 'building').resolve()):
                 raise RuntimeError('Refusing to remove an unrelated directory')
             shutil.rmtree(temp)
+
+def profile_location(value):
+    p=Path(value).resolve();source_root('compare',root(),p);return p

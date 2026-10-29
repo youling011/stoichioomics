@@ -452,7 +452,10 @@ def functional_enrichment_view(request):
 
 @api_view(['GET'])
 def quality_view(request):
-    return ok(services.quality_overview())
+    from backend.apps.common.public_snapshots import PublicSnapshotPending
+    try:return ok(services.quality_overview())
+    except PublicSnapshotPending as exc:
+        response=err(str(exc),status=503);response['Retry-After']='30';return response
 
 
 @api_view(['GET'])
@@ -821,6 +824,14 @@ def search_view(request):
 def download_feature_file_view(request, file_id: str):
     try:
         path = services.resolve_feature_file(file_id)
+        from backend.apps.stoichdb.feature_sources.resolver import LogicalCore
+        if isinstance(path, LogicalCore):
+            from django.http import StreamingHttpResponse
+            from django.utils.http import content_disposition_header
+            response = StreamingHttpResponse(path.open_binary(), content_type='text/csv')
+            response['Content-Disposition'] = content_disposition_header(True, path.logical_name)
+            response['Content-Length'] = str(path.record['virtual_size'])
+            return response
         return FileResponse(path.open('rb'), as_attachment=True, filename=Path(path).name)
     except services.NotFoundError as exc:
         return err(str(exc), status=404)

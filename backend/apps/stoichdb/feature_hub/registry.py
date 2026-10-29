@@ -1,4 +1,8 @@
 from __future__ import annotations
+import hashlib
+from backend.apps.common.atomic_json import atomic_write_json
+from backend.apps.common.artifact_locations import file_lock
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import json
@@ -32,9 +36,9 @@ NT_FRAC_RE = re.compile(r"^frac_[ACGTU]$")
 
 
 def _read_json(path: Path) -> dict[str, Any]:
-    if not path.exists():
+    if not feature_io.source_exists(path):
         return {}
-    with path.open("r", encoding="utf-8") as handle:
+    with feature_io.open_source(path, "r", encoding="utf-8") as handle:
         payload = json.load(handle)
     return payload if isinstance(payload, dict) else {}
 
@@ -198,14 +202,14 @@ def _fallback_header(omics: str, scope: str) -> list[str]:
     if not ds:
         return []
     path = Path(ds.core_csv_path if scope == "core" else ds.full_csv_path)
-    if not path.exists():
+    if not feature_io.source_exists(path):
         return []
-    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as handle:
         return next(csv.reader(handle), [])
 
 
 @lru_cache(maxsize=4)
-def load_registry() -> dict[str, Any]:
+def _load_registry(revision=None) -> dict[str, Any]:
     overlays = _display_overlays()
     schemas: list[dict[str, Any]] = []
     fields: list[dict[str, Any]] = []
@@ -320,6 +324,21 @@ def field_lookup(omics: str, scope: str) -> dict[str, dict[str, Any]]:
 
 
 def write_registry_file() -> Path:
-    REGISTRY_PATH.parent.mkdir(parents=True, exist_ok=True)
-    REGISTRY_PATH.write_text(json.dumps(load_registry(), ensure_ascii=False, indent=2), encoding="utf-8")
-    return REGISTRY_PATH
+    root=Path(getattr(settings,'STOICH_FEATURE_REGISTRY_OUTPUT_ROOT',Path(getattr(settings,'STOICH_RUNTIME_ROOT',settings.BASE_DIR/'runtime'))/'feature_registry'))
+    payload=load_registry();encoded=json.dumps(payload,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf8');revision=hashlib.sha256(encoded).hexdigest()
+    with file_lock(root/'publish.lock'):
+        target=root/'objects'/(revision+'.json')
+        if not target.is_file():atomic_write_json(target,payload)
+        raw=target.read_bytes()
+        atomic_write_json(root/'current.json',{'format':'feature-registry-snapshot-v1','revision':revision,'object_file':target.name,'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw),'field_count':len(payload['fields']),'schema_identity':_registry_revision()})
+    return target
+
+def _registry_revision():
+    rows=list(SchemaRegistry.objects.order_by('pk').values('schema_id','omics_type','product_type','version','status','columns_json'))
+    files=[]
+    for p in [DISPLAY_SCHEMA_PATH,FEATURE_DICTIONARY_PATH]:
+        s=p.stat();files.append([str(p),s.st_size,s.st_mtime_ns])
+    return hashlib.sha256(json.dumps([rows,files],sort_keys=True,default=str).encode()).hexdigest()
+
+def load_registry():return _load_registry(_registry_revision())
+load_registry.cache_clear=_load_registry.cache_clear

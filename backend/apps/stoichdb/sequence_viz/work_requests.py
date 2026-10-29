@@ -1,4 +1,7 @@
-import os,time,json,hashlib,uuid,subprocess,sys
+from backend.apps.common.runtime_python import python_executable
+from backend.apps.common.maintenance import guarded_submission
+from backend.apps.stoichdb.feature_sources import io as feature_io
+import os,time,json,hashlib,uuid,subprocess,sys,threading
 from pathlib import Path
 from django.conf import settings
 from . import artifacts as store
@@ -8,15 +11,16 @@ from backend.apps.stoichdb.proteome_viz.work_requests import process_alive
 def request_path(key):
     if len(key)!=64 or any(k not in '0123456789abcdef' for k in key):raise ValueError('invalid_request_id')
     return store.root()/'requests'/(key+'.json')
+@guarded_submission
 def enqueue(sid,m,scope):
     ds=CompleteCoreDataSource(sid,m);identity=[sid,m,scope,ds.dataset.dataset_id,release_id(),signatures(ds),store.implementation_hash_for(m,scope)];key=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest();p=request_path(key)
-    if p.is_file():
+    if feature_io.source_available(p):
         old=status(key,sid,m)
         if old['readiness'] in ['queued','running','ready']:return old
     value={'request_id':key,'species_id':sid,'omics':m,'scope':scope,'readiness':'queued','created':time.time(),'attempt_id':uuid.uuid4().hex};store.write_json(p,value);return value
 def status(key,sid,m):
     p=request_path(key)
-    if not p.is_file():raise FileNotFoundError('unknown_request')
+    if not feature_io.source_available(p):raise FileNotFoundError('unknown_request')
     value=store.read_json(p)
     if value['species_id']!=sid or value['omics']!=m:raise FileNotFoundError('unknown_request')
     if value['readiness']=='running' and not process_alive(value.get('worker_pid',0)):value.update(readiness='interrupted',reason_code='worker_interrupted');store.write_json(p,value)
@@ -24,17 +28,17 @@ def status(key,sid,m):
 def ensure_consumer():
     if not getattr(settings,'SEQUENCE_VIZ_ON_DEMAND',True):return False
     folder=store.root();folder.mkdir(parents=True,exist_ok=True);state=folder/'consumer.json';lock=folder/'consumer_launch.lock'
-    if state.is_file():
+    if feature_io.source_available(state):
         recorded=store.read_json(state)
-        if recorded.get('state')!='stopped' and process_alive(recorded.get('pid',0),recorded.get('heartbeat',state.stat().st_mtime)):return True
+        if recorded.get('state')!='stopped' and process_alive(recorded.get('pid',0),recorded.get('heartbeat',feature_io.source_metadata(state).mtime)):return True
     try:fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
     except FileExistsError:
-        if time.time()-lock.stat().st_mtime>30:lock.unlink(missing_ok=True)
+        if time.time()-feature_io.source_metadata(lock).mtime>30:lock.unlink(missing_ok=True)
         return False
     try:
-        os.close(fd);project=Path(settings.BASE_DIR);python=project/'.venv/Scripts/python.exe';command=[str(python if python.exists() else sys.executable),str(project/'manage.py'),'materialize_sequence_visuals','--consume-requests','--publish','--resume','--idle-exit-seconds','45'];env=dict(os.environ);env.update({k:'1' for k in ['OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','NUMEXPR_NUM_THREADS']})
+        os.close(fd);project=Path(settings.BASE_DIR);python=project/'.venv/Scripts/python.exe';command=[python_executable(),str(project/'manage.py'),'materialize_sequence_visuals','--consume-requests','--publish','--resume','--idle-exit-seconds','45'];env=dict(os.environ);env.update({k:'1' for k in ['OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','NUMEXPR_NUM_THREADS']})
         with (folder/'consumer.log').open('ab') as log:p=subprocess.Popen(command,cwd=project,env=env,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0,start_new_session=os.name!='nt')
-        store.write_json(state,{'pid':p.pid,'state':'starting','heartbeat':time.time()});return True
+        store.write_json(state,{'pid':p.pid,'state':'starting','heartbeat':time.time()});threading.Thread(target=p.wait,daemon=True,name='sequence-viz-worker-reaper').start();return True
     finally:lock.unlink(missing_ok=True)
 def consume(once=False,idle_exit_seconds=45):
     from .execution import run_one

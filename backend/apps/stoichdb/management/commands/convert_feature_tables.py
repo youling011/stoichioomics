@@ -1,8 +1,9 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 from collections import Counter
 from datetime import datetime, timezone
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 
 import pyarrow as pa
 import pyarrow.csv as pacsv
@@ -24,7 +25,7 @@ from backend.apps.stoichdb.models import FileQCResult, ReleaseQCResult
 
 
 def csv_to_parquet_stream(source_path, parquet_path, header, compression, dry_run=False):
-    reader = pacsv.open_csv(
+    reader = feature_io.arrow_open_csv(
         source_path,
         read_options=pacsv.ReadOptions(use_threads=True),
         convert_options=pacsv.ConvertOptions(column_types={col: pa.string() for col in header}),
@@ -44,6 +45,7 @@ def csv_to_parquet_stream(source_path, parquet_path, header, compression, dry_ru
                 writer = pq.ParquetWriter(parquet_path, table.schema, compression=compression)
             writer.write_table(table)
     finally:
+        reader.close()
         if writer is not None:
             writer.close()
     return rows, columns
@@ -120,7 +122,7 @@ class Command(BaseCommand):
             }
             parquet_object = None
             try:
-                if not source_path.exists():
+                if not feature_io.source_exists(source_path):
                     raise FileNotFoundError(str(source_path))
                 header = read_header(source_path)
                 if not header:
@@ -129,7 +131,8 @@ class Command(BaseCommand):
                 metrics["csv_rows"] = csv_rows
                 metrics["csv_columns"] = len(header)
                 metrics["source_sha256"] = storage.sha256
-                if options["dry_run"]:
+                logical_core = feature_io.logical_source(source_path) if product == "core" else None
+                if options["dry_run"] or logical_core is not None:
                     parquet_rows, parquet_columns = csv_to_parquet_stream(
                         source_path,
                         parquet_path,
@@ -139,7 +142,7 @@ class Command(BaseCommand):
                     )
                     metrics["dry_run_arrow_rows"] = parquet_rows
                     metrics["dry_run_arrow_columns"] = parquet_columns
-                elif options["resume"] and parquet_path.exists():
+                elif options["resume"] and feature_io.source_exists(parquet_path):
                     parquet_file = pq.ParquetFile(parquet_path)
                     parquet_rows = parquet_file.metadata.num_rows
                     parquet_columns = parquet_file.metadata.num_columns
@@ -159,9 +162,9 @@ class Command(BaseCommand):
                 elif parquet_columns != len(header):
                     status = "fail"
                     reason = "column_count_mismatch"
-                if not options["dry_run"] and parquet_path.exists():
+                if not options["dry_run"] and logical_core is None and feature_io.source_exists(parquet_path):
                     parquet_sha = sha256_file(parquet_path)
-                    metrics["parquet_size_bytes"] = parquet_path.stat().st_size
+                    metrics["parquet_size_bytes"] = feature_io.source_metadata(parquet_path).size
                     metrics["parquet_sha256"] = parquet_sha
                     parquet_object = upsert_storage_object_for_file(
                         parquet_path,
@@ -189,6 +192,13 @@ class Command(BaseCommand):
                     rd.metadata_json = metadata
                     rd.save(update_fields=["metadata_json", "updated_at"])
                     upsert_file_qc(release, parquet_object, "parquet_conversion", status, reason, metrics, details)
+                elif not options["dry_run"] and logical_core is not None:
+                    metrics["representation"] = "verified_logical_core"
+                    metrics["physical_full_path"] = str(logical_core.full_path)
+                    metrics["recipe_id"] = logical_core.record["recipe_id"]
+                    # Keep the original Core product; validate its Arrow schema and
+                    # rows without recreating a persistent Core Parquet mirror.
+                    upsert_file_qc(release, storage, "parquet_conversion", status, reason, metrics, details)
             except Exception as exc:
                 status = "fail"
                 reason = exc.__class__.__name__

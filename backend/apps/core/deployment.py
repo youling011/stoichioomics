@@ -29,3 +29,14 @@ def readiness_view(request):
     response = JsonResponse({'ok': ready, 'checks': checks}, status=200 if ready else 503)
     response['Cache-Control'] = 'no-store'
     return response
+
+
+@require_safe
+def public_data_revision_view(request):
+    """Small public cache identity; no paths, task metadata or credentials."""
+    from django.http import HttpResponse
+    from backend.apps.common.public_snapshots import revision
+    response=HttpResponse(status=204)
+    response['X-Stoich-Data-Revision']=revision()
+    response['Cache-Control']='no-store'
+    return response

@@ -1,9 +1,10 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import gc
 import json
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 import pandas as pd
@@ -286,6 +287,9 @@ class Command(BaseCommand):
                 GeneIndex.objects.all().delete()
                 AnalysisArtifact.objects.all().delete()
                 FeatureFile.objects.all().delete()
+                from backend.apps.stoichdb.models import FeatureSourceBinding
+                FeatureSourceBinding.objects.filter(dataset__isnull=False).delete()
+                feature_io.clear_binding_cache()
                 OmicsDataset.objects.all().delete()
                 Species.objects.all().delete()
                 DataRelease.objects.all().update(is_active=False)
@@ -300,11 +304,11 @@ class Command(BaseCommand):
         omics_meta = index_payload.get('omics_meta', {})
         stage5_dir_lookup = self._build_stage5_dir_lookup(stage5)
 
-        species_df = pd.read_csv(stage4 / 'species.csv')
+        species_df = feature_io.read_csv(stage4 / 'species.csv')
         species_records = []
         species_rows = species_df.to_dict(orient='records')
         if options.get('validate_stage_paths_only'):
-            dataset_df = pd.read_csv(stage4 / 'omics_dataset.csv')
+            dataset_df = feature_io.read_csv(stage4 / 'omics_dataset.csv')
             missing: list[str] = []
             for row in species_rows:
                 sid = normalize_species_id(row['species_id'])
@@ -315,7 +319,7 @@ class Command(BaseCommand):
                         break
                     continue
                 for name in ['browse_meta.json', 'cross_omics.json']:
-                    if not (species_stage5_dir / name).exists():
+                    if not feature_io.source_exists(species_stage5_dir / name):
                         missing.append(f"{row.get('species_id')}:{name}")
                         if len(missing) >= 10:
                             break
@@ -330,7 +334,7 @@ class Command(BaseCommand):
                         missing.append(f"dataset_dir:{row.get('species_id')}:{omics_type}")
                     else:
                         for name in ['summary.json', 'analysis.json']:
-                            if not (species_stage5_dir / omics_type / name).exists():
+                            if not feature_io.source_exists(species_stage5_dir / omics_type / name):
                                 missing.append(f"{row.get('species_id')}:{omics_type}:{name}")
                                 break
                     if len(missing) >= 10:
@@ -370,7 +374,7 @@ class Command(BaseCommand):
                 has_transcriptome=bool(row.get('has_transcriptome')),
                 has_proteome=bool(row.get('has_proteome')),
                 fingerprint=idx_row.get('fingerprint') or {},
-                cross_omics_payload=load_json(stage5_species_dir / 'cross_omics.json') if stage5_species_dir and (stage5_species_dir / 'cross_omics.json').exists() else {},
+                cross_omics_payload=load_json(stage5_species_dir / 'cross_omics.json') if stage5_species_dir and feature_io.source_exists(stage5_species_dir / 'cross_omics.json') else {},
                 searchable_text=textify(display_name, sid, row.get('domain'), row.get('clade'), row.get('habitat')),
                 is_featured=True,
             ))
@@ -407,7 +411,7 @@ class Command(BaseCommand):
         species_map = {row.species_id: row for row in Species.objects.all()}
         self.stdout.write(f'Imported/updated species: {len(species_records)}; database species total: {len(species_map)}')
 
-        dataset_df = pd.read_csv(stage4 / 'omics_dataset.csv')
+        dataset_df = feature_io.read_csv(stage4 / 'omics_dataset.csv')
         browse_meta_payloads = {}
         for row in species_rows:
             sid = normalize_species_id(row['species_id'])
@@ -415,7 +419,7 @@ class Command(BaseCommand):
             source_species_id = species.source_species_id if species else row.get('source_species_id') or row.get('species_id')
             species_stage5_dir = self._stage5_species_dir(stage5_dir_lookup, row.get('species_id'), source_species_id, sid)
             browse_path = species_stage5_dir / 'browse_meta.json' if species_stage5_dir else None
-            browse_meta_payloads[sid] = load_json(browse_path) if browse_path and browse_path.exists() else {}
+            browse_meta_payloads[sid] = load_json(browse_path) if browse_path and feature_io.source_exists(browse_path) else {}
         ds_records = []
         dataset_rows = dataset_df.to_dict(orient='records')
         dataset_total = len(dataset_rows)
@@ -469,9 +473,11 @@ class Command(BaseCommand):
                 unique_fields=['dataset_id'],
             )
         dataset_map = {row.dataset_id: row for row in OmicsDataset.objects.select_related('species').all()}
+        from backend.apps.stoichdb.feature_sources.registration import register_imported_sources
+        register_imported_sources([dataset_map[row.dataset_id] for row in ds_records])
         self.stdout.write(f'Imported/updated datasets: {len(ds_records)}; database dataset total: {len(dataset_map)}')
 
-        file_df = pd.read_csv(stage4 / 'feature_file.csv')
+        file_df = feature_io.read_csv(stage4 / 'feature_file.csv')
         feature_rows = [
             FeatureFile(
                 file_id=str(row['file_id']),
@@ -516,7 +522,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Stoichdb pipeline import completed.'))
 
     def _csv_dict_rows(self, path: Path):
-        with path.open('r', encoding='utf-8-sig', newline='') as handle:
+        with feature_io.open_source(path, 'r', encoding='utf-8-sig', newline='') as handle:
             reader = csv.DictReader(handle)
             for row in reader:
                 yield row
@@ -771,7 +777,7 @@ class Command(BaseCommand):
         kwargs: dict[str, Any] = {'chunksize': chunksize, 'engine': engine}
         if engine == 'c':
             kwargs['low_memory'] = False
-        return pd.read_csv(rows_path, **kwargs)
+        return feature_io.read_csv(rows_path, **kwargs)
 
     def _available_memory(self) -> tuple[int | None, float | None]:
         try:
@@ -838,7 +844,7 @@ class Command(BaseCommand):
         dataset_total = len(dataset_items)
         for dataset_idx, (dataset_id, dataset) in enumerate(dataset_items, start=1):
             rows_path = self._entity_rows_path(stage5, dataset, entity_source)
-            if not rows_path.exists():
+            if not feature_io.source_exists(rows_path):
                 if entity_source in {'core', 'full'}:
                     raise CommandError(f'Missing {entity_source} entity source for {dataset.dataset_id}: {rows_path}')
                 continue
@@ -935,7 +941,7 @@ class Command(BaseCommand):
             if species_stage5_dir is None:
                 continue
             cross_path = species_stage5_dir / 'cross_omics.json'
-            if cross_path.exists():
+            if feature_io.source_exists(cross_path):
                 artifact_records.append(AnalysisArtifact(
                     artifact_id=f'{species_id}__cross_omics',
                     species=species,
@@ -952,7 +958,7 @@ class Command(BaseCommand):
                     continue
                 for artifact_type in ['profile', 'core_features', 'summary', 'analysis']:
                     path = species_stage5_dir / omics / f'{artifact_type}.json'
-                    if path.exists():
+                    if feature_io.source_exists(path):
                         artifact_records.append(AnalysisArtifact(
                             artifact_id=f'{species_id}__{omics}__{artifact_type}',
                             species=species,
@@ -974,7 +980,7 @@ class Command(BaseCommand):
 
     def _register_release(self, pipeline_root: Path, stage6: Path, *, entity_source: str, requested_entity_source: str) -> None:
         manifest_path = pipeline_root / 'pipeline_manifest.json'
-        manifest = load_json(manifest_path) if manifest_path.exists() else {}
+        manifest = load_json(manifest_path) if feature_io.source_exists(manifest_path) else {}
         index_payload = load_json(stage6 / 'index.json')
         active_stamp = timezone.now()
         release_id = (

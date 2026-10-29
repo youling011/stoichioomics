@@ -1,4 +1,6 @@
+from backend.apps.common.artifact_locations import locate
 """Shared cohort membership and fingerprint identities for all three species views."""
+from backend.apps.stoichdb.feature_sources import io as feature_io
 import hashlib,json
 from pathlib import Path
 import numpy as np
@@ -15,8 +17,9 @@ def fingerprint(sid,scope,release):
     if pointer:
         manifest=store.read_json(store.path_for(pointer)/'manifest.json');row=pointer['fingerprint']
     else:manifest=None;row=None
-    p=store.root()/'fingerprints'/store.component(release)/(store.component(sid)+'_'+scope+'.json')
-    if row is None and p.is_file():row=store.read_json(p)
+    location=locate('proteome',store.root(),'fingerprints/'+store.component(release)+'/'+store.component(sid)+'_'+scope+'.json',required=False)
+    p=location.target if location else store.root()/'fingerprints'/store.component(release)/(store.component(sid)+'_'+scope+'.json')
+    if row is None and feature_io.source_available(p):row=store.read_json(p)
     if row is None:return None
     identity=manifest or row
     if identity.get('implementation_hash')!=store.implementation_hash():return None
@@ -25,7 +28,7 @@ def fingerprint(sid,scope,release):
     expected=identity.get('source',{}).get('file_signatures',identity.get('file_signatures',{}))
     for kind in ['core','full']:
         raw=getattr(ds,kind+'_csv_path');path=Path(raw) if raw else None
-        actual={'bytes':path.stat().st_size,'mtime_ns':path.stat().st_mtime_ns} if path and path.is_file() else None
+        actual={'bytes':feature_io.source_metadata(path).size,'mtime_ns':feature_io.source_metadata(path).mtime_ns} if path and feature_io.source_available(path) else None
         if actual!=expected.get(kind):return None
     return row
 

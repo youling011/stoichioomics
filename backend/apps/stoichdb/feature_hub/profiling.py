@@ -1,4 +1,6 @@
 from __future__ import annotations
+from .cache_identity import read_cached,write_cache,calculation_lock
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import json
@@ -13,7 +15,7 @@ from .schemas import FeatureHubNotFound, normalize_omics, normalize_scope
 from .sources import DatasetSourceResolver, iter_rows, read_header
 
 
-PROFILE_ROOT = Path(settings.BASE_DIR) / "runtime" / "feature_profiles"
+PROFILE_ROOT = Path(getattr(settings, "STOICH_FEATURE_PROFILE_ROOT", Path(settings.BASE_DIR) / "runtime" / "feature_profiles"))
 
 
 def _num(value: Any) -> float | None:
@@ -57,7 +59,7 @@ def _histogram(values: list[float], bins: int = 32) -> dict[str, Any]:
 
 def _iter_indexed_rows(source, fields: list[str]):
     selected = list(dict.fromkeys(fields))
-    with source.path.open("r", encoding="utf-8-sig", newline="") as handle:
+    with feature_io.open_source(source.path, "r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.reader(handle)
         try:
             header = next(reader)
@@ -112,6 +114,7 @@ def _profile_result(source, target: str, values: list[float], valid_n: int, miss
     }
 
 
+@calculation_lock(lambda: PROFILE_ROOT)
 def precompute_field_profiles(species_id: str, omics: str, scope: str, fields: list[str], *, force: bool = False) -> dict[str, dict[str, Any]]:
     source = DatasetSourceResolver().resolve(species_id, normalize_omics(omics), normalize_scope(scope))
     targets = [str(field or "").strip() for field in dict.fromkeys(fields) if str(field or "").strip()]
@@ -119,73 +122,73 @@ def precompute_field_profiles(species_id: str, omics: str, scope: str, fields: l
     pending: list[str] = []
     for target in targets:
         cache = _cache_path(source.fingerprint, target)
-        if cache.exists() and not force:
-            with cache.open("r", encoding="utf-8") as handle:
-                cached[target] = json.load(handle)
-        else:
-            pending.append(target)
+        result=read_cached('feature_profiles',cache,source,[f'{key}.{target}.json' for key in source.legacy_fingerprints],'profile',field=target) if not force else None
+        if result is not None:cached[target]=result
+        else:pending.append(target)
     if not pending:
         return cached
+    with __import__('backend.apps.common.task_execution',fromlist=['heavy_compute_slot']).heavy_compute_slot():
 
-    values: dict[str, list[float]] = {field: [] for field in pending}
-    valid: dict[str, int] = {field: 0 for field in pending}
-    missing: dict[str, int] = {field: 0 for field in pending}
-    ranked: dict[str, list[dict[str, Any]]] = {field: [] for field in pending}
-    header = set(read_header(source))
-    selected = [field for field in ["gene_id", "transcript_id", "protein_id", *pending] if field in header]
-    for row in _iter_indexed_rows(source, selected):
-        entity_id = row.get("gene_id") or row.get("transcript_id") or row.get("protein_id") or ""
+        values: dict[str, list[float]] = {field: [] for field in pending}
+        valid: dict[str, int] = {field: 0 for field in pending}
+        missing: dict[str, int] = {field: 0 for field in pending}
+        ranked: dict[str, list[dict[str, Any]]] = {field: [] for field in pending}
+        header = set(read_header(source))
+        selected = [field for field in ["gene_id", "transcript_id", "protein_id", *pending] if field in header]
+        for row in _iter_indexed_rows(source, selected):
+            entity_id = row.get("gene_id") or row.get("transcript_id") or row.get("protein_id") or ""
+            for target in pending:
+                raw = row.get(target)
+                if raw is None or str(raw).strip() == "":
+                    missing[target] += 1
+                    continue
+                valid[target] += 1
+                num = _num(raw)
+                if num is not None:
+                    values[target].append(num)
+                    ranked[target].append({"entity_id": entity_id, "value": num})
         for target in pending:
-            raw = row.get(target)
-            if raw is None or str(raw).strip() == "":
-                missing[target] += 1
-                continue
-            valid[target] += 1
-            num = _num(raw)
-            if num is not None:
-                values[target].append(num)
-                ranked[target].append({"entity_id": entity_id, "value": num})
-    for target in pending:
-        result = _profile_result(source, target, values[target], valid[target], missing[target], ranked[target])
-        try:
-            _cache_path(source.fingerprint, target).write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
-        except OSError:
-            pass
-        cached[target] = result
-    return cached
+            result = _profile_result(source, target, values[target], valid[target], missing[target], ranked[target])
+            try:
+                write_cache(_cache_path(source.fingerprint,target),result)
+            except OSError:
+                pass
+            cached[target] = result
+        return cached
 
 
+@calculation_lock(lambda: PROFILE_ROOT)
 def field_profile(species_id: str, omics: str, scope: str, field: str, *, force: bool = False) -> dict[str, Any]:
     source = DatasetSourceResolver().resolve(species_id, normalize_omics(omics), normalize_scope(scope))
     target = str(field or "").strip()
     if not target:
         raise FeatureHubNotFound("Missing field")
     cache = _cache_path(source.fingerprint, target)
-    if cache.exists() and not force:
-        with cache.open("r", encoding="utf-8") as handle:
-            return json.load(handle)
-    values: list[float] = []
-    valid_n = 0
-    missing_n = 0
-    ranked: list[dict[str, Any]] = []
-    header = set(read_header(source))
-    id_fields = [field for field in ["species_id", "gene_id", "transcript_id", "protein_id", target] if field in header]
-    for row in _iter_indexed_rows(source, id_fields):
-        raw = row.get(target)
-        if raw is None or str(raw).strip() == "":
-            missing_n += 1
-            continue
-        valid_n += 1
-        num = _num(raw)
-        if num is not None:
-            values.append(num)
-            ranked.append({
-                "entity_id": row.get("gene_id") or row.get("transcript_id") or row.get("protein_id") or "",
-                "value": num,
-            })
-    result = _profile_result(source, target, values, valid_n, missing_n, ranked)
-    try:
-        cache.write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
-    except OSError:
-        pass
-    return result
+    result=read_cached('feature_profiles',cache,source,[f'{key}.{target}.json' for key in source.legacy_fingerprints],'profile',field=target) if not force else None
+    if result is not None:return result
+    with __import__('backend.apps.common.task_execution',fromlist=['heavy_compute_slot']).heavy_compute_slot():
+        values: list[float] = []
+        valid_n = 0
+        missing_n = 0
+        ranked: list[dict[str, Any]] = []
+        header = set(read_header(source))
+        id_fields = [field for field in ["species_id", "gene_id", "transcript_id", "protein_id", target] if field in header]
+        for row in _iter_indexed_rows(source, id_fields):
+            raw = row.get(target)
+            if raw is None or str(raw).strip() == "":
+                missing_n += 1
+                continue
+            valid_n += 1
+            num = _num(raw)
+            if num is not None:
+                values.append(num)
+                ranked.append({
+                    "entity_id": row.get("gene_id") or row.get("transcript_id") or row.get("protein_id") or "",
+                    "value": num,
+                })
+        result = _profile_result(source, target, values, valid_n, missing_n, ranked)
+        try:
+            write_cache(cache,result)
+        except OSError:
+            pass
+        return result

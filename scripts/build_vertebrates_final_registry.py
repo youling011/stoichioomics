@@ -1,10 +1,14 @@
-﻿from __future__ import annotations
+from __future__ import annotations
+import sys as _corefull_sys
+from pathlib import Path as _CoreFullPath
+_corefull_sys.path.insert(0, str(_CoreFullPath(__file__).resolve().parents[1]))
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import argparse
 import json
 import sys
 import warnings
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 
 import pandas as pd
 from pandas.errors import DtypeWarning
@@ -78,10 +82,10 @@ def resolve_core_path(source_root: Path, species_id: str, omics: str) -> Path:
     subdir, suffix = OMICS_LAYOUT[omics]
     base = source_root / subdir
     direct = base / f'{species_id}{suffix}'
-    if direct.exists():
+    if feature_io.source_available(direct):
         return direct
     nested = base / species_id / f'{species_id}{suffix}'
-    if nested.exists():
+    if feature_io.source_available(nested):
         return nested
     raise FileNotFoundError(f'Missing {omics} core feature table for {species_id}: {direct} or {nested}')
 
@@ -120,7 +124,7 @@ def stream_stage4_catalog(
     metadata.to_csv(db_seed / 'species.csv', index=False)
     for filename in INDEX_FILES.values():
         target = db_seed / filename
-        if target.exists():
+        if feature_io.source_exists(target):
             target.unlink()
 
     dataset_rows = []
@@ -129,11 +133,12 @@ def stream_stage4_catalog(
     for species_id in metadata['species_id'].astype(str):
         for omics in ['genome', 'transcriptome', 'proteome']:
             core_path = species_tables[species_id][omics]['core']
+            logical_core = feature_io.logical_source(core_path)
             row_count = 0
             target = db_seed / INDEX_FILES[omics]
             columns = INDEX_COLUMNS[omics]
-            wrote_header = target.exists()
-            for chunk in pd.read_csv(core_path, low_memory=False, chunksize=chunk_size):
+            wrote_header = feature_io.source_exists(target)
+            for chunk in feature_io.read_csv(core_path, low_memory=False, chunksize=chunk_size):
                 row_count += len(chunk)
                 if 'species_id' not in chunk.columns:
                     chunk['species_id'] = species_id
@@ -147,9 +152,9 @@ def stream_stage4_catalog(
                 'omics_type': omics.upper(),
                 'schema_version': 'auto_v1',
                 'row_count_core': int(row_count),
-                'row_count_full': 0,
+                'row_count_full': logical_core.record['receipt_json'].get('full_rows',logical_core.record['row_count']) if logical_core else 0,
                 'core_csv_path': str(core_path),
-                'full_csv_path': '',
+                'full_csv_path': str(logical_core.full_path) if logical_core else '',
                 'status': 'ready',
             })
             feature_file_rows.append({
@@ -157,9 +162,14 @@ def stream_stage4_catalog(
                 'dataset_id': f'{species_id}__{omics}',
                 'file_type': 'core',
                 'path': str(core_path),
-                'size_bytes': core_path.stat().st_size,
+                'size_bytes': feature_io.source_metadata(core_path).size,
             })
 
+    for dataset in dataset_rows:
+        if dataset['full_csv_path']:
+            full_path=Path(dataset['full_csv_path'])
+            feature_file_rows.append({'file_id':dataset['dataset_id']+'__full','dataset_id':dataset['dataset_id'],
+                'file_type':'full','path':str(full_path),'size_bytes':feature_io.source_metadata(full_path).size})
     pd.DataFrame(dataset_rows).to_csv(db_seed / 'omics_dataset.csv', index=False)
     pd.DataFrame(feature_file_rows).to_csv(db_seed / 'feature_file.csv', index=False)
     write_json(stage4_dir / 'catalog_manifest.json', {
@@ -250,13 +260,13 @@ def build_light_stage5(
         species_id = species_row['species_id']
         species_dir = stage5_dir / species_id
         ensure_dir(species_dir)
-        expected_ready = (species_dir / 'cross_omics.json').exists() and (species_dir / 'browse_meta.json').exists()
+        expected_ready = feature_io.source_exists(species_dir / 'cross_omics.json') and feature_io.source_exists(species_dir / 'browse_meta.json')
         expected_ready = expected_ready and all(
-            (species_dir / omics / 'rows_for_platform.csv').exists()
-            and (species_dir / omics / 'summary.json').exists()
-            and (species_dir / omics / 'analysis.json').exists()
-            and (species_dir / omics / 'profile.json').exists()
-            and (species_dir / omics / 'core_features.json').exists()
+            feature_io.source_exists(species_dir / omics / 'rows_for_platform.csv')
+            and feature_io.source_exists(species_dir / omics / 'summary.json')
+            and feature_io.source_exists(species_dir / omics / 'analysis.json')
+            and feature_io.source_exists(species_dir / omics / 'profile.json')
+            and feature_io.source_exists(species_dir / omics / 'core_features.json')
             for omics in ['genome', 'transcriptome', 'proteome']
         )
         if expected_ready:
@@ -284,7 +294,7 @@ def build_light_stage5(
         browse_meta = {}
         for omics in ['genome', 'transcriptome', 'proteome']:
             source_path = species_tables[species_id][omics]['core']
-            df = pd.read_csv(source_path, low_memory=False)
+            df = feature_io.read_csv(source_path, low_memory=False)
             if 'species_id' not in df.columns:
                 df['species_id'] = species_id
             aug_df, inferred_cols, aux_cols = augment_rows(df, omics)
@@ -379,7 +389,7 @@ def main() -> None:
     whitelist_path = Path(args.whitelist)
     output_root = Path(args.output_root)
 
-    whitelist = pd.read_csv(whitelist_path)
+    whitelist = feature_io.read_csv(whitelist_path)
     if 'species' not in whitelist.columns:
         raise SystemExit(f'Whitelist missing required species column: {whitelist_path}')
 
@@ -396,7 +406,7 @@ def main() -> None:
                 'omics': omics,
                 'table_role': 'core',
                 'source_path': str(core_path),
-                'file_size_bytes': core_path.stat().st_size,
+                'file_size_bytes': feature_io.source_metadata(core_path).size,
             })
             dataset_rows.append({
                 'species_id': species_id,
@@ -425,14 +435,14 @@ def main() -> None:
         'materialized_scope': 'core',
     })
 
-    stage4_ready = all((stage4 / 'db_seed' / name).exists() for name in [
+    stage4_ready = all(feature_io.source_exists(stage4 / 'db_seed' / name) for name in [
         'species.csv',
         'omics_dataset.csv',
         'feature_file.csv',
         'gene_index.csv',
         'transcript_index.csv',
         'protein_index.csv',
-    ]) and (stage4 / 'catalog_manifest.json').exists()
+    ]) and feature_io.source_exists(stage4 / 'catalog_manifest.json')
     if stage4_ready:
         print(f'Stage4 already present, skipping: {stage4}', flush=True)
     else:

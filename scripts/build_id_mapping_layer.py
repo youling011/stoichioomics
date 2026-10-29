@@ -10,6 +10,10 @@ the full CSV into a huge duplicate-heavy table. It builds:
 """
 
 from __future__ import annotations
+import sys as _corefull_sys
+from pathlib import Path as _CoreFullPath
+_corefull_sys.path.insert(0, str(_CoreFullPath(__file__).resolve().parents[1]))
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import hashlib
@@ -17,7 +21,7 @@ import json
 import sqlite3
 import time
 from collections import Counter
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -110,7 +114,7 @@ def split_multi(value: object) -> list[str]:
 
 def sha256_file(path: Path) -> str:
     h = hashlib.sha256()
-    with path.open("rb") as fh:
+    with feature_io.open_source(path, "rb") as fh:
         for block in iter(lambda: fh.read(1024 * 1024), b""):
             h.update(block)
     return h.hexdigest()
@@ -121,13 +125,13 @@ def mapping_uid(*parts: str) -> str:
 
 
 def read_json(path: Path) -> dict:
-    if not path.exists():
+    if not feature_io.source_exists(path):
         return {}
     return json.loads(path.read_text(encoding="utf-8"))
 
 
 def validate_header(path: Path, required: list[str]) -> None:
-    with path.open("r", encoding="utf-8-sig", newline="") as fh:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as fh:
         header = next(csv.reader(fh))
     missing = [item for item in required if item not in header]
     if missing:
@@ -373,10 +377,10 @@ def insert_internal_aliases(conn: sqlite3.Connection) -> None:
 
 
 def load_csv_by_species(path: Path) -> dict[str, dict[str, str]]:
-    if not path.exists():
+    if not feature_io.source_exists(path):
         return {}
     rows = {}
-    with path.open("r", encoding="utf-8-sig", newline="") as fh:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as fh:
         for row in csv.DictReader(fh):
             species_id = clean(row.get("species_id"))
             if species_id:
@@ -661,22 +665,22 @@ def build() -> dict:
         "source_files": {
             "omics_mapping": {
                 "path": str(OMICS_CSV),
-                "size_bytes": OMICS_CSV.stat().st_size,
+                "size_bytes": feature_io.source_metadata(OMICS_CSV).size,
                 "sha256": sha256_file(OMICS_CSV),
             },
             "external_mapping": {
                 "path": str(EXTERNAL_CSV),
-                "size_bytes": EXTERNAL_CSV.stat().st_size,
+                "size_bytes": feature_io.source_metadata(EXTERNAL_CSV).size,
                 "sha256": sha256_file(EXTERNAL_CSV),
             },
             "omics_runtime_index": {
                 "path": str(OMICS_INDEX_CSV),
-                "size_bytes": OMICS_INDEX_CSV.stat().st_size,
+                "size_bytes": feature_io.source_metadata(OMICS_INDEX_CSV).size,
                 "sha256": sha256_file(OMICS_INDEX_CSV),
             },
             "external_runtime_index": {
                 "path": str(EXTERNAL_INDEX_CSV),
-                "size_bytes": EXTERNAL_INDEX_CSV.stat().st_size,
+                "size_bytes": feature_io.source_metadata(EXTERNAL_INDEX_CSV).size,
                 "sha256": sha256_file(EXTERNAL_INDEX_CSV),
             },
         },

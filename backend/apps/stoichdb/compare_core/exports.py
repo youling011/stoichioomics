@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.common.artifact_locations import locate
 
 import csv
 import json
@@ -17,7 +18,10 @@ NAMES = {'coverage': 'field_coverage', 'rankings': 'feature_rankings', 'differen
 
 
 def run_dir(run):
-    return root() / 'runs' / str(run.run_id)
+    p=locate('compare',root(),'runs/'+str(run.run_id),required=False)
+    return p.target if p else run_write_dir(run)
+
+def run_write_dir(run):return root()/'runs'/str(run.run_id)
 
 
 def csv_table(path, rows):
@@ -30,7 +34,7 @@ def csv_table(path, rows):
 
 
 def publish(run, result, tables, catalog, profiles, checkpoint):
-    folder = run_dir(run)
+    folder = run_write_dir(run)
     folder.mkdir(parents=True, exist_ok=True)
     (folder / 'tables').mkdir(exist_ok=True)
     result['run_id'] = str(run.run_id)

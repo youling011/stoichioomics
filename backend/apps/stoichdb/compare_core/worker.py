@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.common.task_execution import heavy_guarded
 
 import os
 import time
@@ -35,6 +36,7 @@ def recover_stale():
             status=run.status, error_message=run.error_message, lease_until=None, lease_token='')
 
 
+@heavy_guarded
 def process_one(run_id=None):
     recover_stale()
     with transaction.atomic():

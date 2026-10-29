@@ -1766,6 +1766,7 @@ def _scope_payload() -> dict[str, Any]:
     }
 
 
+@__import__('backend.apps.common.public_snapshots',fromlist=['snapshot']).snapshot('cases')
 def case_study_gallery_payload() -> dict[str, Any]:
     if not services.db_mode():
         raise services.NotFoundError('Stage 6 case studies require the PostgreSQL-backed platform registry.')

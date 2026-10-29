@@ -2,11 +2,15 @@
 """Build gene-transcript-protein ID mappings from existing protist feature files."""
 
 from __future__ import annotations
+import sys as _corefull_sys
+from pathlib import Path as _CoreFullPath
+_corefull_sys.path.insert(0, str(_CoreFullPath(__file__).resolve().parents[1]))
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import json
 import time
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -82,11 +86,11 @@ def species_from_name(path: Path, suffix: str) -> str:
 
 def discover_species() -> dict[str, dict[str, Path]]:
     species: dict[str, dict[str, Path]] = {}
-    for path in GENOME_DIR.glob("*.genome_features.core.csv"):
+    for path in feature_io.logical_glob(GENOME_DIR, "*.genome_features.core.csv"):
         species.setdefault(species_from_name(path, ".genome_features.core.csv"), {})["genome"] = path
-    for path in TRANSCRIPTOME_DIR.glob("*.transcriptome.core.v5.csv"):
+    for path in feature_io.logical_glob(TRANSCRIPTOME_DIR, "*.transcriptome.core.v5.csv"):
         species.setdefault(species_from_name(path, ".transcriptome.core.v5.csv"), {})["transcriptome"] = path
-    for path in PROTEOME_DIR.glob("*.proteome_features.core.csv"):
+    for path in feature_io.logical_glob(PROTEOME_DIR, "*.proteome_features.core.csv"):
         species.setdefault(species_from_name(path, ".proteome_features.core.csv"), {})["proteome"] = path
     return dict(sorted(species.items()))
 
@@ -103,10 +107,10 @@ def pct(numerator: int, denominator: int) -> float:
 
 
 def read_genome(path: Path | None) -> dict[str, dict[str, str]]:
-    if not path or not path.exists():
+    if not path or not feature_io.source_exists(path):
         return {}
     genes: dict[str, dict[str, str]] = {}
-    with path.open("r", encoding="utf-8-sig", newline="") as fh:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as fh:
         reader = csv.DictReader(fh)
         for row in reader:
             gene_id = clean(row.get("gene_id") or row.get("source_gene_id"))
@@ -127,11 +131,11 @@ def read_genome(path: Path | None) -> dict[str, dict[str, str]]:
 
 
 def read_transcripts(path: Path | None) -> tuple[dict[str, dict[str, str]], dict[str, set[str]]]:
-    if not path or not path.exists():
+    if not path or not feature_io.source_exists(path):
         return {}, {}
     transcripts: dict[str, dict[str, str]] = {}
     gene_to_transcripts: dict[str, set[str]] = {}
-    with path.open("r", encoding="utf-8-sig", newline="") as fh:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as fh:
         reader = csv.DictReader(fh)
         for row in reader:
             transcript_id = clean(row.get("transcript_id"))
@@ -192,8 +196,8 @@ def build_species_mapping(
     mapped_genes: set[str] = set()
 
     proteome_path = files.get("proteome")
-    if proteome_path and proteome_path.exists():
-        with proteome_path.open("r", encoding="utf-8-sig", newline="") as fh:
+    if proteome_path and feature_io.source_exists(proteome_path):
+        with feature_io.open_source(proteome_path, "r", encoding="utf-8-sig", newline="") as fh:
             reader = csv.DictReader(fh)
             for row in reader:
                 protein_count += 1

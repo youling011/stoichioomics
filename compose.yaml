@@ -53,6 +53,14 @@ services:
       STOICHDB_DATA_ROOT: /opt/local/project/data/stoichdb_demo
       STOICHDB_PRECOMPUTED_ROOT: /srv/stoichioomics/项目平台数据/stoich_platform_postgres_open_search_v6_2_perf_fix/proj/workspace
       FUNCTION_ANNOTATION_SOURCE: /srv/stoichioomics/项目平台数据/功能注释下载
+      DEPLOYMENT_STATE_ROOT: /opt/local/state/runtime/deployment
+      DEPLOYMENT_HISTORICAL_ROOT: /srv/stoichioomics/项目平台数据/stoich_platform_postgres_open_search_v6_2_perf_fix/proj
+      STOICH_FEATURE_REGISTRY_OUTPUT_ROOT: /opt/local/state/runtime/feature_registry
+      STOICH_FEATURE_PROFILE_ROOT: /opt/local/state/runtime/feature_profiles
+      STOICH_FEATURE_QC_ROOT: /opt/local/state/runtime/feature_qc
+      STOICH_FEATURE_HOME_ROOT: /opt/local/state/runtime/feature_home_spotlight
+      STOICH_FEATURE_EXPORT_ROOT: /opt/local/state/runtime/feature_exports
+      STOICH_UWSGI_STATS_SOCKET: /opt/local/run/uwsgi-stats.sock
       HOME: /opt/local/state/home
       XDG_CACHE_HOME: /opt/local/state/cache
       MPLCONFIGDIR: /opt/local/state/matplotlib

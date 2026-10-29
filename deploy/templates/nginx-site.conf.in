@@ -4,16 +4,25 @@ server {
     server_name @DOMAIN@;
     @TLS@
     server_tokens off;
+    gzip on;
+    gzip_comp_level 3;
+    gzip_min_length 1024;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_types application/json application/javascript text/css image/svg+xml text/csv text/tab-separated-values;
     root "@FRONTEND_ROOT@";
     index index.html;
     client_max_body_size @UPLOAD_BODY_LIMIT_MIB@m;
     client_body_timeout 120s;
-    access_log /var/log/nginx/stoichioomics-access.log;
+    access_log /var/log/nginx/stoichioomics-access.log stoich_timing;
     error_log /var/log/nginx/stoichioomics-error.log warn;
 
     location ~ ^/(api|admin)(/|$) {
+        uwsgi_hide_header X-Request-ID;
+        add_header X-Request-ID $request_id always;
         include /etc/nginx/uwsgi_params;
         uwsgi_param HTTP_HOST $host;
+        uwsgi_param HTTP_X_REQUEST_ID $request_id;
         uwsgi_param HTTP_X_FORWARDED_PROTO $scheme;
         # Overwrite any client-supplied forwarding values at this single trusted edge.
         uwsgi_param HTTP_X_FORWARDED_FOR $remote_addr;

@@ -6,7 +6,9 @@ from .views import (
 )
 from .research_views import research_endpoint
 from .visuals_views import urlpatterns as workflow_visuals_urls
+from .manifest_views import urlpatterns as result_manifest_urls
 urlpatterns = [
+    *result_manifest_urls,
     *workflow_visuals_urls,
     path('<str:identifier>/research/<str:endpoint>/', research_endpoint),
     path('<str:identifier>/research/<str:endpoint>/<path:object_id>/', research_endpoint),

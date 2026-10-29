@@ -1,9 +1,13 @@
 from __future__ import annotations
+import sys as _corefull_sys
+from pathlib import Path as _CoreFullPath
+_corefull_sys.path.insert(0, str(_CoreFullPath(__file__).resolve().parents[1]))
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import argparse
 import json
 from math import erfc, log, sqrt
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 import numpy as np
@@ -79,9 +83,9 @@ def parse_args() -> argparse.Namespace:
 def read_table(path: Path) -> pd.DataFrame:
     suffix = path.suffix.lower()
     if suffix == '.csv':
-      return pd.read_csv(path)
+      return feature_io.read_csv(path)
     if suffix in {'.tsv', '.txt'}:
-      return pd.read_csv(path, sep='\t')
+      return feature_io.read_csv(path, sep='\t')
     if suffix == '.json':
       return pd.read_json(path)
     if suffix == '.parquet':
@@ -91,10 +95,10 @@ def read_table(path: Path) -> pd.DataFrame:
 
 def read_metadata(path: Path, fmt: str) -> pd.DataFrame:
     if fmt == 'csv' or path.suffix.lower() == '.csv':
-        return pd.read_csv(path)
+        return feature_io.read_csv(path)
     if fmt == 'tsv' or path.suffix.lower() in {'.tsv', '.txt'}:
-        return pd.read_csv(path, sep='\t')
-    return pd.read_csv(path)
+        return feature_io.read_csv(path, sep='\t')
+    return feature_io.read_csv(path)
 
 
 def ensure_dir(path: Path) -> None:
@@ -904,7 +908,7 @@ def main() -> None:
             table_path = None
             for candidate in ['rows.parquet', 'rows.csv', 'rows.tsv', 'rows.json']:
                 path = omics_input / candidate
-                if path.exists():
+                if feature_io.source_exists(path):
                     table_path = path
                     break
             if table_path is None:
@@ -919,9 +923,9 @@ def main() -> None:
 
             summary_path = omics_input / 'summary.json'
             analysis_path = omics_input / 'analysis.json'
-            summary = json.loads(summary_path.read_text(encoding='utf-8')) if summary_path.exists() else build_summary(df, omics, meta_row)
+            summary = json.loads(summary_path.read_text(encoding='utf-8')) if feature_io.source_exists(summary_path) else build_summary(df, omics, meta_row)
             analysis_default = build_analysis(df, omics)
-            analysis_source = json.loads(analysis_path.read_text(encoding='utf-8')) if analysis_path.exists() else {}
+            analysis_source = json.loads(analysis_path.read_text(encoding='utf-8')) if feature_io.source_exists(analysis_path) else {}
             analysis = enhance_analysis_payload(analysis_source, analysis_default)
 
             omics_out = species_dir / omics

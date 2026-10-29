@@ -7,7 +7,7 @@ import sys
 ROOT=Path('/opt/local')
 for relative in ['workspace/jobs','workspace/sequence_analysis','uploads','runtime/sequence_analysis',
                  'runtime/compare_core','runtime/proteome_visuals_v3','runtime/sequence_visuals_v1',
-                 'runtime/integration_visuals_v1','home','cache','matplotlib','numba','tmp']:
+                 'runtime/integration_visuals_v1','runtime/deployment','runtime/feature_registry','runtime/feature_profiles','runtime/feature_qc','runtime/feature_home_spotlight','runtime/feature_exports','home','cache','matplotlib','numba','tmp']:
     (ROOT/'state'/relative).mkdir(parents=True,exist_ok=True)
 registry=ROOT/'state/workspace/case_registry.json'
 public=Path('/srv/stoichioomics/项目平台数据/stoich_platform_postgres_open_search_v6_2_perf_fix/proj/workspace/case_registry.json')

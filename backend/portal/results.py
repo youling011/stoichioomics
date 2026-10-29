@@ -3,17 +3,25 @@ from pathlib import Path
 from typing import Dict, Any
 import json
 import pandas as pd
+from copy import deepcopy
+from backend.apps.common.artifact_locations import budget_cache
+
+@budget_cache('')
+def _json_file(path):return json.loads(Path(path).read_text(encoding='utf-8'))
+
+@budget_cache('')
+def _csv_file(path,nrows):return pd.read_csv(path,nrows=nrows)
 
 
 def _read_json(path: Path):
     if path.exists():
-        return json.loads(path.read_text(encoding='utf-8'))
+        return deepcopy(_json_file(str(path)))
     return None
 
 
 def _read_csv(path: Path, nrows: int | None = None):
     if path.exists():
-        return pd.read_csv(path, nrows=nrows)
+        return _csv_file(str(path),nrows).copy(deep=True)
     return None
 
 
@@ -70,3 +78,61 @@ def load_case_outputs(base_dir: str | Path) -> Dict[str, Any]:
         'case_cache': _read_json(base / 'case_cache.json'),
         'job_manifest': _read_json(base / 'job_manifest.json'),
     }
+
+
+class _LazyOutputs(dict):
+    def __init__(self,loaders):super().__init__();self._loaders=loaders
+    def __getitem__(self,key):
+        if key not in self and key in self._loaders:super().__setitem__(key,self._loaders[key]())
+        return super().__getitem__(key)
+    def get(self,key,default=None):
+        try:return self[key]
+        except KeyError:return default
+
+def load_case_outputs_lazy(base_dir):
+    base=Path(base_dir)
+    return _LazyOutputs({'hvg_research_pointer': lambda: _read_json(base / 'hvg_functional_comparison' / 'active_run.json'),
+'phase1_baseline': lambda: _read_csv(base / 'analysis_phase1' / 'hvg_baseline.csv'),
+'phase1_summary': lambda: _read_json(base / 'analysis_phase1' / 'phase1_mode_summary.json'),
+'phase1_method_benchmark': lambda: _read_csv(base / 'analysis_phase1' / 'hvg_method_benchmark.csv'),
+'phase1_consensus': lambda: _read_csv(base / 'analysis_phase1' / 'hvg_consensus.csv'),
+'phase1_backend_report': lambda: _read_json(base / 'analysis_phase1' / 'hvg_backend_report.json'),
+'phase2_scores': lambda: _read_csv(base / 'analysis_phase2' / 'hvg_stoich_scores.csv'),
+'phase2_summary': lambda: _read_json(base / 'analysis_phase2' / 'hvg_summary.json'),
+'phase2_model': lambda: _read_json(base / 'analysis_phase2' / 'hvg_stoich_model.json'),
+'overview_cards': lambda: _read_json(base / 'visualization' / 'overview_cards.json'),
+'tables_payload': lambda: _read_json(base / 'visualization' / 'tables_payload.json'),
+'visualization_manifest': lambda: _read_json(base / 'visualization' / 'visualization_manifest.json'),
+'feature_associations': lambda: _read_csv(base / 'analysis_phase2' / 'feature_associations.csv'),
+'hvg_nonhvg_summary': lambda: _read_json(base / 'analysis_phase2' / 'hvg_nonhvg_summary.json'),
+'hvg_nonhvg_feature_audit': lambda: _read_csv(base / 'analysis_phase2' / 'hvg_nonhvg_feature_audit.csv'),
+'hvg_nonhvg_feature_comparison': lambda: _read_csv(base / 'analysis_phase2' / 'hvg_nonhvg_feature_comparison.csv'),
+'hvg_nonhvg_adjusted_comparison': lambda: _read_csv(base / 'analysis_phase2' / 'hvg_nonhvg_adjusted_comparison.csv'),
+'hvg_nonhvg_distribution_quantiles': lambda: _read_csv(base / 'analysis_phase2' / 'hvg_nonhvg_distribution_quantiles.csv'),
+'hvg_nonhvg_family_summary': lambda: _read_csv(base / 'analysis_phase2' / 'hvg_nonhvg_family_summary.csv'),
+'hvg_nonhvg_plots_payload': lambda: _read_json(base / 'analysis_phase2' / 'hvg_nonhvg_plots_payload.json'),
+'hvg_nonhvg_run_manifest': lambda: _read_json(base / 'analysis_phase2' / 'hvg_nonhvg_run_manifest.json'),
+'hvg_multiomics_core_features': lambda: _read_csv(base / 'analysis_phase2' / 'hvg_multiomics_core_features.csv', nrows=0),
+'hvg_multiomics_feature_provenance': lambda: _read_csv(base / 'analysis_phase2' / 'hvg_multiomics_feature_provenance.csv'),
+'hvg_multiomics_mapping_table': lambda: _read_csv(base / 'analysis_phase2' / 'hvg_multiomics_mapping_table.csv', nrows=0),
+'hvg_multiomics_mapping_summary': lambda: _read_json(base / 'analysis_phase2' / 'hvg_multiomics_mapping_summary.json'),
+'hvg_multiomics_assembly_manifest': lambda: _read_json(base / 'analysis_phase2' / 'hvg_multiomics_assembly_manifest.json'),
+'hvg_nonhvg_block_coverage': lambda: _read_csv(base / 'analysis_phase2' / 'hvg_nonhvg_block_coverage.csv'),
+'candidate_genes': lambda: _read_csv(base / 'analysis_phase2' / 'candidate_gene_table.csv'),
+'model_comparison': lambda: _read_csv(base / 'analysis_phase2' / 'model_comparison.csv'),
+'cv_predictions': lambda: _read_csv(base / 'analysis_phase2' / 'cv_predictions.csv', nrows=1000),
+'feature_block_importance': lambda: _read_csv(base / 'analysis_phase2' / 'feature_block_importance.csv'),
+'bootstrap_feature_stability': lambda: _read_csv(base / 'analysis_phase2' / 'bootstrap_feature_stability.csv'),
+'negative_control_report': lambda: _read_json(base / 'analysis_phase2' / 'negative_control_report.json'),
+'evidence_assessment': lambda: _read_json(base / 'analysis_phase2' / 'evidence_assessment.json'),
+'downstream_summary': lambda: _read_json(base / 'analysis_phase2' / 'downstream_summary.json'),
+'candidate_score_components': lambda: _read_csv(base / 'downstream' / 'candidate_score_components.csv'),
+'enrichment_ora': lambda: _read_csv(base / 'downstream' / 'enrichment_ora.csv'),
+'gsea_prerank_results': lambda: _read_csv(base / 'downstream' / 'gsea_prerank_results.csv'),
+'ppi_module_enrichment': lambda: _read_csv(base / 'downstream' / 'ppi_module_enrichment.csv'),
+'id_mapping_summary': lambda: _read_json(base / 'validation' / 'id_mapping_summary.json'),
+'plots_payload': lambda: _read_json(base / 'analysis_phase2' / 'plots_payload.json'),
+'gene_detail_payload': lambda: _read_json(base / 'analysis_phase2' / 'gene_detail_payload.json'),
+'workspace_manifest': lambda: _read_json(base / 'workspace_manifest.json'),
+'case_cache': lambda: _read_json(base / 'case_cache.json'),
+'job_manifest': lambda: _read_json(base / 'job_manifest.json')})

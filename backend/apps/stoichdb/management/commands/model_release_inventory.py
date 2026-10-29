@@ -1,11 +1,12 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import hashlib
 import json
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 from django.apps import apps
@@ -32,7 +33,7 @@ REQUIRED_COLUMNS = {
 
 def sha256_file(path: Path) -> str:
     h = hashlib.sha256()
-    with path.open("rb") as f:
+    with feature_io.open_source(path, "rb") as f:
         for chunk in iter(lambda: f.read(1024 * 1024), b""):
             h.update(chunk)
     return h.hexdigest()
@@ -43,7 +44,7 @@ def truthy(value: Any) -> bool:
 
 
 def read_csv_rows(path: Path) -> list[dict[str, str]]:
-    with path.open("r", encoding="utf-8-sig", newline="") as f:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
         missing = REQUIRED_COLUMNS - set(reader.fieldnames or [])
         if missing:

@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import hashlib
@@ -30,7 +31,7 @@ def write_csv(path: Path, rows: list[dict[str, Any]], fieldnames: list[str]) -> 
 
 def sha256_file(path: Path) -> str:
     h = hashlib.sha256()
-    with path.open("rb") as f:
+    with feature_io.open_source(path, "rb") as f:
         for chunk in iter(lambda: f.read(CHUNK_SIZE), b""):
             h.update(chunk)
     return h.hexdigest()
@@ -80,19 +81,23 @@ def storage_path(storage_object: StorageObject) -> Path:
 
 
 def read_header(path: Path) -> list[str]:
-    with path.open("r", encoding="utf-8-sig", newline="") as f:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as f:
         reader = csv.reader(f)
         return next(reader, [])
 
 
 def count_csv_rows_fast(path: Path) -> int:
-    with path.open("rb") as f:
-        lines = sum(chunk.count(b"\n") for chunk in iter(lambda: f.read(CHUNK_SIZE), b""))
-    return max(lines - 1, 0)
+    source=feature_io.logical_source(path)
+    if source:return int(source.record['row_count'])
+    # Count CSV records, including quoted multiline values, rather than physical
+    # LF bytes. This also matches Arrow conversion and the logical Core contract.
+    with feature_io.open_source(path,'r',encoding='utf-8-sig',newline='') as handle:
+        reader=csv.reader(handle);next(reader,None)
+        return sum(1 for _ in reader)
 
 
 def sample_column_stats(path: Path, sample_rows: int = 2000) -> dict[str, dict[str, Any]]:
-    with path.open("r", encoding="utf-8-sig", newline="") as f:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
         columns = reader.fieldnames or []
         stats = {col: {"non_null": 0, "null": 0, "numeric": 0, "min": None, "max": None, "examples": []} for col in columns}
@@ -156,7 +161,7 @@ def upsert_storage_object_for_file(
             "root_alias": root_alias,
             "relative_path": relative_path,
             "object_uri": "" if root_alias else str(path),
-            "size_bytes": path.stat().st_size if path.exists() else 0,
+            "size_bytes": feature_io.source_metadata(path).size if feature_io.source_exists(path) else 0,
             "sha256": digest,
             "media_type": media_type,
             "compression": compression,

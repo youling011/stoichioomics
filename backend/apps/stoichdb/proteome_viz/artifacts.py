@@ -1,3 +1,5 @@
+from backend.apps.common.artifact_locations import lookup_publication,pointer_target,read_roots,budget_cache
+from backend.apps.stoichdb.feature_sources.compatibility import implementation_bytes
 from pathlib import Path
 from functools import lru_cache,wraps
 from threading import RLock
@@ -17,7 +19,7 @@ def root():return Path(getattr(settings,'PROTEOME_VIZ_ROOT',settings.BASE_DIR/'r
 def implementation_hash():
     digest=hashlib.sha256()
     for name in ['contracts.py','source.py','statistics.py','ordination.py','density.py','builders.py']:
-        digest.update(name.encode());digest.update(Path(__file__).with_name(name).read_bytes())
+        digest.update(name.encode());digest.update(implementation_bytes(Path(__file__).with_name(name)))
     return digest.hexdigest()
 def component(value):return hashlib.sha256(str(value).encode()).hexdigest()[:16]
 def clean(value):
@@ -44,20 +46,22 @@ def write_json(path,data):
 
 def read_json(path):
     path=Path(path)
-    if path.suffix=='.gz':
-        with gzip.open(path,'rb') as f:encoded=f.read()
-    else:encoded=path.read_bytes()
-    return orjson.loads(encoded) if orjson else json.loads(encoded)
+    from backend.apps.common.artifact_integrity import verify_file
+    from backend.apps.common.request_timing import stage
+    with stage('integrity'):verify_file(path)
+    with stage('artifact_io'):raw=path.read_bytes()
+    with stage('inflate'):encoded=gzip.decompress(raw) if path.suffix=='.gz' else raw
+    with stage('decode'):return orjson.loads(encoded) if orjson else json.loads(encoded)
 
 def pointer_path(species_id,scope,release):return root()/'published'/component(release)/(component(species_id)+'_'+scope+'.json')
-def published(species_id,scope,release):
-    p=pointer_path(species_id,scope,release)
-    return read_json(p) if p.is_file() else None
+def published(species_id,scope,release,validator=None):
+    relative='published/'+component(release)+'/'+component(species_id)+'_'+scope+'.json'
+    try:return lookup_publication('proteome',root(),relative,read_json,validator=validator)
+    except FileNotFoundError as e:
+        if str(e)=='not_prepared':return None
+        raise
 
-def path_for(pointer):
-    target=(root()/pointer['path']).resolve()
-    if not target.is_relative_to(root().resolve()):raise ValueError('invalid_artifact_path')
-    return target
+def path_for(pointer):return pointer_target('proteome',root(),pointer)
 
 _read_lock=RLock()
 def single_flight(fn):
@@ -70,17 +74,17 @@ def single_flight(fn):
     return call
 
 @single_flight
-@lru_cache(maxsize=1)
+@budget_cache('figures.json.gz')
 def read_bundle(path):return read_json(Path(path)/'figures.json.gz')
 @single_flight
-@lru_cache(maxsize=1)
+@budget_cache('columns.npz')
 def read_matrix(path):
     with np.load(Path(path)/'columns.npz',allow_pickle=False) as f:return {'fields':f['fields'].tolist(),'matrix':f['matrix']}
 @single_flight
-@lru_cache(maxsize=1)
+@budget_cache('metadata.json.gz')
 def read_metadata(path):return read_json(Path(path)/'metadata.json.gz')
 @single_flight
-@lru_cache(maxsize=1)
+@budget_cache('analysis.npz')
 def read_arrays(path):
     with np.load(Path(path)/'analysis.npz',allow_pickle=False) as f:return {k:f[k] for k in f.files}
 
@@ -143,14 +147,13 @@ def publish(target):
     write_json(root()/'versions'/component(m['species_id'])/m['primary_scope']/(m['artifact_version']+'.json'),pointer)
     return pointer
 
-def lookup_version(species_id,scope,release,version=''):
-    pointer=published(species_id,scope,release)
-    if not pointer:raise FileNotFoundError('not_prepared')
-    if not version or version==pointer['artifact_version']:return path_for(pointer)
-    # Resolve only siblings of a registered source, never a client filesystem path.
-    if not re.fullmatch(r'[A-Za-z0-9_]+',version):raise ValueError('invalid_artifact_version')
-    index=root()/'versions'/component(species_id)/scope/(version+'.json')
-    if index.is_file():
-        candidate=path_for(read_json(index))
-        if candidate.is_dir() and (candidate/'manifest.json').is_file():return candidate
-    raise FileNotFoundError('artifact_expired')
+def lookup_version(species_id,scope,release,version='',validator=None):
+    if version and not re.fullmatch(r'[A-Za-z0-9_]+',version):raise ValueError('invalid_artifact_version')
+    relative='published/'+component(release)+'/'+component(species_id)+'_'+scope+'.json'
+    index='versions/'+component(species_id)+'/'+scope+'/'+version+'.json' if version else None
+    p=lookup_publication('proteome',root(),relative,read_json,version,index,validator)
+    return path_for(p)
+
+def variant_folder(target):
+    from backend.apps.common.artifact_locations import derivative_root
+    return derivative_root('proteome',root(),target)

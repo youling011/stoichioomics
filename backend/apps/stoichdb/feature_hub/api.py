@@ -124,8 +124,9 @@ def download_export(export_id: str):
 
 
 def build_registry() -> dict[str, Any]:
-    path = write_registry_file()
-    return {"path": str(path), "summary": load_registry()["summary"]}
+    try:path=write_registry_file()
+    except (OSError,TimeoutError) as exc:raise FeatureHubError('Registry snapshot could not be published to its configured writable state directory') from exc
+    return {'path':str(path),'summary':load_registry()['summary']}
 
 
 def alignment(payload: dict[str, Any]) -> dict[str, Any]:

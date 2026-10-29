@@ -1,4 +1,5 @@
 from __future__ import annotations
+from .cache_identity import read_cached,write_cache,calculation_lock
 
 import hashlib
 import json
@@ -14,7 +15,7 @@ from .registry import catalog_payload
 from .schemas import normalize_omics, normalize_scope
 from .sources import DatasetSourceResolver, read_header
 
-HOME_SPOTLIGHT_ROOT = Path(settings.BASE_DIR) / "runtime" / "feature_home_spotlight"
+HOME_SPOTLIGHT_ROOT = Path(getattr(settings, "STOICH_FEATURE_HOME_ROOT", Path(settings.BASE_DIR) / "runtime" / "feature_home_spotlight"))
 OMICS_LAYERS = ("genome", "transcriptome", "proteome")
 FIELD_SETS = ("core", "full")
 
@@ -109,19 +110,23 @@ def _qc_summary(species_id: str, omics: str, scope: str, fields: list[str], fall
     }
 
 
+@calculation_lock(lambda: HOME_SPOTLIGHT_ROOT)
 def homepage_preview(species_id: str, omics: str = "proteome", scope: str = "core", family: str = "", *, force: bool = False) -> dict[str, Any]:
     omics = normalize_omics(omics)
     scope = normalize_scope(scope)
     family = str(family or "").strip()
     catalog = catalog_payload(omics=omics, scope=scope, family=family)
     source = DatasetSourceResolver().resolve(species_id, omics, scope)
+    cache = _cache_path(source.fingerprint, species_id, omics, scope, family)
+    legacy=[]
+    for old_key in source.legacy_fingerprints:
+        digest=hashlib.sha256("|".join([species_id,omics,scope,family or "all",old_key]).encode("utf-8")).hexdigest()[:20]
+        legacy.append(f'{_cache_token(species_id)}.{omics}.{scope}.{_cache_token(family)}.{digest}.json')
+    result=read_cached('feature_home',cache,source,legacy,'home',family=family) if not force else None
+    if result is not None:return result
+
     header = set(read_header(source))
     all_rows = [row for row in (catalog.get("items") or []) if row.get("field") in header]
-    cache = _cache_path(source.fingerprint, species_id, omics, scope, family)
-    if cache.exists() and not force:
-        with cache.open("r", encoding="utf-8") as handle:
-            return json.load(handle)
-
     selected_rows = pick_preview_rows(all_rows)
     profile_map = precompute_field_profiles(species_id, omics, scope, [row.get("field") for row in selected_rows if row.get("field")], force=force) if selected_rows else {}
     feature_rows = [_preview_row(row, species_id, omics, scope, force=force, profiles=profile_map) for row in selected_rows]
@@ -146,5 +151,5 @@ def homepage_preview(species_id: str, omics: str = "proteome", scope: str = "cor
             "path": str(cache),
         },
     }
-    cache.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_cache(cache,payload)
     return payload

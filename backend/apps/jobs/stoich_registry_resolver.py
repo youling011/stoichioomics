@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import json
 import re
@@ -118,7 +119,7 @@ def _gene_id_column(columns: Iterable[str]) -> str | None:
 
 def _materialize_feature_table(source_path: Path, target_path: Path) -> None:
     target_path.parent.mkdir(parents=True, exist_ok=True)
-    df = pd.read_csv(source_path, sep="\t" if source_path.suffix.lower() in {".tsv", ".txt"} else ",")
+    df = feature_io.read_csv(source_path, sep="\t" if source_path.suffix.lower() in {".tsv", ".txt"} else ",")
     gene_col = _gene_id_column(df.columns)
     if gene_col is None:
         if len(df.columns) == 0:
@@ -273,7 +274,7 @@ def resolve_registry_stoich_for_job(
         "dataset_id": source.dataset_id,
         "schema_version": source.schema_version,
         "row_count": source.row_count,
-        "size_bytes": int(target.stat().st_size),
+        "size_bytes": int(feature_io.source_metadata(target).size),
         "phase2_ready": bool(readiness.get("phase2_ready")),
         "readiness": readiness,
         "message": "Registered stoich feature table was copied into the job raw directory and will be used for Phase 2.",

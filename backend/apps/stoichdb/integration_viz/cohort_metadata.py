@@ -4,6 +4,7 @@ Never use this context in HTTP handlers. It caches metadata, not scientific
 values, and verifies the same live registry state on exit. Source-file stat/SHA
 checks and the existing mathematics continue unchanged.
 """
+from backend.apps.stoichdb.feature_sources import io as feature_io
 from contextlib import contextmanager
 import hashlib,json
 from django.db.models import F

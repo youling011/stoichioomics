@@ -1,6 +1,7 @@
+from backend.apps.stoichdb.feature_sources import io as feature_io
 import csv
 import gzip
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from collections import Counter
 from django.core.management.base import BaseCommand
 from backend.apps.stoichdb.models import OmicsDataset
@@ -30,9 +31,9 @@ class Command(BaseCommand):
             path = Path(ds.core_csv_path) if ds.core_csv_path else None
             row = {'dataset_id': ds.dataset_id, 'species_id': ds.species.species_id, 'omics': ds.omics_type,
                    'registered_rows': ds.row_count_core, 'status': 'source_unavailable', 'path': str(path or '')}
-            if path and path.is_file():
+            if path and feature_io.source_available(path):
                 try:
-                    opener = gzip.open if path.suffix == '.gz' else open
+                    opener = gzip.open if path.suffix == '.gz' else feature_io.open_source
                     with opener(path, 'rt', encoding='utf-8-sig', newline='') as handle:
                         reader = csv.reader(handle)
                         header = next(reader, [])

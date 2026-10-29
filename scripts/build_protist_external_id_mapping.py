@@ -9,13 +9,17 @@ accessions in source protein/region fields.
 """
 
 from __future__ import annotations
+import sys as _corefull_sys
+from pathlib import Path as _CoreFullPath
+_corefull_sys.path.insert(0,str(_CoreFullPath(__file__).resolve().parents[1]))
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import json
 import re
 import time
 from collections import Counter, defaultdict
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -168,7 +172,7 @@ def discover_proteome_files() -> dict[str, Path]:
     for path in PROTEOME_DIR.glob("*.proteome_features.full.csv"):
         species_id = path.name[: -len(".proteome_features.full.csv")]
         files[species_id] = path
-    for path in PROTEOME_DIR.glob("*.proteome_features.core.csv"):
+    for path in feature_io.logical_glob(PROTEOME_DIR, "*.proteome_features.core.csv"):
         species_id = path.name[: -len(".proteome_features.core.csv")]
         files.setdefault(species_id, path)
     return dict(sorted(files.items()))
@@ -181,7 +185,7 @@ def discover_genome_files() -> dict[str, Path]:
             continue
         species_id = path.name[: -len(".genome_features.csv")]
         files[species_id] = path
-    for path in GENOME_DIR.glob("*.genome_features.core.csv"):
+    for path in feature_io.logical_glob(GENOME_DIR, "*.genome_features.core.csv"):
         species_id = path.name[: -len(".genome_features.core.csv")]
         files.setdefault(species_id, path)
     return dict(sorted(files.items()))
@@ -292,7 +296,7 @@ def build_external_protein_index() -> tuple[dict[tuple[str, str], dict[str, str]
     protein_index: dict[tuple[str, str], dict[str, str]] = {}
     protein_species_counts: dict[str, Counter] = defaultdict(Counter)
     for species_id, path in discover_proteome_files().items():
-        with path.open("r", encoding="utf-8-sig", newline="") as fh:
+        with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as fh:
             reader = csv.DictReader(fh)
             for row in reader:
                 protein_id = clean(row.get("protein_id") or row.get("ensembl_protein_id") or row.get("source_protein_id"))
@@ -316,7 +320,7 @@ def build_external_protein_index() -> tuple[dict[tuple[str, str], dict[str, str]
 def extract_geneid_from_genome() -> dict[tuple[str, str], str]:
     gene_ids: dict[tuple[str, str], str] = {}
     for species_id, path in discover_genome_files().items():
-        with path.open("r", encoding="utf-8-sig", newline="") as fh:
+        with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as fh:
             reader = csv.DictReader(fh)
             for row in reader:
                 gene_id = clean(row.get("gene_id"))

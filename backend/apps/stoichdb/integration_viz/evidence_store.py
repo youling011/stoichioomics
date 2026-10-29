@@ -1,4 +1,5 @@
 """Lossless source cells and per-field support counts for existing gene means."""
+from backend.apps.stoichdb.feature_sources import io as feature_io
 import gzip,hashlib
 from pathlib import Path
 import pandas as pd
@@ -11,7 +12,7 @@ def attach(target):
         audit=source['core'].get(m,{})
         if audit.get('status')!='available':continue
         p=Path(audit['signature']['path']);out=target/'raw_sources'/(m+'.csv.gz');out.parent.mkdir(parents=True,exist_ok=True);h=hashlib.sha256()
-        with p.open('rb') as inp,gzip.open(out,'wb',compresslevel=1) as zipped:
+        with feature_io.open_source(p, 'rb') as inp,gzip.open(out,'wb',compresslevel=1) as zipped:
             for chunk in iter(lambda:inp.read(4*1024*1024),b''):h.update(chunk);zipped.write(chunk)
         if h.hexdigest()!=audit['sha256']:raise ValueError('source_changed_during_raw_snapshot')
         if mapping.empty or 'omics' not in mapping:continue
@@ -21,7 +22,7 @@ def attach(target):
     if blocks:
         order=pd.read_parquet(target/'tables/gene_matrix.parquet',columns=['gene_id']).gene_id
         counts=pd.concat(blocks,axis=1).reindex(order).fillna(0).astype('uint32');counts.index.name='gene_id';counts.reset_index().to_parquet(target/'tables/gene_valid_counts.parquet',index=False,compression='zstd')
-    elif all(v.get('status')=='available' for v in source['core'].values()) and (target/'tables/gene_matrix.parquet').exists():
+    elif all(v.get('status')=='available' for v in source['core'].values()) and feature_io.source_exists(target/'tables/gene_matrix.parquet'):
         columns=['gene_id']+[m+'__'+r['field'] for m,rows in manifest['catalog'].items() for r in rows];empty=pd.DataFrame(columns=columns);empty.to_parquet(target/'tables/gene_valid_counts.parquet',index=False,compression='zstd')
     manifest.update(storage_version=3,support_counts={'kind':'gene_valid_counts','status':'available' if blocks else 'unavailable','definition':'finite original Core records per anchored gene and numeric field; same masks as gene means'},raw_source_snapshots='lossless original CSV bytes, gzipped; safe CSV export preserves original cell tokens')
     a.write(target/'manifest.json',manifest)

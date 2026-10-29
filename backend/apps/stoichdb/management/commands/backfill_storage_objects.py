@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import hashlib
@@ -6,7 +7,7 @@ import json
 import mimetypes
 from collections import defaultdict
 from datetime import datetime, timezone
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 from django.core.management.base import BaseCommand, CommandError
@@ -36,7 +37,7 @@ ROOT_ALIAS_ORDER = (
 
 
 def read_csv_rows(path: Path) -> list[dict[str, str]]:
-    with path.open("r", encoding="utf-8-sig", newline="") as f:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as f:
         return [{k: (v if v is not None else "") for k, v in row.items()} for row in csv.DictReader(f)]
 
 
@@ -54,8 +55,11 @@ def write_json(path: Path, payload: Any) -> None:
 
 
 def sha256_file(path: Path) -> str:
+    return feature_io.source_sha256(path)
+
+def _legacy_unused_sha256_file(path: Path) -> str:
     h = hashlib.sha256()
-    with path.open("rb") as f:
+    with feature_io.open_source(path, "rb") as f:
         for chunk in iter(lambda: f.read(CHUNK_SIZE), b""):
             h.update(chunk)
     return h.hexdigest()
@@ -126,7 +130,7 @@ class Command(BaseCommand):
         out_dir.mkdir(parents=True, exist_ok=True)
         membership_path = s1_dir / "membership_seed.csv"
         dataset_seed_path = s1_dir / "omics_dataset_membership_seed.csv"
-        if not membership_path.exists() or not dataset_seed_path.exists():
+        if not feature_io.source_exists(membership_path) or not feature_io.source_exists(dataset_seed_path):
             raise CommandError(f"S1 seed files not found in {s1_dir}")
 
         started_at = datetime.now(timezone.utc).isoformat()
@@ -327,13 +331,13 @@ class Command(BaseCommand):
             missing_refs.append(ref)
             return
         path = Path(path_text)
-        exists = path.exists()
+        exists = feature_io.source_exists(path)
         root_alias, relative_path = self._relative_for(path, roots)
         media_type, compression = media_for(path)
         key = logical_key(root_alias, relative_path, path_text)
         row = objects.get(key)
         if row is None:
-            stat = path.stat() if exists else None
+            stat = feature_io.source_metadata(path) if exists else None
             row = {
                 "logical_key": key,
                 "backend": "local_fs",
@@ -342,8 +346,8 @@ class Command(BaseCommand):
                 "object_uri": "" if root_alias else path_text,
                 "absolute_path": str(path),
                 "exists": exists,
-                "size_bytes": int(stat.st_size) if stat else 0,
-                "mtime_utc": datetime.fromtimestamp(stat.st_mtime, timezone.utc).isoformat() if stat else "",
+                "size_bytes": int(stat.size) if stat else 0,
+                "mtime_utc": datetime.fromtimestamp(stat.mtime, timezone.utc).isoformat() if stat else "",
                 "sha256": "",
                 "media_type": media_type,
                 "compression": compression,

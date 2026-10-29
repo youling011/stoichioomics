@@ -768,3 +768,47 @@ class ComparativeAnalysisRun(models.Model):
 
 # Dedicated Core comparison tables; legacy models and payloads are unchanged.
 from .compare_core.models import CompareCoreProfile, CompareRun
+
+
+class CoreProjectionRecipe(models.Model):
+    """Versioned storage projection. Scientific feature definitions stay unchanged."""
+    recipe_id = models.CharField(max_length=64, unique=True)
+    omics_type = models.CharField(max_length=32)
+    version = models.CharField(max_length=64, default='extractor-projection-v1')
+    schema_hash = models.CharField(max_length=64)
+    columns_json = models.JSONField(default=list)
+    fill_noncoding = models.CharField(max_length=16, default='zero')
+    serialization_json = models.JSONField(default=dict)
+    extractor_sha256 = models.CharField(max_length=64, blank=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class FeatureSourceBinding(models.Model):
+    """An explicitly verified logical Core alias backed by an immutable Full asset."""
+    binding_id = models.CharField(max_length=64, unique=True)
+    dataset = models.ForeignKey(OmicsDataset, on_delete=models.PROTECT, related_name='source_bindings', null=True, blank=True)
+    recipe = models.ForeignKey(CoreProjectionRecipe, on_delete=models.PROTECT)
+    release_context = models.CharField(max_length=200, blank=True, default='')
+    legacy_source_key = models.CharField(max_length=64)
+    legacy_path = models.CharField(max_length=2048)
+    logical_scope = models.CharField(max_length=16, default='core')
+    representation = models.CharField(max_length=32, default='csv')
+    full_path = models.CharField(max_length=2048)
+    full_sha256 = models.CharField(max_length=64)
+    core_sha256 = models.CharField(max_length=64)
+    virtual_csv_sha256 = models.CharField(max_length=64)
+    logical_cell_hash = models.CharField(max_length=64)
+    row_count = models.PositiveBigIntegerField(default=0)
+    virtual_size = models.PositiveBigIntegerField(default=0)
+    legacy_stat_json = models.JSONField(default=dict)
+    full_stat_json = models.JSONField(default=dict)
+    receipt_json = models.JSONField(default=dict)
+    status = models.CharField(max_length=32, default='shadow')
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['dataset', 'release_context', 'legacy_source_key'], name='unique_corefull_source_context'),
+            models.UniqueConstraint(fields=['release_context','legacy_source_key'],condition=models.Q(dataset__isnull=True),name='unique_corefull_library_alias'),
+        ]
+        indexes = [models.Index(fields=['legacy_source_key', 'status'], name='corefull_alias_status')]

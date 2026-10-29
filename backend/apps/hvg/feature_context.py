@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 """Build the job-scoped comparison-only Core context after Phase 1."""
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import hashlib
 import gzip
@@ -118,7 +119,7 @@ def _atomic_write_csv(path: Path, frame: pd.DataFrame, columns: list[str] | None
 
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
-    with path.open("rb") as handle:
+    with feature_io.open_source(path, "rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
@@ -128,7 +129,7 @@ class _HashingBinaryReader:
     """File wrapper that hashes sequential parser reads without a second scan."""
 
     def __init__(self, path: Path):
-        self._handle = path.open("rb")
+        self._handle = feature_io.open_source(path, "rb")
         self._digest = hashlib.sha256()
         self.bytes_read = 0
         self._last_position = 0
@@ -270,9 +271,9 @@ def _stored_hash(source: Any) -> str:
                 continue
             object_uri = _clean(row.object_uri)
             relative = _clean(row.relative_path)
-            if object_uri and Path(object_uri).exists() and Path(object_uri).resolve() == source_path:
+            if object_uri and feature_io.source_exists(Path(object_uri)) and Path(object_uri).resolve() == source_path:
                 return value
-            if relative and Path(relative).exists() and Path(relative).resolve() == source_path:
+            if relative and feature_io.source_exists(Path(relative)) and Path(relative).resolve() == source_path:
                 return value
         return ""
     except Exception:
@@ -310,7 +311,7 @@ def _requested_omics(config: dict[str, Any]) -> list[str]:
 def _read_baseline(path: str | Path) -> pd.DataFrame:
     target = Path(path)
     sep = "\t" if target.suffix.lower() in {".tsv", ".txt"} else ","
-    frame = pd.read_csv(target, sep=sep)
+    frame = feature_io.read_csv(target, sep=sep)
     if "gene_id" not in frame.columns or "is_hvg" not in frame.columns:
         raise ValueError("baseline_missing_gene_id_or_is_hvg")
     frame = frame.copy()
@@ -386,7 +387,7 @@ def _source_rows(source: Any, columns: list[str], chunk_size: int, metrics: dict
         if Path(source.path).suffix.lower() == ".gz":
             stream = gzip.GzipFile(fileobj=raw, mode="rb")
         text = io.TextIOWrapper(stream, encoding="utf-8-sig", newline="")
-        frames = pd.read_csv(
+        frames = feature_io.read_csv(
             text,
             usecols=columns,
             dtype=str,
@@ -587,7 +588,7 @@ def build_hvg_multiomics_feature_context(
                 raise ValueError("source_species_mismatch")
             if _clean(getattr(source, "omics", "")) != omics:
                 raise ValueError("source_omics_mismatch")
-            if not Path(source.path).exists() or not Path(source.path).is_file():
+            if not feature_io.source_exists(Path(source.path)) or not feature_io.source_available(Path(source.path)):
                 raise ValueError("source_file_unreadable")
             headers = read_header(source)
             if not headers:

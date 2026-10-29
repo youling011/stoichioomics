@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 from collections import defaultdict
 import csv
@@ -70,7 +71,7 @@ ID_MAPPING_DIR = Path(settings.BASE_DIR) / 'data' / 'id_mapping'
 
 def _id_mapping_json(name: str, default: Any | None = None) -> Any:
     path = ID_MAPPING_DIR / name
-    if not path.exists():
+    if not feature_io.source_exists(path):
         return {} if default is None else default
     try:
         return json.loads(path.read_text(encoding='utf-8'))
@@ -166,7 +167,7 @@ def db_mode() -> bool:
 @lru_cache(maxsize=1)
 def load_index() -> dict[str, Any]:
     path = DATA_ROOT / 'index.json'
-    if not path.exists():
+    if not feature_io.source_exists(path):
         return {'project': PROJECT_DEFAULT, 'species': [], 'omics_meta': OMICS_META_DEFAULT, 'compare_pairs': []}
     return json.loads(path.read_text(encoding='utf-8'))
 
@@ -174,7 +175,7 @@ def load_index() -> dict[str, Any]:
 @lru_cache(maxsize=128)
 def load_json(relative_path: str) -> Any:
     path = DATA_ROOT / relative_path
-    if not path.exists():
+    if not feature_io.source_exists(path):
         raise NotFoundError(f'Missing dataset file: {relative_path}')
     return json.loads(path.read_text(encoding='utf-8'))
 
@@ -763,7 +764,7 @@ def taxonomy_reference_manifest() -> dict[str, Any]:
     reconciliation and QA.
     """
     path = Path(settings.BASE_DIR) / 'data' / 'metadata' / 'taxonomy' / 'taxonomy_metadata_manifest.json'
-    if not path.exists():
+    if not feature_io.source_exists(path):
         return {'status': 'missing', 'path': str(path), 'manifest': {}}
     try:
         return {'status': 'available', 'path': str(path), 'manifest': json.loads(path.read_text(encoding='utf-8'))}
@@ -786,7 +787,7 @@ def _resolve_existing_path(path_value: str) -> Path | None:
             resolved = candidate.resolve()
         except Exception:
             continue
-        if resolved.exists() and resolved.is_file():
+        if feature_io.source_exists(resolved) and feature_io.source_available(resolved):
             return resolved
     return None
 
@@ -795,10 +796,10 @@ def _file_checksum(path: Path | None) -> tuple[str, str]:
     if path is None:
         return '', 'missing'
     try:
-        if path.stat().st_size > 64 * 1024 * 1024:
+        if feature_io.source_metadata(path).size > 64 * 1024 * 1024:
             return '', 'deferred_large_file'
         digest = hashlib.sha256()
-        with path.open('rb') as handle:
+        with feature_io.open_source(path, 'rb') as handle:
             for chunk in iter(lambda: handle.read(1024 * 1024), b''):
                 digest.update(chunk)
         return digest.hexdigest(), 'sha256'
@@ -810,7 +811,7 @@ def _file_generated_at(path: Path | None) -> str:
     if path is None:
         return ''
     try:
-        return datetime.fromtimestamp(path.stat().st_mtime, tz=timezone.utc).isoformat()
+        return datetime.fromtimestamp(feature_io.source_metadata(path).mtime, tz=timezone.utc).isoformat()
     except Exception:
         return ''
 
@@ -3160,7 +3161,7 @@ def _species_module_coverage(row: Species, ds_map: dict[str, OmicsDataset], *, a
             return False
         try:
             path = Path(path_text)
-            return path.exists() and path.is_file() and path.stat().st_size >= min_size
+            return feature_io.source_exists(path) and feature_io.source_available(path) and feature_io.source_metadata(path).size >= min_size
         except Exception:
             return False
 
@@ -4075,7 +4076,7 @@ def _cross_feature_path(species_id: str, omics: str) -> Path | None:
         if not path_text:
             continue
         path = Path(path_text)
-        if path.exists() and path.is_file():
+        if feature_io.source_exists(path) and feature_io.source_available(path):
             return path
     return None
 
@@ -4093,7 +4094,7 @@ def _cross_read_gene_index(
     seen_fields: set[str] = set()
     read_rows = 0
     try:
-        with path.open('r', encoding='utf-8-sig', newline='') as handle:
+        with feature_io.open_source(path, 'r', encoding='utf-8-sig', newline='') as handle:
             reader = csv.DictReader(handle)
             seen_fields = set(reader.fieldnames or [])
             for row in reader:
@@ -7634,6 +7635,7 @@ def release_overview() -> dict[str, Any]:
     }
 
 
+@__import__('backend.apps.common.public_snapshots',fromlist=['snapshot']).snapshot('quality')
 @lru_cache(maxsize=4)
 def quality_overview() -> dict[str, Any]:
     if not db_mode():
@@ -8163,7 +8165,7 @@ def downloads_manifest(species_id: str = '', omics: str = '', dataset_limit: Any
                 'division': division,
                 'description': desc,
                 'url': f'/api/stoichdb/downloads/id-mapping/?kind={kind}&division={division}',
-                'size_bytes': path.stat().st_size if path.exists() else 0,
+                'size_bytes': feature_io.source_metadata(path).size if feature_io.source_exists(path) else 0,
             })
         online_dir = final_root / 'online_external' / division
         for kind, filename, desc in [
@@ -8180,7 +8182,7 @@ def downloads_manifest(species_id: str = '', omics: str = '', dataset_limit: Any
                 'division': division,
                 'description': desc,
                 'url': f'/api/stoichdb/downloads/id-mapping/?kind={kind}&division={division}',
-                'size_bytes': path.stat().st_size if path.exists() else 0,
+                'size_bytes': feature_io.source_metadata(path).size if feature_io.source_exists(path) else 0,
             })
         standard_dir = ID_MAPPING_DIR / 'standard_external_id_overlay' / division
         for kind, filename, desc in [
@@ -8194,7 +8196,7 @@ def downloads_manifest(species_id: str = '', omics: str = '', dataset_limit: Any
                 'division': division,
                 'description': desc,
                 'url': f'/api/stoichdb/downloads/id-mapping/?kind={kind}&division={division}',
-                'size_bytes': path.stat().st_size if path.exists() else 0,
+                'size_bytes': feature_io.source_metadata(path).size if feature_io.source_exists(path) else 0,
             })
     for kind, filename, desc in [
         ('final_manifest', 'final_whitelist_id_mapping_manifest.json', 'Global final-whitelist ID mapping manifest.'),
@@ -8211,7 +8213,7 @@ def downloads_manifest(species_id: str = '', omics: str = '', dataset_limit: Any
             'division': 'all_final_whitelist',
             'description': desc,
             'url': f'/api/stoichdb/downloads/id-mapping/?kind={kind}',
-            'size_bytes': path.stat().st_size if path.exists() else 0,
+            'size_bytes': feature_io.source_metadata(path).size if feature_io.source_exists(path) else 0,
         })
 
     return {
@@ -8233,28 +8235,28 @@ def downloads_manifest(species_id: str = '', omics: str = '', dataset_limit: Any
                 'kind': 'omics',
                 'description': 'Full gene-transcript-protein mapping table with status, confidence, and conflict flags.',
                 'url': '/api/stoichdb/downloads/id-mapping/?kind=omics',
-                'size_bytes': (ID_MAPPING_DIR / 'protist_omics_id_mapping_all_species.csv').stat().st_size if (ID_MAPPING_DIR / 'protist_omics_id_mapping_all_species.csv').exists() else 0,
+                'size_bytes': feature_io.source_metadata(ID_MAPPING_DIR / 'protist_omics_id_mapping_all_species.csv').size if feature_io.source_exists(ID_MAPPING_DIR / 'protist_omics_id_mapping_all_species.csv') else 0,
             },
             {
                 'label': 'All species external standard ID mapping',
                 'kind': 'external',
                 'description': 'Full internal-to-UniProt/NCBI/RefSeq/INSDC mapping table with evidence fields.',
                 'url': '/api/stoichdb/downloads/id-mapping/?kind=external',
-                'size_bytes': (ID_MAPPING_DIR / 'protist_external_id_mapping_all_species.csv').stat().st_size if (ID_MAPPING_DIR / 'protist_external_id_mapping_all_species.csv').exists() else 0,
+                'size_bytes': feature_io.source_metadata(ID_MAPPING_DIR / 'protist_external_id_mapping_all_species.csv').size if feature_io.source_exists(ID_MAPPING_DIR / 'protist_external_id_mapping_all_species.csv') else 0,
             },
             {
                 'label': 'ID mapping manifest',
                 'kind': 'manifest',
                 'description': 'Source file hashes, runtime index scope, schema version, and generated table counts.',
                 'url': '/api/stoichdb/downloads/id-mapping/?kind=manifest',
-                'size_bytes': (ID_MAPPING_DIR / 'id_mapping_manifest.json').stat().st_size if (ID_MAPPING_DIR / 'id_mapping_manifest.json').exists() else 0,
+                'size_bytes': feature_io.source_metadata(ID_MAPPING_DIR / 'id_mapping_manifest.json').size if feature_io.source_exists(ID_MAPPING_DIR / 'id_mapping_manifest.json') else 0,
             },
             {
                 'label': 'ID mapping QC summary',
                 'kind': 'qc',
                 'description': 'Per-species mapping coverage, confidence, conflict, and external ID summary.',
                 'url': '/api/stoichdb/downloads/id-mapping/?kind=qc',
-                'size_bytes': (ID_MAPPING_DIR / 'id_mapping_qc_summary.json').stat().st_size if (ID_MAPPING_DIR / 'id_mapping_qc_summary.json').exists() else 0,
+                'size_bytes': feature_io.source_metadata(ID_MAPPING_DIR / 'id_mapping_qc_summary.json').size if feature_io.source_exists(ID_MAPPING_DIR / 'id_mapping_qc_summary.json') else 0,
             },
         ] + final_mapping_downloads,
         'annotation_downloads': function_annotations.downloads_payload(),
@@ -8584,6 +8586,7 @@ def data_dictionary_payload() -> dict[str, Any]:
     }
 
 
+@__import__('backend.apps.common.public_snapshots',fromlist=['snapshot']).snapshot('docs')
 def docs_payload() -> dict[str, Any]:
     return {
         'release': current_release(),
@@ -8646,6 +8649,9 @@ def resolve_feature_file(file_id: str) -> Path:
         record = FeatureFile.objects.get(file_id=file_id)
     except FeatureFile.DoesNotExist as exc:
         raise NotFoundError(f'Unknown file_id: {file_id}') from exc
+    logical = feature_io.logical_source(record.path) if record.file_type == 'core' else None
+    if logical is not None:
+        return logical
     resolved = _resolve_existing_path(record.path)
     if not resolved:
         raise NotFoundError(f'Registered file is missing on disk: {record.path}')
@@ -8777,7 +8783,7 @@ def _available_scopes_file_mode(species_id: str, omics: str) -> list[str]:
             f'{species_id}/{omics}/summary_{scope}.json',
             f'{species_id}/{omics}/summary.{scope}.json',
         ]:
-            if (DATA_ROOT / relative).exists():
+            if feature_io.source_exists(DATA_ROOT / relative):
                 scopes.append(scope)
                 break
     if not scopes:
@@ -8807,13 +8813,14 @@ def _dataset_scope_csv_path(ds: OmicsDataset, scope: str) -> Path | None:
     scope = _normalize_scope(scope)
     raw = ds.full_csv_path if scope == 'full' else ds.core_csv_path
     path = Path(str(raw or ''))
-    if path.exists() and path.is_file():
+    if feature_io.source_exists(path) and feature_io.source_available(path):
         return path
     if scope != 'full':
         return None
-    core = Path(str(ds.core_csv_path or ''))
-    if not core.exists() or not core.is_file():
+    # The registered path also identifies the Full sibling after Core removal.
+    if not ds.core_csv_path:
         return None
+    core = Path(str(ds.core_csv_path))
     name = core.name
     candidate_names = list(dict.fromkeys([
         name.replace('.core.', '.full.'),
@@ -8826,7 +8833,7 @@ def _dataset_scope_csv_path(ds: OmicsDataset, scope: str) -> Path | None:
     ]))
     for candidate_name in candidate_names:
         candidate = core.with_name(candidate_name)
-        if candidate.exists() and candidate.is_file():
+        if feature_io.source_exists(candidate) and feature_io.source_available(candidate):
             return candidate
     return None
 
@@ -8980,7 +8987,7 @@ def _read_csv_rows_for_db_scope(species_id: str, omics: str, scope: str, limit: 
     meta = omics_meta().get(omics, {})
     primary_id = meta.get('primary_id') or 'entity_id'
     rows: list[dict[str, Any]] = []
-    with path.open('r', encoding='utf-8-sig', newline='') as handle:
+    with feature_io.open_source(path, 'r', encoding='utf-8-sig', newline='') as handle:
         reader = csv.DictReader(handle)
         for row in reader:
             if not isinstance(row, dict):
@@ -9006,7 +9013,7 @@ def _csv_page_for_db_scope(species_id: str, omics: str, scope: str, page: int, p
     start = max(0, (int(page) - 1) * int(page_size))
     end = start + int(page_size)
     rows: list[dict[str, Any]] = []
-    with path.open('r', encoding='utf-8-sig', newline='') as handle:
+    with feature_io.open_source(path, 'r', encoding='utf-8-sig', newline='') as handle:
         reader = csv.DictReader(handle)
         for idx, row in enumerate(reader):
             if idx < start:
@@ -9153,7 +9160,7 @@ def _csv_scope_payloads(species_id: str, omics: str, scope: str, scatter_limit: 
     meta = omics_meta().get(omics, {})
     primary_id = meta.get('primary_id') or 'entity_id'
     scatter_limit = _safe_int(scatter_limit, 5000, minimum=0, maximum=50000)
-    with path.open('r', encoding='utf-8-sig', newline='') as handle:
+    with feature_io.open_source(path, 'r', encoding='utf-8-sig', newline='') as handle:
         reader = csv.DictReader(handle)
         header = list(reader.fieldnames or [])
         candidate_fields = _csv_candidate_fields(header, omics, max_fields=10)
@@ -12454,7 +12461,7 @@ def _sample_feature_rows_from_csv(species_id: str, omics: str, fields_key: tuple
             if not path_text:
                 continue
             path = Path(path_text)
-            if path.exists() and path.is_file() and path not in candidate_paths:
+            if feature_io.source_exists(path) and feature_io.source_available(path) and path not in candidate_paths:
                 candidate_paths.append(path)
     if not candidate_paths and not db_mode():
         return _sample_feature_rows_from_records(species_id, omics, tuple(fields), limit)
@@ -12472,7 +12479,7 @@ def _sample_feature_rows_from_csv(species_id: str, omics: str, fields_key: tuple
     ranked_paths: list[tuple[int, Path]] = []
     for path in candidate_paths:
         try:
-            with path.open('r', encoding='utf-8-sig', newline='') as handle:
+            with feature_io.open_source(path, 'r', encoding='utf-8-sig', newline='') as handle:
                 reader = csv.DictReader(handle)
                 header = set(reader.fieldnames or [])
                 ranked_paths.append((len(header.intersection(fields)), path))
@@ -12480,7 +12487,7 @@ def _sample_feature_rows_from_csv(species_id: str, omics: str, fields_key: tuple
             continue
     for _, path in sorted(ranked_paths, key=lambda item: item[0], reverse=True):
         try:
-            with path.open('r', encoding='utf-8-sig', newline='') as handle:
+            with feature_io.open_source(path, 'r', encoding='utf-8-sig', newline='') as handle:
                 reader = csv.DictReader(handle)
                 header = set(reader.fieldnames or [])
                 if not header.intersection(fields):

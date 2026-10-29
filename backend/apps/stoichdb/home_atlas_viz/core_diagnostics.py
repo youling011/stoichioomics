@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 import csv
 import hashlib
 import numpy as np
@@ -11,12 +12,12 @@ ALGORITHM = "whole-original-core-finite-v1"
 
 def scan_core(species_id, omics, fields, chunksize=50000):
     source = DatasetSourceResolver().resolve(species_id, omics, "core")
-    before = source.path.stat()
+    before = feature_io.source_metadata(source.path)
     numeric = [r for r in fields if r["role"] == "numeric"]
     metadata = [r for r in fields if r["role"] == "metadata"]
     expected = {r["field"] for r in fields}
     import gzip
-    opener = gzip.open if source.path.suffix.lower() == ".gz" else open
+    opener = gzip.open if source.path.suffix.lower() == ".gz" else feature_io.open_source
     with opener(source.path, "rt", encoding="utf-8-sig", newline="") as handle:
         header = next(csv.reader(handle), [])
     if len(header) != len(set(header)) or set(header) != expected:
@@ -27,7 +28,7 @@ def scan_core(species_id, omics, fields, chunksize=50000):
     primary = {"genome": "gene_id", "transcriptome": "transcript_id", "proteome": "protein_id"}[omics]
     seen = set()
     total = 0
-    for chunk in pd.read_csv(source.path, dtype=str, keep_default_na=False, na_filter=False, chunksize=chunksize):
+    for chunk in feature_io.read_csv(source.path, dtype=str, keep_default_na=False, na_filter=False, chunksize=chunksize):
         keys = chunk[primary].str.strip().tolist()
         if any(not key for key in keys) or len(set(keys)) != len(keys) or any(key in seen for key in keys):
             raise ValueError(f"{species_id}/{omics}: empty or duplicate primary key.")
@@ -57,11 +58,11 @@ def scan_core(species_id, omics, fields, chunksize=50000):
     meta_profiles = [{**field, "n_source": total, "n_nonempty": meta_counts[field["field"]],
                       "n_missing": total - meta_counts[field["field"]]} for field in metadata]
     h = hashlib.sha256()
-    with source.path.open("rb") as handle:
+    with feature_io.open_source(source.path, "rb") as handle:
         for block in iter(lambda: handle.read(8 * 1024 * 1024), b""):
             h.update(block)
-    after = source.path.stat()
-    if (before.st_size, before.st_mtime_ns) != (after.st_size, after.st_mtime_ns):
+    after = feature_io.source_metadata(source.path)
+    if (before.size, before.mtime_ns) != (after.size, after.mtime_ns):
         raise ValueError(f"{species_id}/{omics}: source changed during scan.")
     return {"algorithm_version": ALGORITHM, "species_id": species_id, "omics": omics,
             "n_rows": total, "n_numeric": len(numeric), "n_metadata": len(metadata),
@@ -71,5 +72,5 @@ def scan_core(species_id, omics, fields, chunksize=50000):
             "missing_numeric_cells": sum(r["n_missing"] for r in profiles),
             "profiles": profiles, "metadata_profiles": meta_profiles,
             "schema_digest": digest(fields), "source_sha256": h.hexdigest(),
-            "source_bytes": after.st_size, "source_mtime_ns": after.st_mtime_ns,
+            "source_bytes": after.size, "source_mtime_ns": after.mtime_ns,
             "source_path": str(source.path), "schema_version": source.schema_version}

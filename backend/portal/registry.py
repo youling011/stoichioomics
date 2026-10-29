@@ -2,7 +2,7 @@ from __future__ import annotations
 from backend.apps.common.host_paths import Path
 from typing import List, Dict, Any
 import json
-from .library import load_registry
+from .library import load_registry,workspace_root,examples_root
 
 
 def _detect_case(base: Path, label: str, source: str, tags: list[str] | None = None) -> Dict[str, Any] | None:
@@ -31,14 +31,14 @@ def scan_cases(project_root: str | Path) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     seen = set()
 
-    ex_root = project_root / 'data' / 'examples'
+    ex_root = examples_root(project_root)
     if ex_root.exists():
         for d in sorted([p for p in ex_root.iterdir() if p.is_dir()]):
             c = _detect_case(d, f'Example: {d.name}', 'example')
             if c:
                 out.append(c); seen.add(Path(c['base_dir']).resolve())
 
-    jobs_root = project_root / 'workspace' / 'jobs'
+    jobs_root = workspace_root(project_root)
     if jobs_root.exists():
         for d in sorted([p for p in jobs_root.iterdir() if p.is_dir()]):
             c = _detect_case(d, f'Workspace job: {d.name}', 'workspace')

@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import hashlib
@@ -47,11 +48,9 @@ class CompleteCoreDataSource:
 
     def header(self, scope: str = "core") -> tuple[str, ...]:
         path = self._path(scope)
-        if not path or not path.exists():
+        if not path or not feature_io.source_exists(path):
             return ()
-        with path.open("r", encoding="utf-8-sig", newline="") as handle:
-            reader = csv.DictReader(handle)
-            return tuple(reader.fieldnames or ())
+        return tuple(feature_io.source_header(path))
 
     def manifest(self) -> SourceManifest:
         core_header = self.header("core")
@@ -82,7 +81,7 @@ class CompleteCoreDataSource:
         full_duplicate_id_n = 0
         full_fields_used = tuple(sorted(optional_set & full_header))
         missing_optional = tuple(sorted(optional_set - core_header - full_header))
-        if rows and full_fields_used and self.full_path and self.full_path.exists():
+        if rows and full_fields_used and self.full_path and feature_io.source_exists(self.full_path):
             full_rows = self._read_csv("full", set(ID_FIELDS) | set(full_fields_used))
             full_duplicate_id_n = _duplicate_id_count(full_rows, self.omics)
             full_by_key: dict[str, dict[str, Any]] = {}
@@ -120,10 +119,10 @@ class CompleteCoreDataSource:
 
     def _read_csv(self, scope: str, fields: set[str]) -> list[dict[str, Any]]:
         path = self._path(scope)
-        if not path or not path.exists():
+        if not path or not feature_io.source_exists(path):
             return []
         rows: list[dict[str, Any]] = []
-        with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as handle:
             reader = csv.DictReader(handle)
             header = set(reader.fieldnames or ())
             wanted = header if not fields else (fields & header)
@@ -160,11 +159,11 @@ def _duplicate_id_count(rows: list[dict[str, Any]], omics: str) -> int:
 
 
 def _quick_hash(path: Path | None) -> str:
-    if not path or not path.exists():
+    if not path or not feature_io.source_exists(path):
         return ""
-    stat = path.stat()
+    stat = feature_io.source_metadata(path)
     h = hashlib.sha256()
     h.update(str(path).encode("utf-8"))
-    h.update(str(stat.st_size).encode("ascii"))
-    h.update(str(int(stat.st_mtime)).encode("ascii"))
+    h.update(str(stat.size).encode("ascii"))
+    h.update(str(int(stat.mtime)).encode("ascii"))
     return h.hexdigest()

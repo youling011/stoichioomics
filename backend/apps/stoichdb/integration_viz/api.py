@@ -1,3 +1,4 @@
+from backend.apps.common.request_cache import request_scope,once
 from functools import wraps
 from pathlib import Path
 import pandas as pd
@@ -14,6 +15,7 @@ from .members import page_frame,candidates,selection
 from .exports import export
 def guarded(fn):
     @wraps(fn)
+    @request_scope
     def call(r,*args,**kwargs):
         try:
             if r.method=='POST' and not isinstance(r.data,dict):raise ValueError('JSON_object_required')
@@ -23,10 +25,16 @@ def guarded(fn):
         except (ValueError,TypeError) as e:return err(str(e),409 if any(k in str(e) for k in ['stale','mismatch','source_changed']) else 400)
         except BlockingIOError as e:return err(str(e),409)
     return call
+def check_stale(sid,p):
+    return once(('integration',sid,str(p)),lambda:a.stale(sid,p))
+
 def target(r,sid):
-    registry(sid);p=a.lookup(sid,r.GET.get('artifact_version',''))
-    if a.stale(sid,p):raise ValueError('source_or_method_stale; refresh preparation')
-    return p,a.read(p/'manifest.json')
+    registry(sid);p=a.lookup(sid,r.GET.get('artifact_version',''),validator=lambda m,p:not check_stale(sid,p))
+    m=a.read(p/'manifest.json')
+    if check_stale(sid,p):
+        if not r.GET.get('artifact_version'):raise ValueError('source_or_method_stale; refresh preparation')
+        m={**m,'historical_artifact':True,'availability_note':'Saved historical version; current source or method differs. Not eligible for current-source reuse.'}
+    return p,m
 def cohort_key(r,sid):return r.GET.get('cohort_key') or cohorts.identity(cohorts.default_ids(sid))
 def cohort_result(r,sid):
     key=cohort_key(r,sid);p=cohorts.path(key)
@@ -48,21 +56,23 @@ def decorate(result):
     return result
 def chart(r,sid,p,m,cid,complete=False):
     if cid not in FIGURES:raise LookupError('unknown_chart')
+    if m.get('historical_artifact') and cid in COHORT_IDS:
+        return decorate({'id':cid,'artifact_version':m['artifact_version'],'historical_artifact':True,'status':'unavailable','reason':'The saved species package does not bind a frozen cohort; current cohort values are not mixed into historical source results.','data':{}})
     if cid in COHORT_IDS:
         co=cohort_result(r,sid);contract=FIGURES[cid]
         return decorate({**{k:m[k] for k in ['species_id','artifact_version','method_version','source_hash','release_id','schema_version']},'id':cid,'title':contract['title'],'renderer_kind':contract['renderer_kind'],'status':co['status'],'population':'named real species, whole-Core descriptor medians','unit':'cohort standardized and layer weighted; original units in descriptors','parameters':contract['parameters'],'method':co['method'],'caveats':contract['interpretation'],'cohort_key':co['cohort_key'],'cohort_version':co['cohort_version'],'cohort_source_hash':co['source_hash'],'n_source':len(co['species_ids']),'n_valid':len(co['included_species']),'data':co})
     result=a.read(p/'charts'/(cid+'.json.gz'))
     if cid in ['OV02','OV03'] and not complete:
         data=result['data'];tracks=data.get('tracks',[]);color_limit=max([1.]+[abs(b['median']) for t in tracks for b in t.get('OV03',[]) if b['median'] is not None]);result={**result,'data':{**data,'tracks':tracks[:6],'tracks_total':len(tracks),'tracks_page':1,'tracks_page_size':6,'coordinate_color_limit':color_limit,'coordinates_endpoint':'coordinates/','display_policy':'paged coordinate tracks; full source population and stored bins unchanged'}}
-    return decorate(result)
+    return decorate({**result,**{k:m[k] for k in ['historical_artifact','availability_note'] if k in m}})
 @api_view(['GET'])
 @guarded
 def manifest_view(r,species_id):
     registry(species_id);enabled=getattr(settings,'INTEGRATION_VIZ_ENABLED',False)
     try:
-        p=a.lookup(species_id,r.GET.get('artifact_version',''));m=a.read(p/'manifest.json');key=cohorts.identity(cohorts.default_ids(species_id));exists=cohorts.path(key).is_file();status='stale' if a.stale(species_id,p) else 'ready'
+        p=a.lookup(species_id,r.GET.get('artifact_version',''),validator=lambda m,p:not check_stale(species_id,p));m=a.read(p/'manifest.json');key=cohorts.identity(cohorts.default_ids(species_id));exists=cohorts.path(key).is_file();status='stale' if check_stale(species_id,p) else 'ready'
         co=a.read(cohorts.path(key)) if exists else None
-        return ok({**m,'implementation_compatibility':{'artifact_hash':m['implementation_hash'],'runtime_hash':a.implementation_hash(),'kind':'identical' if m['implementation_hash']==a.implementation_hash() else 'explicit_rho_sorting_only_compatibility'},'status':status,'enabled':enabled,'default_cohort_key':key,'charts':[{**c,**({'status':co['status'] if co else 'queued','n_source':len(co['species_ids']) if co else None,'n_valid':len(co['included_species']) if co else None} if c['id'] in COHORT_IDS else {})} for c in m['charts']]})
+        return ok({**m,'historical_artifact':status=='stale','implementation_compatibility':{'artifact_hash':m['implementation_hash'],'runtime_hash':a.implementation_hash(),'kind':'historical_unverified_for_current_reuse' if status=='stale' else 'identical' if m['implementation_hash']==a.implementation_hash() else 'explicit_rho_sorting_only_compatibility'},'status':status,'enabled':enabled,'default_cohort_key':key,'charts':[{**c,**({'status':'unavailable' if status=='stale' else co['status'] if co else 'queued','n_source':len(co['species_ids']) if co else None,'n_valid':len(co['included_species']) if co else None} if c['id'] in COHORT_IDS else {})} for c in m['charts']]})
     except FileNotFoundError:
         if r.GET.get('artifact_version'):raise
         return ok({'species_id':species_id,'status':'missing','enabled':enabled,'charts':[]})
@@ -72,8 +82,8 @@ def ensure_view(r,species_id):
     if r.data.get('policy','core_plus_optional_full')!='core_plus_optional_full':raise ValueError('invalid_policy')
     registry(species_id)
     try:
-        p=a.lookup(species_id)
-        if not a.stale(species_id,p):
+        p=a.lookup(species_id,validator=lambda m,p:not check_stale(species_id,p))
+        if not check_stale(species_id,p):
             ids=cohorts.default_ids(species_id);key=cohorts.identity(ids)
             co=jobs.enqueue(species_id,'cohort',ids) if not cohorts.path(key).exists() else None
             return ok({'status':'ready','artifact_version':a.read(p/'manifest.json')['artifact_version'],'cohort_request':co,'default_cohort_key':key})
@@ -97,7 +107,7 @@ def chart_view(r,species_id,chart_id):
     except FileNotFoundError as e:
         if str(e)!='cohort_not_prepared':raise
         return ok({'id':chart_id,'status':'queued','artifact_version':m['artifact_version'],'cohort_key':cohort_key(r,species_id)},202)
-def paginated(r,m,result):return ok({**result,'artifact_version':m['artifact_version']})
+def paginated(r,m,result):return ok({**result,'artifact_version':m['artifact_version'],**{k:m[k] for k in ['historical_artifact','availability_note'] if k in m}})
 @api_view(['GET'])
 @guarded
 def fields_view(r,species_id):
@@ -183,7 +193,13 @@ def cohort_view(r,species_id):
 @guarded
 def export_view(r,species_id):
     p,m=target(r,species_id)
-    return export(p,r.GET,lambda cid:chart(r,species_id,p,m,cid,complete=True),lambda:cohort_result(r,species_id))
+    def saved_cohort():
+        if m.get('historical_artifact'):raise ValueError('historical_species_package_has_no_bound_frozen_cohort')
+        return cohort_result(r,species_id)
+    response=export(p,r.GET,lambda cid:chart(r,species_id,p,m,cid,complete=True),saved_cohort)
+    if m.get('historical_artifact'):
+        response['X-Historical-Artifact']='true';response['X-Artifact-Version']=m['artifact_version']
+    return response
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 @guarded

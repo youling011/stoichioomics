@@ -106,7 +106,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173']
 
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer'],
+    'DEFAULT_RENDERER_CLASSES': ['backend.apps.common.json_renderer.TimedJSONRenderer'],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.MultiPartParser',
@@ -187,3 +187,17 @@ MIDDLEWARE = ['backend.apps.stoichdb.integration_viz.middleware.IntegrationCompr
 
 # Presentation-only local rollout flag; no analysis behavior changes.
 WORKFLOW_VISUALS_V2_ENABLED = os.getenv('WORKFLOW_VISUALS_V2_ENABLED', '1').lower() in {'1', 'true', 'yes'}
+
+# Deployment compatibility: immutable historical reads, owned writable state.
+DEPLOYMENT_STATE_ROOT = Path(os.environ.get('DEPLOYMENT_STATE_ROOT', str(BASE_DIR / 'runtime' / 'deployment')))
+DEPLOYMENT_HISTORICAL_ROOT = os.environ.get('DEPLOYMENT_HISTORICAL_ROOT', os.environ.get('STOICH_PROJECT_ROOT', str(BASE_DIR)))
+TASK_EXECUTION_AUTOSTART = os.environ.get('TASK_EXECUTION_AUTOSTART', '1') == '1'
+ARTIFACT_MEMORY_CACHE_BYTES = int(os.environ.get('ARTIFACT_MEMORY_CACHE_BYTES', str(128 * 1024**2)))
+STOICH_FEATURE_REGISTRY_OUTPUT_ROOT = Path(os.environ.get('STOICH_FEATURE_REGISTRY_OUTPUT_ROOT', str(DEPLOYMENT_STATE_ROOT / 'runtime' / 'feature_registry')))
+UWSGI_STATS_SOCKET = os.environ.get('STOICH_UWSGI_STATS_SOCKET') or None
+MIDDLEWARE = ['backend.apps.common.maintenance.SubmissionFenceMiddleware', *MIDDLEWARE]
+
+DEPLOYMENT_INTEGRITY_INDEX = os.environ.get('DEPLOYMENT_INTEGRITY_INDEX') or None
+DEPLOYMENT_PUBLIC_SNAPSHOTS = os.environ.get('DEPLOYMENT_PUBLIC_SNAPSHOTS','0') == '1'
+
+MIDDLEWARE = ['backend.apps.common.request_timing.RequestTimingMiddleware', *MIDDLEWARE]

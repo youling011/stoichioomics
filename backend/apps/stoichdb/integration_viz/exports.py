@@ -1,3 +1,4 @@
+from backend.apps.stoichdb.feature_sources import io as feature_io
 import csv,io,json,gzip
 from pathlib import Path
 import numpy as np
@@ -40,7 +41,7 @@ def original_source(target,omics,manifest):
         from .source import digest
         if digest(path)!=audit['sha256']:raise ValueError('source_hash_mismatch')
     def stream():
-        op=gzip.open if snapshot.exists() else open
+        op=gzip.open if snapshot.exists() else feature_io.open_source
         with op(path,'rt',encoding='utf-8-sig',newline='') as inp:
             reader=csv.reader(inp);header=next(reader);buffer=io.StringIO();writer=csv.writer(buffer);yield '\ufeff';writer.writerow(header);yield buffer.getvalue();buffer.seek(0);buffer.truncate(0)
             for row in reader:

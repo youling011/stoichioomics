@@ -1,3 +1,4 @@
+from .artifacts import variant_folder
 import csv,io,json
 import numpy as np
 from django.http import StreamingHttpResponse,HttpResponse
@@ -13,7 +14,7 @@ def download(target,chart_id,kind='chart',delimiter=',',variant_id=''):
     if variant_id:
         import re
         if cid!='B15' or not re.fullmatch('[0-9a-f]{64}',variant_id):raise ValueError('invalid_export_variant')
-        figure=read_json(target/'variants'/(variant_id[:16]+'.json'))
+        figure=read_json(variant_folder(target)/(variant_id[:16]+'.json'))
         if figure['variant_id']!=variant_id:raise ValueError('variant_identity_conflict')
         for field in figure['fields']:field['unit']=next(f['unit'] for f in manifest['fields'] if f['key']==field['key'])
     if kind=='method':return HttpResponse(json.dumps(clean({'manifest':manifest,'figure':figure}),ensure_ascii=False),content_type='application/json; charset=utf-8')

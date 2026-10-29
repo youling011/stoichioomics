@@ -62,3 +62,7 @@ python scripts/data_release.py extract --manifest /path/to/published-release.jso
 数据状态与下载接口能让他人知道还缺什么，并为真实数据上线提供可执行衔接；**在真实数据库和数据包发布之前，源码上传完成不能等同于全部平台内容已可复现。**
 
 参考：[GitHub 大文件与 LFS](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage)、[PostgreSQL custom-format dump](https://www.postgresql.org/docs/16/app-pgdump.html)。
+
+## 历史产物读取布局（2026-10-29）
+
+当前代码增加不可变历史产物读取与兼容回执。公共数据发布还须提供经过审计的 `proj/runtime` 历史公开产物，组件名为 `historical-public-runtime`；仅公开冻结科学产物，不打包个人任务、锁文件、维护状态或临时缓存。Compose 将原项目对应目录作为 `DEPLOYMENT_HISTORICAL_ROOT` 只读来源，新状态仍写入独立卷。不能为通过兼容校验而重写旧 manifest 或科学身份。

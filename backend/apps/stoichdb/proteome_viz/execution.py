@@ -1,4 +1,6 @@
+from backend.apps.common.task_execution import heavy_guarded
 """Explicit CLI producer. HTTP views never spawn threads or re-fit scientific models."""
+from backend.apps.stoichdb.feature_sources import io as feature_io
 import copy,hashlib,json,os,time
 from pathlib import Path
 import numpy as np
@@ -19,7 +21,7 @@ def reusable(sid,scope,release,model):
         if m['method_version']!=METHOD_VERSION or m.get('implementation_hash')!=store.implementation_hash():return None
         for kind in ['core','full']:
             raw=model[kind+'_csv_path'];path=Path(raw) if raw else None;expected=m['source'].get('file_signatures',{}).get(kind)
-            actual={'bytes':path.stat().st_size,'mtime_ns':path.stat().st_mtime_ns} if path and path.is_file() else None
+            actual={'bytes':feature_io.source_metadata(path).size,'mtime_ns':feature_io.source_metadata(path).mtime_ns} if path and feature_io.source_available(path) else None
             if actual!=expected:return None
             if actual:
                 from .source import content_hash
@@ -27,6 +29,7 @@ def reusable(sid,scope,release,model):
         return target
     except (OSError,KeyError,ValueError):return None
 
+@heavy_guarded
 def run_one(task):
     import django
     django.setup();close_old_connections()

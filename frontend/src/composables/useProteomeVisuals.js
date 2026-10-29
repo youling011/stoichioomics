@@ -1,3 +1,4 @@
+import {visibleChartQueue} from './visibleChartQueue'
 import {ref,reactive,watch,onBeforeUnmount} from 'vue'
 import {getProteomeManifest,getProteomeChart,ensureProteomeVisuals,getProteomeRequest} from '../api/proteomeVisuals'
 
@@ -24,14 +25,12 @@ export function useProteomeVisuals(props){
       }
       const ids=props.section==='basic'?[...Array.from({length:12},(_,i)=>`B${String(i+1).padStart(2,'0')}`),'B15','D14']:Array.from({length:16},(_,i)=>`D${String(i+1).padStart(2,'0')}`).filter(id=>!['D11','D12','D16'].includes(id))
       ids.forEach(id=>{states[id]={loading:true,error:'',result:null}})
-      const queue=[...ids];const worker=async()=>{
-        while(queue.length&&!signal.aborted){
-          const id=queue.shift(),canonical=id==='B10'?'D02':id,key=[props.speciesId,props.scope,m.release_id,m.method_version,m.source_hash,m.artifact_version,canonical].join('::')
+      const load=async(id)=>{
+          const canonical=id==='B10'?'D02':id,key=[props.speciesId,props.scope,m.release_id,m.method_version,m.source_hash,m.artifact_version,canonical].join('::')
           try{const r=cache.get(key)||await getProteomeChart(props.speciesId,canonical,{scope:props.scope,artifact_version:m.artifact_version,source_hash:m.source_hash},{signal});if(seq!==sequence)return;save(key,r);states[id]={loading:false,error:'',result:r.result,readiness:r.readiness}}
           catch(e){if(seq===sequence&&!signal.aborted)states[id]={loading:false,error:e?.response?.data?.error?.message||e.message,result:null}}
-        }
       }
-      await Promise.allSettled(Array.from({length:4},worker))
+      await visibleChartQueue(ids,load,signal,`[data-testid="proteome-v3"][data-species-id="${CSS.escape(props.speciesId)}"]`)
     }catch(e){if(seq===sequence&&!signal.aborted)error.value=e?.response?.data?.error?.message||e.message}
     finally{if(seq===sequence)loading.value=false}
   }

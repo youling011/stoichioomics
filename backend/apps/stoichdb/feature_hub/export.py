@@ -1,4 +1,8 @@
 from __future__ import annotations
+from backend.apps.common.maintenance import guarded_submission
+from backend.apps.common.task_execution import enqueue as enqueue_executor
+import re
+from backend.apps.common.artifact_locations import locate
 
 import csv
 import hashlib
@@ -20,14 +24,20 @@ from .schemas import FeatureHubError, normalize_omics, normalize_scope
 from .sources import DatasetSourceResolver, iter_rows
 
 
-EXPORT_ROOT = Path(settings.BASE_DIR) / "runtime" / "feature_exports"
+EXPORT_ROOT = Path(getattr(settings, "STOICH_FEATURE_EXPORT_ROOT", Path(settings.BASE_DIR) / "runtime" / "feature_exports"))
 X_MATRIX_FILENAME_TEMPLATE = "X_{omics}.csv"
 METADATA_FILENAME = "metadata.csv"
 FEATURE_DICTIONARY_FILENAME = "feature_dictionary.csv"
 
 
 def _job_dir(export_id: str) -> Path:
-    return EXPORT_ROOT / export_id
+    if not re.fullmatch(r'[A-Za-z0-9_-]{1,160}',export_id):raise FeatureHubError('Invalid export id')
+    return EXPORT_ROOT/export_id
+
+def _read_job_dir(export_id):
+    _job_dir(export_id)
+    found=locate('feature_exports',EXPORT_ROOT,export_id,required=False)
+    return found.target if found else _job_dir(export_id)
 
 
 def _status_path(export_id: str) -> Path:
@@ -39,11 +49,12 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
 
 
 def _set_status(export_id: str, payload: dict[str, Any]) -> None:
-    root = _job_dir(export_id)
-    root.mkdir(parents=True, exist_ok=True)
-    _write_json(_status_path(export_id), payload)
+    root=_job_dir(export_id);root.mkdir(parents=True,exist_ok=True);path=_status_path(export_id)
+    previous=read_json(path) if path.is_file() else {}
+    _write_json(path,{**previous,**payload})
 
 
+@guarded_submission
 def create_export(payload: dict[str, Any]) -> dict[str, Any]:
     species_ids = [str(item).strip() for item in payload.get("species_ids") or [] if str(item).strip()]
     if not species_ids and payload.get("species_id"):
@@ -74,7 +85,10 @@ def create_export(payload: dict[str, Any]) -> dict[str, Any]:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "expires_at": (datetime.now(timezone.utc) + timedelta(days=7)).isoformat(),
     })
-    threading.Thread(target=_run_export_job, args=(request_payload,), daemon=True).start()
+    try:enqueue_executor('feature_export',export_id,request_payload)
+    except Exception as exc:
+        _set_status(export_id,{'status':'failed','error':'executor_start_failed: '+str(exc)})
+        raise
     return export_status(export_id)
 
 
@@ -214,17 +228,22 @@ def _checksums(root: Path) -> str:
 
 
 def export_status(export_id: str) -> dict[str, Any]:
-    path = _status_path(export_id)
-    if not path.exists():
-        return {"export_id": export_id, "status": "missing"}
-    return read_json(path)
+    folder=_read_job_dir(export_id);path=folder/'status.json'
+    if not path.exists():return {'export_id':export_id,'status':'missing'}
+    value=read_json(path)
+    if folder.resolve()!=_job_dir(export_id).resolve() and value.get('status') in ['running','queued']:
+        return {**value,'status':'interrupted','saved_status':value['status'],'reason':'historical_orphan_not_scheduled'}
+    return value
 
 
 def export_download_path(export_id: str) -> Path:
     status = export_status(export_id)
     if status.get("status") != "completed":
         raise FeatureHubError("Export is not completed")
-    path = _job_dir(export_id) / f"{export_id}.zip"
+    path = _read_job_dir(export_id) / f"{export_id}.zip"
     if not path.exists():
         raise FeatureHubError("Export ZIP is missing")
+    if path.parent.resolve()!=_job_dir(export_id).resolve() and getattr(settings,'DEPLOYMENT_INTEGRITY_INDEX',None):
+        from backend.apps.common.artifact_integrity import verify_file
+        verify_file(path,required=True)
     return path

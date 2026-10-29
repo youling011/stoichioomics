@@ -1,3 +1,6 @@
+from backend.apps.common.request_cache import request_scope,once
+from backend.apps.common.stored_charts import get as stored_chart
+from backend.apps.stoichdb.feature_sources import io as feature_io
 from backend.apps.common.host_paths import Path
 from functools import wraps
 import hashlib,json,time
@@ -21,11 +24,12 @@ from .exports import download
 
 def guarded(fn):
     @wraps(fn)
+    @request_scope
     def call(request,*args,**kwargs):
         try:return fn(request,*args,**kwargs)
         except ObjectDoesNotExist:return err('Unknown species or Proteome dataset',404)
         except FileNotFoundError as exc:return err(str(exc),410 if str(exc)=='artifact_expired' else 404)
-        except (ValueError,KeyError,TypeError) as exc:return err(str(exc),400)
+        except (ValueError,KeyError,TypeError) as exc:return err(str(exc),409 if any(k in str(exc) for k in ['stale','mismatch','checksum']) else 400)
     return call
 
 def scope_for(request):
@@ -34,9 +38,12 @@ def scope_for(request):
     return scope
 def enabled():return bool(getattr(settings,'STOICH_PROTEOME_VIZ_V3_ENABLED',True))
 def manifest_stale(m,ds):
+    return once(('proteome',m.get('artifact_version'),m.get('source_hash'),ds.dataset_id),lambda:_manifest_stale(m,ds))
+
+def _manifest_stale(m,ds):
     stale=m.get('dataset_id')!=ds.dataset_id or m.get('implementation_hash')!=store.implementation_hash() or m.get('method_version')!=METHOD_VERSION
     for kind in ['core','full']:
-        raw=getattr(ds,kind+'_csv_path');p=Path(raw) if raw else None;sig={'bytes':p.stat().st_size,'mtime_ns':p.stat().st_mtime_ns} if p and p.is_file() else None
+        raw=getattr(ds,kind+'_csv_path');p=Path(raw) if raw else None;sig={'bytes':feature_io.source_metadata(p).size,'mtime_ns':feature_io.source_metadata(p).mtime_ns} if p and feature_io.source_available(p) else None
         stale=stale or sig!=m.get('source',{}).get('file_signatures',{}).get(kind)
     return stale
 def bounds(request,key,default,lo,hi):
@@ -44,9 +51,12 @@ def bounds(request,key,default,lo,hi):
     if not lo<=value<=hi:raise ValueError(f'{key}_outside_{lo}_{hi}')
     return value
 def target_for(request,species_id):
-    OmicsDataset.objects.only('id').get(species__species_id=species_id,omics_type='proteome')
-    target=store.lookup_version(species_id,scope_for(request),release_id(),request.GET.get('artifact_version',''))
+    ds=OmicsDataset.objects.defer('browse_meta','summary_payload','analysis_payload','searchable_text').get(species__species_id=species_id,omics_type='proteome')
+    target=store.lookup_version(species_id,scope_for(request),release_id(),request.GET.get('artifact_version',''),validator=lambda m,p:not manifest_stale(m,ds))
     manifest=store.read_json(target/'manifest.json')
+    if manifest_stale(manifest,ds):
+        if not request.GET.get('artifact_version'):raise ValueError('source_or_method_stale; select a saved historical version or rebuild')
+        manifest={**manifest,'historical_artifact':True}
     if request.GET.get('source_hash') and request.GET['source_hash']!=manifest['source_hash']:raise ValueError('source_hash_mismatch_refresh_required')
     return target,manifest
 def ready(payload):return ok({'readiness':'ready','result':payload})
@@ -63,9 +73,9 @@ def presentation(payload):
 @api_view(['GET'])
 @guarded
 def manifest_view(request,species_id):
-    scope=scope_for(request);ds=OmicsDataset.objects.get(species__species_id=species_id,omics_type='proteome');release=release_id()
-    available=['core']+(['full'] if ds.full_csv_path and Path(ds.full_csv_path).is_file() else [])
-    pointer=store.published(species_id,scope,release)
+    scope=scope_for(request);ds=OmicsDataset.objects.defer('browse_meta','summary_payload','analysis_payload','searchable_text').get(species__species_id=species_id,omics_type='proteome');release=release_id()
+    available=['core']+(['full'] if ds.full_csv_path and feature_io.source_available(Path(ds.full_csv_path)) else [])
+    pointer=store.published(species_id,scope,release,validator=lambda m,p:not manifest_stale(m,ds))
     base={'enabled':enabled(),'method_version':METHOD_VERSION,'species_id':species_id,'dataset_id':ds.dataset_id,'release_id':release,'primary_scope':scope,'available_scopes':available,'consumer_available':work_requests.consumer_alive()}
     if pointer:
         m=store.read_json(store.path_for(pointer)/'manifest.json')
@@ -85,8 +95,8 @@ def chart_view(request,species_id,chart_id):
     except FileNotFoundError as exc:
         if str(exc)!='not_prepared':raise
         return ok({'readiness':'not_prepared','reason_code':'artifact_not_prepared','result':None})
-    cid=ALIASES.get(chart_id,chart_id);payload=store.read_bundle(str(target))[cid]
-    return ready(presentation({**payload,'requested_chart_id':chart_id}))
+    cid=ALIASES.get(chart_id,chart_id);payload=stored_chart('proteome',str(target),cid)
+    return ready(presentation({**payload,'requested_chart_id':chart_id,'historical_artifact':bool(m.get('historical_artifact')),'availability_note':'Saved historical version; current source or method differs.' if m.get('historical_artifact') else None}))
 
 @api_view(['GET'])
 @guarded
@@ -101,12 +111,22 @@ def fields_view(request,species_id):
     return ok({'readiness':'ready','source_hash':m['source_hash'],'artifact_version':m['artifact_version'],'total_fields':len(allowed),'profiles':[profiles[f] for f in fields]})
 
 def pair_payload(target,m,x,y,k=10,gridsize=42):
+    from backend.apps.common.artifact_locations import file_lock
+    from backend.apps.common.task_execution import heavy_compute_slot
+    key=hashlib.sha256(json.dumps([x,y,k,gridsize],separators=(',',':')).encode()).hexdigest()[:16]
+    folder=store.variant_folder(target)
+    if (folder/(key+'.json')).is_file():return _pair_payload(target,m,x,y,k,gridsize)
+    with file_lock(folder/(key+'.lock'),timeout=600):
+        if (folder/(key+'.json')).is_file():return _pair_payload(target,m,x,y,k,gridsize)
+        with heavy_compute_slot():return _pair_payload(target,m,x,y,k,gridsize)
+
+def _pair_payload(target,m,x,y,k=10,gridsize=42):
     allowed={f['key'] for f in m['fields']}
     if x not in allowed or y not in allowed:raise ValueError('field_not_in_current_scope_allowlist')
     if not 1<=k<=20 or not 8<=gridsize<=100:raise ValueError('invalid_binning_parameters')
     variant=hashlib.sha256(json.dumps([x,y,k,gridsize],separators=(',',':')).encode()).hexdigest()
-    folder=target/'variants';key=variant[:16];json_path=folder/(key+'.json')
-    if json_path.is_file():
+    folder=store.variant_folder(target);key=variant[:16];json_path=folder/(key+'.json')
+    if feature_io.source_available(json_path):
         payload=store.read_json(json_path)
         for field in payload['fields']:field['unit']=next(f['unit'] for f in m['fields'] if f['key']==field['key'])
         return payload
@@ -133,9 +153,9 @@ def members_view(request,species_id):
     target,m=target_for(request,species_id);cid=ALIASES.get(request.GET.get('chart_id','B15'),request.GET.get('chart_id','B15'));bid=request.GET.get('bin_id','');variant=request.GET.get('variant_id','')
     if variant:
         if len(variant)!=64 or any(c not in '0123456789abcdef' for c in variant):raise ValueError('invalid_variant')
-        variant_payload=store.read_json(target/'variants'/(variant[:16]+'.json'))
+        variant_payload=store.read_json(store.variant_folder(target)/(variant[:16]+'.json'))
         if variant_payload['variant_id']!=variant:raise ValueError('variant_identity_conflict')
-        data=variant_payload['data'];array=np.load(target/'variants'/(variant[:16]+'.npz'),allow_pickle=False)
+        data=variant_payload['data'];array=np.load(store.variant_folder(target)/(variant[:16]+'.npz'),allow_pickle=False)
         try:membership=array['members']
         finally:array.close()
     else:
@@ -179,7 +199,7 @@ def export_view(request,species_id):
 @permission_classes([IsAdminUser])
 @guarded
 def prepare_view(request,species_id):
-    scope=scope_for(request);OmicsDataset.objects.get(species__species_id=species_id,omics_type='proteome')
+    scope=scope_for(request);OmicsDataset.objects.defer('browse_meta','summary_payload','analysis_payload','searchable_text').get(species__species_id=species_id,omics_type='proteome')
     cid=request.data.get('chart_id','all')
     if cid not in ['all',*TITLES]:raise ValueError('unknown_chart_id')
     if not work_requests.consumer_alive():return ok({'readiness':'not_prepared','reason_code':'consumer_not_running','operator_action':'Run materialize_proteome_visuals --consume-requests'})
@@ -192,15 +212,19 @@ def prepare_view(request,species_id):
 @guarded
 def ensure_view(request,species_id):
     """Public first-visit preparation of a registered dataset, with no arbitrary job parameters."""
-    scope=scope_for(request);ds=OmicsDataset.objects.get(species__species_id=species_id,omics_type='proteome')
+    scope=scope_for(request);ds=OmicsDataset.objects.defer('browse_meta','summary_payload','analysis_payload','searchable_text').get(species__species_id=species_id,omics_type='proteome')
     if request.data and set(request.data)-{'scope'}:raise ValueError('ensure_accepts_scope_only')
-    if scope=='full' and (not ds.full_csv_path or not Path(ds.full_csv_path).is_file()):return ok({'readiness':'unavailable','reason_code':'full_not_registered'})
+    if scope=='full' and (not ds.full_csv_path or not feature_io.source_available(Path(ds.full_csv_path))):return ok({'readiness':'unavailable','reason_code':'full_not_registered'})
+    pointer=store.published(species_id,scope,release_id(),validator=lambda m,p:not manifest_stale(m,ds))
+    if pointer:
+        published=store.read_json(store.path_for(pointer)/'manifest.json')
+        if not manifest_stale(published,ds):return ok({'readiness':'ready','artifact_version':published['artifact_version'],'source_hash':published['source_hash']})
     if not getattr(settings,'PROTEOME_VIZ_ON_DEMAND',True):return ok({'readiness':'not_prepared','reason_code':'on_demand_disabled'})
     result=work_requests.enqueue(species_id,scope,'all',{})
     if result['readiness']=='ready':
         # A previously verified product was removed or is now stale; the source identity
         # in the request key prevents reuse across releases/implementations/file changes.
-        pointer=store.published(species_id,scope,release_id())
+        pointer=store.published(species_id,scope,release_id(),validator=lambda m,p:not manifest_stale(m,ds))
         if pointer and store.path_for(pointer).is_dir() and not manifest_stale(store.read_json(store.path_for(pointer)/'manifest.json'),ds):return ok(result)
         result['readiness']='queued';store.write_json(work_requests.path_for(result['request_id']),result)
     if not work_requests.ensure_consumer():return ok({'readiness':'not_prepared','reason_code':'consumer_start_failed','request_id':result['request_id']})

@@ -1,8 +1,9 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 from collections import Counter
 from datetime import datetime, timezone
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 
 from django.core.management.base import BaseCommand
 
@@ -88,12 +89,12 @@ class Command(BaseCommand):
                 header = []
                 actual_rows = None
 
-                exists = path.exists()
+                exists = feature_io.source_exists(path)
                 metrics["exists"] = exists
                 if "exists" in checks and not exists:
                     failures.append("path_not_found")
                 if exists:
-                    size = path.stat().st_size
+                    size = feature_io.source_metadata(path).size
                     metrics["actual_size_bytes"] = size
                     if "size" in checks and size <= 0:
                         failures.append("empty_file")

@@ -1,3 +1,5 @@
+from backend.apps.common.artifact_locations import lookup_publication,pointer_target,read_roots,same_source_signatures,budget_cache
+from backend.apps.stoichdb.feature_sources.compatibility import implementation_bytes
 from pathlib import Path
 from functools import lru_cache
 import os,json,hashlib,uuid,gzip,time,re
@@ -28,26 +30,28 @@ def write(p,data):
     if p.suffix=='.gz':content=gzip.compress(content,compresslevel=3)
     tmp.write_bytes(content);permission_retry(lambda:os.replace(tmp,p))
 def read(p):
-    p=Path(p);b=permission_retry(p.read_bytes);return json.loads(gzip.decompress(b) if p.suffix=='.gz' else b)
+    p=Path(p)
+    from backend.apps.common.artifact_integrity import verify_file
+    from backend.apps.common.request_timing import stage
+    with stage('integrity'):verify_file(p)
+    with stage('artifact_io'):b=permission_retry(p.read_bytes)
+    with stage('inflate'):decoded=gzip.decompress(b) if p.suffix=='.gz' else b
+    with stage('decode'):return json.loads(decoded)
 @lru_cache(maxsize=1)
 def implementation_hash():
     h=hashlib.sha256()
     for n in ['source','contracts','statistics','mapping','analysis','correlations','coordinates','cohorts','builders']:
-        h.update(Path(__file__).with_name(n+'.py').read_bytes())
+        h.update(implementation_bytes(Path(__file__).with_name(n+'.py')))
     h.update(Path(__file__).with_name('figure_contracts.json').read_bytes());return h.hexdigest()
 def home(sid):return root()/'species'/component(sid)
-def lookup(sid,version=''):
-    pointer=home(sid)/'published.json'
-    if not pointer.exists():raise FileNotFoundError('not_prepared')
-    p=read(pointer)
-    if version and version!=p['artifact_version']:
-        if not re.fullmatch('[a-f0-9]{20}',version):raise ValueError('invalid_artifact_version')
-        p={'artifact_version':version}
-    target=home(sid)/'versions'/p['artifact_version']
-    if not target.is_dir():raise FileNotFoundError('artifact_expired')
-    return target
+def lookup(sid,version='',validator=None):
+    if version and not re.fullmatch('[a-f0-9]{20}',version):raise ValueError('invalid_artifact_version')
+    relative='species/'+component(sid)+'/published.json'
+    return pointer_target('integration',root(),lookup_publication('integration',root(),relative,read,version,validator=validator))
 def table(target,key):
     p=Path(target)/'tables'/(key+'.parquet')
+    from backend.apps.common.artifact_integrity import verify_file
+    if p.is_file():verify_file(p)
     return pd.read_parquet(p) if p.is_file() else pd.DataFrame()
 def persist(sid,built):
     version=uuid.uuid4().hex[:20];stage=root()/'staging'/version;stage.mkdir(parents=True)
@@ -119,16 +123,24 @@ def compatible_implementation(manifest,target):
     # Explicit, one-fix compatibility for a presentation ordering edge case.
     # Future numerical/source changes still invalidate every old publication.
     policy=read(Path(__file__).with_name('implementation_compatibility.json'))
-    return current==policy['current'] and manifest['implementation_hash']==policy['accepted_prior'] and read(Path(target)/'audit.json')['passed']
+    if current==policy['current'] and manifest['implementation_hash']==policy['accepted_prior'] and read(Path(target)/'audit.json')['passed']:return True
+    receipt=read(Path(__file__).with_name('deployment_io_compatibility.json'))
+    return (receipt.get('format')=='exact-integration-io-chain-v1'
+        and hashlib.sha256(Path(__file__).with_name('implementation_compatibility.json').read_bytes()).hexdigest()==receipt['prior_policy_sha256']
+        and current==receipt['current'] and manifest['implementation_hash'] in receipt['accepted_prior']
+        and read(Path(target)/'audit.json')['passed'])
 
 def stale(sid,target):
     from .source import signatures
     m=read(Path(target)/'manifest.json');s=read(Path(target)/'source_audit.json')
-    return not compatible_implementation(m,target) or signatures(sid)!=s['signatures']
+    return not compatible_implementation(m,target) or not same_source_signatures(s['signatures'],signatures(sid))
 
-@lru_cache(maxsize=2)
+@budget_cache('')
+def _profile_file(filename):return read(Path(filename))
+
 def profile_bundle(target,omics,kind='fields'):
-    return read(Path(target)/kind/(omics+'.json.gz'))
+    return _profile_file(str(Path(target)/kind/(omics+'.json.gz')))
+profile_bundle.cache_clear=_profile_file.cache_clear
 def field_profile(target,omics,field):
     if (Path(target)/'fields'/(omics+'.json.gz')).exists():return next(r for r in profile_bundle(str(target),omics) if r['field']==field)
     return read(Path(target)/'fields'/omics/(component(field)+'.json.gz'))

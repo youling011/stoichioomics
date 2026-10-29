@@ -1,9 +1,10 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import hashlib
 import math
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 from django.core.management.base import BaseCommand
@@ -49,10 +50,10 @@ def _source_signature(path_text: str, fast_token: str = "") -> str:
         return hashlib.sha256(f"{path_text}|{fast_token}".encode("utf-8", errors="ignore")).hexdigest()
     path = Path(path_text)
     try:
-        stat = path.stat()
+        stat = feature_io.source_metadata(path)
     except Exception:
         return hashlib.sha256(path_text.encode("utf-8", errors="ignore")).hexdigest()
-    token = f"{path.resolve()}|{stat.st_size}|{stat.st_mtime_ns}"
+    token = f"{path.resolve()}|{stat.size}|{stat.mtime_ns}"
     return hashlib.sha256(token.encode("utf-8", errors="ignore")).hexdigest()
 
 
@@ -106,10 +107,10 @@ def _from_summary_payload(dataset: OmicsDataset, field_rows: list[dict[str, Any]
 
 def _read_header(path_text: str) -> set[str]:
     path = Path(str(path_text or ""))
-    if not path.exists():
+    if not feature_io.source_exists(path):
         return set()
     try:
-        with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as handle:
             return set(next(csv.reader(handle), []))
     except Exception:
         return set()
@@ -166,7 +167,7 @@ def _from_missingness_rows(missingness: Any, row_count: int, field_rows: list[di
 
 def _scan_core_csv(dataset: OmicsDataset, field_rows: list[dict[str, Any]], max_rows: int = 0) -> dict[str, Any] | None:
     path = Path(str(dataset.core_csv_path or ""))
-    if not path.exists():
+    if not feature_io.source_exists(path):
         return None
     field_by_name = {str(row.get("field") or ""): row for row in field_rows if row.get("field")}
     valid_cells = 0
@@ -174,7 +175,7 @@ def _scan_core_csv(dataset: OmicsDataset, field_rows: list[dict[str, Any]], max_
     missing_cells = 0
     observed_fields: set[str] = set()
     scanned_rows = 0
-    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
         header = set(reader.fieldnames or [])
         active_fields = []

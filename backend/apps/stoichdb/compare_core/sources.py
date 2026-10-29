@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import gzip
@@ -11,9 +12,9 @@ from .contracts import CompareError, digest
 
 
 def signature(path: Path) -> dict:
-    stat = path.stat()
-    return {'path': str(path.resolve()), 'size': stat.st_size, 'mtime_ns': stat.st_mtime_ns,
-            'file_id': stat.st_ino}
+    stat = feature_io.source_metadata(path)
+    return {'path': str(path.resolve()), 'size': stat.size, 'mtime_ns': stat.mtime_ns,
+            'file_id': stat.ino}
 
 
 def resolve(species_id: str, omics: str):
@@ -24,7 +25,7 @@ def resolve(species_id: str, omics: str):
         raise CompareError(f'No readable Core source for {species_id}/{omics}: {exc}', 'source_unavailable', 404) from exc
     # Scope is fixed: no full fallback and no legacy fingerprint substitution.
     primary = {'genome': 'gene_id', 'transcriptome': 'transcript_id', 'proteome': 'protein_id'}[omics]
-    opener = gzip.open if source.path.suffix.lower() == '.gz' else open
+    opener = gzip.open if source.path.suffix.lower() == '.gz' else feature_io.open_source
     with opener(source.path, 'rt', encoding='utf-8-sig', newline='') as handle:
         header = next(csv.reader(handle), [])
     if primary not in header:
@@ -56,7 +57,7 @@ class HashReader(io.RawIOBase):
 
 
 def hashed_text(path):
-    reader = HashReader(Path(path).open('rb'))
+    reader = HashReader(feature_io.open_source(Path(path), 'rb'))
     buffer = io.BufferedReader(reader)
     data = gzip.GzipFile(fileobj=buffer) if str(path).lower().endswith('.gz') else buffer
     return io.TextIOWrapper(data, encoding='utf-8-sig', newline=''), reader

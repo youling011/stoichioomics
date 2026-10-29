@@ -1,8 +1,9 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 from django.core.management.base import BaseCommand, CommandError
@@ -102,7 +103,9 @@ class Command(BaseCommand):
                 "fallback_events": resolved.get("fallback_events") or [],
             }
             runtime_smoke.append(item)
-            if len(rows) == 0 or resolved.get("format") != "parquet":
+            logical = feature_io.logical_source(resolved.get("path")) if resolved.get("path") else None
+            verified_logical = logical is not None and logical.record["row_count"] > 0
+            if len(rows) == 0 or (resolved.get("format") != "parquet" and not verified_logical):
                 smoke_failures.append({**item, "reason": "parquet_smoke_failed"})
 
         required_gates = {

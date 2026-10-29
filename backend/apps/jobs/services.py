@@ -1,4 +1,6 @@
 from __future__ import annotations
+from backend.apps.common.maintenance import guarded_submission
+from backend.apps.common.task_execution import enqueue as enqueue_executor
 from backend.apps.common.host_paths import Path
 from typing import Dict, Any
 import hashlib
@@ -15,13 +17,20 @@ from django.db import transaction
 from backend.apps.jobs.models import AnalysisJob, JobFile
 from backend.portal.jobs import ensure_job_dirs, update_job_status
 from backend.portal.config_builder import build_full_pipeline_config, build_preanalysis_config
-from backend.portal.pipeline_runner import run_full_pipeline_from_config, run_preanalysis_from_config
 from backend.apps.registry.services import refresh_registry_cache
 from backend.analysis_engine.hvg_optional import optional_dependency_report
 from backend.apps.jobs.autoconfig import build_job_auto_config
 from backend.apps.common.reproducibility import utc_now_iso, write_reproducibility_manifest
 from backend.apps.common.upload_security import store_uploaded_file
 from backend.apps.jobs.contracts import write_workflow_contracts
+
+def run_full_pipeline_from_config(*args,**kwargs):
+    from backend.portal.pipeline_runner import run_full_pipeline_from_config as execute
+    return execute(*args,**kwargs)
+
+def run_preanalysis_from_config(*args,**kwargs):
+    from backend.portal.pipeline_runner import run_preanalysis_from_config as execute
+    return execute(*args,**kwargs)
 
 
 def _token_hash(token: str) -> str:
@@ -69,6 +78,7 @@ def read_job_log(job: AnalysisJob, tail: int = 200) -> Dict[str, Any]:
     return {'log_path': str(path), 'events': events}
 
 
+@guarded_submission
 def create_job(name: str = '', module_name: str = 'hvg', metadata_json: Dict[str, Any] | None = None) -> AnalysisJob:
     job_id = f'job_{uuid.uuid4().hex[:8]}'
     ws_manifest = ensure_job_dirs(settings.WORKSPACE_ROOT, job_id=job_id)
@@ -355,6 +365,7 @@ def _run_job_sync(job_id: str):
         raise
 
 
+@guarded_submission
 def run_job_async(job: AnalysisJob):
     import yaml
     from backend.analysis_engine.hvg_research.config import validate_config
@@ -371,17 +382,11 @@ def run_job_async(job: AnalysisJob):
             raise RunConflict('This job already has an active execution')
         claimed.status = AnalysisJob.Status.RUNNING
         claimed.save(update_fields=['status','updated_at'])
-    append_job_log(claimed, 'job_queued', {'executor':'in_process_thread','atomic_claim':True})
-    def execute():
-        close_old_connections()
-        try:_run_job_sync(claimed.job_id)
-        except Exception:pass  # _run_job_sync persists the full failure to the job and log.
-        finally:close_old_connections()
-    thread=threading.Thread(target=execute,daemon=True,name='hvg-job-'+claimed.job_id)
-    try:thread.start()
+    append_job_log(claimed,'job_queued',{'executor':'durable_subprocess','atomic_claim':True})
+    try:return enqueue_executor('analysis_job',claimed.job_id,{'config_path':claimed.config_path})
     except Exception as exc:
         claimed.status=AnalysisJob.Status.FAILED;claimed.error_message=str(exc);claimed.save(update_fields=['status','error_message','updated_at']);raise
-    return thread
+
 
 
 def request_job_cancel(job: AnalysisJob) -> Dict[str, Any]:

@@ -1,3 +1,5 @@
+from backend.apps.common.artifact_locations import lookup_publication,pointer_target,read_roots,budget_cache,derivative_root
+from backend.apps.stoichdb.feature_sources.compatibility import implementation_bytes
 from pathlib import Path
 from functools import lru_cache
 from threading import RLock
@@ -13,11 +15,11 @@ def variant_path(target,key,suffix):
     if len(key)!=64 or any(c not in '0123456789abcdef' for c in key):raise ValueError('invalid_variant_id')
     # Full identity stays in the payload. Compact surrogates keep atomic temporary
     # names below Windows MAX_PATH even inside a versioned source directory.
-    return Path(target)/'variants'/(key[:16]+suffix)
+    return derivative_root('sequence',root(),target)/(key[:16]+suffix)
 @lru_cache(maxsize=1)
 def implementation_hash():
     h=hashlib.sha256()
-    for f in ['source.py','contracts.py','composition.py','statistics.py','ordination.py','genome.py','transcriptome.py','builders.py','figure_contracts.json']:h.update(Path(__file__).with_name(f).read_bytes())
+    for f in ['source.py','contracts.py','composition.py','statistics.py','ordination.py','genome.py','transcriptome.py','builders.py','figure_contracts.json']:h.update(implementation_bytes(Path(__file__).with_name(f)))
     return h.hexdigest()
 def implementation_hash_for(omics,scope):
     base=implementation_hash()
@@ -25,22 +27,12 @@ def implementation_hash_for(omics,scope):
     if omics=='genome' and scope=='full':return hashlib.sha256((base+hashlib.sha256(Path(__file__).with_name('full_scope.py').read_bytes()).hexdigest()).encode()).hexdigest()
     return base
 def pointer_path(sid,m,scope,release):return root()/'published'/component(release)/m/(component(sid)+'_'+scope+'.json')
-def path_for(p):
-    target=(root()/p['path']).resolve()
-    if not target.is_relative_to(root().resolve()):raise ValueError('invalid_artifact_path')
-    return target
-def lookup(sid,m,scope,release,version=''):
-    p=pointer_path(sid,m,scope,release)
-    if not p.is_file():raise FileNotFoundError('not_prepared')
-    pointer=read_json(p)
-    if version and version!=pointer['artifact_version']:
-        if not re.fullmatch(r'[A-Za-z0-9_]+',version):raise ValueError('invalid_artifact_version')
-        p=root()/'versions'/component(sid)/m/scope/(version+'.json')
-        if not p.is_file():raise FileNotFoundError('artifact_expired')
-        pointer=read_json(p)
-    target=path_for(pointer)
-    if not target.is_dir():raise FileNotFoundError('artifact_expired')
-    return target
+def path_for(p):return pointer_target('sequence',root(),p)
+def lookup(sid,m,scope,release,version='',validator=None):
+    if version and not re.fullmatch(r'[A-Za-z0-9_]+',version):raise ValueError('invalid_artifact_version')
+    relative='published/'+component(release)+'/'+m+'/'+component(sid)+'_'+scope+'.json'
+    index='versions/'+component(sid)+'/'+m+'/'+scope+'/'+version+'.json' if version else None
+    return path_for(lookup_publication('sequence',root(),relative,read_json,version,index,validator))
 _lock=RLock()
 def serialized(fn):
     def call(*args):
@@ -48,21 +40,21 @@ def serialized(fn):
     call.cache_clear=fn.cache_clear
     return call
 @serialized
-@lru_cache(maxsize=1)
+@budget_cache('figures.json.gz')
 def bundle(target):return read_json(Path(target)/'figures.json.gz')
 @serialized
-@lru_cache(maxsize=1)
+@budget_cache('columns.npz')
 def matrix(target):
     with np.load(Path(target)/'columns.npz',allow_pickle=False) as f:return {k:f[k] for k in f.files}
 @serialized
-@lru_cache(maxsize=1)
+@budget_cache('analysis.npz')
 def arrays(target):
     with np.load(Path(target)/'analysis.npz',allow_pickle=False) as f:return {k:f[k] for k in f.files}
 @serialized
-@lru_cache(maxsize=1)
+@budget_cache('metadata.json.gz')
 def metadata(target):return read_json(Path(target)/'metadata.json.gz')
 @serialized
-@lru_cache(maxsize=1)
+@budget_cache('profiles.json.gz')
 def profiles(target):return read_json(Path(target)/'profiles.json.gz')
 def clear():
     for f in [bundle,matrix,arrays,metadata,profiles]:f.cache_clear()
@@ -105,3 +97,5 @@ def publish(target):
 def stale(m,ds):
     from .source import signatures
     return m.get('implementation_hash')!=implementation_hash_for(m['omics'],m['primary_scope']) or m['dataset_id']!=ds.dataset.dataset_id or m['method_version']!=METHOD_VERSION or signatures(ds)!=m['source']['file_signatures']
+
+def variant_folder(target):return derivative_root('sequence',root(),target)

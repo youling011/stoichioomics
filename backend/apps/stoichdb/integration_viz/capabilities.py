@@ -3,6 +3,7 @@
 No distributions, correlations, scores, thresholds, PCA or species artifacts are
 generated here. All primary IDs and necessary numeric columns are read in full.
 """
+from backend.apps.stoichdb.feature_sources import io as feature_io
 from pathlib import Path
 import gc
 import numpy as np

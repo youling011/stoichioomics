@@ -1,4 +1,5 @@
 """Species/release-scoped adapters; no annotation writes and no per-feature ORM."""
+from backend.apps.stoichdb.feature_sources import io as feature_io
 from pathlib import Path
 from contextlib import contextmanager
 import json,shutil
@@ -23,7 +24,7 @@ def freeze_sources(species_id,release_id=None):
   # Source file hashes protect resume even if mutable storage metadata is unchanged.
   for row in data:
    p=Path(row.get('core_csv_path') or '')
-   row['actual_sha256']=digest(p) if p.is_file() else None
+   row['actual_sha256']=feature_io.source_sha256(p) if feature_io.source_available(p) else None
   selected=releases[0] if releases else None
   annotation_digest=content_hash({'go':list(GOAnnotation.objects.filter(species_id_text=species_id,release__release_id=selected).order_by('id').values('gene_id','transcript_id','protein_id','go_id','go_namespace','go_is_obsolete')) if selected else [],'kegg':list(KEGGAnnotationLink.objects.filter(species_id_text=species_id,release__release_id=selected).order_by('id').values('gene_id','transcript_id','protein_id','annotation_id','annotation_type')) if selected else []})
  return {'species_id':species_id,'annotation_release_id':selected,'annotation_content_hash':annotation_digest,'datasets':data,'schemas':schemas}
@@ -65,7 +66,7 @@ def core_snapshot(root,species_id,config):
  root=Path(root);registry=Path(settings.BASE_DIR)/'shared/schemas/stoich_ml_feature_registry_v1.json';snapshot=root/'core/registry_snapshot.json';snapshot.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(registry,snapshot)
  with readonly_source():
   result=build_hvg_multiomics_feature_context(baseline_csv=root/'labels/baseline.csv',output_dir=root/'core',species_id=species_id,requested_omics=config['core']['omics'],config={'registry_snapshot_path':str(snapshot),'comparison_min_block_mapped_genes':config['core']['min_group_n']*2,'comparison_min_block_match_rate':0.0,'comparison_source_chunk_size':50000,'comparison_require_unique_mapping':True})
- L=pd.read_parquet(root/'labels/hvg_labels.parquet');path=result.get('comparison_input_csv');x=pd.read_csv(path,low_memory=False) if path and Path(path).is_file() else L.copy()
+ L=pd.read_parquet(root/'labels/hvg_labels.parquet');path=result.get('comparison_input_csv');x=feature_io.read_csv(path,low_memory=False) if path and feature_io.source_available(Path(path)) else L.copy()
  if x.gene_id.tolist()!=L.gene_id.tolist():raise ValueError('Core context changed frozen U order')
  atomic_frame(root/'core/context.parquet',x);atomic_json(root/'core/context_result.json',result)
  atomic_json(root/'core/isoform_policy.json',{'policy':'existing source canonical representative else stable source representative; ambiguity retained by existing mapper','cross_omics_isoform_equivalence':'not_proven','derived_cross_isoform_ratios_enabled':False,'mapping_audit':'hvg_multiomics_mapping_table.csv'})

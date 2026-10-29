@@ -7,6 +7,10 @@ relative to genome/transcriptome feature entities.
 """
 
 from __future__ import annotations
+import sys as _corefull_sys
+from pathlib import Path as _CoreFullPath
+_corefull_sys.path.insert(0, str(_CoreFullPath(__file__).resolve().parents[1]))
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import argparse
 import csv
@@ -14,7 +18,7 @@ import json
 import re
 import time
 from collections import Counter
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Iterable
 
 
@@ -141,7 +145,7 @@ def whitelist_path(group: str) -> Path:
 
 def load_whitelist(group: str) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
-    with whitelist_path(group).open("r", encoding="utf-8-sig", newline="") as fh:
+    with feature_io.open_source(whitelist_path(group), "r", encoding="utf-8-sig", newline="") as fh:
         for row in csv.DictReader(fh):
             species_id = clean(row.get("species"))
             if not species_id:
@@ -157,12 +161,12 @@ def feature_files(group: str, species_id: str) -> dict[str, Path | None]:
     genome = root / "基因组" / f"{species_id}.genome_features.core.csv"
     transcriptome = root / "转录组" / f"{species_id}.transcriptome.core.v5.csv"
     proteome = root / "蛋白质组" / species_id / f"{species_id}.proteome_features.core.csv"
-    if not proteome.exists():
+    if not feature_io.source_available(proteome):
         proteome = root / "蛋白质组" / species_id / f"{species_id}.proteome_features.full.csv"
     return {
-        "genome": genome if genome.exists() else None,
-        "transcriptome": transcriptome if transcriptome.exists() else None,
-        "proteome": proteome if proteome.exists() else None,
+        "genome": genome if feature_io.source_available(genome) else None,
+        "transcriptome": transcriptome if feature_io.source_available(transcriptome) else None,
+        "proteome": proteome if feature_io.source_available(proteome) else None,
     }
 
 
@@ -175,7 +179,7 @@ def read_genome(path: Path | None) -> tuple[set[str], set[str]]:
     coding: set[str] = set()
     if not path:
         return genes, coding
-    with path.open("r", encoding="utf-8-sig", newline="") as fh:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as fh:
         reader = csv.reader(fh)
         header = next(reader, [])
         gene_idx = header_index(header, ("gene_id", "source_gene_id"))
@@ -197,7 +201,7 @@ def read_transcriptome(path: Path | None) -> tuple[set[str], set[str]]:
     genes: set[str] = set()
     if not path:
         return transcripts, genes
-    with path.open("r", encoding="utf-8-sig", newline="") as fh:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as fh:
         reader = csv.reader(fh)
         header = next(reader, [])
         transcript_idx = header_index(header, ("transcript_id", "source_transcript_id"))
@@ -225,7 +229,7 @@ def read_proteome(path: Path | None) -> dict[str, object]:
     counters: Counter[str] = Counter()
     if not path:
         return {"genes": genes, "transcripts": transcripts, "proteins": proteins, "counters": counters}
-    with path.open("r", encoding="utf-8-sig", newline="") as fh:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as fh:
         reader = csv.reader(fh)
         header = next(reader, [])
         protein_idx = header_index(header, ("protein_id", "ensembl_protein_id", "source_protein_id"))

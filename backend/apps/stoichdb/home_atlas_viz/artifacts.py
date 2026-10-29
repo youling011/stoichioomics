@@ -1,4 +1,6 @@
 from __future__ import annotations
+from backend.apps.common.artifact_locations import locate,read_roots,contained,budget_cache
+from backend.apps.stoichdb.feature_sources import io as feature_io
 import json
 import os
 from functools import lru_cache
@@ -19,31 +21,33 @@ def resource(name):
 
 
 def manifest(root=None):
-    path = artifact_root(root) / "manifest.json"
-    if not path.is_file():
-        return {"version": "not_built", "cohort": resource("home_atlas_cohort_v1.json"), "entries": {}}
-    return json.loads(path.read_text(encoding="utf-8"))
+    base=artifact_root(root)
+    location=locate('home_atlas',base,'manifest.json',required=False) if root is None else None
+    path=location.target if location else base/'manifest.json'
+    if not feature_io.source_available(path):return {'version':'not_built','cohort':resource('home_atlas_cohort_v1.json'),'entries':{}}
+    return json.loads(path.read_text(encoding='utf-8'))
 
 
 def signature(root=None):
     """Only stat source files; HTTP requests never read raw source CSV contents."""
     base = artifact_root(root)
-    path = base / "manifest.json"
-    if not path.is_file():
+    location=locate("home_atlas",base,"manifest.json",required=False) if root is None else None
+    path=location.target if location else base / "manifest.json"
+    if not feature_io.source_available(path):
         return "not_built"
     try:
         state = manifest(root)
-        parts = [path.stat().st_mtime_ns, path.stat().st_size]
+        parts = [feature_io.source_metadata(path).mtime_ns, feature_io.source_metadata(path).size]
         for key, entry in sorted(state["entries"].items()):
             try:
-                stat = Path(entry["source_path"]).stat()
-                parts.append([key, stat.st_size, stat.st_mtime_ns])
+                stat = feature_io.source_metadata(Path(entry["source_path"]))
+                parts.append([key, stat.size, stat.mtime_ns])
             except OSError:
                 parts.append([key, "unreadable"])
         return digest(parts)
     except (OSError, ValueError, KeyError):
         try:
-            return digest(["unreadable_manifest", path.stat().st_size, path.stat().st_mtime_ns])
+            return digest(["unreadable_manifest", feature_io.source_metadata(path).size, feature_io.source_metadata(path).mtime_ns])
         except OSError:
             return "unavailable"
 
@@ -59,11 +63,11 @@ def atomic_json(path, value):
             os.fsync(handle.fileno())
         os.replace(temp, path)
     finally:
-        if temp.exists():
+        if feature_io.source_exists(temp):
             temp.unlink()
 
 
-@lru_cache(maxsize=256)
+@budget_cache('')
 def _read_object(filename, expected_hash):
     path = Path(filename)
     raw = path.read_bytes()
@@ -73,8 +77,10 @@ def _read_object(filename, expected_hash):
     return json.loads(raw)
 
 
-def diagnostic(entry, root=None):
-    return _read_object(str(artifact_root(root) / "diagnostics/objects" / entry["object_file"]), entry["object_sha256"])
+def diagnostic(entry,root=None):
+    relative='diagnostics/objects/'+entry['object_file']
+    p=contained(artifact_root(root),relative) if root is not None else locate('home_atlas',artifact_root(),relative).target
+    return _read_object(str(p),entry['object_sha256'])
 
 
 def source_state(entry, dataset, schema_digest):
@@ -90,9 +96,9 @@ def source_state(entry, dataset, schema_digest):
     if str(dataset["status"]).lower() != "ready":
         return "unavailable", "registered_dataset_not_ready"
     try:
-        stat = Path(entry["source_path"]).stat()
+        stat = feature_io.source_metadata(Path(entry["source_path"]))
     except OSError:
         return "unavailable", "source_not_readable"
-    if stat.st_size != entry["source_bytes"] or stat.st_mtime_ns != entry["source_mtime_ns"]:
+    if stat.size != entry["source_bytes"] or stat.mtime_ns != entry["source_mtime_ns"]:
         return "stale", "source_signature_changed"
     return "ready", None

@@ -1,4 +1,8 @@
 from __future__ import annotations
+import sys as _corefull_sys
+from pathlib import Path as _CoreFullPath
+_corefull_sys.path.insert(0, str(_CoreFullPath(__file__).resolve().parents[1]))
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import argparse
 import json
@@ -7,7 +11,7 @@ import os
 import re
 import shutil
 from dataclasses import dataclass
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any, Callable
 
 import numpy as np
@@ -192,7 +196,7 @@ def parse_filename(path: Path) -> DatasetRef:
 def scan_bundle(source_root: Path) -> list[DatasetRef]:
     refs = []
     seen_keys: dict[tuple[str, str, str], Path] = {}
-    for path in sorted(source_root.rglob('*.csv')):
+    for path in sorted(feature_io.logical_rglob(source_root, '*.csv')):
         lower = path.name.lower()
         if '.genome_features' not in lower and '.transcriptome.' not in lower and '.proteome_features' not in lower:
             continue
@@ -210,11 +214,11 @@ def scan_bundle(source_root: Path) -> list[DatasetRef]:
 
 
 def read_csv(path: Path) -> pd.DataFrame:
-    return pd.read_csv(path, low_memory=False)
+    return feature_io.read_csv(path, low_memory=False)
 
 
 def read_csv_sample(path: Path, nrows: int = 200) -> pd.DataFrame:
-    return pd.read_csv(path, low_memory=False, nrows=nrows)
+    return feature_io.read_csv(path, low_memory=False, nrows=nrows)
 
 
 def write_json(path: Path, payload: Any) -> None:
@@ -269,17 +273,18 @@ def numeric_columns(df: pd.DataFrame) -> list[str]:
 
 
 def materialize_file(src: Path, dst: Path) -> None:
-    if dst.exists():
+    if feature_io.logical_source(src) is not None:
+        raise ValueError('Logical Core source mirrors are prohibited; retain its alias')
+    if feature_io.source_exists(dst):
         dst.unlink()
-    try:
-        os.link(src, dst)
-    except OSError:
-        shutil.copy2(src, dst)
+    # A new hard link changes the Full source inode change token on Linux.
+    # Copy the retained Full product without changing its source identity.
+    shutil.copy2(src, dst)
 
 
 def count_csv_rows(path: Path) -> int:
     newline_count = 0
-    with path.open('rb') as handle:
+    with feature_io.open_source(path, 'rb') as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b''):
             newline_count += chunk.count(b'\n')
     return max(newline_count - 1, 0)
@@ -297,7 +302,7 @@ def make_species_metadata(refs: list[DatasetRef], species_tables: dict[str, dict
         short = species_ref.short_name if species_ref else short_name(display_name)
         genome_full_path = omics_tables.get('genome', {}).get('core') or omics_tables.get('genome', {}).get('full')
         genome_size_mb = None
-        if genome_full_path and genome_full_path.exists():
+        if genome_full_path and feature_io.source_exists(genome_full_path):
             genome_df = read_csv(genome_full_path)
             seq_col = next((c for c in ['seqid', 'seq_region', 'chromosome'] if c in genome_df.columns), None)
             end_col = next((c for c in ['end_1', 'end', 'stop', 'gene_end'] if c in genome_df.columns), None)
@@ -326,7 +331,7 @@ def copy_stage0(refs: list[DatasetRef], stage0_dir: Path, materialize_sources: b
     inventory = []
     for ref in refs:
         dst = stage0_dir / ref.source_name
-        if materialize_sources:
+        if materialize_sources and feature_io.logical_source(ref.source_path) is None:
             materialize_file(ref.source_path, dst)
         else:
             dst = ref.source_path
@@ -337,8 +342,8 @@ def copy_stage0(refs: list[DatasetRef], stage0_dir: Path, materialize_sources: b
             'display_name': ref.display_name,
             'omics': ref.omics,
             'table_role': ref.table_role,
-            'copied_path': str(dst if not materialize_sources else dst.relative_to(stage0_dir.parent)),
-            'file_size_bytes': dst.stat().st_size,
+            'copied_path': str(dst.relative_to(stage0_dir.parent) if dst.is_relative_to(stage0_dir.parent) else dst),
+            'file_size_bytes': feature_io.source_metadata(dst).size,
         })
     df = pd.DataFrame(inventory).sort_values(['species_id', 'omics', 'table_role'])
     df.to_csv(stage0_dir / 'source_inventory.csv', index=False)
@@ -367,7 +372,7 @@ def build_stage1_standardized(
         dst_dir = registry_dir / ref.species_id / ref.omics
         ensure_dir(dst_dir)
         dst = dst_dir / f'{ref.table_role}.csv'
-        if materialize_sources:
+        if materialize_sources and feature_io.logical_source(ref.source_path) is None:
             materialize_file(ref.source_path, dst)
             table_path = dst
             relative_path = str(dst.relative_to(stage1_dir))
@@ -569,13 +574,17 @@ def build_stage3_parquet(species_tables: dict[str, dict[str, dict[str, Path]]], 
             for role, csv_path in table_paths.items():
                 df = read_csv(csv_path)
                 pq_path = out_dir / f'{role}.parquet'
-                df.to_parquet(pq_path, index=False)
+                logical = feature_io.logical_source(csv_path)
+                if logical is None:
+                    df.to_parquet(pq_path, index=False)
                 manifest_rows.append({
                     'species_id': species_id,
                     'omics': omics,
                     'table_role': role,
                     'csv_path': str(csv_path),
-                    'parquet_path': str(pq_path.relative_to(stage3_dir)),
+                    'parquet_path': str(pq_path.relative_to(stage3_dir)) if logical is None else '',
+                    'representation': 'physical_parquet' if logical is None else 'logical_core',
+                    'full_dependency': str(logical.full_path) if logical else '',
                     'row_count': int(len(df)),
                     'column_count': int(len(df.columns)),
                 })
@@ -622,7 +631,7 @@ def build_stage4_catalog(metadata: pd.DataFrame, species_tables: dict[str, dict[
                     'dataset_id': f'{species_id}__{omics}',
                     'file_type': role,
                     'path': str(path),
-                    'size_bytes': path.stat().st_size,
+                    'size_bytes': feature_io.source_metadata(path).size,
                 })
             if omics == 'genome' and core_df is not None:
                 cols = [c for c in ['species_id', 'gene_id', 'gene_name', 'locus_tag', 'biotype', 'seqid', 'start_1', 'end_1', 'strand'] if c in core_df.columns]
@@ -1433,7 +1442,7 @@ def build_stage5_artifacts(
             first_core_cols: list[str] = []
             first_aux_cols: list[str] = []
             for scope_name, source_path in scope_sources.items():
-                if not source_path or not Path(source_path).exists():
+                if not source_path or not feature_io.source_exists(Path(source_path)):
                     continue
                 source_df = read_csv(source_path).copy()
                 if omics == 'genome':
@@ -1579,9 +1588,9 @@ def build_stage5_artifacts(
 
 def build_stage6_registry(metadata: pd.DataFrame, stage5_dir: Path, stage6_dir: Path, platform_data_root: Path | None = None) -> None:
     ensure_dir(stage6_dir)
-    artifacts = pd.read_csv(stage5_dir / 'analysis_artifact.csv')
-    fingerprints = pd.read_csv(stage5_dir / 'compare' / 'species_fingerprints.csv')
-    compare_pairs = pd.read_csv(stage5_dir / 'compare' / 'compare_pairs.csv') if (stage5_dir / 'compare' / 'compare_pairs.csv').exists() else pd.DataFrame(columns=['source', 'target', 'distance'])
+    artifacts = feature_io.read_csv(stage5_dir / 'analysis_artifact.csv')
+    fingerprints = feature_io.read_csv(stage5_dir / 'compare' / 'species_fingerprints.csv')
+    compare_pairs = feature_io.read_csv(stage5_dir / 'compare' / 'compare_pairs.csv') if feature_io.source_exists(stage5_dir / 'compare' / 'compare_pairs.csv') else pd.DataFrame(columns=['source', 'target', 'distance'])
 
     species_rows = []
     omics_meta_out = json.loads(json.dumps(OMICS_META))
@@ -1594,7 +1603,7 @@ def build_stage6_registry(metadata: pd.DataFrame, stage5_dir: Path, stage6_dir: 
         omics_index = {}
         for omics in ['genome', 'transcriptome', 'proteome']:
             src_dir = species_art_dir / omics
-            if not src_dir.exists():
+            if not feature_io.source_exists(src_dir):
                 continue
             dst_dir = species_out / omics
             ensure_dir(dst_dir)
@@ -1605,9 +1614,9 @@ def build_stage6_registry(metadata: pd.DataFrame, stage5_dir: Path, stage6_dir: 
                 rows_path = src_dir / f'rows_for_platform.{scope_name}.csv'
                 summary_path = src_dir / f'summary.{scope_name}.json'
                 analysis_path = src_dir / f'analysis.{scope_name}.json'
-                if not rows_path.exists() or not summary_path.exists() or not analysis_path.exists():
+                if not feature_io.source_exists(rows_path) or not feature_io.source_exists(summary_path) or not feature_io.source_exists(analysis_path):
                     continue
-                scope_rows[scope_name] = pd.read_csv(rows_path)
+                scope_rows[scope_name] = feature_io.read_csv(rows_path)
                 scope_summaries[scope_name] = json.loads(summary_path.read_text(encoding='utf-8'))
                 scope_analyses[scope_name] = json.loads(analysis_path.read_text(encoding='utf-8'))
                 write_json(dst_dir / f'rows_{scope_name}.json', records(scope_rows[scope_name]))
@@ -1616,7 +1625,7 @@ def build_stage6_registry(metadata: pd.DataFrame, stage5_dir: Path, stage6_dir: 
 
             canonical_scope = 'core' if 'core' in scope_rows else (next(iter(scope_rows.keys())) if scope_rows else '')
             if not canonical_scope:
-                rows_df = pd.read_csv(src_dir / 'rows_for_platform.csv')
+                rows_df = feature_io.read_csv(src_dir / 'rows_for_platform.csv')
                 summary_payload = json.loads((src_dir / 'summary.json').read_text(encoding='utf-8'))
                 analysis_payload = json.loads((src_dir / 'analysis.json').read_text(encoding='utf-8'))
             else:
@@ -1678,7 +1687,7 @@ def build_stage6_registry(metadata: pd.DataFrame, stage5_dir: Path, stage6_dir: 
     })
 
     if platform_data_root is not None:
-        if platform_data_root.exists():
+        if feature_io.source_exists(platform_data_root):
             shutil.rmtree(platform_data_root)
         shutil.copytree(stage6_dir, platform_data_root)
 
@@ -1696,7 +1705,7 @@ def run_pipeline(
 
     stage_total = 6 if fast_mode else 8
 
-    if output_root.exists():
+    if feature_io.source_exists(output_root):
         emit(f'Removing existing pipeline output: {output_root}')
         shutil.rmtree(output_root)
     ensure_dir(output_root)

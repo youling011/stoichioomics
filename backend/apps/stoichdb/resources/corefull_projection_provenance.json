@@ -1,0 +1,21 @@
+{
+  "format": "corefull-projection-provenance-v1",
+  "recipe_version": "extractor-projection-v1",
+  "extractors": {
+    "genome": {
+      "filename": "genome_stoich_feature_extractor_v3_3_2.py",
+      "sha256": "27a62303a809bfc0789ed56184aa8103d1addf21651f3b8c1e02e2acd59109e7"
+    },
+    "transcriptome": {
+      "filename": "transcriptome_stoich_feature_extractor_v5_2.py",
+      "sha256": "0ddf8cd3cc49b32f9d2fbef81def42989a08c370e3747aaf4d38875dbec2eef9"
+    },
+    "proteome": {
+      "filename": "proteome_stoich_feature_extractor_v4_fast.py",
+      "sha256": "c6c5c13825573140a09c9e57aa768e64b1abcd51dff02559b19f80022353b140"
+    }
+  },
+  "projection_sha256": "44359936620f94a3a1fe5c31c1adaddb9e8defa8cce0542fe3b453a8d2fe9485",
+  "project_ast_sha256": "ef4d043447c0f804d084f9d59db5a08b35d8fddfbc6412f07a0b6b423c940f3d",
+  "encoded_rows_ast_sha256": "190c22275e42daa886e6c155d6be3ce5ae42d2fa2eb48fdc94cc9d849e60bc09"
+}

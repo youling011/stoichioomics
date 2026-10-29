@@ -1,10 +1,11 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import gc
 import json
 import math
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 import numpy as np
@@ -52,9 +53,9 @@ def _default_model_list() -> Path:
     for directory in root.iterdir():
         if not directory.is_dir():
             continue
-        for candidate in directory.glob('*.csv'):
+        for candidate in feature_io.logical_glob(directory, '*.csv'):
             try:
-                with candidate.open('r', encoding='utf-8-sig', newline='') as handle:
+                with feature_io.open_source(candidate, 'r', encoding='utf-8-sig', newline='') as handle:
                     fields = set(next(csv.reader(handle), []))
             except (OSError, UnicodeError):
                 continue
@@ -84,9 +85,9 @@ def _selected_model_row(row: dict[str, Any]) -> bool:
 
 
 def _read_model_rows(path: Path) -> dict[str, dict[str, Any]]:
-    if not path.exists():
+    if not feature_io.source_exists(path):
         raise CommandError(f'Model organism list does not exist: {path}')
-    with path.open('r', encoding='utf-8-sig', newline='') as handle:
+    with feature_io.open_source(path, 'r', encoding='utf-8-sig', newline='') as handle:
         rows = [dict(row) for row in csv.DictReader(handle)]
     output: dict[str, dict[str, Any]] = {}
     for row in rows:
@@ -175,7 +176,7 @@ def _module_projection_columns(path: Path, omics: str) -> list[str]:
     their headers plus the module projection keeps the computation grounded in
     the same full release while avoiding a per-species wide-frame memory spike.
     """
-    columns = list(pd.read_csv(path, nrows=0).columns)
+    columns = list(feature_io.read_csv(path, nrows=0).columns)
     exact = _MODULE_PROJECTION_EXACT.get(omics, set())
     prefixes = _MODULE_PROJECTION_PREFIXES.get(omics, ())
     selected = [
@@ -434,7 +435,7 @@ class Command(BaseCommand):
             for omics in OMICS_ORDER:
                 ds = datasets.get(omics)
                 path = Path(str((ds.full_csv_path if ds and ds.full_csv_path else ds.core_csv_path if ds else '') or '')) if ds else None
-                if not ds or not path or not path.exists():
+                if not ds or not path or not feature_io.source_exists(path):
                     absent.append(omics)
             if absent:
                 missing_omics += 1
@@ -464,13 +465,13 @@ class Command(BaseCommand):
                 raise CommandError(f'missing dataset {omics}')
             full_path = Path(str(dataset.full_csv_path or ''))
             core_path = Path(str(dataset.core_csv_path or ''))
-            source_path = full_path if read_scope != 'core' and full_path.exists() else core_path
-            if not source_path.exists():
+            source_path = full_path if read_scope != 'core' and feature_io.source_exists(full_path) else core_path
+            if not feature_io.source_exists(source_path):
                 raise CommandError(f'missing source CSV for {omics}: {source_path}')
             read_kwargs: dict[str, Any] = {'low_memory': False}
             if read_scope == 'module' and source_path == full_path:
                 read_kwargs['usecols'] = _module_projection_columns(source_path, omics)
-            frame = normalize_rows(pd.read_csv(source_path, **read_kwargs), omics)
+            frame = normalize_rows(feature_io.read_csv(source_path, **read_kwargs), omics)
             if frame.empty:
                 raise CommandError(f'empty source CSV for {omics}: {source_path}')
             meta_id = {'genome': 'gene_id', 'transcriptome': 'transcript_id', 'proteome': 'protein_id'}[omics]
@@ -478,7 +479,7 @@ class Command(BaseCommand):
                 frame['entity_id'] = frame.get(meta_id, pd.Series([''] * len(frame), index=frame.index))
             frames[omics] = frame
             source_paths[omics] = str(source_path)
-            source_scopes[omics] = 'full' if source_path == full_path and full_path.exists() else 'core'
+            source_scopes[omics] = 'full' if source_path == full_path and feature_io.source_exists(full_path) else 'core'
 
         meta_payload = dict(model_row)
         meta_payload['display_name'] = species.display_name or model_row.get('display_name') or species.species_id

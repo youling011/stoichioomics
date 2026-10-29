@@ -1,3 +1,4 @@
+from backend.apps.stoichdb.feature_sources import io as feature_io
 from pathlib import Path
 import hashlib,json
 import numpy as np
@@ -12,10 +13,7 @@ from backend.apps.stoichdb.models import DataRelease
 from .contracts import CORE_FIELDS,META,AA
 
 def content_hash(path):
-    h=hashlib.sha256()
-    with Path(path).open('rb') as stream:
-        for block in iter(lambda:stream.read(4*1024*1024),b''):h.update(block)
-    return h.hexdigest()
+    return feature_io.source_sha256(path)
 
 def release_id():
     return DataRelease.objects.filter(is_active=True).values_list('release_id',flat=True).first() or 'registered'
@@ -23,8 +21,8 @@ def release_id():
 def read_frame(path):
     if arrow_csv is not None:
         # Explicit string columns preserve identifier suffixes, leading zeros and literal "NA".
-        frame=arrow_csv.read_csv(str(path),read_options=arrow_csv.ReadOptions(use_threads=False),convert_options=arrow_csv.ConvertOptions(column_types={f:pa.string() for f in META},strings_can_be_null=False,null_values=['','NA','N/A','NaN','nan','null','None'])).to_pandas(use_threads=False)
-    else:frame=pd.read_csv(path,keep_default_na=False,low_memory=False,float_precision='round_trip',dtype={f:str for f in META})
+        frame=feature_io.arrow_read_csv(str(path),read_options=arrow_csv.ReadOptions(use_threads=False),convert_options=arrow_csv.ConvertOptions(column_types={f:pa.string() for f in META},strings_can_be_null=False,null_values=['','NA','N/A','NaN','nan','null','None'])).to_pandas(use_threads=False)
+    else:frame=feature_io.read_csv(path,keep_default_na=False,low_memory=False,float_precision='round_trip',dtype={f:str for f in META})
     if 'protein_id' not in frame or frame.protein_id.astype(str).str.strip().eq('').any():raise ValueError('source_empty_protein_id')
     if frame.protein_id.duplicated().any():raise ValueError('source_duplicate_protein_id')
     return frame
@@ -38,12 +36,13 @@ def numeric(frame):
         if np.isfinite(a).any() or field in CORE_FIELDS:result[field]=a
     return result
 
+@feature_io.read_scope
 def load(species_id,scope='core'):
     if scope not in ['core','full']:raise ValueError('invalid_scope')
     ds=CompleteCoreDataSource(species_id,'proteome')
-    if not ds.core_path or not ds.core_path.is_file():raise ValueError('source_core_file_missing')
+    if not ds.core_path or not feature_io.source_available(ds.core_path):raise ValueError('source_core_file_missing')
     core=read_frame(ds.core_path)
-    full=read_frame(ds.full_path) if ds.full_path and ds.full_path.is_file() else None
+    full=read_frame(ds.full_path) if ds.full_path and feature_io.source_available(ds.full_path) else None
     if scope=='full' and full is None:raise ValueError('full_not_registered' if not ds.dataset.full_csv_path else 'source_full_file_missing')
     primary=core if scope=='core' else full
     values=numeric(primary); original_fields=list(values)
@@ -105,7 +104,7 @@ def load(species_id,scope='core'):
     metadata={f:primary[f].fillna('').astype(str).tolist() if f in primary else ['']*n for f in META}
     metadata['protein_id']=ids
     stats={'registered_core_n':ds.dataset.row_count_core,'registered_full_n':ds.dataset.row_count_full,'actual_core_n':len(core),'actual_full_n':len(full) if full is not None else 0,'matched_n':int(core.protein_id.isin(full.protein_id).sum()) if full is not None else 0,'unmatched_n':int((~core.protein_id.isin(full.protein_id)).sum()) if full is not None else len(core),'duplicate_id_n':0,'conflicts':conflicts,'hashes':raw_hashes,'aa_count_sources':count_sources,'core_header':list(core.columns),'full_header':list(full.columns) if full is not None else []}
-    stats['file_signatures']={kind:{'bytes':p.stat().st_size,'mtime_ns':p.stat().st_mtime_ns} if p and p.is_file() else None for kind,p in [('core',ds.core_path),('full',ds.full_path)]}
+    stats['file_signatures']={kind:{'bytes':feature_io.source_metadata(p).size,'mtime_ns':feature_io.source_metadata(p).mtime_ns} if p and feature_io.source_available(p) else None for kind,p in [('core',ds.core_path),('full',ds.full_path)]}
     stats['semantic_invalid_counts']={f:len(rows) for f,rows in invalid_values.items()}
     stats['csv_reader']={'name':'pyarrow' if pa is not None else 'pandas round_trip','version':pa.__version__ if pa is not None else pd.__version__,'identifier_columns':'explicit UTF-8 strings; no automatic NA coercion'}
     stats['semantic_invalid_values']=invalid_values

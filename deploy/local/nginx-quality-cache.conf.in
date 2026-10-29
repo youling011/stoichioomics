@@ -1,7 +1,12 @@
 # Public, request-independent dashboard only. Never cache user jobs or writes.
 location = /api/stoichdb/quality/ {
+    uwsgi_hide_header X-Request-ID;
+    add_header X-Request-ID $request_id always;
+    auth_request /_internal/stoich-public-data-revision;
+    auth_request_set $stoich_public_data_revision $upstream_http_x_stoich_data_revision;
     include /etc/nginx/uwsgi_params;
     uwsgi_param HTTP_HOST $host;
+    uwsgi_param HTTP_X_REQUEST_ID $request_id;
     uwsgi_param HTTP_X_FORWARDED_PROTO $scheme;
     uwsgi_param HTTP_X_FORWARDED_FOR $remote_addr;
     uwsgi_pass unix:@UWSGI_SOCKET@;
@@ -11,7 +16,7 @@ location = /api/stoichdb/quality/ {
     uwsgi_next_upstream off;
     uwsgi_intercept_errors off;
     uwsgi_cache stoich_quality;
-    uwsgi_cache_key "quality-@CACHE_EPOCH@:$uri";
+    uwsgi_cache_key "quality-@CACHE_EPOCH@:$stoich_public_data_revision:$uri";
     uwsgi_cache_methods GET HEAD;
     uwsgi_cache_valid 200 1h;
     uwsgi_cache_lock on;
@@ -20,4 +25,24 @@ location = /api/stoichdb/quality/ {
     uwsgi_cache_bypass $http_authorization $http_cookie $http_x_job_token;
     uwsgi_no_cache $http_authorization $http_cookie $http_x_job_token;
     add_header X-Stoich-Quality-Cache $upstream_cache_status always;
+}
+
+# Validate the active release/data generation before selecting a cached body.
+location = /_internal/stoich-public-data-revision {
+    internal;
+    uwsgi_pass_request_body off;
+    uwsgi_param REQUEST_METHOD GET;
+    uwsgi_param SCRIPT_NAME "";
+    uwsgi_param PATH_INFO /api/health/public-data-revision/;
+    uwsgi_param QUERY_STRING "";
+    uwsgi_param CONTENT_LENGTH "";
+    uwsgi_param SERVER_PROTOCOL $server_protocol;
+    uwsgi_param SERVER_NAME $host;
+    uwsgi_param SERVER_PORT $server_port;
+    uwsgi_param HTTP_HOST $host;
+    uwsgi_param HTTP_X_FORWARDED_PROTO $scheme;
+    uwsgi_param HTTP_X_REQUEST_ID $request_id;
+    uwsgi_pass unix:@UWSGI_SOCKET@;
+    uwsgi_connect_timeout 5s;
+    uwsgi_read_timeout 10s;
 }

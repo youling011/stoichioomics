@@ -1,0 +1,16 @@
+{
+  "format": "exact-integration-io-chain-v1",
+  "current": "4f33d3123ee71491d4e1f15f42d229ba73773e5132173b5030e9d93cc3bea810",
+  "accepted_prior": [
+    "f4cfe81bf601d3a971891638c76431adcbb4c2969b301632ec10293ab3ac4488",
+    "d56f83a6272ee23b4271f30c6200db712ad0758f48d6bd6c4a46ec7025440925"
+  ],
+  "prior_policy_sha256": "07701df18318eba07b1df6bb33fbb6dfb612cc5b80c233ce1c625f504c622f82",
+  "changed_files": [
+    "source.py"
+  ],
+  "before_sha256": "9b3aee7e69b3a9c7af33863a1e7ac42ed61bc625ade69cff62e068aa7e5c484d",
+  "after_sha256": "4232a95d4ed87bc44166ca4a04c769dcb3b48d1d3deaa2ede7a3feeb217660a8",
+  "proof": "Exact AST: pathlib.Path -> controlled host_paths.Path; pd.read_csv(p) -> pd.read_csv(Path(p)); all arguments and remaining input files identical. Prior rho None ordering receipt retained.",
+  "proof_script_sha256": "478dd921912bf3ba5045f76a215fbea4216b4caef744a67997d35c4ba53bad47"
+}

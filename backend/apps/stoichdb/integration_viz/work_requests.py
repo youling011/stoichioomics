@@ -1,3 +1,6 @@
+from backend.apps.common.runtime_python import python_executable
+from backend.apps.common.task_execution import heavy_guarded
+from backend.apps.common.maintenance import guarded_submission
 from backend.apps.common.process_liveness import linux_process_has_exited,linux_pid_matches_record
 import os,time,uuid,subprocess,sys,ctypes
 from pathlib import Path
@@ -72,6 +75,7 @@ def kernel_guard(name):
 def lock(name):
     with kernel_guard(name):
         with file_lock(name):yield
+@guarded_submission
 def enqueue(sid,kind='species',ids=None,start=True,force=False):
     from .source import signatures
     from .cohort_artifacts import identity
@@ -119,7 +123,7 @@ def start_consumer():
         except (ValueError,OSError):pass
     log=a.root()/'reports'/'consumer.log';log.parent.mkdir(parents=True,exist_ok=True)
     env=os.environ.copy();env.update({k:'1' for k in ['OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','NUMEXPR_NUM_THREADS']})
-    cmd=[sys.executable,str(settings.BASE_DIR/'manage.py'),'materialize_integration_visuals','--consume-requests','--idle-exit-seconds','45','--output-root',str(a.root())]
+    cmd=[python_executable(),str(settings.BASE_DIR/'manage.py'),'materialize_integration_visuals','--consume-requests','--idle-exit-seconds','45','--output-root',str(a.root())]
     with waiting_lock('launch'):
         state=a.root()/'locks'/'consumer_launch_state.json'
         if state.exists():
@@ -127,6 +131,7 @@ def start_consumer():
             if alive(recorded.get('pid',0),recorded.get('launched',state.stat().st_mtime)):return
         with log.open('ab') as f:child=subprocess.Popen(cmd,cwd=settings.BASE_DIR,env=env,stdin=subprocess.DEVNULL,stdout=f,stderr=f,creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
         a.write(state,{'pid':child.pid,'launched':time.time()})
+        __import__('threading').Thread(target=child.wait,daemon=True,name='integration-worker-reaper').start()
 def execute(sid,publish=True,resume=True,on_progress=None):
     from .source import load
     from .builders import build

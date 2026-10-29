@@ -1,10 +1,11 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import json
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 from typing import Any
 
 from django.core.management.base import BaseCommand
@@ -30,12 +31,12 @@ def _positive_float(value: Any) -> float | None:
 
 def _compute_genome_size_from_csv(path_text: str) -> dict[str, Any]:
     path = Path(str(path_text or ""))
-    if not path.exists():
+    if not feature_io.source_exists(path):
         return {"ok": False, "reason": "missing_file", "path": str(path)}
 
     max_end_by_seq: dict[str, float] = {}
     row_count = 0
-    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.reader(handle)
         try:
             header = next(reader)

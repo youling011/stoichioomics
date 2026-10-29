@@ -1,3 +1,5 @@
+from backend.apps.common.request_cache import request_scope,once
+from backend.apps.common.stored_charts import get as stored_chart
 from functools import wraps
 from pathlib import Path
 import json,hashlib
@@ -16,7 +18,8 @@ from .contracts import FIGURES,META
 from .exports import download
 DISPLAY_TITLES=json.loads(Path(__file__).with_name('display_titles.json').read_text(encoding='utf8'))
 def presentation(figure,manifest):
-    result={**figure,'original_title':figure.get('title'),'title':DISPLAY_TITLES.get(figure['chart_id'],figure.get('title'))}
+    result={**figure,'original_title':figure.get('title'),'title':DISPLAY_TITLES.get(figure['chart_id'],figure.get('title')),'historical_artifact':bool(manifest.get('historical_artifact'))}
+    if manifest.get('historical_artifact'):result['availability_note']='Saved historical version; current source or method differs.'
     if 'full' not in manifest['available_scopes']:result['source_capability_note']='No registered readable Full file. Available Core panels and complete original fields are retained; Full-dependent panels cannot be calculated.'
     if figure['chart_id']=='TS01' and any(x is None for row in figure['data'].get('rows',[]) for x in row.get('percentiles',[])):result.update(status='partial',reason_code='candidate_modules_incomplete; see per-module coverage')
     data=figure.get('data',{})
@@ -29,6 +32,7 @@ def presentation(figure,manifest):
     return result
 def guarded(fn):
     @wraps(fn)
+    @request_scope
     def call(request,*args,**kwargs):
         try:return fn(request,*args,**kwargs)
         except ObjectDoesNotExist:return err('Unknown species or omics dataset',404)
@@ -43,8 +47,14 @@ def bounds(r,k,d,lo,hi):
     v=int(r.GET.get(k,d))
     if not lo<=v<=hi:raise ValueError(k+'_outside_bounds')
     return v
+def check_stale(m,ds):
+    return once(('sequence',m.get('artifact_version'),m.get('source_hash'),ds.dataset.dataset_id),lambda:store.stale(m,ds))
+
 def target(request,species_id,omics):
-    OmicsDataset.objects.only('id').get(species__species_id=species_id,omics_type=omics);p=store.lookup(species_id,omics,scope(request),release_id(),request.GET.get('artifact_version',''));m=store.read_json(p/'manifest.json')
+    ds=CompleteCoreDataSource(species_id,omics);p=store.lookup(species_id,omics,scope(request),release_id(),request.GET.get('artifact_version',''),validator=lambda m,p:not check_stale(m,ds));m=store.read_json(p/'manifest.json')
+    if check_stale(m,ds):
+        if not request.GET.get('artifact_version'):raise ValueError('source_or_method_stale; select a saved historical version or rebuild')
+        m={**m,'historical_artifact':True}
     if request.GET.get('source_hash') and request.GET['source_hash']!=m['source_hash']:raise ValueError('source_hash_mismatch')
     return p,m
 def row(meta,v,i,key):
@@ -55,13 +65,13 @@ def manifest_view(r,species_id,omics):
     ds=CompleteCoreDataSource(species_id,omics);s=scope(r);enabled=getattr(settings,'SEQUENCE_VIZ_'+omics.upper()+'_ENABLED',False);scopes=['core']+(['full'] if ds.full_path and ds.full_path.is_file() else [])
     if s not in scopes:return ok({'enabled':enabled,'readiness':'unavailable','reason_code':'full_not_registered' if not ds.dataset.full_csv_path else 'source_full_file_missing','available_scopes':scopes,'n_source':0,'fields':[]})
     try:
-        p=store.lookup(species_id,omics,s,release_id());m=store.read_json(p/'manifest.json');stale=store.stale(m,ds);return ok({**m,'charts':[{**c,'original_title':c['title'],'title':DISPLAY_TITLES.get(c['chart_id'],c['title'])} for c in m['charts']],'enabled':enabled,'readiness':'stale' if stale else 'ready','available_scopes':scopes})
+        p=store.lookup(species_id,omics,s,release_id(),validator=lambda m,p:not check_stale(m,ds));m=store.read_json(p/'manifest.json');stale=check_stale(m,ds);return ok({**m,'charts':[{**c,'original_title':c['title'],'title':DISPLAY_TITLES.get(c['chart_id'],c['title'])} for c in m['charts']],'enabled':enabled,'readiness':'stale' if stale else 'ready','available_scopes':scopes})
     except FileNotFoundError:return ok({'enabled':enabled,'readiness':'not_prepared','available_scopes':scopes,'n_source':0,'fields':[],'charts':[]})
 @api_view(['GET'])
 @guarded
 def chart_view(r,species_id,omics,chart_id):
     if chart_id not in FIGURES or FIGURES[chart_id]['omics']!=omics:raise ValueError('invalid_chart_id_for_omics')
-    p,m=target(r,species_id,omics);figure=store.bundle(str(p))[chart_id]
+    p,m=target(r,species_id,omics);figure=stored_chart('sequence',str(p),chart_id)
     if figure['data'].get('cohort_ref'):
         from .cohorts import compute
         cohort=compute(species_id,omics,scope(r),dinuc=chart_id=='GD06');figure={**figure,'data':{'kind':FIGURES[chart_id]['proposed_kind'],'cohort':cohort},'status':cohort['pca']['status'] if chart_id in ['GD06','GD21','TD14'] else 'available' if len(cohort['species'])>=2 else 'unavailable','coverage':{'n_source':len(cohort['species']),'sampling_policy':'none'}}
@@ -72,10 +82,21 @@ def fields_view(r,species_id,omics):
     p,m=target(r,species_id,omics);ps=store.profiles(str(p));keys=list(ps);search=r.GET.get('q','').lower();keys=[k for k in keys if search in k.lower()];page=bounds(r,'page',1,1,100000);size=bounds(r,'page_size',6,1,12);chosen=keys[(page-1)*size:page*size]
     return ok({'profiles':[ps[k] for k in chosen],'total':len(keys),'page':page,'page_size':size,'catalog':m['catalog'],'metadata_coverage':m['metadata_coverage'],'artifact_version':m['artifact_version']})
 def variant(r,p,m):
+    from backend.apps.common.artifact_locations import file_lock
+    from backend.apps.common.task_execution import heavy_compute_slot
+    params={'x':r.GET.get('x',''),'y':r.GET.get('y',''),'transform_x':r.GET.get('transform_x','identity'),'transform_y':r.GET.get('transform_y','identity'),'gridsize':bounds(r,'gridsize',40,10,80),'groups':bounds(r,'groups',10,1,20)}
+    key=hashlib.sha256(json.dumps([m['artifact_version'],params],sort_keys=True).encode()).hexdigest()
+    folder=store.variant_folder(p)
+    if store.variant_path(p,key,'.json.gz').is_file() and store.variant_path(p,key,'.npy').is_file():return _variant(r,p,m)
+    with file_lock(folder/(key+'.lock'),timeout=600):
+        if store.variant_path(p,key,'.json.gz').is_file() and store.variant_path(p,key,'.npy').is_file():return _variant(r,p,m)
+        with heavy_compute_slot():return _variant(r,p,m)
+
+def _variant(r,p,m):
     from .builders import pair
     v=store.matrix(str(p));x=r.GET.get('x','');y=r.GET.get('y','');allowed={r['key'] for r in m['catalog'] if r['role']=='numeric'}|set(v)
     if x not in allowed or y not in allowed or x not in v or y not in v:raise ValueError('invalid_pair_field')
-    params={'x':x,'y':y,'transform_x':r.GET.get('transform_x','identity'),'transform_y':r.GET.get('transform_y','identity'),'gridsize':bounds(r,'gridsize',40,10,80),'groups':bounds(r,'groups',10,1,20)};key=hashlib.sha256(json.dumps([m['artifact_version'],params],sort_keys=True).encode()).hexdigest();folder=p/'variants';folder.mkdir(exist_ok=True);jp=store.variant_path(p,key,'.json.gz');ap=store.variant_path(p,key,'.npy')
+    params={'x':x,'y':y,'transform_x':r.GET.get('transform_x','identity'),'transform_y':r.GET.get('transform_y','identity'),'gridsize':bounds(r,'gridsize',40,10,80),'groups':bounds(r,'groups',10,1,20)};key=hashlib.sha256(json.dumps([m['artifact_version'],params],sort_keys=True).encode()).hexdigest();folder=store.variant_folder(p);folder.mkdir(exist_ok=True);jp=store.variant_path(p,key,'.json.gz');ap=store.variant_path(p,key,'.npy')
     if jp.is_file() and ap.is_file():
         data=store.read_json(jp)
         if data.get('_variant_id')!=key:raise ValueError('variant_identity_mismatch')
@@ -166,8 +187,8 @@ def ensure_view(r,species_id,omics):
     ds=CompleteCoreDataSource(species_id,omics);s=scope(r)
     if s=='full' and not (ds.full_path and ds.full_path.is_file()):return ok({'readiness':'unavailable','reason_code':'full_not_registered'})
     try:
-        p=store.lookup(species_id,omics,s,release_id());m=store.read_json(p/'manifest.json')
-        if not store.stale(m,ds):return ok({'readiness':'ready','artifact_version':m['artifact_version']})
+        p=store.lookup(species_id,omics,s,release_id(),validator=lambda m,p:not check_stale(m,ds));m=store.read_json(p/'manifest.json')
+        if not check_stale(m,ds):return ok({'readiness':'ready','artifact_version':m['artifact_version']})
     except FileNotFoundError:pass
     v=work_requests.enqueue(species_id,omics,s);launched=work_requests.ensure_consumer();return ok({**v,'consumer_available':launched})
 @api_view(['GET'])

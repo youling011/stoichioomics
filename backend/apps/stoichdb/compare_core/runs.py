@@ -1,7 +1,12 @@
 from __future__ import annotations
+from backend.apps.common.runtime_python import python_executable
+from backend.apps.common.maintenance import guarded_submission
+from backend.apps.common.artifact_locations import same_source_signatures
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import os
 import subprocess
+import threading
 import sys
 from datetime import timedelta
 from backend.apps.common.host_paths import Path
@@ -113,13 +118,13 @@ def source_probe(request):
     """Bulk registration lookup + stat only; parsing/hashing belongs to the worker."""
     ids = list(dict.fromkeys(request['species_ids'] + request['reference']['species_ids']))
     registered = {(ds.species.species_id, ds.omics_type): ds for ds in
-        OmicsDataset.objects.select_related('species').filter(species__species_id__in=ids, omics_type__in=request['omics'])}
+        OmicsDataset.objects.select_related('species').defer('browse_meta','summary_payload','analysis_payload','searchable_text','species__fingerprint','species__cross_omics_payload','species__searchable_text').filter(species__species_id__in=ids, omics_type__in=request['omics'])}
     rows = []
     for sid in ids:
         for omics in request['omics']:
             try:
                 ds = registered.get((sid, omics))
-                if ds and ds.core_csv_path and Path(ds.core_csv_path).is_file():
+                if ds and ds.core_csv_path and feature_io.source_available(Path(ds.core_csv_path)):
                     sig = signature(Path(ds.core_csv_path))
                 else:
                     source, ds, header, sig = resolve(sid, omics)
@@ -138,13 +143,15 @@ def dispatch(run):
     # The child processes one durable job, closes its connections and exits. No daemon thread.
     if CompareRun.objects.filter(status__in=('profiling', 'analyzing', 'exporting'), lease_until__gt=timezone.now()).exists():
         return  # The short-lived queue drainer will pick up this queued job.
-    command = [sys.executable, '-B', str(Path(settings.BASE_DIR) / 'manage.py'), 'run_compare_worker', '--drain']
+    command = [python_executable(), '-B', str(Path(settings.BASE_DIR) / 'manage.py'), 'run_compare_worker', '--drain']
     with (folder / 'worker.log').open('ab') as log:
         options = {'creationflags': subprocess.CREATE_NO_WINDOW} if os.name == 'nt' else {'start_new_session': True}
         child = subprocess.Popen(command, cwd=str(settings.BASE_DIR), stdout=log, stderr=log, stdin=subprocess.DEVNULL, **options)
     CompareRun.objects.filter(pk=run.pk).update(worker_pid=child.pid)
+    threading.Thread(target=child.wait, daemon=True, name='compare-worker-reaper').start()
 
 
+@guarded_submission
 def create(payload):
     # Recover abandoned leases on submission after a service restart, then
     # serialize only the short lookup/create section for identical requests.
@@ -170,9 +177,9 @@ def _create(request):
     probe = source_probe(request)
     probe_hash = digest(probe)
     prior = CompareRun.objects.filter(request_hash=key).order_by('-created_at').first()
-    if prior and prior.status in ACTIVE and prior.summary_json.get('source_probe_hash') == probe_hash:
+    if prior and prior.status in ACTIVE and (prior.summary_json.get('source_probe_hash') == probe_hash or same_source_signatures(prior.summary_json.get('source_probe'),probe)):
         return prior, False
-    if prior and prior.status == 'completed' and prior.summary_json.get('source_probe_hash') == probe_hash:
+    if prior and prior.status == 'completed' and (prior.summary_json.get('source_probe_hash') == probe_hash or same_source_signatures(prior.summary_json.get('source_probe'),probe) or _portable_run_source_match(prior,probe)):
         from .exports import run_artifacts_valid
         if run_artifacts_valid(prior):
             return prior, False
@@ -180,6 +187,31 @@ def _create(request):
                                    summary_json={'source_probe_hash': probe_hash, 'source_probe': probe,
                                                  'unique_species': len(set(request['species_ids'] + request['reference']['species_ids']))})
     return run, True
+
+
+def _portable_run_source_match(run,current):
+    """Native file IDs may differ; exact saved Core SHA and policy must agree."""
+    from backend.apps.common.artifact_locations import logical_path_key
+    from backend.apps.stoichdb.feature_hub.cache_identity import source_content_identity
+    from backend.apps.stoichdb.feature_hub.sources import DatasetSourceResolver
+    from .exports import run_dir
+    from .models import CompareCoreProfile
+    try:
+        before=run.summary_json['source_probe'];sources=load_json(run_dir(run)/'source_manifest.json')
+        if len(before)!=len(current):return False
+        for old,new in zip(before,current):
+            if any(old.get(k)!=new.get(k) for k in ['species_id','omics','dataset_id','probe_version']):return False
+            left=dict(old['signature']);right=dict(new['signature'])
+            if logical_path_key(left.pop('path'))!=logical_path_key(right.pop('path')):return False
+            left.pop('file_id',None);right.pop('file_id',None)
+            if left!=right:return False
+            saved=next(v for v in sources if v['species_id']==new['species_id'] and v['omics']==new['omics'])
+            profile=CompareCoreProfile.objects.filter(artifact_path=saved['artifact_path'],status='completed',semantic_hash=run.request_json['semantic_hash'],content_sha256=saved['content_sha256']).first()
+            if profile is None:return False
+            source=DatasetSourceResolver().resolve(new['species_id'],new['omics'],'core')
+            if source_content_identity(source)!=saved['content_sha256']:return False
+        return True
+    except (OSError,ValueError,KeyError,StopIteration):return False
 
 
 def status(run):
@@ -207,6 +239,7 @@ def cancel(run):
     return run
 
 
+@guarded_submission
 def resume(run):
     if run.status not in ('failed', 'interrupted'):
         raise CompareError('Only failed or interrupted runs can be resumed.', 'not_resumable', 409)

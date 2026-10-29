@@ -1,4 +1,5 @@
 """Read-only target inventory. No migrations, imports, path rewrites, or mkdir."""
+from backend.apps.stoichdb.feature_sources import io as feature_io
 import argparse
 import importlib.metadata
 import json
@@ -17,7 +18,7 @@ def main():
     if not 1 <= args.sample_limit <= 1000:
         parser.error('sample-limit must be 1..1000')
     target = Path(args.report)
-    if target.exists():
+    if feature_io.source_exists(target):
         parser.error('report already exists; choose a new evidence file')
     import django
     django.setup()
@@ -66,7 +67,7 @@ def main():
                         path = Path(raw)
                         report['path_samples'].append({'model': model._meta.label, 'pk': record['pk'], 'field': field,
                             'path': raw, 'windows_absolute': PureWindowsPath(raw).is_absolute(),
-                            'exists_on_target': path.exists() if model is not DataRelease else None,
+                            'exists_on_target': feature_io.source_exists(path) if model is not DataRelease else None,
                             'filesystem_checked': model is not DataRelease, 'required_runtime': model is not DataRelease})
         report['database_ready'] = report['pg_trgm'] and not report['pending_migrations']
     report['ok'] = all(row['ok'] for row in report['roots']) and report.get('database_ready', True)

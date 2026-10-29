@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 from functools import lru_cache
@@ -27,7 +28,10 @@ CHUNK_ROWS = 8192
 
 
 def _path_exists(path: Path | str | None) -> bool:
-    return isinstance(path, Path) and path.exists() and path.is_file()
+    if not isinstance(path, Path):return False
+    # A broken verified dependency must not silently select another release.
+    if feature_io.logical_source(path) is not None:return True
+    return path.is_file()
 
 
 def _safe_int(value: Any, default: int = 0) -> int:
@@ -83,7 +87,7 @@ def _legacy_path(dataset: OmicsDataset, scope: str) -> Path | None:
     if not path_text or path_text.lower() in {"nan", "none", "null"}:
         return None
     path = Path(path_text)
-    return path if path.exists() and path.is_file() else None
+    return path if feature_io.source_exists(path) and feature_io.source_available(path) else None
 
 
 def resolve_feature_table(dataset: OmicsDataset, scope: str = "core", *, prefer_parquet: bool = True) -> dict[str, Any]:
@@ -130,7 +134,7 @@ def resolve_feature_table(dataset: OmicsDataset, scope: str = "core", *, prefer_
             "storage_object": None,
             "logical_key": "",
             "schema_version": dataset.schema_version,
-            "size_bytes": legacy.stat().st_size,
+            "size_bytes": feature_io.source_metadata(legacy).size,
             "sha256": "",
             "fallback_events": fallbacks + [{"candidate": "legacy_path", "reason": "used"}],
         }
@@ -164,7 +168,7 @@ def _rows_from_csv(path: Path, *, offset: int = 0, limit: int = 0, columns: list
     wanted = set(columns or [])
     rows: list[dict[str, Any]] = []
     skipped = 0
-    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+    with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
         for row in reader:
             if not isinstance(row, dict):
@@ -185,6 +189,9 @@ def _rows_from_parquet(path: Path, *, offset: int = 0, limit: int = 0, columns: 
         import pyarrow.parquet as pq
     except Exception:
         return []
+    logical = feature_io.logical_source(path)
+    if logical:
+        return _bound_parquet_rows(logical, offset=offset, limit=limit, columns=columns)
     parquet_file = pq.ParquetFile(path)
     schema_names = set(parquet_file.schema.names)
     if columns is not None:
@@ -230,6 +237,9 @@ def feature_columns(dataset: OmicsDataset, scope: str = "core") -> list[str]:
     path = resolved.get("path")
     if not resolved.get("available") or not isinstance(path, Path):
         return []
+    logical = feature_io.logical_source(path)
+    if logical:
+        return list(logical.recipe.columns)
     if resolved.get("format") == "parquet":
         try:
             import pyarrow.parquet as pq
@@ -237,7 +247,7 @@ def feature_columns(dataset: OmicsDataset, scope: str = "core") -> list[str]:
         except Exception:
             return []
     try:
-        with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as handle:
             return next(csv.reader(handle), [])
     except Exception:
         return []
@@ -248,6 +258,9 @@ def feature_row_count(dataset: OmicsDataset, scope: str = "core") -> int:
     path = resolved.get("path")
     if not resolved.get("available") or not isinstance(path, Path):
         return 0
+    logical = feature_io.logical_source(path)
+    if logical:
+        return int(logical.record['row_count'])
     if resolved.get("format") == "parquet":
         try:
             import pyarrow.parquet as pq
@@ -256,7 +269,7 @@ def feature_row_count(dataset: OmicsDataset, scope: str = "core") -> int:
             return 0
     count = 0
     try:
-        with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        with feature_io.open_source(path, "r", encoding="utf-8-sig", newline="") as handle:
             next(handle, None)
             for _ in handle:
                 count += 1
@@ -405,3 +418,18 @@ def model_release_overview_payload() -> dict[str, Any]:
             for gate in gates
         ],
     }
+
+
+def _bound_parquet_rows(source, *, offset=0, limit=0, columns=None):
+    from .feature_sources.parquet import typed_batches
+    result=[];skipped=0
+    batches=typed_batches(source,columns)
+    try:
+        for batch in batches:
+            rows=batch.to_pylist()
+            if skipped<max(0,offset):
+                trim=min(max(0,offset)-skipped,len(rows));rows=rows[trim:];skipped+=trim
+            result.extend(rows)
+            if limit and len(result)>=limit:return result[:limit]
+        return result
+    finally:batches.close()

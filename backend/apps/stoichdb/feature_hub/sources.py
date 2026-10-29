@@ -1,4 +1,5 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import gzip
@@ -27,24 +28,32 @@ class SourceDescriptor:
     file_size: int
     file_mtime: float
     warnings: list[str]
+    physical_full_path: Path | None = None
+    logical_scope: str = ""
 
     @property
     def fingerprint(self) -> str:
-        raw = f"{self.path}|{self.file_size}|{self.file_mtime}|{self.schema_version}"
-        return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+        from .cache_identity import fingerprint
+        return fingerprint(self)
+
+    @property
+    def legacy_fingerprints(self):
+        from .cache_identity import legacy_fingerprints
+        return legacy_fingerprints(self)
 
 
 def _path_exists(value: Any) -> Path | None:
     if not value:
         return None
     path = Path(str(value))
-    return path if path.exists() and path.is_file() else None
+    return path if feature_io.source_exists(path) and feature_io.source_available(path) else None
 
 
 def _full_path_next_to_core(core_value: Any) -> Path | None:
-    core = _path_exists(core_value)
-    if core is None:
+    # A legacy Core path also identifies its Full sibling when Core is absent.
+    if not core_value:
         return None
+    core = Path(str(core_value))
     name = core.name
     candidate_names = list(dict.fromkeys([
         name.replace(".core.", ".full."),
@@ -57,7 +66,7 @@ def _full_path_next_to_core(core_value: Any) -> Path | None:
     ]))
     for candidate_name in candidate_names:
         candidate = core.with_name(candidate_name)
-        if candidate.exists() and candidate.is_file():
+        if feature_io.source_exists(candidate) and feature_io.source_available(candidate):
             return candidate
     return None
 
@@ -67,7 +76,7 @@ class DatasetSourceResolver:
         omics = normalize_omics(omics)
         scope = normalize_scope(scope)
         try:
-            dataset = OmicsDataset.objects.select_related("species").get(species__species_id=species_id, omics_type=omics)
+            dataset = OmicsDataset.objects.select_related("species").defer('browse_meta','summary_payload','analysis_payload','searchable_text','species__fingerprint','species__cross_omics_payload','species__searchable_text').get(species__species_id=species_id, omics_type=omics)
         except OmicsDataset.DoesNotExist as exc:
             raise FeatureHubNotFound(f"No registered {omics} dataset for {species_id}") from exc
         if str(dataset.status or "").lower() != "ready":
@@ -87,7 +96,7 @@ class DatasetSourceResolver:
         row_count = int(dataset.row_count_core if scope == "core" else dataset.row_count_full)
         if row_count <= 0:
             warnings.append("Registered row count is zero or missing; file existence and header remain authoritative.")
-        stat = path.stat()
+        stat = feature_io.source_metadata(path)
         return SourceDescriptor(
             species_id=species_id,
             omics=omics,
@@ -97,9 +106,11 @@ class DatasetSourceResolver:
             row_count=row_count,
             schema_version=dataset.schema_version,
             source_mode="file",
-            file_size=int(stat.st_size),
-            file_mtime=float(stat.st_mtime),
+            file_size=int(stat.size),
+            file_mtime=float(stat.mtime),
             warnings=warnings,
+            physical_full_path=(feature_io.logical_source(path).full_path if feature_io.logical_source(path) else None),
+            logical_scope=scope,
         )
 
     def _storage_object_path(self, dataset: OmicsDataset, scope: str) -> Path | None:
@@ -111,7 +122,7 @@ class DatasetSourceResolver:
         ).only("object_uri", "relative_path", "root_alias", "logical_key")[:8]
         for obj in candidates:
             resolved = resolve_storage_object(obj)
-            if isinstance(resolved, Path) and resolved.exists() and resolved.is_file():
+            if isinstance(resolved, Path) and feature_io.source_exists(resolved) and feature_io.source_available(resolved):
                 name = resolved.name.lower()
                 if scope == "core" and "core" in name:
                     return resolved
@@ -125,14 +136,16 @@ class DatasetSourceResolver:
 
 
 def read_header(source: SourceDescriptor) -> list[str]:
-    opener = gzip.open if source.path.suffix.lower() == ".gz" else open
+    if feature_io.logical_source(source.path):
+        return feature_io.source_header(source.path)
+    opener = gzip.open if source.path.suffix.lower() == ".gz" else feature_io.open_source
     with opener(source.path, "rt", encoding="utf-8-sig", newline="") as handle:
         return next(csv.reader(handle), [])
 
 
 def iter_rows(source: SourceDescriptor, selected_fields: list[str] | None = None) -> Iterator[dict[str, Any]]:
     selected = list(dict.fromkeys(selected_fields or []))
-    opener = gzip.open if source.path.suffix.lower() == ".gz" else open
+    opener = gzip.open if source.path.suffix.lower() == ".gz" else feature_io.open_source
     with opener(source.path, "rt", encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
         header = reader.fieldnames or []

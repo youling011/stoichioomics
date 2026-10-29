@@ -1,3 +1,4 @@
+from backend.apps.stoichdb.feature_sources import io as feature_io
 import hashlib,json
 from pathlib import Path
 import numpy as np
@@ -17,7 +18,7 @@ def describe(sid):
             saved=a.read(cache)
             if saved.get('signature')==sig and saved.get('dataset_id')==d.dataset_id:
                 descriptors.update(saved['values']);stats.update(saved['stats']);signatures[m]=saved['source'];continue
-        f=pd.read_csv(p,usecols=FP[m],low_memory=False);values={};s={}
+        f=feature_io.read_csv(p,usecols=FP[m],low_memory=False);values={};s={}
         for k in FP[m]:
             x=numbers(f[k]).dropna().to_numpy();key=m+'__'+k
             values[key]=float(np.median(x)) if len(x) else None

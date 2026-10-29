@@ -1,4 +1,6 @@
 from __future__ import annotations
+from backend.apps.common.maintenance import guarded_submission
+from backend.apps.common.task_execution import enqueue as enqueue_executor
 
 import json
 import hashlib
@@ -301,6 +303,7 @@ def prevalidate_sequence_inputs(
         shutil.rmtree(root, ignore_errors=True)
 
 
+@guarded_submission
 def create_sequence_job(
     *,
     uploads: list[UploadedFile],
@@ -436,12 +439,10 @@ def create_sequence_job(
         response_meta = dict(meta)
         response_meta['access_token'] = token
         return response_meta
-    thread = threading.Thread(
-        target=_run_sequence_job,
-        args=(job_id, input_files, annotation_files, sample_sheet_path, output_dir, params),
-        daemon=True,
-    )
-    thread.start()
+    try:queued=enqueue_executor('sequence',job_id,{'input_files':[str(p) for p in input_files],'annotation_files':[str(p) for p in annotation_files],'sample_sheet_path':str(sample_sheet_path) if sample_sheet_path else None,'output_dir':str(output_dir),'params':params})
+    except Exception as exc:
+        meta.update(status='FAILED',error='executor_start_failed: '+str(exc),updated_at=_now_iso());_write_json(_job_meta_path(job_id),meta)
+        raise
     response_meta = dict(meta)
     response_meta['access_token'] = token
     return response_meta
@@ -458,7 +459,7 @@ def _run_sequence_job(
     root = _job_dir(job_id)
     input_dir = root / 'inputs'
     meta = _read_json(_job_meta_path(job_id))
-    _append_sequence_log(root, 'job_started', {'executor': 'in_process_thread'})
+    _append_sequence_log(root, 'job_started', {'executor': 'durable_subprocess'})
     try:
         summary = run_sequence_analysis(
             input_files=input_files,

@@ -2,16 +2,39 @@
   "schema_version": 1,
   "release_id": "stoichioomics-data-pending",
   "status": "not_published",
-  "source_snapshot": "2026-10-27",
+  "source_snapshot": "2026-10-29",
   "postgresql_major": 16,
   "path_layout": "Paths inside file archives are relative to the original G:/stoichioomics root.",
   "required_components": [
-    {"id": "public-database", "purpose": "Consistent publishable PostgreSQL snapshot with scientific tables and migrations"},
-    {"id": "project-data", "path": "项目平台数据/stoich_platform_postgres_open_search_v6_2_perf_fix/proj/data"},
-    {"id": "omics-features", "path": "全组学特征数据"},
-    {"id": "functional-annotations", "path": "项目平台数据/功能注释下载"},
-    {"id": "registered-model-artifacts", "path": "项目平台数据/data"},
-    {"id": "published-case-artifacts", "path": "项目平台数据/stoich_platform_postgres_open_search_v6_2_perf_fix/proj/workspace"}
+    {
+      "id": "public-database",
+      "purpose": "Consistent publishable PostgreSQL snapshot with scientific tables and migrations"
+    },
+    {
+      "id": "project-data",
+      "path": "项目平台数据/stoich_platform_postgres_open_search_v6_2_perf_fix/proj/data"
+    },
+    {
+      "id": "omics-features",
+      "path": "全组学特征数据"
+    },
+    {
+      "id": "functional-annotations",
+      "path": "项目平台数据/功能注释下载"
+    },
+    {
+      "id": "registered-model-artifacts",
+      "path": "项目平台数据/data"
+    },
+    {
+      "id": "published-case-artifacts",
+      "path": "项目平台数据/stoich_platform_postgres_open_search_v6_2_perf_fix/proj/workspace"
+    },
+    {
+      "id": "historical-public-runtime",
+      "path": "项目平台数据/stoich_platform_postgres_open_search_v6_2_perf_fix/proj/runtime",
+      "purpose": "Audited immutable public artifact versions only; exclude private tasks, locks and transient caches"
+    }
   ],
   "artifacts": []
 }

@@ -1,5 +1,8 @@
+from backend.apps.common.runtime_python import python_executable
+from backend.apps.common.maintenance import guarded_submission
+from backend.apps.stoichdb.feature_sources import io as feature_io
 from backend.apps.common.process_liveness import linux_process_has_exited,linux_pid_matches_record
-import hashlib,json,os,time,uuid
+import hashlib,json,os,time,uuid,threading
 from .artifacts import root,read_json,write_json
 from . import METHOD_VERSION
 
@@ -8,25 +11,26 @@ def request_key(species_id,scope,chart_id,parameters):
     from .source import release_id
     from backend.apps.stoichdb.models import OmicsDataset
     from backend.apps.common.host_paths import Path
-    ds=OmicsDataset.objects.get(species__species_id=species_id,omics_type='proteome');signatures=[]
+    ds=OmicsDataset.objects.defer('browse_meta','summary_payload','analysis_payload','searchable_text').get(species__species_id=species_id,omics_type='proteome');signatures=[]
     for value in [ds.core_csv_path,ds.full_csv_path]:
-        p=Path(value) if value else None;signatures.append([p.stat().st_size,p.stat().st_mtime_ns] if p and p.is_file() else None)
+        p=Path(value) if value else None;signatures.append([feature_io.source_metadata(p).size,feature_io.source_metadata(p).mtime_ns] if p and feature_io.source_available(p) else None)
     return hashlib.sha256(json.dumps([species_id,ds.dataset_id,scope,chart_id,parameters,METHOD_VERSION,implementation_hash(),release_id(),ds.core_csv_path,ds.full_csv_path,signatures],sort_keys=True).encode()).hexdigest()
 def path_for(key):
     if len(key)!=64 or any(c not in '0123456789abcdef' for c in key):raise ValueError('invalid_request_id')
     return root()/'work_requests'/(key+'.json')
+@guarded_submission
 def enqueue(species_id,scope,chart_id,parameters):
     key=request_key(species_id,scope,chart_id,parameters);p=path_for(key)
-    if p.is_file():
+    if feature_io.source_available(p):
         previous=read_json(p)
         if previous['readiness'] in ['queued','running','ready']:return previous
     payload={'request_id':key,'species_id':species_id,'scope':scope,'chart_id':chart_id,'parameters':parameters,'readiness':'queued','created':time.time(),'attempt_id':uuid.uuid4().hex}
     write_json(p,payload);return payload
 def consumer_alive():
     p=root()/'consumer.json'
-    if not p.is_file():return False
+    if not feature_io.source_available(p):return False
     state=read_json(p)
-    try:return state.get('state')!='stopped' and process_alive(int(state['pid']),state.get('heartbeat',p.stat().st_mtime))
+    try:return state.get('state')!='stopped' and process_alive(int(state['pid']),state.get('heartbeat',feature_io.source_metadata(p).mtime))
     except (OSError,KeyError,ValueError):return False
 def process_alive(pid,recorded_at=None):
     if pid<=0:return False
@@ -50,7 +54,7 @@ def process_alive(pid,recorded_at=None):
     except PermissionError:return True
 def status(key,species_id):
     p=path_for(key)
-    if not p.is_file():raise FileNotFoundError('unknown_request')
+    if not feature_io.source_available(p):raise FileNotFoundError('unknown_request')
     value=read_json(p)
     if value['species_id']!=species_id:raise FileNotFoundError('unknown_request')
     if value['readiness']=='running' and not process_alive(int(value.get('worker_pid',0))):
@@ -72,17 +76,18 @@ def ensure_consumer():
     try:fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
     except FileExistsError:
         try:
-            if time.time()-lock.stat().st_mtime>30:lock.unlink()
+            if time.time()-feature_io.source_metadata(lock).mtime>30:lock.unlink()
         except FileNotFoundError:pass
         return consumer_alive()
     try:
         os.close(fd)
         if consumer_alive():return True
         project=Path(settings.BASE_DIR);python=project/'.venv'/('Scripts/python.exe' if os.name=='nt' else 'bin/python')
-        command=[str(python if python.is_file() else sys.executable),str(project/'manage.py'),'materialize_proteome_visuals','--consume-requests','--idle-exit-seconds','45','--poll-seconds','1','--output-dir',str(folder.resolve())]
+        command=[python_executable(),str(project/'manage.py'),'materialize_proteome_visuals','--consume-requests','--idle-exit-seconds','45','--poll-seconds','1','--output-dir',str(folder.resolve())]
         env=dict(os.environ);env.update({k:'1' for k in ['OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','NUMEXPR_NUM_THREADS']})
         with (folder/'consumer.log').open('ab') as log:
             process=subprocess.Popen(command,cwd=str(project),env=env,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0,start_new_session=os.name!='nt')
         write_json(folder/'consumer.json',{'pid':process.pid,'heartbeat':time.time(),'state':'starting','idle_exit_seconds':45})
+        threading.Thread(target=process.wait,daemon=True,name='proteome-worker-reaper').start()
         return process_alive(process.pid)
     finally:lock.unlink(missing_ok=True)

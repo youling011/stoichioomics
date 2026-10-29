@@ -1,8 +1,9 @@
 from __future__ import annotations
+from backend.apps.stoichdb.feature_sources import io as feature_io
 
 import csv
 import json
-from pathlib import Path
+from backend.apps.common.host_paths import Path
 
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
@@ -25,9 +26,9 @@ def _model_list() -> Path:
     for directory in root.iterdir():
         if not directory.is_dir():
             continue
-        for candidate in directory.glob('*.csv'):
+        for candidate in feature_io.logical_glob(directory, '*.csv'):
             try:
-                with candidate.open('r', encoding='utf-8-sig', newline='') as handle:
+                with feature_io.open_source(candidate, 'r', encoding='utf-8-sig', newline='') as handle:
                     fields = set(next(csv.reader(handle), []))
             except (OSError, UnicodeError):
                 continue
@@ -84,7 +85,7 @@ def _source_paths(dirs: dict[str, Path], species_id: str) -> dict[str, tuple[Pat
                 proteome_root / stem / f'{stem}.proteome_features.full.csv',
             ),
         }
-        if all(core.exists() and full.exists() for core, full in candidates.values()):
+        if all(feature_io.source_exists(core) and feature_io.source_exists(full) for core, full in candidates.values()):
             return candidates
     raise FileNotFoundError(f'Could not find complete core/full feature paths for {species_id}')
 

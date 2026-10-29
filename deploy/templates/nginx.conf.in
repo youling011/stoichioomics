@@ -8,5 +8,6 @@ http {
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
     sendfile on;
+    log_format stoich_timing '$request_id $request_method $uri $status bytes=$body_bytes_sent request=$request_time upstream=$upstream_response_time gzip=$gzip_ratio';
     include "@OUTPUT_ROOT@/nginx-site.conf";
 }

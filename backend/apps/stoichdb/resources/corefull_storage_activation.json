@@ -1,0 +1,12 @@
+{
+  "format": "corefull-storage-activation-v1",
+  "active": true,
+  "source_core_deletion_authorized": false,
+  "activation_requires": "complete binding coverage, explicit sampled acceptance, Full-only regression and controlled deployment",
+  "activated_at_utc": "2026-10-28T12:49:02.212011+00:00",
+  "physical_core_deletion_authorized": false,
+  "source_contracts_sha256": "d69b203b575e84a922a3d7fe0c4fe10e367d2653cccb56dbec595d68f424dfce",
+  "sampling_receipt_sha256": "0b54f4ea55899e2caf6e6f4ced0f2b2f68cddb8ae9b861d51fd83c9a32a219e9",
+  "acceptance_scope": "user-authorized random sample; complete native metadata binding coverage",
+  "complete_corpus_content_verified": false
+}
